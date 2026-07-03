@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="keywords" content="education, e-learning, online courses, tutorials, STEM, academic resources">
+
+<meta name="description" content="A comprehensive educational platform offering expert-led courses in mathematics, science, and coding for students of all levels.">
+
+<meta name="topic" content="Education / Academic">
+<meta name="subject" content="Online Learning">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khan Academy</title>
+
+<noscript><meta http-equiv="refresh" content="9999; url=learn.html"></noscript>
+<link rel="icon" href="khan.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Architects+Daughter&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Lato',sans-serif;background:#fff;color:#1c1d1f;overflow-x:hidden}
+
+
+.nav{
+  background:#fff;border-bottom:1px solid #e0e0e0;
+  padding:0 24px;height:56px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,0.08);
+}
+.nav-left{display:flex;align-items:center;gap:28px}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo-mark{
+  width:32px;height:32px;background:#14bf96;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-size:1rem;flex-shrink:0;
+}
+.nav-logo-text{font-size:1.1rem;font-weight:700;color:#1c1d1f;letter-spacing:-0.3px}
+.nav-links{display:flex;gap:4px}
+.nav-links a{
+  padding:6px 12px;border-radius:4px;color:#1c1d1f;
+  text-decoration:none;font-size:0.9rem;font-weight:400;
+  transition:background 0.15s;cursor:default;
+}
+.nav-links a:hover{background:#f0f0f0}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-ghost{
+  padding:7px 16px;border-radius:4px;border:2px solid #1c1d1f;
+  background:none;font-family:inherit;font-size:0.85rem;font-weight:700;
+  color:#1c1d1f;cursor:default;
+}
+.btn-primary{
+  padding:7px 16px;border-radius:4px;border:none;
+  background:#1865f2;font-family:inherit;font-size:0.85rem;font-weight:700;
+  color:#fff;cursor:default;
+}
+
+
+.hero{
+  background:linear-gradient(135deg,#f7f9fc 0%,#eaf4ff 100%);
+  padding:60px 40px 50px;display:flex;align-items:center;
+  justify-content:center;gap:60px;flex-wrap:wrap;
+}
+.hero-text{max-width:480px}
+.hero-text h1{
+  font-size:2.6rem;font-weight:700;line-height:1.2;
+  color:#1c1d1f;margin-bottom:16px;
+}
+.hero-text h1 span{color:#14bf96}
+.hero-text p{font-size:1.05rem;color:#555;line-height:1.65;margin-bottom:28px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-btn-main{
+  padding:13px 28px;border-radius:6px;background:#1865f2;
+  color:#fff;font-family:inherit;font-size:1rem;font-weight:700;
+  border:none;cursor:default;
+}
+.hero-btn-sec{
+  padding:13px 28px;border-radius:6px;background:none;
+  color:#1865f2;font-family:inherit;font-size:1rem;font-weight:700;
+  border:2px solid #1865f2;cursor:default;
+}
+.hero-visual{
+  width:320px;height:220px;background:#fff;border-radius:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);padding:24px;
+  display:flex;flex-direction:column;gap:12px;flex-shrink:0;
+}
+.hero-visual-title{font-size:0.75rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em}
+.progress-row{display:flex;flex-direction:column;gap:6px}
+.progress-label{display:flex;justify-content:space-between;font-size:0.82rem;color:#333}
+.progress-bar{height:8px;background:#eee;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;border-radius:99px}
+.pf-green{background:#14bf96;width:72%}
+.pf-blue{background:#1865f2;width:45%}
+.pf-orange{background:#ff8c00;width:88%}
+.pf-purple{background:#9b59b6;width:31%}
+.hero-visual-footer{
+  margin-top:auto;padding-top:10px;border-top:1px solid #f0f0f0;
+  font-size:0.78rem;color:#aaa;
+}
+
+.subjects-strip{
+  background:#fff;padding:32px 40px;
+  border-bottom:1px solid #efefef;
+}
+.subjects-strip h2{font-size:1rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:20px;text-align:center}
+.subjects-grid{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+  max-width:900px;margin:0 auto;
+}
+.subject-chip{
+  padding:8px 18px;border-radius:99px;font-size:0.85rem;font-weight:700;
+  cursor:default;border:2px solid transparent;transition:transform 0.15s;
+}
+.subject-chip:hover{transform:translateY(-2px)}
+.sc-math{background:#fff3e0;color:#e65100;border-color:#ffe0b2}
+.sc-sci{background:#e8f5e9;color:#2e7d32;border-color:#c8e6c9}
+.sc-ela{background:#e3f2fd;color:#1565c0;border-color:#bbdefb}
+.sc-hist{background:#fce4ec;color:#880e4f;border-color:#f8bbd0}
+.sc-art{background:#f3e5f5;color:#6a1b9a;border-color:#e1bee7}
+.sc-cs{background:#e0f7fa;color:#00695c;border-color:#b2ebf2}
+.sc-econ{background:#fff8e1;color:#f57f17;border-color:#ffecb3}
+.sc-health{background:#fbe9e7;color:#bf360c;border-color:#ffccbc}
+
+.main{display:flex;gap:0;min-height:600px}
+
+
+.sidebar{
+  width:240px;flex-shrink:0;border-right:1px solid #e8e8e8;
+  padding:24px 0;background:#fafafa;
+}
+.sidebar-section{margin-bottom:8px}
+.sidebar-heading{
+  padding:6px 20px;font-size:0.7rem;font-weight:700;
+  color:#aaa;text-transform:uppercase;letter-spacing:0.1em;
+}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 20px;font-size:0.88rem;color:#333;
+  cursor:default;transition:background 0.15s;border-left:3px solid transparent;
+}
+.sidebar-item:hover{background:#f0f0f0}
+.sidebar-item.active{
+  background:#e8f4ff;color:#1865f2;
+  border-left-color:#1865f2;font-weight:700;
+}
+.sidebar-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-badge{
+  margin-left:auto;background:#14bf96;color:#fff;
+  font-size:0.65rem;font-weight:700;padding:2px 6px;border-radius:99px;
+}
+
+
+.content{flex:1;padding:32px 36px;overflow:hidden}
+
+.section-title{
+  font-size:1.4rem;font-weight:700;color:#1c1d1f;
+  margin-bottom:6px;
+}
+.section-sub{font-size:0.9rem;color:#777;margin-bottom:24px}
+
+
+.course-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:36px}
+.course-card{
+  border-radius:10px;overflow:hidden;border:1px solid #e8e8e8;
+  cursor:default;transition:box-shadow 0.2s,transform 0.2s;background:#fff;
+}
+.course-card:hover{box-shadow:0 6px 20px rgba(0,0,0,0.1);transform:translateY(-3px)}
+.course-thumb{
+  height:100px;display:flex;align-items:center;justify-content:center;
+  font-size:2.5rem;
+}
+.ct-math{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.ct-sci{background:linear-gradient(135deg,#e8f5e9,#c8e6c9)}
+.ct-ela{background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+.ct-hist{background:linear-gradient(135deg,#fce4ec,#f8bbd0)}
+.ct-cs{background:linear-gradient(135deg,#e0f7fa,#b2ebf2)}
+.ct-art{background:linear-gradient(135deg,#f3e5f5,#e1bee7)}
+.course-info{padding:12px 14px}
+.course-name{font-size:0.88rem;font-weight:700;color:#1c1d1f;margin-bottom:4px}
+.course-meta{font-size:0.75rem;color:#999}
+.course-progress{
+  height:4px;background:#eee;border-radius:99px;margin-top:10px;overflow:hidden;
+}
+.course-progress-fill{height:100%;border-radius:99px;background:#14bf96}
+
+
+.lesson-list{display:flex;flex-direction:column;gap:10px;margin-bottom:36px}
+.lesson-row{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;border-radius:8px;border:1px solid #eee;
+  background:#fff;cursor:default;transition:background 0.15s;
+}
+.lesson-row:hover{background:#f7f9ff}
+.lesson-icon{
+  width:38px;height:38px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.li-video{background:#e3f2fd}
+.li-exercise{background:#e8f5e9}
+.li-article{background:#fff3e0}
+.li-quiz{background:#fce4ec}
+.lesson-info{flex:1}
+.lesson-title{font-size:0.9rem;font-weight:700;color:#1c1d1f}
+.lesson-desc{font-size:0.78rem;color:#999;margin-top:2px}
+.lesson-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.lesson-time{font-size:0.75rem;color:#bbb}
+.lesson-pts{
+  font-size:0.72rem;font-weight:700;color:#14bf96;
+  background:#e8fff6;padding:3px 8px;border-radius:99px;
+}
+.lesson-done{color:#14bf96;font-size:1.1rem}
+
+
+.stats-row{display:flex;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.stat-card{
+  flex:1;min-width:130px;padding:18px 20px;border-radius:10px;
+  border:1px solid #eee;background:#fff;
+}
+.stat-val{font-size:1.8rem;font-weight:700;color:#1c1d1f;line-height:1}
+.stat-label{font-size:0.78rem;color:#999;margin-top:4px}
+.stat-delta{font-size:0.75rem;color:#14bf96;margin-top:6px;font-weight:700}
+
+
+.mastery-widget{
+  background:#fff;border:1px solid #eee;border-radius:10px;
+  padding:20px 22px;margin-bottom:32px;
+}
+.mastery-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mastery-title{font-size:0.95rem;font-weight:700;color:#1c1d1f}
+.mastery-link{font-size:0.82rem;color:#1865f2;cursor:default}
+.mastery-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.mastery-cell{
+  height:22px;border-radius:3px;
+}
+.mc-0{background:#f0f0f0}
+.mc-1{background:#c8f7e6}
+.mc-2{background:#5ce0b0}
+.mc-3{background:#14bf96}
+.mc-4{background:#0a7c62}
+
+
+.streak-bar{
+  display:flex;gap:8px;align-items:center;
+  background:#fffbf0;border:1px solid #ffe082;
+  border-radius:10px;padding:14px 18px;margin-bottom:32px;
+}
+.streak-flame{font-size:1.8rem}
+.streak-info{flex:1}
+.streak-count{font-size:1.1rem;font-weight:700;color:#e65100}
+.streak-sub{font-size:0.78rem;color:#999;margin-top:2px}
+.streak-days{display:flex;gap:6px;margin-left:auto}
+.streak-day{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;font-weight:700;
+}
+.sd-done{background:#14bf96;color:#fff}
+.sd-today{background:#1865f2;color:#fff}
+.sd-miss{background:#f0f0f0;color:#bbb}
+
+
+.quiz-preview{
+  background:#f7f9ff;border:1px solid #d0e4ff;
+  border-radius:10px;padding:22px 24px;margin-bottom:32px;
+}
+.quiz-q{font-size:1rem;font-weight:700;color:#1c1d1f;margin-bottom:16px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  padding:11px 16px;border-radius:6px;border:2px solid #d0e4ff;
+  background:#fff;font-size:0.88rem;color:#333;cursor:default;
+  transition:border-color 0.15s;
+}
+.quiz-opt:hover{border-color:#1865f2}
+.quiz-opt.correct{border-color:#14bf96;background:#f0fff8;color:#0a7c62;font-weight:700}
+
+
+footer{
+  background:#fafafa;border-top:1px solid #e8e8e8;
+  padding:24px 40px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:12px;
+}
+footer p{font-size:0.8rem;color:#bbb}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:0.8rem;color:#bbb;text-decoration:none;cursor:default}
+
+
+#redirect-overlay{
+  position:fixed;inset:0;background:rgba(255,255,255,0);
+  z-index:9999;pointer-events:none;
+  transition:background 0.4s ease;
+}
+</style>
+</head>
+<body>
+
+<div id="redirect-overlay"></div>
+
+
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-logo" href="#">
+      <div class="nav-logo-mark">K</div>
+      <span class="nav-logo-text">Khan Academy</span>
+    </a>
+    <div class="nav-links">
+      <a href="#">Courses</a>
+      <a href="#">Teachers</a>
+      <a href="#">Parents</a>
+      <a href="#">Test Prep</a>
+      <a href="#">Donations</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn-ghost">Log in</button>
+    <button class="btn-primary">Sign up</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>For every student,<br><span>every classroom.</span><br>Real results.</h1>
+    <p>Khan Academy offers practice exercises, instructional videos, and a personalized learning dashboard that empower learners to study at their own pace in and outside of the classroom.</p>
+    <div class="hero-btns">
+      <button class="hero-btn-main">Learners</button>
+      <button class="hero-btn-sec">Teachers</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-title">Your Progress</div>
+    <div class="progress-row">
+      <div class="progress-label"><span>Algebra I</span><span>72%</span></div>
+      <div class="progress-bar"><div class="progress-fill pf-green"></div></div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label"><span>Biology</span><span>45%</span></div>
+      <div class="progress-bar"><div class="progress-fill pf-blue"></div></div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label"><span>US History</span><span>88%</span></div>
+      <div class="progress-bar"><div class="progress-fill pf-orange"></div></div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label"><span>Grammar</span><span>31%</span></div>
+      <div class="progress-bar"><div class="progress-fill pf-purple"></div></div>
+    </div>
+    <div class="hero-visual-footer">Last active today · 1,240 energy points</div>
+  </div>
+</section>
+
+<!-- SUBJECTS STRIP -->
+<div class="subjects-strip">
+  <h2>Browse by subject</h2>
+  <div class="subjects-grid">
+    <div class="subject-chip sc-math">Math</div>
+    <div class="subject-chip sc-sci">Science</div>
+    <div class="subject-chip sc-ela">Reading &amp; Language Arts</div>
+    <div class="subject-chip sc-hist">History &amp; Social Studies</div>
+    <div class="subject-chip sc-cs">Computing</div>
+    <div class="subject-chip sc-art">Arts &amp; Humanities</div>
+    <div class="subject-chip sc-econ">Economics &amp; Finance</div>
+    <div class="subject-chip sc-health">Life Skills</div>
+    <div class="subject-chip sc-math">Algebra I &amp; II</div>
+    <div class="subject-chip sc-sci">Chemistry</div>
+    <div class="subject-chip sc-ela">Grammar</div>
+    <div class="subject-chip sc-hist">World History</div>
+    <div class="subject-chip sc-cs">AP Computer Science</div>
+    <div class="subject-chip sc-art">Art History</div>
+    <div class="subject-chip sc-math">Calculus</div>
+    <div class="subject-chip sc-sci">Physics</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">My Learning</div>
+      <div class="sidebar-item active">
+        <span class="sidebar-icon">🏠</span> Home
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">📚</span> My courses
+        <span class="sidebar-badge">4</span>
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">⭐</span> Missions
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">📊</span> Progress
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Courses</div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">➕</span> Algebra I
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🔬</span> Biology
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🗺️</span> US History
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">✏️</span> Grammar
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">💻</span> Intro to CS
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Tools</div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🎯</span> Practice
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">🏆</span> Leaderboard
+      </div>
+      <div class="sidebar-item">
+        <span class="sidebar-icon">⚙️</span> Settings
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="section-title">Welcome back! 👋</div>
+    <div class="section-sub">Pick up where you left off, or explore something new.</div>
+
+    <!-- STREAK -->
+    <div class="streak-bar">
+      <div class="streak-flame">🔥</div>
+      <div class="streak-info">
+        <div class="streak-count">14 day streak!</div>
+        <div class="streak-sub">Keep it up — practice every day to grow your streak</div>
+      </div>
+      <div class="streak-days">
+        <div class="streak-day sd-done">M</div>
+        <div class="streak-day sd-done">T</div>
+        <div class="streak-day sd-done">W</div>
+        <div class="streak-day sd-done">T</div>
+        <div class="streak-day sd-done">F</div>
+        <div class="streak-day sd-today">S</div>
+        <div class="streak-day sd-miss">S</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-val">1,240</div>
+        <div class="stat-label">Energy Points</div>
+        <div class="stat-delta">▲ +85 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">47</div>
+        <div class="stat-label">Skills Mastered</div>
+        <div class="stat-delta">▲ +3 this week</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">12</div>
+        <div class="stat-label">Videos Watched</div>
+        <div class="stat-delta">▲ +2 today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">89%</div>
+        <div class="stat-label">Avg. Quiz Score</div>
+        <div class="stat-delta">▲ +4% vs last week</div>
+      </div>
+    </div>
+
+    <!-- COURSES -->
+    <div class="section-title" style="font-size:1.1rem;margin-bottom:14px">Continue learning</div>
+    <div class="course-grid">
+      <div class="course-card">
+        <div class="course-thumb ct-math">➕</div>
+        <div class="course-info">
+          <div class="course-name">Algebra I</div>
+          <div class="course-meta">Grade 8–9 · 234 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:72%"></div></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb ct-sci">🔬</div>
+        <div class="course-info">
+          <div class="course-name">Biology</div>
+          <div class="course-meta">Grade 9–10 · 180 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:45%"></div></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb ct-hist">🗺️</div>
+        <div class="course-info">
+          <div class="course-name">US History</div>
+          <div class="course-meta">Grade 10–11 · 142 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:88%"></div></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb ct-ela">✏️</div>
+        <div class="course-info">
+          <div class="course-name">Grammar</div>
+          <div class="course-meta">All grades · 95 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:31%"></div></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb ct-cs">💻</div>
+        <div class="course-info">
+          <div class="course-name">Intro to CS</div>
+          <div class="course-meta">Grade 6–8 · 110 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:60%"></div></div>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="course-thumb ct-art">🎨</div>
+        <div class="course-info">
+          <div class="course-name">Art History</div>
+          <div class="course-meta">All grades · 88 skills</div>
+          <div class="course-progress"><div class="course-progress-fill" style="width:18%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MASTERY -->
+    <div class="mastery-widget">
+      <div class="mastery-header">
+        <div class="mastery-title">Algebra I — Skill Mastery Map</div>
+        <div class="mastery-link">View all →</div>
+      </div>
+      <div class="mastery-grid">
+        <!-- 60 cells of varying mastery -->
+        <div class="mastery-cell mc-4"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-2"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-2"></div>
+        <div class="mastery-cell mc-3"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-2"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-2"></div>
+        <div class="mastery-cell mc-2"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-4"></div><div class="mastery-cell mc-2"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-2"></div><div class="mastery-cell mc-3"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-0"></div>
+        <div class="mastery-cell mc-1"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-2"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div>
+        <div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-1"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div>
+        <div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div><div class="mastery-cell mc-0"></div>
+      </div>
+    </div>
+
+    <!-- LESSONS -->
+    <div class="section-title" style="font-size:1.1rem;margin-bottom:14px">Up next in Algebra I</div>
+    <div class="lesson-list">
+      <div class="lesson-row">
+        <div class="lesson-icon li-video">▶️</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Introduction to quadratic equations</div>
+          <div class="lesson-desc">Video · Unit 7: Quadratics</div>
+        </div>
+        <div class="lesson-right">
+          <span class="lesson-time">8 min</span>
+          <span class="lesson-pts">+50 pts</span>
+        </div>
+      </div>
+      <div class="lesson-row">
+        <div class="lesson-icon li-exercise">✏️</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Solving quadratics by factoring</div>
+          <div class="lesson-desc">Exercise · Unit 7: Quadratics</div>
+        </div>
+        <div class="lesson-right">
+          <span class="lesson-time">15 min</span>
+          <span class="lesson-pts">+100 pts</span>
+        </div>
+      </div>
+      <div class="lesson-row">
+        <div class="lesson-icon li-article">📄</div>
+        <div class="lesson-info">
+          <div class="lesson-title">The quadratic formula explained</div>
+          <div class="lesson-desc">Article · Unit 7: Quadratics</div>
+        </div>
+        <div class="lesson-right">
+          <span class="lesson-time">5 min</span>
+          <span class="lesson-pts">+20 pts</span>
+        </div>
+      </div>
+      <div class="lesson-row">
+        <div class="lesson-icon li-quiz">❓</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Unit 6 quiz: Linear equations</div>
+          <div class="lesson-desc">Quiz · 10 questions</div>
+        </div>
+        <div class="lesson-right">
+          <span class="lesson-time">20 min</span>
+          <span class="lesson-pts">+150 pts</span>
+          <span class="lesson-done">✓</span>
+        </div>
+      </div>
+      <div class="lesson-row">
+        <div class="lesson-icon li-video">▶️</div>
+        <div class="lesson-info">
+          <div class="lesson-title">Graphing parabolas in vertex form</div>
+          <div class="lesson-desc">Video · Unit 7: Quadratics</div>
+        </div>
+        <div class="lesson-right">
+          <span class="lesson-time">11 min</span>
+          <span class="lesson-pts">+50 pts</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ PREVIEW -->
+    <div class="quiz-preview">
+      <div class="quiz-q">🧠 Quick check — Solve: 2x² − 8 = 0</div>
+      <div class="quiz-options">
+        <div class="quiz-opt">x = ±2</div>
+        <div class="quiz-opt correct">x = ±2 ✓</div>
+        <div class="quiz-opt">x = 4</div>
+        <div class="quiz-opt">x = ±4</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<footer>
+  <p>© 2025 Khan Academy · A 501(c)(3) nonprofit organization</p>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">News</a>
+    <a href="#">Donate</a>
+    <a href="#">Help Center</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+  </div>
+</footer>
+
+<script>
+  // Bot detection: if it looks like a headless crawler/scraper, don't redirect
+  // GoGuardian, Securly, etc. often have no real user interaction signals
+  const botSignals = [
+    /bot|crawl|spider|scrape|headless|phantom|selenium|puppeteer|playwright|googlebot|bingbot|slurp|duckduck|archive|facebookexternalhit|linkedinbot|twitterbot|whatsapp|skype|slack/i.test(navigator.userAgent),
+    !navigator.webdriver === false, // webdriver flag set = automation
+    typeof navigator.webdriver !== 'undefined' && navigator.webdriver === true,
+    window.outerWidth === 0 && window.outerHeight === 0, // headless has no real window
+    !window.chrome && /Chrome/.test(navigator.userAgent) && /Google/.test(navigator.vendor), // suspicious chrome
+  ];
+
+  const isBot = botSignals.some(Boolean);
+
+  if (!isBot) {
+    // Real user: redirect after 0.8s
+    setTimeout(function(){
+      const overlay = document.getElementById('redirect-overlay');
+      overlay.style.background = 'rgba(255,255,255,1)';
+      setTimeout(function(){
+        window.location.href = 'home.html';
+      }, 400);
+    }, 800);
+  }
+  // If bot: do nothing, they stay on this page forever
+ type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Introduction to Math",
+  "description": "Learn the basics of math in 10 weeks.",
+  "provider": {
+    "@type": "Organization",
+    "name": "Khan Academy",
+    "sameAs": "https://www.khanacademy.org/"
+  }
+}
+
+</script>
+</body>
+</html>
