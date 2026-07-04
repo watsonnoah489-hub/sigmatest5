@@ -511,7 +511,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 5 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 7 games available</div>
         </div>
 
         <div class="controls">
@@ -616,7 +616,11 @@
             { id: '1v1lol', name: '1v1 LOL', file: 'cl1v1lol (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
-                img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobisonlaunchalibre.html',
+                img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
+            { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -815,6 +819,8 @@
                 else if (gameId === 'eaglercraft') dotColor = 'blue';
                 else if (gameId === '1v1lol') dotColor = 'blue';
                 else if (gameId === '1on1soccer') dotColor = 'green';
+                else if (gameId === 'burritobison') dotColor = 'orange';
+                else if (gameId === 'backrooms') dotColor = 'yellow';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -843,7 +849,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -899,7 +905,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -922,7 +928,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 5 games.');
+            console.log('🎮 Launcher ready – 7 games.');
         })();
 
         // ─── Extra features (unchanged) ───
@@ -1205,7 +1211,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added 1v1 LOL and 1v1 Soccer.');
+        console.log('✅ All features – added Burrito Bison and Backrooms.');
     </script>
 </body>
 </html>
