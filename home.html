@@ -449,6 +449,11 @@
         .game-title-bar .dot.green { background: #22c55e; }
         .game-title-bar .dot.blue { background: #3b82f6; }
         .game-title-bar .dot.purple { background: #a855f7; }
+        .game-title-bar .dot.orange { background: #f97316; }
+        .game-title-bar .dot.yellow { background: #eab308; }
+        .game-title-bar .dot.red { background: #ef4444; }
+        .game-title-bar .dot.teal { background: #14b8a6; }
+        .game-title-bar .dot.pink { background: #ec4899; }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.7); }
@@ -511,7 +516,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 7 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 13 games available</div>
         </div>
 
         <div class="controls">
@@ -620,7 +625,19 @@
             { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobisonlaunchalibre.html',
                 img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'baldi', name: "Baldi's Basics", file: 'clbaldisbasics (1).html',
+                img: 'https://th.bing.com/th/id/OIP.uSj87WtfdlcYP9rPpLGY_QHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'basketballstars', name: 'Basketball Stars', file: 'clbasketballstars.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.ZbCOXEfOBdRdeXiv_tXtWAHaEL?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'bloxorz', name: 'Bloxorz', file: 'clbloxorz (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.-0sNVbmWwzm_jytveGb-UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'bitlife', name: 'BitLife', file: 'clbitlife.html',
+                img: 'https://progameguides.com/wp-content/uploads/2022/03/featured-bitlife-audition.jpg?fit=1200%2C675' },
+            { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'capybara', name: 'Capybara Clicker', file: 'clcapybaraclicker (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.idOWS5nM7q9oM0UTX8Oq4wHaFs?rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -821,6 +838,12 @@
                 else if (gameId === '1on1soccer') dotColor = 'green';
                 else if (gameId === 'burritobison') dotColor = 'orange';
                 else if (gameId === 'backrooms') dotColor = 'yellow';
+                else if (gameId === 'baldi') dotColor = 'red';
+                else if (gameId === 'basketballstars') dotColor = 'orange';
+                else if (gameId === 'bloxorz') dotColor = 'teal';
+                else if (gameId === 'bitlife') dotColor = 'green';
+                else if (gameId === 'caseoh') dotColor = 'pink';
+                else if (gameId === 'capybara') dotColor = 'teal';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -849,7 +872,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -905,7 +928,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -928,7 +951,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 7 games.');
+            console.log('🎮 Launcher ready – 13 games (added CaseOh\'s Basics and Capybara Clicker).');
         })();
 
         // ─── Extra features (unchanged) ───
@@ -1211,7 +1234,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added Burrito Bison and Backrooms.');
+        console.log('✅ All features – added CaseOh\'s Basics and Capybara Clicker.');
     </script>
 </body>
 </html>
