@@ -163,7 +163,7 @@
         }
         .cycle-status.error { color: #f87171; }
 
-        /* Star icon – large and easy to click */
+        /* Star icon */
         .star-fav {
             position: absolute;
             top: 4px;
@@ -511,7 +511,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 3 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 5 games available</div>
         </div>
 
         <div class="controls">
@@ -612,7 +612,11 @@
             { id: '2048', name: '2048', file: 'cl2048 (1).html',
                 img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
             { id: 'eaglercraft', name: 'Eaglercraft', file: 'cleaglercraftx188(u29) (2).html',
-                img: 'https://tse3.mm.bing.net/th/id/OIP.ycPMMSBon_CEagF-syK2ywHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse3.mm.bing.net/th/id/OIP.ycPMMSBon_CEagF-syK2ywHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: '1v1lol', name: '1v1 LOL', file: 'cl1v1lol (1).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -683,9 +687,12 @@
                 wrapper.appendChild(status);
                 row.appendChild(wrapper);
             });
+
+            // Update game counter
+            document.getElementById('gameCounter').textContent = '🎮 ' + GAME_DATA.length + ' games available';
         }
 
-        // ─── Game launcher with improved pointer lock for Eaglercraft ───
+        // ─── Game launcher with improved pointer lock ───
         (function() {
             const menuScreen = document.getElementById('menuScreen');
             const gameContainer = document.getElementById('gameContainer');
@@ -746,21 +753,16 @@
                 if (document.pointerLockElement) document.exitPointerLock();
             }
 
-            // Improved: request pointer lock on canvas with focus
             function requestPointerLockOnGame() {
                 try {
                     const iframeDoc = frame.contentDocument;
                     if (!iframeDoc) return false;
-                    // Focus the iframe
                     frame.focus();
                     if (frame.contentWindow) frame.contentWindow.focus();
-
-                    // Find the canvas – Eaglercraft uses canvas
                     let target = iframeDoc.querySelector('canvas');
                     if (!target) target = iframeDoc.body;
                     if (target && target.requestPointerLock) {
                         target.requestPointerLock();
-                        // Also dispatch a click event on the canvas to wake up the game
                         const clickEvent = new MouseEvent('click', {
                             bubbles: true,
                             cancelable: true,
@@ -811,6 +813,8 @@
                 let gameName = game.name, dotColor = 'purple';
                 if (gameId === '2048') dotColor = 'green';
                 else if (gameId === 'eaglercraft') dotColor = 'blue';
+                else if (gameId === '1v1lol') dotColor = 'blue';
+                else if (gameId === '1on1soccer') dotColor = 'green';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -839,8 +843,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    // For Eaglercraft, show a helpful message
-                    if (gameId === 'eaglercraft') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -866,7 +869,7 @@
                 else fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Exit Fullscreen';
             });
 
-            // ── Cursor lock button ──
+            // ── Cursor lock ──
             cursorBtn.addEventListener('click', () => {
                 if (isPointerLocked()) {
                     releasePointerLock();
@@ -876,7 +879,6 @@
                     const success = requestPointerLockOnGame();
                     if (success) {
                         hidePointerMessage();
-                        // Wait a bit to update button state
                         setTimeout(updateCursorButtonState, 300);
                     } else {
                         showPointerMessage('⚠️ Could not lock cursor. Try clicking inside the game window first.');
@@ -884,7 +886,6 @@
                 }
             });
 
-            // Listen to pointer lock changes
             document.addEventListener('pointerlockchange', updateCursorButtonState);
 
             frame.addEventListener('load', () => {
@@ -898,7 +899,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -921,7 +922,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – pointer lock improved for Eaglercraft.');
+            console.log('🎮 Launcher ready – 5 games.');
         })();
 
         // ─── Extra features (unchanged) ───
@@ -1204,7 +1205,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – pointer lock improved: click inside game to move.');
+        console.log('✅ All features – added 1v1 LOL and 1v1 Soccer.');
     </script>
 </body>
 </html>
