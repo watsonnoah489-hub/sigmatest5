@@ -516,7 +516,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 13 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 17 games available</div>
         </div>
 
         <div class="controls">
@@ -637,7 +637,15 @@
             { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'capybara', name: 'Capybara Clicker', file: 'clcapybaraclicker (1).html',
-                img: 'https://tse4.mm.bing.net/th/id/OIP.idOWS5nM7q9oM0UTX8Oq4wHaFs?rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse4.mm.bing.net/th/id/OIP.idOWS5nM7q9oM0UTX8Oq4wHaFs?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'stealbrainrot', name: 'Steal Brainrot Duel', file: 'clsabduel (3).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.2yA-WXC93KP_5stoqqwL_QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'ducklife1', name: 'Duck Life 1', file: 'clducklife.html',
+                img: 'https://th.bing.com/th/id/OIP.Ir-pGZltqIUiESlhekP6qgHaEK?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'ducklife2', name: 'Duck Life 2', file: 'clducklife2.html',
+                img: 'https://www.coolmathgames.com/sites/default/files/DuckLife2_OG-logo.jpg' },
+            { id: 'ducklife3', name: 'Duck Life 3', file: 'clducklife3.html',
+                img: 'https://th.bing.com/th/id/OIP.UtW8aE26k-JJ18Itft3lqwHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -844,6 +852,8 @@
                 else if (gameId === 'bitlife') dotColor = 'green';
                 else if (gameId === 'caseoh') dotColor = 'pink';
                 else if (gameId === 'capybara') dotColor = 'teal';
+                else if (gameId === 'stealbrainrot') dotColor = 'pink';
+                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3') dotColor = 'yellow';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -872,7 +882,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -928,7 +938,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -951,10 +961,11 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 13 games (added CaseOh\'s Basics and Capybara Clicker).');
+            console.log('🎮 Launcher ready – 17 games (added Duck Life 1, 2, 3).');
         })();
 
-        // ─── Extra features (unchanged) ───
+        // ─── Extra features ───
+
         // Matrix rain
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mctx = matrixCanvas.getContext('2d');
@@ -1165,18 +1176,17 @@
             }
         };
 
-        // Cloak
+        // ─── Cloak options ───
         const EDU_CLOAKS = [
             { title: 'IXL | Dashboard', fav: 'https://www.ixl.com/favicon.ico', head: '✨ IXL Learning Dashboard ✨' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico', head: 'Typing Agent Student Portal' },
             { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico', head: 'i-Ready Student Dashboard' },
             { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64', head: 'Infinite Campus - Student' },
-            { title: 'Google Classroom', fav: 'https://www.google.com/s2/favicons?domain=classroom.google.com&sz=64', head: 'Google Classroom' },
             { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64', head: 'Clever' },
             { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64', head: 'Schoology' },
-            { title: 'Canvas', fav: 'https://www.google.com/s2/favicons?domain=instructure.com&sz=64', head: 'Canvas Dashboard' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico', head: 'Khan Academy' }
         ];
+
         let currentCloakIndex = 0;
         window.toggleCloak = function() {
             currentCloakIndex = (currentCloakIndex + 1) % EDU_CLOAKS.length;
@@ -1234,7 +1244,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added CaseOh\'s Basics and Capybara Clicker.');
+        console.log('✅ All features – added Duck Life 1, 2, 3.');
     </script>
 </body>
 </html>
