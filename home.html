@@ -516,7 +516,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 21 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 27 games available</div>
         </div>
 
         <div class="controls">
@@ -653,7 +653,20 @@
             { id: 'deadzed2', name: 'Dead Zed 2', file: 'cldeadzed2.html',
                 img: 'https://th.bing.com/th/id/OIP.WcjBOPnwJKIKiScq8mg0fQHaD0?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ducklife5', name: 'Duck Life 5', file: 'clducklfe5.html',
-                img: 'https://tse1.mm.bing.net/th/id/OIP.rammF9mq1i03tRSKhFPdvgHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse1.mm.bing.net/th/id/OIP.rammF9mq1i03tRSKhFPdvgHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'elasticface', name: 'Elastic Face', file: 'clelasticface (1).html',
+                img: 'https://th.bing.com/th/id/OIP.HzkWO5FBLkQibLa3oQcJnQHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'fnaf1', name: 'Five Nights at Freddy\'s', file: 'clFNAF (6).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.XW_OsPwLtSFaQrOSHEr5eAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // New FNAF games
+            { id: 'fnaf2', name: 'Five Nights at Freddy\'s 2', file: 'clFNAF2 (2).html',
+                img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2f%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2ffnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
+            { id: 'fnaf3', name: 'Five Nights at Freddy\'s 3', file: 'clFNAF3 (2).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP._CWgr-vY9AA8jLa7jCUgUgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html',
+                img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d2c12b40-9112-445e-8e5a-0dfc849c24d9/dacsb1r-b043e8bf-8b22-40c7-a387-412a8a82df83.png/v1/fill/w_512,h_512,q_80,strp/fnaf_3_logo_with_phantom_freddy_by_dahooplerzman_dacsb1r-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTEyIiwicGF0aCI6IlwvZlwvZDJjMTJiNDAtOTExMi00NDVlLThlNWEtMGRmYzg0OWMyNGQ5XC9kYWNzYjFyLWIwNDNlOGJmLThiMjItNDBjNy1hMzg3LTQxMmE4YTgyZGY4My5wbmciLCJ3aWR0aCI6Ijw9NTEyIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.IbFGLsQZ5i9Y6wE2HWKGK9lro1IvSd1kbLMcJdMYWVA' },
+            { id: 'fnaf4', name: 'Five Nights at Freddy\'s 4', file: 'clFNAF4 (3).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.CISvqc5iJY4QE50zYcZX3gHaHd?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -863,6 +876,8 @@
                 else if (gameId === 'stealbrainrot') dotColor = 'pink';
                 else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId === 'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
                 else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
+                else if (gameId === 'elasticface') dotColor = 'teal';
+                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -891,7 +906,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -947,7 +962,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -970,7 +985,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 21 games (added Duck Life 5).');
+            console.log('🎮 Launcher ready – 27 games (added FNAF 2, 3, 3 Remastered, 4).');
         })();
 
         // ─── Extra features ───
@@ -1253,7 +1268,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added Duck Life 5.');
+        console.log('✅ All features – added FNAF 2, 3, 3 Remastered, and 4.');
     </script>
 </body>
 </html>
