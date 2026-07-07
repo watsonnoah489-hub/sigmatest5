@@ -516,7 +516,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 17 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 21 games available</div>
         </div>
 
         <div class="controls">
@@ -645,7 +645,15 @@
             { id: 'ducklife2', name: 'Duck Life 2', file: 'clducklife2.html',
                 img: 'https://www.coolmathgames.com/sites/default/files/DuckLife2_OG-logo.jpg' },
             { id: 'ducklife3', name: 'Duck Life 3', file: 'clducklife3.html',
-                img: 'https://th.bing.com/th/id/OIP.UtW8aE26k-JJ18Itft3lqwHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://th.bing.com/th/id/OIP.UtW8aE26k-JJ18Itft3lqwHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'ducklife4', name: 'Duck Life 4', file: 'clducklife4.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.sW69OJf3agPXA7cG8Bu4qAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'deadzed1', name: 'Dead Zed 1', file: 'cldeadzed (1).html',
+                img: 'https://th.bing.com/th/id/OIP.EizsnLFjDjPy1AddlxcbDwAAAA?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'deadzed2', name: 'Dead Zed 2', file: 'cldeadzed2.html',
+                img: 'https://th.bing.com/th/id/OIP.WcjBOPnwJKIKiScq8mg0fQHaD0?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'ducklife5', name: 'Duck Life 5', file: 'clducklfe5.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.rammF9mq1i03tRSKhFPdvgHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -853,7 +861,8 @@
                 else if (gameId === 'caseoh') dotColor = 'pink';
                 else if (gameId === 'capybara') dotColor = 'teal';
                 else if (gameId === 'stealbrainrot') dotColor = 'pink';
-                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3') dotColor = 'yellow';
+                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId === 'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
+                else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -961,7 +970,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 17 games (added Duck Life 1, 2, 3).');
+            console.log('🎮 Launcher ready – 21 games (added Duck Life 5).');
         })();
 
         // ─── Extra features ───
@@ -1244,7 +1253,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added Duck Life 1, 2, 3.');
+        console.log('✅ All features – added Duck Life 5.');
     </script>
 </body>
 </html>
