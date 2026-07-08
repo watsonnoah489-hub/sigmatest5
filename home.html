@@ -517,7 +517,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 35 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 43 games available</div>
         </div>
 
         <div class="controls">
@@ -573,7 +573,6 @@
             <button class="btn" style="background:#f59e0b;" onclick="toggleLagKiller()">⚡ LAG KILLER</button>
             <button class="btn" id="rainToggleBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn rainbow-btn" id="rainbowColorBtn" style="background:linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);">🌈 RAINBOW MODE</button>
-            <button class="btn btn-danger" id="deleteDataBtn" style="background:#dc2626;">🗑️ DELETE ALL SAVED DATA</button>
             <button class="btn" id="sigmaToggleBtn" style="background:#ff6b00;">🔥 SIGMATOWN4LIFE</button>
         </div>
 
@@ -675,7 +674,6 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.ECuEPapOd8vhLtNbwX_3pwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'growagarden', name: 'Grow a Garden', file: 'clgrowagarden.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.r9GnhSvBFoCP3y2UX1yqlwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // New games
             { id: 'nzp', name: 'NZ: Portable (Nazi Zombies)', file: 'clnzp (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.hsivWr_7ItDcRY5iLnEzIAHaEf?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'omeganugget', name: 'Omega Nugget Clicker', file: 'clomeganuggetclicker (2).html',
@@ -683,7 +681,24 @@
             { id: 'retrobowl', name: 'Retro Bowl', file: 'clretrobowl (1).html',
                 img: 'https://th.bing.com/th/id/OIP.QSJdGx5NVixcm4yC67lLJgHaEm?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gunspin', name: 'Gun Spin', file: 'clgun-spin.html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.k0lsRAddB4us0YqBho2qwgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse2.mm.bing.net/th/id/OIP.k0lsRAddB4us0YqBho2qwgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'smashkarts', name: 'Smash Karts', file: 'clsmashkartsworking.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.kQKRzgZXU1KvDKH_nnSDAQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'run3', name: 'Run 3', file: 'clrun3 (1).html',
+                img: 'https://www.coolmathgames.com/sites/default/files/Run3_OG-logo.jpg' },
+            { id: 'stickmanhook', name: 'Stickman Hook', file: 'clstickmanhook (1).html',
+                img: 'https://th.bing.com/th/id/OIP.enksKdjSeShKc3CMXeeuggAAAA?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // Subway Surfers games
+            { id: 'subwaylondon', name: 'Subway Surfers London', file: 'clsubwaysurferslondon (1).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.iRjtOyQTZN20ojZq4bXeuwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'subwaymexico', name: 'Subway Surfers Mexico', file: 'clsubwaysurfersmexico (1).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.Fz-qgmlBjlLVlecEgtGw3QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'subwaysanfran', name: 'Subway Surfers San Francisco', file: 'clsubwaysurferssanfrancisco (1) (1).html',
+                img: 'https://th.bing.com/th/id/OIP.JsyRYEC75TX2gn_wzjAE0QHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'subwaybeijing', name: 'Subway Surfers Beijing', file: 'clsubwaysurfersbeijing (1).html',
+                img: 'https://i.ytimg.com/vi/zNjTTtyxXJ4/maxresdefault.jpg' },
+            { id: 'subwayberlin', name: 'Subway Surfers Berlin', file: 'clsubwaysurfersberlin (1).html',
+                img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' }
         ];
 
         // ─── Favorites ───
@@ -903,6 +918,10 @@
                 else if (gameId === 'omeganugget') dotColor = 'orange';
                 else if (gameId === 'retrobowl') dotColor = 'orange';
                 else if (gameId === 'gunspin') dotColor = 'red';
+                else if (gameId === 'smashkarts') dotColor = 'orange';
+                else if (gameId === 'run3') dotColor = 'blue';
+                else if (gameId === 'stickmanhook') dotColor = 'teal';
+                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' || gameId === 'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -931,7 +950,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId === 'smashkarts') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -987,7 +1006,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp' || currentGame === 'smashkarts') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -1010,7 +1029,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 35 games (added NZP, Omega Nugget Clicker, Retro Bowl, Gun Spin).');
+            console.log('🎮 Launcher ready – 43 games (added 5 Subway Surfers games).');
         })();
 
         // ─── Extra features ───
@@ -1264,15 +1283,6 @@
         };
         document.getElementById('sigmaToggleBtn').addEventListener('click', toggleSigmaMode);
 
-        // Delete data
-        document.getElementById('deleteDataBtn').addEventListener('click', function() {
-            if (confirm('Delete ALL saved data?')) {
-                localStorage.clear();
-                alert('Data cleared. Reloading...');
-                location.reload();
-            }
-        });
-
         // Color picker
         document.getElementById('primaryColorPicker').addEventListener('input', e => {
             if (rainbowMode) toggleRainbowMode();
@@ -1293,7 +1303,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added NZP, Omega Nugget Clicker, Retro Bowl, Gun Spin.');
+        console.log('✅ All features – added 5 Subway Surfers games (London, Mexico, San Francisco, Beijing, Berlin).');
     </script>
 </body>
 </html>
