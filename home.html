@@ -42,16 +42,27 @@
         }
         #matrixCanvas {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 5;
             opacity: 0;
             transition: opacity 0.5s;
             mix-blend-mode: screen;
         }
-        body.rain-active #matrixCanvas { opacity: 0.65; }
-        .header, .controls, .cycles-row, .soundboard-section, #gameContainer { position: relative; z-index: 10; }
+        body.rain-active #matrixCanvas {
+            opacity: 0.65;
+        }
+        .header,
+        .controls,
+        .cycles-row,
+        .soundboard-section,
+        #gameContainer {
+            position: relative;
+            z-index: 10;
+        }
 
         .header {
             background: rgba(13, 17, 23, 0.92);
@@ -67,14 +78,18 @@
             border: 1px solid var(--primary-color);
             box-shadow: 0 0 35px var(--glow-color);
         }
-        .header .subtitle { font-size: 14px; opacity: 0.7; margin-top: 4px; }
+        .header .subtitle {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 40px;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             padding: 18px 30px;
             border-radius: 50px;
             align-items: center;
@@ -84,12 +99,60 @@
             box-shadow: 0 0 30px var(--glow-color);
         }
 
+        /* ── Search Bar ── */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 30px 0;
+            width: 100%;
+            z-index: 10;
+            position: relative;
+        }
+        #searchInput {
+            width: 60%;
+            max-width: 500px;
+            padding: 12px 24px;
+            border-radius: 30px;
+            border: 2px solid var(--primary-color);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        #searchInput:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 30px var(--glow-color);
+            background: rgba(0, 0, 0, 0.85);
+        }
+        #searchInput::placeholder {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        #searchClear {
+            position: relative;
+            margin-left: -50px;
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 22px;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 11;
+        }
+        #searchClear:hover {
+            color: white;
+        }
+
         .cycles-row {
             display: flex;
             gap: 40px;
             flex-wrap: wrap;
             justify-content: center;
             margin: 40px 0 30px;
+            transition: all 0.3s;
         }
 
         .cycle-wrapper {
@@ -98,6 +161,10 @@
             align-items: center;
             gap: 10px;
             position: relative;
+            transition: all 0.3s;
+        }
+        .cycle-wrapper.hidden {
+            display: none;
         }
 
         .cycle-btn {
@@ -112,7 +179,7 @@
             cursor: pointer;
             transition: transform 0.25s, box-shadow 0.35s, border-color 0.3s;
             position: relative;
-            box-shadow: 0 0 30px rgba(59,130,246,0.10);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.10);
             overflow: hidden;
         }
         .cycle-btn:hover {
@@ -120,7 +187,9 @@
             border-color: var(--primary-color) !important;
             box-shadow: 0 0 50px var(--glow-color) !important;
         }
-        .cycle-btn:active { transform: scale(0.94); }
+        .cycle-btn:active {
+            transform: scale(0.94);
+        }
         .cycle-btn .cycle-overlay {
             position: absolute;
             inset: 0;
@@ -132,7 +201,10 @@
             transition: opacity 0.4s, transform 0.4s;
             pointer-events: none;
         }
-        .cycle-btn:hover .cycle-overlay { opacity: 1; transform: scale(1.02); }
+        .cycle-btn:hover .cycle-overlay {
+            opacity: 1;
+            transform: scale(1.02);
+        }
         .cycle-btn .spinner-ring {
             position: absolute;
             inset: -6px;
@@ -144,8 +216,15 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        .cycle-btn.active .spinner-ring { opacity: 1; animation: spin 0.9s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .cycle-btn.active .spinner-ring {
+            opacity: 1;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
         .cycle-label {
             color: #e2e8f0;
@@ -155,13 +234,17 @@
             transition: color 0.3s;
             margin-top: 4px;
         }
-        .cycle-btn:hover + .cycle-label { color: #60a5fa; }
+        .cycle-btn:hover+.cycle-label {
+            color: #60a5fa;
+        }
         .cycle-status {
             font-size: 14px;
             color: #94a3b8;
             min-height: 24px;
         }
-        .cycle-status.error { color: #f87171; }
+        .cycle-status.error {
+            color: #f87171;
+        }
 
         /* Star icon */
         .star-fav {
@@ -173,7 +256,7 @@
             cursor: pointer;
             z-index: 20;
             color: #555;
-            text-shadow: 0 0 8px rgba(0,0,0,0.9);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
             transition: color 0.2s, transform 0.2s;
             pointer-events: auto;
             padding: 4px 10px;
@@ -183,12 +266,14 @@
             color: var(--primary-color);
             text-shadow: 0 0 16px var(--glow-color);
         }
-        .star-fav:hover { transform: scale(1.25); }
+        .star-fav:hover {
+            transform: scale(1.25);
+        }
 
         .soundboard-section {
             max-width: 1400px;
             margin: 0 auto 40px auto;
-            background: rgba(10,15,25,0.85);
+            background: rgba(10, 15, 25, 0.85);
             backdrop-filter: blur(12px);
             border-radius: 32px;
             padding: 24px 28px;
@@ -213,16 +298,19 @@
             justify-content: space-around;
         }
         .sound-item {
-            background: rgba(0,0,0,0.65);
+            background: rgba(0, 0, 0, 0.65);
             border-radius: 28px;
             padding: 20px;
             flex: 1;
             min-width: 260px;
-            border: 1px solid rgba(59,130,246,0.6);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             transition: transform 0.2s;
         }
-        .sound-item:hover { transform: translateY(-5px); border-color: var(--primary-color); }
+        .sound-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+        }
         .sound-name {
             font-size: 1.5rem;
             font-weight: bold;
@@ -251,7 +339,10 @@
             transition: 0.2s;
             box-shadow: 0 0 5px var(--primary-color);
         }
-        .sound-btn:hover { background: var(--primary-color); transform: scale(1.03); }
+        .sound-btn:hover {
+            background: var(--primary-color);
+            transform: scale(1.03);
+        }
         .loop-label {
             display: flex;
             align-items: center;
@@ -289,25 +380,43 @@
             background: var(--primary-color);
             transition: all 0.3s;
             box-shadow: 0 0 12px var(--primary-color);
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        .btn:hover { filter: brightness(1.35); transform: translateY(-3px); box-shadow: 0 0 25px var(--primary-color); }
-        .btn-danger { background: #dc2626; box-shadow: 0 0 12px #ff4444; }
-        .btn-danger:hover { background: #b91c1c; }
+        .btn:hover {
+            filter: brightness(1.35);
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px var(--primary-color);
+        }
+        .btn-danger {
+            background: #dc2626;
+            box-shadow: 0 0 12px #ff4444;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
         .rainbow-btn {
             background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
             background-size: 200% 200%;
             animation: rainbowShift 2s ease infinite;
         }
         @keyframes rainbowShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
-        .rain-toggle.active { background: #00cc99; box-shadow: 0 0 25px #00ffc3; }
+        .rain-toggle.active {
+            background: #00cc99;
+            box-shadow: 0 0 25px #00ffc3;
+        }
 
         .custom-bg-area {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             padding: 5px 12px;
             border-radius: 40px;
             display: flex;
@@ -324,7 +433,10 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .drag-area:hover { background: #2a2a2a; border-color: var(--primary-color); }
+        .drag-area:hover {
+            background: #2a2a2a;
+            border-color: var(--primary-color);
+        }
         select {
             background: #1a1a2e;
             color: white;
@@ -343,7 +455,7 @@
             padding: 0;
         }
         input[type="text"] {
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--primary-color);
             border-radius: 30px;
             padding: 6px 14px;
@@ -351,13 +463,17 @@
             font-size: 13px;
             outline: none;
         }
-        input[type="text"]:focus { border-color: #a855f7; }
+        input[type="text"]:focus {
+            border-color: #a855f7;
+        }
 
         #gameContainer {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: #0a0a1a;
             z-index: 100;
             flex-direction: column;
@@ -375,13 +491,13 @@
             right: 24px;
             display: flex;
             gap: 10px;
-            background: rgba(15,23,42,0.88);
+            background: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(10px);
             padding: 10px 16px;
             border-radius: 14px;
             border: 1px solid #334155;
             z-index: 10;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             align-items: center;
             flex-wrap: wrap;
         }
@@ -400,15 +516,20 @@
             gap: 6px;
             white-space: nowrap;
         }
-        .ctrl-btn:hover { background: #2d3b54; border-color: var(--primary-color); }
-        .ctrl-btn .icon { font-size: 16px; }
+        .ctrl-btn:hover {
+            background: #2d3b54;
+            border-color: var(--primary-color);
+        }
+        .ctrl-btn .icon {
+            font-size: 16px;
+        }
 
         .pointer-status {
             position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             color: #facc15;
             padding: 7px 22px;
             border-radius: 20px;
@@ -420,7 +541,9 @@
             z-index: 20;
             white-space: nowrap;
         }
-        .pointer-status.visible { opacity: 1; }
+        .pointer-status.visible {
+            opacity: 1;
+        }
 
         .game-title-bar {
             position: absolute;
@@ -429,7 +552,7 @@
             color: #e2e8f0;
             font-size: 18px;
             font-weight: 600;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.7);
             padding: 6px 18px;
             border-radius: 10px;
             border: 1px solid #334155;
@@ -446,25 +569,53 @@
             display: inline-block;
             animation: pulse-dot 1.8s ease-in-out infinite;
         }
-        .game-title-bar .dot.green { background: #22c55e; }
-        .game-title-bar .dot.blue { background: #3b82f6; }
-        .game-title-bar .dot.purple { background: #a855f7; }
-        .game-title-bar .dot.orange { background: #f97316; }
-        .game-title-bar .dot.yellow { background: #eab308; }
-        .game-title-bar .dot.red { background: #ef4444; }
-        .game-title-bar .dot.teal { background: #14b8a6; }
-        .game-title-bar .dot.pink { background: #ec4899; }
-        .game-title-bar .dot.gold { background: #f59e0b; }
+        .game-title-bar .dot.green {
+            background: #22c55e;
+        }
+        .game-title-bar .dot.blue {
+            background: #3b82f6;
+        }
+        .game-title-bar .dot.purple {
+            background: #a855f7;
+        }
+        .game-title-bar .dot.orange {
+            background: #f97316;
+        }
+        .game-title-bar .dot.yellow {
+            background: #eab308;
+        }
+        .game-title-bar .dot.red {
+            background: #ef4444;
+        }
+        .game-title-bar .dot.teal {
+            background: #14b8a6;
+        }
+        .game-title-bar .dot.pink {
+            background: #ec4899;
+        }
+        .game-title-bar .dot.gold {
+            background: #f59e0b;
+        }
+        .game-title-bar .dot.lime {
+            background: #84cc16;
+        }
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.7); }
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(0.7);
+            }
         }
 
         #gameErrorOverlay {
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(10,10,26,0.92);
+            background: rgba(10, 10, 26, 0.92);
             color: #f1f5f9;
             z-index: 50;
             flex-direction: column;
@@ -473,9 +624,20 @@
             text-align: center;
             padding: 40px;
         }
-        #gameErrorOverlay.visible { display: flex; }
-        #gameErrorOverlay h2 { font-size: 32px; margin-bottom: 16px; color: #f87171; }
-        #gameErrorOverlay p { max-width: 500px; font-size: 18px; color: #94a3b8; margin-bottom: 24px; }
+        #gameErrorOverlay.visible {
+            display: flex;
+        }
+        #gameErrorOverlay h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: #f87171;
+        }
+        #gameErrorOverlay p {
+            max-width: 500px;
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 24px;
+        }
         #gameErrorOverlay button {
             background: var(--primary-color);
             border: none;
@@ -487,26 +649,92 @@
             transition: background 0.2s;
             font-weight: 600;
         }
-        #gameErrorOverlay button:hover { filter: brightness(0.85); }
+        #gameErrorOverlay button:hover {
+            filter: brightness(0.85);
+        }
 
         @media (max-width: 768px) {
-            .cycle-btn { width: 120px; height: 120px; }
-            .cycles-row { gap: 20px; }
-            .cycle-label { font-size: 15px; }
-            .star-fav { font-size: 28px; right: 4px; top: 2px; padding: 2px 8px; }
+            .cycle-btn {
+                width: 120px;
+                height: 120px;
+            }
+            .cycles-row {
+                gap: 20px;
+            }
+            .cycle-label {
+                font-size: 15px;
+            }
+            .star-fav {
+                font-size: 28px;
+                right: 4px;
+                top: 2px;
+                padding: 2px 8px;
+            }
+            #searchInput {
+                width: 80%;
+                font-size: 14px;
+                padding: 10px 18px;
+            }
         }
         @media (max-width: 540px) {
-            .cycle-btn { width: 100px; height: 100px; }
-            .cycles-row { gap: 14px; }
-            .header h1 { font-size: 30px; }
-            .controls { flex-direction: column; align-items: stretch; border-radius: 30px; padding: 15px; }
-            .soundboard-section { padding: 16px; }
-            .soundboard-header { font-size: 20px; }
-            .game-controls { bottom: 12px; right: 12px; gap: 4px; padding: 6px 10px; }
-            .ctrl-btn { padding: 4px 10px; font-size: 11px; }
-            .game-title-bar { font-size: 13px; padding: 4px 12px; top: 10px; left: 12px; }
-            .pointer-status { font-size: 11px; padding: 4px 12px; top: 10px; }
-            .star-fav { font-size: 24px; right: 2px; top: 0px; padding: 2px 6px; }
+            .cycle-btn {
+                width: 100px;
+                height: 100px;
+            }
+            .cycles-row {
+                gap: 14px;
+            }
+            .header h1 {
+                font-size: 30px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                border-radius: 30px;
+                padding: 15px;
+            }
+            .soundboard-section {
+                padding: 16px;
+            }
+            .soundboard-header {
+                font-size: 20px;
+            }
+            .game-controls {
+                bottom: 12px;
+                right: 12px;
+                gap: 4px;
+                padding: 6px 10px;
+            }
+            .ctrl-btn {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+            .game-title-bar {
+                font-size: 13px;
+                padding: 4px 12px;
+                top: 10px;
+                left: 12px;
+            }
+            .pointer-status {
+                font-size: 11px;
+                padding: 4px 12px;
+                top: 10px;
+            }
+            .star-fav {
+                font-size: 24px;
+                right: 2px;
+                top: 0px;
+                padding: 2px 6px;
+            }
+            #searchInput {
+                width: 85%;
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            #searchClear {
+                font-size: 18px;
+                margin-left: -40px;
+            }
         }
     </style>
 </head>
@@ -517,7 +745,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 43 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 65 games available</div>
         </div>
 
         <div class="controls">
@@ -574,6 +802,12 @@
             <button class="btn" id="rainToggleBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn rainbow-btn" id="rainbowColorBtn" style="background:linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);">🌈 RAINBOW MODE</button>
             <button class="btn" id="sigmaToggleBtn" style="background:#ff6b00;">🔥 SIGMATOWN4LIFE</button>
+        </div>
+
+        <!-- ── Search Bar ── -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="🔍 Search games...">
+            <button id="searchClear" style="display:none;">✕</button>
         </div>
 
         <div class="cycles-row" id="cyclesRow"></div>
@@ -678,8 +912,8 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.hsivWr_7ItDcRY5iLnEzIAHaEf?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'omeganugget', name: 'Omega Nugget Clicker', file: 'clomeganuggetclicker (2).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.7i-IKT4DhSIKgaWzJQ6EuwHaED?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'retrobowl', name: 'Retro Bowl', file: 'clretrobowl (1).html',
-                img: 'https://th.bing.com/th/id/OIP.QSJdGx5NVixcm4yC67lLJgHaEm?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'retrobowl', name: 'Retro Bowl', file: 'clretrobowl (2).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.XLzef_o_Ezeh-X9VAl06JwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gunspin', name: 'Gun Spin', file: 'clgun-spin.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.k0lsRAddB4us0YqBho2qwgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'smashkarts', name: 'Smash Karts', file: 'clsmashkartsworking.html',
@@ -688,7 +922,6 @@
                 img: 'https://www.coolmathgames.com/sites/default/files/Run3_OG-logo.jpg' },
             { id: 'stickmanhook', name: 'Stickman Hook', file: 'clstickmanhook (1).html',
                 img: 'https://th.bing.com/th/id/OIP.enksKdjSeShKc3CMXeeuggAAAA?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // Subway Surfers games
             { id: 'subwaylondon', name: 'Subway Surfers London', file: 'clsubwaysurferslondon (1).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.iRjtOyQTZN20ojZq4bXeuwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'subwaymexico', name: 'Subway Surfers Mexico', file: 'clsubwaysurfersmexico (1).html',
@@ -698,12 +931,62 @@
             { id: 'subwaybeijing', name: 'Subway Surfers Beijing', file: 'clsubwaysurfersbeijing (1).html',
                 img: 'https://i.ytimg.com/vi/zNjTTtyxXJ4/maxresdefault.jpg' },
             { id: 'subwayberlin', name: 'Subway Surfers Berlin', file: 'clsubwaysurfersberlin (1).html',
-                img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' }
+                img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' },
+            { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html',
+                img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
+            { id: 'templerun2', name: 'Temple Run 2', file: 'cltemplerun2.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.TVn1IXCX8i0dTWY7mTuU0wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'zombierush', name: 'Zombie Rush', file: 'clzombierush (2).html',
+                img: 'https://minigamesville.com/wp-content/uploads/2025/08/Zombie_Rush.png' },
+            { id: '10bullets', name: '10 Bullets', file: 'cl10bullets.html',
+                img: 'https://ifhsunblockedgames.weebly.com/uploads/8/0/5/6/80568440/published/10-bullets.jpg?1487090717' },
+            { id: '10morebullets', name: '10 More Bullets', file: 'cl10morebullets.html',
+                img: 'https://images.sftcdn.net/images/t_app-icon-m/p/a06f9d53-fbfa-497f-8f48-a0eb241c1674/4237817374/10-more-bullets-logo' },
+            { id: 'learntofly1', name: 'Learn to Fly 1', file: 'cllearntofly.html',
+                img: 'https://image.spreadshirtmedia.com/image-server/v1/compositions/T210A1PA4301PT17X29Y20D11330543W27177H19067/views/1,width=550,height=550,appearanceId=1,backgroundColor=FFFFFF,noPt=true/learn-to-fly-mens-t-shirt.jpg' },
+            { id: 'learntofly2', name: 'Learn to Fly 2', file: 'cllearntofly2.html',
+                img: 'https://snow-rider.io/data/image/game/learn-to-fly-2.png' },
+            { id: 'fnaw', name: 'Five Nights at Winston\'s', file: 'clfnaw.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.ZrTDcd7wjSZuTr1TS3gz8wHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'raft', name: 'Raft Beta', file: 'Raft (4).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.a4dddYzYTn_IWJd5RU8rzAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'uno', name: 'UNO', file: 'cluno (2).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.hXe7VA2qAU6At6CMrQUxAgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'spongebobrun', name: 'SpongeBob Run', file: 'SpongeBob SquarePants_ SpongeBob Run (2) (5).html',
+                img: 'https://vignette.wikia.nocookie.net/spongebob/images/5/53/Spongebob_Run.jpg/revision/latest?cb=20180212173634' },
+            { id: 'mariocombat', name: 'Mario Combat', file: 'clmariocombat (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.ZvESmSfAah0OYdiw0eCXbwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'mortalkombat1', name: 'Mortal Kombat 1', file: 'clmortalkombata.html',
+                img: 'https://th.bing.com/th/id/R.ee3f7340dc9af2911c53456552f91df4?rik=5OrtY62qUhn88A&pid=ImgRaw&r=0' },
+            { id: 'mortalkombat2', name: 'Mortal Kombat 2', file: 'clmortalkombat2a.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.7BWdlilDOwLBCXggGUetSAHaE_?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'stickmangolf', name: 'Stickman Golf', file: 'Stickman Golf (4).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.PceV_n2Rowp1CIIepJrVTgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'riddleschool1', name: 'Riddle School 1', file: 'clriddleschool.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.W_JZExs69UJ9dDl408eESgHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'riddleschool2', name: 'Riddle School 2', file: 'clriddleschool2.html',
+                img: 'https://gogamego.io/wp-content/uploads/thumbs/custom/S/sriddleschool2.webp' },
+            { id: 'flappybird', name: 'Flappy Bird', file: 'clflappybird (2).html',
+                img: 'https://th.bing.com/th/id/OIP.CIbEU496Zcf6xikfmPAVwQHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: '99balls', name: '99 Balls', file: 'cl99balls (3).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.IgBbRDh5jp7vuiWqgdhJ7gHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'baseballbros', name: 'Baseball Bros', file: 'clbaseballbros (4).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.cjYi5yFgAJ3VmLxkbtn2jwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // New games (removed Basket Random and Cookie Clicker)
+            { id: 'retrobowlcollege', name: 'Retro Bowl College', file: 'Retro Bowl College.html',
+                img: 'https://retrobowl25.com/cache/data/image/game/retro-bowl-college-m300x300.png' },
+            { id: 'rainbowobby', name: 'Rainbow Obby', file: 'clobbyrainbowtower (4).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.Mrqv-zNe2VoFJi8rkM8x8AHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
         let favorites = JSON.parse(localStorage.getItem('favorites_cycles')) || [];
-        function saveFavorites() { localStorage.setItem('favorites_cycles', JSON.stringify(favorites)); }
+        let searchQuery = '';
+
+        function saveFavorites() {
+            localStorage.setItem('favorites_cycles', JSON.stringify(favorites));
+        }
+
         function toggleFavorite(gameId) {
             const idx = favorites.indexOf(gameId);
             idx > -1 ? favorites.splice(idx, 1) : favorites.push(gameId);
@@ -711,17 +994,24 @@
             renderCycles();
         }
 
-        // ─── Render cycles ───
+        // ─── Render cycles with search filter ───
         function renderCycles() {
             const row = document.getElementById('cyclesRow');
-            const sorted = [...GAME_DATA].sort((a,b) => {
-                const fa = favorites.includes(a.id), fb = favorites.includes(b.id);
+            const sorted = [...GAME_DATA].sort((a, b) => {
+                const fa = favorites.includes(a.id),
+                    fb = favorites.includes(b.id);
                 if (fa && !fb) return -1;
                 if (!fa && fb) return 1;
                 return 0;
             });
+
             row.innerHTML = '';
+            let visibleCount = 0;
             sorted.forEach(game => {
+                const matchesSearch = game.name.toLowerCase().includes(searchQuery.toLowerCase());
+                if (!matchesSearch) return;
+                visibleCount++;
+
                 const wrapper = document.createElement('div');
                 wrapper.className = 'cycle-wrapper';
                 wrapper.dataset.game = game.id;
@@ -771,8 +1061,32 @@
             });
 
             // Update game counter
-            document.getElementById('gameCounter').textContent = '🎮 ' + GAME_DATA.length + ' games available';
+            document.getElementById('gameCounter').textContent = '🎮 ' + visibleCount + ' games available';
+
+            // Show/hide clear button
+            const clearBtn = document.getElementById('searchClear');
+            if (searchQuery.length > 0) {
+                clearBtn.style.display = 'block';
+            } else {
+                clearBtn.style.display = 'none';
+            }
         }
+
+        // ─── Search functionality ───
+        const searchInput = document.getElementById('searchInput');
+        const searchClear = document.getElementById('searchClear');
+
+        searchInput.addEventListener('input', function() {
+            searchQuery = this.value;
+            renderCycles();
+        });
+
+        searchClear.addEventListener('click', function() {
+            searchInput.value = '';
+            searchQuery = '';
+            renderCycles();
+            searchInput.focus();
+        });
 
         // ─── Game launcher with improved pointer lock ───
         (function() {
@@ -788,11 +1102,16 @@
             const errorMessage = document.getElementById('errorMessage');
             const errorBackBtn = document.getElementById('errorBackBtn');
 
-            let currentGame = null, isGameRunning = false, loadTimeout = null;
+            let currentGame = null,
+                isGameRunning = false,
+                loadTimeout = null;
             const gameFileMap = {};
             GAME_DATA.forEach(g => gameFileMap[g.id] = g.file);
 
-            function getStatusElement(id) { return document.getElementById('status-' + id); }
+            function getStatusElement(id) {
+                return document.getElementById('status-' + id);
+            }
+
             function setStatus(id, text, active) {
                 const el = getStatusElement(id);
                 if (el) el.textContent = text;
@@ -802,7 +1121,10 @@
                     if (btn && active !== undefined) btn.classList.toggle('active', active);
                 }
             }
-            function resetAllStatus() { GAME_DATA.forEach(g => setStatus(g.id, 'ready', false)); }
+
+            function resetAllStatus() {
+                GAME_DATA.forEach(g => setStatus(g.id, 'ready', false));
+            }
 
             function showPointerMessage(text) {
                 pointerMsg.textContent = text || '🔓 Click the game to move / look around';
@@ -810,6 +1132,7 @@
                 clearTimeout(pointerMsg._hide);
                 pointerMsg._hide = setTimeout(() => pointerMsg.classList.remove('visible'), 4000);
             }
+
             function hidePointerMessage() {
                 pointerMsg.classList.remove('visible');
                 clearTimeout(pointerMsg._hide);
@@ -831,8 +1154,14 @@
             }
 
             function releasePointerLock() {
-                try { if (frame.contentDocument && frame.contentDocument.pointerLockElement) frame.contentDocument.exitPointerLock(); } catch(_) {}
-                if (document.pointerLockElement) document.exitPointerLock();
+                try {
+                    if (frame.contentDocument && frame.contentDocument.pointerLockElement) {
+                        frame.contentDocument.exitPointerLock();
+                    }
+                } catch (_) {}
+                if (document.pointerLockElement) {
+                    document.exitPointerLock();
+                }
             }
 
             function requestPointerLockOnGame() {
@@ -855,11 +1184,16 @@
                         return true;
                     }
                     return false;
-                } catch (_) { return false; }
+                } catch (_) {
+                    return false;
+                }
             }
 
             function cleanupGame() {
-                if (loadTimeout) { clearTimeout(loadTimeout); loadTimeout = null; }
+                if (loadTimeout) {
+                    clearTimeout(loadTimeout);
+                    loadTimeout = null;
+                }
                 releasePointerLock();
                 frame.src = '';
                 frame.srcdoc = '';
@@ -869,13 +1203,17 @@
                 resetAllStatus();
                 errorOverlay.classList.remove('visible');
                 hidePointerMessage();
-                if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {});
+                }
                 updateCursorButtonState();
                 gameTitleText.textContent = 'Scary Teacher 3D';
                 statusDot.className = 'dot purple';
                 gameContainer.style.display = 'none';
                 menuScreen.style.display = 'flex';
-                if (document.activeElement && document.activeElement.tagName === 'IFRAME') document.activeElement.blur();
+                if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+                    document.activeElement.blur();
+                }
                 fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Fullscreen';
                 void document.body.offsetHeight;
             }
@@ -890,9 +1228,14 @@
                 setStatus(gameId, 'loading…', true);
 
                 const game = GAME_DATA.find(g => g.id === gameId);
-                if (!game) { setStatus(gameId, 'error', false); showError('Unknown game.'); return; }
+                if (!game) {
+                    setStatus(gameId, 'error', false);
+                    showError('Unknown game.');
+                    return;
+                }
 
-                let gameName = game.name, dotColor = 'purple';
+                let gameName = game.name,
+                    dotColor = 'purple';
                 if (gameId === '2048') dotColor = 'green';
                 else if (gameId === 'eaglercraft') dotColor = 'blue';
                 else if (gameId === '1v1lol') dotColor = 'blue';
@@ -906,10 +1249,12 @@
                 else if (gameId === 'caseoh') dotColor = 'pink';
                 else if (gameId === 'capybara') dotColor = 'teal';
                 else if (gameId === 'stealbrainrot') dotColor = 'pink';
-                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId === 'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
+                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId ===
+                    'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
                 else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
                 else if (gameId === 'elasticface') dotColor = 'teal';
-                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
+                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId ===
+                    'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
                 else if (gameId === 'fnac1') dotColor = 'red';
                 else if (gameId === 'granny') dotColor = 'red';
                 else if (gameId === 'googlebaseball') dotColor = 'blue';
@@ -921,13 +1266,36 @@
                 else if (gameId === 'smashkarts') dotColor = 'orange';
                 else if (gameId === 'run3') dotColor = 'blue';
                 else if (gameId === 'stickmanhook') dotColor = 'teal';
-                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' || gameId === 'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
+                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' ||
+                    gameId === 'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
+                else if (gameId === 'supermario64') dotColor = 'orange';
+                else if (gameId === 'templerun2') dotColor = 'blue';
+                else if (gameId === 'zombierush') dotColor = 'red';
+                else if (gameId === '10bullets' || gameId === '10morebullets') dotColor = 'yellow';
+                else if (gameId === 'learntofly1' || gameId === 'learntofly2') dotColor = 'green';
+                else if (gameId === 'fnaw') dotColor = 'red';
+                else if (gameId === 'raft') dotColor = 'blue';
+                else if (gameId === 'uno') dotColor = 'red';
+                else if (gameId === 'spongebobrun') dotColor = 'yellow';
+                else if (gameId === 'mariocombat') dotColor = 'orange';
+                else if (gameId === 'mortalkombat1' || gameId === 'mortalkombat2') dotColor = 'red';
+                else if (gameId === 'stickmangolf') dotColor = 'green';
+                else if (gameId === 'riddleschool1' || gameId === 'riddleschool2') dotColor = 'yellow';
+                else if (gameId === 'flappybird') dotColor = 'orange';
+                else if (gameId === '99balls') dotColor = 'orange';
+                else if (gameId === 'baseballbros') dotColor = 'blue';
+                else if (gameId === 'retrobowlcollege') dotColor = 'orange';
+                else if (gameId === 'rainbowobby') dotColor = 'pink';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
 
                 const file = gameFileMap[gameId];
-                if (!file) { setStatus(gameId, 'error', false); showError('Game file not defined.'); return; }
+                if (!file) {
+                    setStatus(gameId, 'error', false);
+                    showError('Game file not defined.');
+                    return;
+                }
 
                 frame.src = file;
                 menuScreen.style.display = 'none';
@@ -940,7 +1308,8 @@
 
                 loadTimeout = setTimeout(() => {
                     try {
-                        if (frame.contentDocument && frame.contentDocument.readyState !== 'complete') throw new Error('Timeout');
+                        if (frame.contentDocument && frame.contentDocument.readyState !== 'complete') throw new Error(
+                        'Timeout');
                     } catch (e) {
                         setStatus(gameId, 'error', false);
                         showError('The game took too long to load. Please check your internet connection or try again.');
@@ -950,7 +1319,12 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId === 'smashkarts') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId ===
+                        'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' ||
+                        gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId ===
+                        'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId ===
+                        'smashkarts' || gameId === 'fnaw' || gameId === 'mortalkombat1' || gameId ===
+                        'mortalkombat2') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -964,7 +1338,7 @@
             // ── Fullscreen ──
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
-                    gameContainer.requestFullscreen().catch(()=>{});
+                    gameContainer.requestFullscreen().catch(() => {});
                     fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Exit Fullscreen';
                 } else {
                     document.exitFullscreen();
@@ -972,8 +1346,11 @@
                 }
             });
             document.addEventListener('fullscreenchange', () => {
-                if (!document.fullscreenElement) fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Fullscreen';
-                else fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Exit Fullscreen';
+                if (!document.fullscreenElement) {
+                    fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Fullscreen';
+                } else {
+                    fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Exit Fullscreen';
+                }
             });
 
             // ── Cursor lock ──
@@ -1002,11 +1379,19 @@
                     }
                 } catch (_) {}
                 updateCursorButtonState();
-                if (loadTimeout) { clearTimeout(loadTimeout); loadTimeout = null; }
+                if (loadTimeout) {
+                    clearTimeout(loadTimeout);
+                    loadTimeout = null;
+                }
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp' || currentGame === 'smashkarts') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' ||
+                        currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' ||
+                        currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame ===
+                        'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame ===
+                        'granny' || currentGame === 'nzp' || currentGame === 'smashkarts' || currentGame === 'fnaw' ||
+                        currentGame === 'mortalkombat1' || currentGame === 'mortalkombat2') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -1023,13 +1408,15 @@
                 gameContainer.style.display = 'none';
                 hidePointerMessage();
                 resetAllStatus();
-                if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(() => {});
+                }
             });
 
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 43 games (added 5 Subway Surfers games).');
+            console.log('🎮 Launcher ready – 65 games (removed Basket Random & Cookie Clicker, added Retro Bowl College & Rainbow Obby).');
         })();
 
         // ─── Extra features ───
@@ -1039,32 +1426,41 @@
         const mctx = matrixCanvas.getContext('2d');
         let mw, mh, drops = [];
         const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&".split("");
-        let rainActive = false, rainAnimFrame = null;
+        let rainActive = false,
+            rainAnimFrame = null;
 
         function initRain() {
-            mw = window.innerWidth; mh = window.innerHeight;
-            matrixCanvas.width = mw; matrixCanvas.height = mh;
+            mw = window.innerWidth;
+            mh = window.innerHeight;
+            matrixCanvas.width = mw;
+            matrixCanvas.height = mh;
             const colCount = Math.floor(mw / 20);
             drops = Array(colCount).fill(0).map(() => Math.floor(Math.random() * -mh / 20));
         }
+
         function drawRain() {
             if (!rainActive) return;
             const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
             let rc1, rc2;
             if (primaryColor.startsWith('#')) {
-                const r = parseInt(primaryColor.slice(1,3),16), g = parseInt(primaryColor.slice(3,5),16), b = parseInt(primaryColor.slice(5,7),16);
-                rc1 = 'rgba('+r+','+g+','+b+',0.9)';
-                rc2 = 'rgba('+Math.min(r+50,255)+','+Math.min(g+50,255)+',255,0.9)';
-            } else { rc1 = '#a0f0ff'; rc2 = '#20ff80'; }
+                const r = parseInt(primaryColor.slice(1, 3), 16),
+                    g = parseInt(primaryColor.slice(3, 5), 16),
+                    b = parseInt(primaryColor.slice(5, 7), 16);
+                rc1 = 'rgba(' + r + ',' + g + ',' + b + ',0.9)';
+                rc2 = 'rgba(' + Math.min(r + 50, 255) + ',' + Math.min(g + 50, 255) + ',255,0.9)';
+            } else {
+                rc1 = '#a0f0ff';
+                rc2 = '#20ff80';
+            }
             mctx.fillStyle = 'rgba(0,0,0,0.05)';
-            mctx.fillRect(0,0,mw,mh);
+            mctx.fillRect(0, 0, mw, mh);
             mctx.font = "20px 'Courier New', monospace";
             mctx.shadowColor = primaryColor;
             mctx.shadowBlur = 12;
             for (let i = 0; i < drops.length; i++) {
                 mctx.fillStyle = i % 2 ? rc1 : rc2;
-                mctx.fillText(matrixChars[Math.floor(Math.random() * matrixChars.length)], i*20, drops[i]*20);
-                if (drops[i]*20 > mh && Math.random() > 0.975) drops[i] = 0;
+                mctx.fillText(matrixChars[Math.floor(Math.random() * matrixChars.length)], i * 20, drops[i] * 20);
+                if (drops[i] * 20 > mh && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
             mctx.shadowBlur = 0;
@@ -1074,19 +1470,26 @@
             rainActive = !rainActive;
             document.body.classList.toggle('rain-active', rainActive);
             this.classList.toggle('active', rainActive);
-            if (rainActive) { initRain(); drawRain(); } else { if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame); mctx.clearRect(0,0,mw,mh); }
+            if (rainActive) {
+                initRain();
+                drawRain();
+            } else {
+                if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
+                mctx.clearRect(0, 0, mw, mh);
+            }
         });
 
         // Rainbow mode
-        let rainbowMode = false, rainbowInterval = null;
+        let rainbowMode = false,
+            rainbowInterval = null;
         document.getElementById('rainbowColorBtn').addEventListener('click', function() {
             rainbowMode = !rainbowMode;
             if (rainbowMode) {
                 let hue = Math.random() * 360;
                 rainbowInterval = setInterval(() => {
                     hue = (hue + 7) % 360;
-                    document.documentElement.style.setProperty('--primary-color', 'hsl('+hue+',100%,52%)');
-                    document.documentElement.style.setProperty('--glow-color', 'hsla('+hue+',100%,52%,0.95)');
+                    document.documentElement.style.setProperty('--primary-color', 'hsl(' + hue + ',100%,52%)');
+                    document.documentElement.style.setProperty('--glow-color', 'hsla(' + hue + ',100%,52%,0.95)');
                 }, 35);
             } else {
                 if (rainbowInterval) clearInterval(rainbowInterval);
@@ -1094,8 +1497,10 @@
                 const pk = document.getElementById('primaryColorPicker');
                 let val = pk && pk.value ? pk.value : '#3b82f6';
                 document.documentElement.style.setProperty('--primary-color', val);
-                const r = parseInt(val.slice(1,3),16)||59, g = parseInt(val.slice(3,5),16)||130, b = parseInt(val.slice(5,7),16)||246;
-                document.documentElement.style.setProperty('--glow-color', 'rgba('+r+','+g+','+b+',0.95)');
+                const r = parseInt(val.slice(1, 3), 16) || 59,
+                    g = parseInt(val.slice(3, 5), 16) || 130,
+                    b = parseInt(val.slice(5, 7), 16) || 246;
+                document.documentElement.style.setProperty('--glow-color', 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
             }
         });
 
@@ -1105,16 +1510,28 @@
             mk: 'https://www.myinstants.com/media/sounds/mortal-kombat-snes-music-title-player-select.mp3',
             wii: 'https://www.myinstants.com/media/sounds/wii-sports-soundtrack.mp3'
         };
-        let menuMusic = null, musicPlaying = true, currentTrack = 'doors';
+        let menuMusic = null,
+            musicPlaying = true,
+            currentTrack = 'doors';
+
         function initMenuMusic() {
             menuMusic = new Audio(MUSIC_TRACKS.doors);
             menuMusic.loop = true;
             menuMusic.volume = 0.45;
-            menuMusic.play().catch(()=>{});
+            menuMusic.play().catch(() => {});
             document.getElementById('musicToggleBtn').addEventListener('click', function() {
                 musicPlaying = !musicPlaying;
-                if (musicPlaying) { if (menuMusic.paused) menuMusic.play().catch(()=>{}); this.textContent = '🎵 MENU MUSIC ON'; this.style.background = '#a855f7'; }
-                else { menuMusic.pause(); this.textContent = '🎵 MENU MUSIC OFF'; this.style.background = '#6b7280'; }
+                if (musicPlaying) {
+                    if (menuMusic.paused) {
+                        menuMusic.play().catch(() => {});
+                    }
+                    this.textContent = '🎵 MENU MUSIC ON';
+                    this.style.background = '#a855f7';
+                } else {
+                    menuMusic.pause();
+                    this.textContent = '🎵 MENU MUSIC OFF';
+                    this.style.background = '#6b7280';
+                }
             });
             document.getElementById('musicSpeedSlider').addEventListener('input', function() {
                 const s = parseFloat(this.value);
@@ -1130,12 +1547,16 @@
                     menuMusic.pause();
                     menuMusic.src = MUSIC_TRACKS[trackKey];
                     menuMusic.load();
-                    if (wasPlaying || musicPlaying) menuMusic.play().catch(()=>{});
+                    if (wasPlaying || musicPlaying) {
+                        menuMusic.play().catch(() => {});
+                    }
                 } else {
                     menuMusic = new Audio(MUSIC_TRACKS[trackKey]);
                     menuMusic.loop = true;
                     menuMusic.volume = 0.45;
-                    if (musicPlaying) menuMusic.play().catch(()=>{});
+                    if (musicPlaying) {
+                        menuMusic.play().catch(() => {});
+                    }
                 }
             });
         }
@@ -1143,10 +1564,12 @@
 
         // Soundboard
         const soundTracks = [
-            { id: 'typing', name: '⌨️ Fast Typing (Keyboard)', url: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
+            { id: 'typing', name: '⌨️ Fast Typing (Keyboard)',
+                url: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
             { id: 'pencil', name: '✏️ Pencil Writing', url: 'https://bigsoundbank.com/UPLOAD/mp3/0221.mp3' }
         ];
         let soundboardAudios = {};
+
         function buildSoundboard() {
             const container = document.getElementById('soundboardContainer');
             if (!container) return;
@@ -1159,29 +1582,31 @@
                 const soundDiv = document.createElement('div');
                 soundDiv.className = 'sound-item';
                 soundDiv.innerHTML =
-                    '<div class="sound-name">' + track.name + '</div>' +
-                    '<div class="control-group">' +
-                        '<button class="sound-btn play-btn" data-id="' + track.id + '">▶ PLAY</button>' +
-                        '<button class="sound-btn stop-btn" data-id="' + track.id + '">⏹ STOP</button>' +
-                        '<label class="loop-label">🔄 LOOP <input type="checkbox" class="loop-check" data-id="' + track.id + '"></label>' +
-                    '</div>' +
-                    '<div class="control-group">' +
-                        '<span>🐢 SPEED 0.5x ── </span>' +
-                        '<input type="range" class="speed-slider" data-id="' + track.id + '" min="0.5" max="2.0" step="0.01" value="1.0">' +
-                        '<span class="speed-value" id="speedVal-' + track.id + '">1.00x</span>' +
-                        '<span> ── 2.0x 🐇</span>' +
-                    '</div>';
+                    '<div class="sound-name">' + track.name +
+                    '</div><div class="control-group"><button class="sound-btn play-btn" data-id="' + track
+                    .id + '">▶ PLAY</button><button class="sound-btn stop-btn" data-id="' + track
+                    .id + '">⏹ STOP</button><label class="loop-label">🔄 LOOP <input type="checkbox" class="loop-check" data-id="' +
+                    track.id + '"></label></div><div class="control-group"><span>🐢 SPEED 0.5x ── </span><input type="range" class="speed-slider" data-id="' +
+                    track.id +
+                    '" min="0.5" max="2.0" step="0.01" value="1.0"><span class="speed-value" id="speedVal-' +
+                    track.id + '">1.00x</span><span> ── 2.0x 🐇</span></div>';
                 container.appendChild(soundDiv);
             });
             document.querySelectorAll('.play-btn').forEach(btn => btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
                 const aud = soundboardAudios[id];
-                if (aud) { if (aud.ended) aud.currentTime = 0; aud.play().catch(()=>{}); }
+                if (aud) {
+                    if (aud.ended) aud.currentTime = 0;
+                    aud.play().catch(() => {});
+                }
             }));
             document.querySelectorAll('.stop-btn').forEach(btn => btn.addEventListener('click', () => {
                 const id = btn.getAttribute('data-id');
                 const aud = soundboardAudios[id];
-                if (aud) { aud.pause(); aud.currentTime = 0; }
+                if (aud) {
+                    aud.pause();
+                    aud.currentTime = 0;
+                }
             }));
             document.querySelectorAll('.loop-check').forEach(chk => chk.addEventListener('change', () => {
                 const id = chk.getAttribute('data-id');
@@ -1210,14 +1635,20 @@
             if (url) document.documentElement.style.setProperty('--bg-url', 'url(\'' + url + '\')');
         });
         const dragZone = document.getElementById('dragDropZone');
-        dragZone.addEventListener('dragover', e => { e.preventDefault(); dragZone.style.borderColor = 'var(--primary-color)'; });
-        dragZone.addEventListener('dragleave', () => { dragZone.style.borderColor = '#aaa'; });
+        dragZone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dragZone.style.borderColor = 'var(--primary-color)';
+        });
+        dragZone.addEventListener('dragleave', () => {
+            dragZone.style.borderColor = '#aaa';
+        });
         dragZone.addEventListener('drop', e => {
             e.preventDefault();
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
-                reader.onload = ev => document.documentElement.style.setProperty('--bg-url', 'url(\'' + ev.target.result + '\')');
+                reader.onload = ev => document.documentElement.style.setProperty('--bg-url',
+                    'url(\'' + ev.target.result + '\')');
                 reader.readAsDataURL(file);
             }
             dragZone.style.borderColor = '#aaa';
@@ -1230,7 +1661,9 @@
             const file = input.files[0];
             if (!file) return;
             const reader = new FileReader();
-            reader.onload = e => document.documentElement.style.setProperty('--bg-url', 'url(\'' + e.target.result + '\')');
+            reader.onload = e => {
+                document.documentElement.style.setProperty('--bg-url', 'url(\'' + e.target.result + '\')');
+            };
             reader.readAsDataURL(file);
         };
 
@@ -1249,9 +1682,12 @@
             { title: 'IXL | Dashboard', fav: 'https://www.ixl.com/favicon.ico', head: '✨ IXL Learning Dashboard ✨' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico', head: 'Typing Agent Student Portal' },
             { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico', head: 'i-Ready Student Dashboard' },
-            { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64', head: 'Infinite Campus - Student' },
-            { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64', head: 'Clever' },
-            { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64', head: 'Schoology' },
+            { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64',
+                head: 'Infinite Campus - Student' },
+            { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64',
+            head: 'Clever' },
+            { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64',
+            head: 'Schoology' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico', head: 'Khan Academy' }
         ];
 
@@ -1288,8 +1724,10 @@
             if (rainbowMode) toggleRainbowMode();
             const val = e.target.value;
             document.documentElement.style.setProperty('--primary-color', val);
-            const r = parseInt(val.slice(1,3),16), g = parseInt(val.slice(3,5),16), b = parseInt(val.slice(5,7),16);
-            document.documentElement.style.setProperty('--glow-color', 'rgba('+r+','+g+','+b+',0.95)');
+            const r = parseInt(val.slice(1, 3), 16),
+                g = parseInt(val.slice(3, 5), 16),
+                b = parseInt(val.slice(5, 7), 16);
+            document.documentElement.style.setProperty('--glow-color', 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
         });
 
         // Keyboard shortcut 6
@@ -1303,7 +1741,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added 5 Subway Surfers games (London, Mexico, San Francisco, Beijing, Berlin).');
+        console.log('✅ All features – added search bar, removed Basket Random & Cookie Clicker, added Retro Bowl College & Rainbow Obby.');
     </script>
 </body>
 </html>
