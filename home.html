@@ -454,6 +454,7 @@
         .game-title-bar .dot.red { background: #ef4444; }
         .game-title-bar .dot.teal { background: #14b8a6; }
         .game-title-bar .dot.pink { background: #ec4899; }
+        .game-title-bar .dot.gold { background: #f59e0b; }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.7); }
@@ -516,7 +517,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 27 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 35 games available</div>
         </div>
 
         <div class="controls">
@@ -658,7 +659,6 @@
                 img: 'https://th.bing.com/th/id/OIP.HzkWO5FBLkQibLa3oQcJnQHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnaf1', name: 'Five Nights at Freddy\'s', file: 'clFNAF (6).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.XW_OsPwLtSFaQrOSHEr5eAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // New FNAF games
             { id: 'fnaf2', name: 'Five Nights at Freddy\'s 2', file: 'clFNAF2 (2).html',
                 img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2f%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2ffnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'fnaf3', name: 'Five Nights at Freddy\'s 3', file: 'clFNAF3 (2).html',
@@ -666,7 +666,24 @@
             { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html',
                 img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d2c12b40-9112-445e-8e5a-0dfc849c24d9/dacsb1r-b043e8bf-8b22-40c7-a387-412a8a82df83.png/v1/fill/w_512,h_512,q_80,strp/fnaf_3_logo_with_phantom_freddy_by_dahooplerzman_dacsb1r-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NTEyIiwicGF0aCI6IlwvZlwvZDJjMTJiNDAtOTExMi00NDVlLThlNWEtMGRmYzg0OWMyNGQ5XC9kYWNzYjFyLWIwNDNlOGJmLThiMjItNDBjNy1hMzg3LTQxMmE4YTgyZGY4My5wbmciLCJ3aWR0aCI6Ijw9NTEyIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.IbFGLsQZ5i9Y6wE2HWKGK9lro1IvSd1kbLMcJdMYWVA' },
             { id: 'fnaf4', name: 'Five Nights at Freddy\'s 4', file: 'clFNAF4 (3).html',
-                img: 'https://tse3.mm.bing.net/th/id/OIP.CISvqc5iJY4QE50zYcZX3gHaHd?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse3.mm.bing.net/th/id/OIP.CISvqc5iJY4QE50zYcZX3gHaHd?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'fnac1', name: 'Five Nights at Candy\'s 1', file: 'clfnac1.html',
+                img: 'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co73kc.jpg' },
+            { id: 'granny', name: 'Granny Chapter 1', file: 'clgrannyy (1).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.pMXDQTDo6vXshBfm5Gj3IwHaD5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'googlebaseball', name: 'Google Baseball', file: 'clgooglebaseball (1).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.ECuEPapOd8vhLtNbwX_3pwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'growagarden', name: 'Grow a Garden', file: 'clgrowagarden.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.r9GnhSvBFoCP3y2UX1yqlwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // New games
+            { id: 'nzp', name: 'NZ: Portable (Nazi Zombies)', file: 'clnzp (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.hsivWr_7ItDcRY5iLnEzIAHaEf?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'omeganugget', name: 'Omega Nugget Clicker', file: 'clomeganuggetclicker (2).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.7i-IKT4DhSIKgaWzJQ6EuwHaED?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'retrobowl', name: 'Retro Bowl', file: 'clretrobowl (1).html',
+                img: 'https://th.bing.com/th/id/OIP.QSJdGx5NVixcm4yC67lLJgHaEm?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'gunspin', name: 'Gun Spin', file: 'clgun-spin.html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.k0lsRAddB4us0YqBho2qwgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -878,6 +895,14 @@
                 else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
                 else if (gameId === 'elasticface') dotColor = 'teal';
                 else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
+                else if (gameId === 'fnac1') dotColor = 'red';
+                else if (gameId === 'granny') dotColor = 'red';
+                else if (gameId === 'googlebaseball') dotColor = 'blue';
+                else if (gameId === 'growagarden') dotColor = 'green';
+                else if (gameId === 'nzp') dotColor = 'gold';
+                else if (gameId === 'omeganugget') dotColor = 'orange';
+                else if (gameId === 'retrobowl') dotColor = 'orange';
+                else if (gameId === 'gunspin') dotColor = 'red';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -906,7 +931,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -962,7 +987,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -985,7 +1010,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 27 games (added FNAF 2, 3, 3 Remastered, 4).');
+            console.log('🎮 Launcher ready – 35 games (added NZP, Omega Nugget Clicker, Retro Bowl, Gun Spin).');
         })();
 
         // ─── Extra features ───
@@ -1268,7 +1293,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added FNAF 2, 3, 3 Remastered, and 4.');
+        console.log('✅ All features – added NZP, Omega Nugget Clicker, Retro Bowl, Gun Spin.');
     </script>
 </body>
 </html>
