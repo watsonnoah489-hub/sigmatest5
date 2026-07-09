@@ -42,27 +42,16 @@
         }
         #matrixCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 5;
             opacity: 0;
             transition: opacity 0.5s;
             mix-blend-mode: screen;
         }
-        body.rain-active #matrixCanvas {
-            opacity: 0.65;
-        }
-        .header,
-        .controls,
-        .cycles-row,
-        .soundboard-section,
-        #gameContainer {
-            position: relative;
-            z-index: 10;
-        }
+        body.rain-active #matrixCanvas { opacity: 0.65; }
+        .header, .controls, .cycles-row, .soundboard-section, #gameContainer { position: relative; z-index: 10; }
 
         .header {
             background: rgba(13, 17, 23, 0.92);
@@ -78,18 +67,14 @@
             border: 1px solid var(--primary-color);
             box-shadow: 0 0 35px var(--glow-color);
         }
-        .header .subtitle {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
+        .header .subtitle { font-size: 14px; opacity: 0.7; margin-top: 4px; }
 
         .controls {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 40px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             padding: 18px 30px;
             border-radius: 50px;
             align-items: center;
@@ -187,9 +172,7 @@
             border-color: var(--primary-color) !important;
             box-shadow: 0 0 50px var(--glow-color) !important;
         }
-        .cycle-btn:active {
-            transform: scale(0.94);
-        }
+        .cycle-btn:active { transform: scale(0.94); }
         .cycle-btn .cycle-overlay {
             position: absolute;
             inset: 0;
@@ -201,10 +184,7 @@
             transition: opacity 0.4s, transform 0.4s;
             pointer-events: none;
         }
-        .cycle-btn:hover .cycle-overlay {
-            opacity: 1;
-            transform: scale(1.02);
-        }
+        .cycle-btn:hover .cycle-overlay { opacity: 1; transform: scale(1.02); }
         .cycle-btn .spinner-ring {
             position: absolute;
             inset: -6px;
@@ -216,15 +196,8 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        .cycle-btn.active .spinner-ring {
-            opacity: 1;
-            animation: spin 0.9s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        .cycle-btn.active .spinner-ring { opacity: 1; animation: spin 0.9s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .cycle-label {
             color: #e2e8f0;
@@ -234,17 +207,13 @@
             transition: color 0.3s;
             margin-top: 4px;
         }
-        .cycle-btn:hover+.cycle-label {
-            color: #60a5fa;
-        }
+        .cycle-btn:hover + .cycle-label { color: #60a5fa; }
         .cycle-status {
             font-size: 14px;
             color: #94a3b8;
             min-height: 24px;
         }
-        .cycle-status.error {
-            color: #f87171;
-        }
+        .cycle-status.error { color: #f87171; }
 
         /* Star icon */
         .star-fav {
@@ -256,7 +225,7 @@
             cursor: pointer;
             z-index: 20;
             color: #555;
-            text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+            text-shadow: 0 0 8px rgba(0,0,0,0.9);
             transition: color 0.2s, transform 0.2s;
             pointer-events: auto;
             padding: 4px 10px;
@@ -266,14 +235,12 @@
             color: var(--primary-color);
             text-shadow: 0 0 16px var(--glow-color);
         }
-        .star-fav:hover {
-            transform: scale(1.25);
-        }
+        .star-fav:hover { transform: scale(1.25); }
 
         .soundboard-section {
             max-width: 1400px;
             margin: 0 auto 40px auto;
-            background: rgba(10, 15, 25, 0.85);
+            background: rgba(10,15,25,0.85);
             backdrop-filter: blur(12px);
             border-radius: 32px;
             padding: 24px 28px;
@@ -298,19 +265,16 @@
             justify-content: space-around;
         }
         .sound-item {
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0,0,0,0.65);
             border-radius: 28px;
             padding: 20px;
             flex: 1;
             min-width: 260px;
-            border: 1px solid rgba(59, 130, 246, 0.6);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(59,130,246,0.6);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
             transition: transform 0.2s;
         }
-        .sound-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-        }
+        .sound-item:hover { transform: translateY(-5px); border-color: var(--primary-color); }
         .sound-name {
             font-size: 1.5rem;
             font-weight: bold;
@@ -339,10 +303,7 @@
             transition: 0.2s;
             box-shadow: 0 0 5px var(--primary-color);
         }
-        .sound-btn:hover {
-            background: var(--primary-color);
-            transform: scale(1.03);
-        }
+        .sound-btn:hover { background: var(--primary-color); transform: scale(1.03); }
         .loop-label {
             display: flex;
             align-items: center;
@@ -380,43 +341,25 @@
             background: var(--primary-color);
             transition: all 0.3s;
             box-shadow: 0 0 12px var(--primary-color);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255,255,255,0.3);
         }
-        .btn:hover {
-            filter: brightness(1.35);
-            transform: translateY(-3px);
-            box-shadow: 0 0 25px var(--primary-color);
-        }
-        .btn-danger {
-            background: #dc2626;
-            box-shadow: 0 0 12px #ff4444;
-        }
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
+        .btn:hover { filter: brightness(1.35); transform: translateY(-3px); box-shadow: 0 0 25px var(--primary-color); }
+        .btn-danger { background: #dc2626; box-shadow: 0 0 12px #ff4444; }
+        .btn-danger:hover { background: #b91c1c; }
         .rainbow-btn {
             background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
             background-size: 200% 200%;
             animation: rainbowShift 2s ease infinite;
         }
         @keyframes rainbowShift {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .rain-toggle.active {
-            background: #00cc99;
-            box-shadow: 0 0 25px #00ffc3;
-        }
+        .rain-toggle.active { background: #00cc99; box-shadow: 0 0 25px #00ffc3; }
 
         .custom-bg-area {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             padding: 5px 12px;
             border-radius: 40px;
             display: flex;
@@ -433,10 +376,7 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .drag-area:hover {
-            background: #2a2a2a;
-            border-color: var(--primary-color);
-        }
+        .drag-area:hover { background: #2a2a2a; border-color: var(--primary-color); }
         select {
             background: #1a1a2e;
             color: white;
@@ -455,7 +395,7 @@
             padding: 0;
         }
         input[type="text"] {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0,0,0,0.6);
             border: 1px solid var(--primary-color);
             border-radius: 30px;
             padding: 6px 14px;
@@ -463,17 +403,13 @@
             font-size: 13px;
             outline: none;
         }
-        input[type="text"]:focus {
-            border-color: #a855f7;
-        }
+        input[type="text"]:focus { border-color: #a855f7; }
 
         #gameContainer {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: #0a0a1a;
             z-index: 100;
             flex-direction: column;
@@ -491,13 +427,13 @@
             right: 24px;
             display: flex;
             gap: 10px;
-            background: rgba(15, 23, 42, 0.88);
+            background: rgba(15,23,42,0.88);
             backdrop-filter: blur(10px);
             padding: 10px 16px;
             border-radius: 14px;
             border: 1px solid #334155;
             z-index: 10;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             align-items: center;
             flex-wrap: wrap;
         }
@@ -516,20 +452,15 @@
             gap: 6px;
             white-space: nowrap;
         }
-        .ctrl-btn:hover {
-            background: #2d3b54;
-            border-color: var(--primary-color);
-        }
-        .ctrl-btn .icon {
-            font-size: 16px;
-        }
+        .ctrl-btn:hover { background: #2d3b54; border-color: var(--primary-color); }
+        .ctrl-btn .icon { font-size: 16px; }
 
         .pointer-status {
             position: absolute;
             top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0,0,0,0.85);
             color: #facc15;
             padding: 7px 22px;
             border-radius: 20px;
@@ -541,9 +472,7 @@
             z-index: 20;
             white-space: nowrap;
         }
-        .pointer-status.visible {
-            opacity: 1;
-        }
+        .pointer-status.visible { opacity: 1; }
 
         .game-title-bar {
             position: absolute;
@@ -552,7 +481,7 @@
             color: #e2e8f0;
             font-size: 18px;
             font-weight: 600;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             padding: 6px 18px;
             border-radius: 10px;
             border: 1px solid #334155;
@@ -569,53 +498,27 @@
             display: inline-block;
             animation: pulse-dot 1.8s ease-in-out infinite;
         }
-        .game-title-bar .dot.green {
-            background: #22c55e;
-        }
-        .game-title-bar .dot.blue {
-            background: #3b82f6;
-        }
-        .game-title-bar .dot.purple {
-            background: #a855f7;
-        }
-        .game-title-bar .dot.orange {
-            background: #f97316;
-        }
-        .game-title-bar .dot.yellow {
-            background: #eab308;
-        }
-        .game-title-bar .dot.red {
-            background: #ef4444;
-        }
-        .game-title-bar .dot.teal {
-            background: #14b8a6;
-        }
-        .game-title-bar .dot.pink {
-            background: #ec4899;
-        }
-        .game-title-bar .dot.gold {
-            background: #f59e0b;
-        }
-        .game-title-bar .dot.lime {
-            background: #84cc16;
-        }
+        .game-title-bar .dot.green { background: #22c55e; }
+        .game-title-bar .dot.blue { background: #3b82f6; }
+        .game-title-bar .dot.purple { background: #a855f7; }
+        .game-title-bar .dot.orange { background: #f97316; }
+        .game-title-bar .dot.yellow { background: #eab308; }
+        .game-title-bar .dot.red { background: #ef4444; }
+        .game-title-bar .dot.teal { background: #14b8a6; }
+        .game-title-bar .dot.pink { background: #ec4899; }
+        .game-title-bar .dot.gold { background: #f59e0b; }
+        .game-title-bar .dot.lime { background: #84cc16; }
+        .game-title-bar .dot.cyan { background: #06b6d4; }
         @keyframes pulse-dot {
-            0%,
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.4;
-                transform: scale(0.7);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.7); }
         }
 
         #gameErrorOverlay {
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(10, 10, 26, 0.92);
+            background: rgba(10,10,26,0.92);
             color: #f1f5f9;
             z-index: 50;
             flex-direction: column;
@@ -624,20 +527,9 @@
             text-align: center;
             padding: 40px;
         }
-        #gameErrorOverlay.visible {
-            display: flex;
-        }
-        #gameErrorOverlay h2 {
-            font-size: 32px;
-            margin-bottom: 16px;
-            color: #f87171;
-        }
-        #gameErrorOverlay p {
-            max-width: 500px;
-            font-size: 18px;
-            color: #94a3b8;
-            margin-bottom: 24px;
-        }
+        #gameErrorOverlay.visible { display: flex; }
+        #gameErrorOverlay h2 { font-size: 32px; margin-bottom: 16px; color: #f87171; }
+        #gameErrorOverlay p { max-width: 500px; font-size: 18px; color: #94a3b8; margin-bottom: 24px; }
         #gameErrorOverlay button {
             background: var(--primary-color);
             border: none;
@@ -649,92 +541,29 @@
             transition: background 0.2s;
             font-weight: 600;
         }
-        #gameErrorOverlay button:hover {
-            filter: brightness(0.85);
-        }
+        #gameErrorOverlay button:hover { filter: brightness(0.85); }
 
         @media (max-width: 768px) {
-            .cycle-btn {
-                width: 120px;
-                height: 120px;
-            }
-            .cycles-row {
-                gap: 20px;
-            }
-            .cycle-label {
-                font-size: 15px;
-            }
-            .star-fav {
-                font-size: 28px;
-                right: 4px;
-                top: 2px;
-                padding: 2px 8px;
-            }
-            #searchInput {
-                width: 80%;
-                font-size: 14px;
-                padding: 10px 18px;
-            }
+            .cycle-btn { width: 120px; height: 120px; }
+            .cycles-row { gap: 20px; }
+            .cycle-label { font-size: 15px; }
+            .star-fav { font-size: 28px; right: 4px; top: 2px; padding: 2px 8px; }
+            #searchInput { width: 80%; font-size: 14px; padding: 10px 18px; }
         }
         @media (max-width: 540px) {
-            .cycle-btn {
-                width: 100px;
-                height: 100px;
-            }
-            .cycles-row {
-                gap: 14px;
-            }
-            .header h1 {
-                font-size: 30px;
-            }
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-                border-radius: 30px;
-                padding: 15px;
-            }
-            .soundboard-section {
-                padding: 16px;
-            }
-            .soundboard-header {
-                font-size: 20px;
-            }
-            .game-controls {
-                bottom: 12px;
-                right: 12px;
-                gap: 4px;
-                padding: 6px 10px;
-            }
-            .ctrl-btn {
-                padding: 4px 10px;
-                font-size: 11px;
-            }
-            .game-title-bar {
-                font-size: 13px;
-                padding: 4px 12px;
-                top: 10px;
-                left: 12px;
-            }
-            .pointer-status {
-                font-size: 11px;
-                padding: 4px 12px;
-                top: 10px;
-            }
-            .star-fav {
-                font-size: 24px;
-                right: 2px;
-                top: 0px;
-                padding: 2px 6px;
-            }
-            #searchInput {
-                width: 85%;
-                font-size: 13px;
-                padding: 8px 14px;
-            }
-            #searchClear {
-                font-size: 18px;
-                margin-left: -40px;
-            }
+            .cycle-btn { width: 100px; height: 100px; }
+            .cycles-row { gap: 14px; }
+            .header h1 { font-size: 30px; }
+            .controls { flex-direction: column; align-items: stretch; border-radius: 30px; padding: 15px; }
+            .soundboard-section { padding: 16px; }
+            .soundboard-header { font-size: 20px; }
+            .game-controls { bottom: 12px; right: 12px; gap: 4px; padding: 6px 10px; }
+            .ctrl-btn { padding: 4px 10px; font-size: 11px; }
+            .game-title-bar { font-size: 13px; padding: 4px 12px; top: 10px; left: 12px; }
+            .pointer-status { font-size: 11px; padding: 4px 12px; top: 10px; }
+            .star-fav { font-size: 24px; right: 2px; top: 0px; padding: 2px 6px; }
+            #searchInput { width: 85%; font-size: 13px; padding: 8px 14px; }
+            #searchClear { font-size: 18px; margin-left: -40px; }
         }
     </style>
 </head>
@@ -745,7 +574,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 65 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 82 games available</div>
         </div>
 
         <div class="controls">
@@ -850,7 +679,7 @@
                 img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '2048', name: '2048', file: 'cl2048 (1).html',
                 img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
-            { id: 'eaglercraft', name: 'Eaglercraft', file: 'cleaglercraftx188(u29) (2).html',
+            { id: 'eaglercraft', name: 'Eaglercraft', file: 'clEaglercraftX188(u29) (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.ycPMMSBon_CEagF-syK2ywHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1v1lol', name: '1v1 LOL', file: 'cl1v1lol (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -972,11 +801,49 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.IgBbRDh5jp7vuiWqgdhJ7gHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'baseballbros', name: 'Baseball Bros', file: 'clbaseballbros (4).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.cjYi5yFgAJ3VmLxkbtn2jwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // New games (removed Basket Random and Cookie Clicker)
             { id: 'retrobowlcollege', name: 'Retro Bowl College', file: 'Retro Bowl College.html',
                 img: 'https://retrobowl25.com/cache/data/image/game/retro-bowl-college-m300x300.png' },
             { id: 'rainbowobby', name: 'Rainbow Obby', file: 'clobbyrainbowtower (4).html',
-                img: 'https://tse1.mm.bing.net/th/id/OIP.Mrqv-zNe2VoFJi8rkM8x8AHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse1.mm.bing.net/th/id/OIP.Mrqv-zNe2VoFJi8rkM8x8AHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'soniccd', name: 'Sonic CD', file: 'Sonic CD (1).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.mflErb9vg1WtVNsr7BrArAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'slowroads', name: 'Slow Roads', file: 'Slowroads (1).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.RnvDRpPKyz5JxzItXYslCgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'fruitninja', name: 'Fruit Ninja', file: 'clfruitninja (1).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.LErvjB9ApbZzsWMwz9WNsQHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'tripletobby', name: 'Triple T Obby', file: 'cltungtungtungsahurobby (2).html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.mURQDdcvDzQzhAQ6rJAj-gHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'obbyjumperclicker', name: 'Obby Jumper Clicker', file: 'clobby1jumpperclick.html',
+                img: 'https://67clicker.io/cache/data/image/game/obby-1-jump-per-click/obby-1-jump-per-click-m200x200.webp' },
+            { id: 'obbybike', name: 'Obby Bike', file: 'clobbybike (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.Rrq8kGP9K5eGZj21x3HZdQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── REMOVED Undertale Yellow ─── (already removed)
+            { id: 'undertalelastbreath', name: 'Undertale Last Breath', file: 'Undertale_ Last Breath.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.OL2honTRfVZm7BWXvRKVNQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'magictiles3', name: 'Magic Tiles 3', file: 'Magic Tiles 3 (3).html',
+                img: 'https://cdn.mobygames.com/covers/17514493-magic-tiles-3-piano-game-iphone-front-cover.png' },
+            { id: 'hollowknight', name: 'Hollow Knight', file: 'Hollow Knight.html',
+                img: 'https://assets-prd.ignimgs.com/2021/12/07/hollowknight-1638908888257.png?crop=1%3A1' },
+            { id: 'dontyoulectureme', name: 'Don\'t You Lecture Me', file: 'DON\'T YOU LECTURE ME.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.KQ30R9-6p_fwb0F_ulaKvgHaEL?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'ruffle', name: 'Ruffle Player', file: 'Ruffle (3).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.pKiLZRKQqhGpo9K4ZT7v9QHaDT?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'deltarune', name: 'Deltarune', file: 'cldeltarune.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.pwkKXYW2j0c4FBU_PuzGWgHaBg?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── Google Dino ───
+            { id: 'googledino', name: 'Google Dino', file: 'clgoogledino (2).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.j4DwfTPDJ_DUPpNmNwaObAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── REPLACED FNAF World with new file ───
+            { id: 'fnafworld', name: 'FNAF World', file: 'clfnafworldd.html',
+                img: 'https://images.stopgame.ru/games/logos/15516/c1120x1120/LJJHkWiM5kOoBgi0wc_BLQ/fnaf_world-square.jpg' },
+            // ─── Subway Surfers Miami ───
+            { id: 'subwaysurfersmiami', name: 'Subway Surfers Miami', file: 'clsubwaysurfersmiami (1).html',
+                img: 'https://i.ytimg.com/vi/h-N7Eg8GH7U/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGEcgZShlMA8=&rs=AOn4CLCDQdvdSUUfXA-LAbuIRS7_Ol2HOg' },
+            // ─── NEW: Subway Surfers Houston ───
+            { id: 'subwaysurfershouston', name: 'Subway Surfers Houston', file: 'clsubwaysurfershouston.html',
+                img: 'https://tse1.explicit.bing.net/th/id/OIP.HV2kW4ydd2jmJV8rcwXdRgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         // ─── Favorites ───
@@ -1249,12 +1116,10 @@
                 else if (gameId === 'caseoh') dotColor = 'pink';
                 else if (gameId === 'capybara') dotColor = 'teal';
                 else if (gameId === 'stealbrainrot') dotColor = 'pink';
-                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId ===
-                    'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
+                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId === 'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
                 else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
                 else if (gameId === 'elasticface') dotColor = 'teal';
-                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId ===
-                    'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
+                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4') dotColor = 'red';
                 else if (gameId === 'fnac1') dotColor = 'red';
                 else if (gameId === 'granny') dotColor = 'red';
                 else if (gameId === 'googlebaseball') dotColor = 'blue';
@@ -1266,8 +1131,7 @@
                 else if (gameId === 'smashkarts') dotColor = 'orange';
                 else if (gameId === 'run3') dotColor = 'blue';
                 else if (gameId === 'stickmanhook') dotColor = 'teal';
-                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' ||
-                    gameId === 'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
+                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' || gameId === 'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
                 else if (gameId === 'supermario64') dotColor = 'orange';
                 else if (gameId === 'templerun2') dotColor = 'blue';
                 else if (gameId === 'zombierush') dotColor = 'red';
@@ -1286,6 +1150,23 @@
                 else if (gameId === 'baseballbros') dotColor = 'blue';
                 else if (gameId === 'retrobowlcollege') dotColor = 'orange';
                 else if (gameId === 'rainbowobby') dotColor = 'pink';
+                else if (gameId === 'soniccd') dotColor = 'cyan';
+                else if (gameId === 'slowroads') dotColor = 'teal';
+                else if (gameId === 'fruitninja') dotColor = 'orange';
+                else if (gameId === 'tripletobby') dotColor = 'pink';
+                else if (gameId === 'obbyjumperclicker') dotColor = 'green';
+                else if (gameId === 'obbybike') dotColor = 'yellow';
+                else if (gameId === 'undertalelastbreath') dotColor = 'red';
+                else if (gameId === 'supermario63') dotColor = 'red';
+                else if (gameId === 'magictiles3') dotColor = 'blue';
+                else if (gameId === 'hollowknight') dotColor = 'blue';
+                else if (gameId === 'dontyoulectureme') dotColor = 'pink';
+                else if (gameId === 'ruffle') dotColor = 'orange';
+                else if (gameId === 'deltarune') dotColor = 'purple';
+                else if (gameId === 'googledino') dotColor = 'yellow';
+                else if (gameId === 'fnafworld') dotColor = 'red';
+                else if (gameId === 'subwaysurfersmiami') dotColor = 'blue';
+                else if (gameId === 'subwaysurfershouston') dotColor = 'orange';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -1308,8 +1189,7 @@
 
                 loadTimeout = setTimeout(() => {
                     try {
-                        if (frame.contentDocument && frame.contentDocument.readyState !== 'complete') throw new Error(
-                        'Timeout');
+                        if (frame.contentDocument && frame.contentDocument.readyState !== 'complete') throw new Error('Timeout');
                     } catch (e) {
                         setStatus(gameId, 'error', false);
                         showError('The game took too long to load. Please check your internet connection or try again.');
@@ -1319,12 +1199,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId ===
-                        'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' ||
-                        gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId ===
-                        'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId ===
-                        'smashkarts' || gameId === 'fnaw' || gameId === 'mortalkombat1' || gameId ===
-                        'mortalkombat2') {
+                    if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId === 'mortalkombat1' || gameId === 'mortalkombat2') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -1386,12 +1261,7 @@
                 errorOverlay.classList.remove('visible');
                 if (currentGame) {
                     setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' ||
-                        currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' ||
-                        currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame ===
-                        'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame ===
-                        'granny' || currentGame === 'nzp' || currentGame === 'smashkarts' || currentGame === 'fnaw' ||
-                        currentGame === 'mortalkombat1' || currentGame === 'mortalkombat2') {
+                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp' || currentGame === 'smashkarts' || currentGame === 'fnaw' || currentGame === 'mortalkombat1' || currentGame === 'mortalkombat2') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }
@@ -1416,7 +1286,7 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 65 games (removed Basket Random & Cookie Clicker, added Retro Bowl College & Rainbow Obby).');
+            console.log('🎮 Launcher ready – 82 games (replaced FNAF World file, added Subway Surfers Houston).');
         })();
 
         // ─── Extra features ───
@@ -1741,7 +1611,7 @@
 
         // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – added search bar, removed Basket Random & Cookie Clicker, added Retro Bowl College & Rainbow Obby.');
+        console.log('✅ All features – replaced FNAF World file, added Subway Surfers Houston.');
     </script>
 </body>
 </html>
