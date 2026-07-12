@@ -10,6 +10,7 @@
             --primary-color: #3b82f6;
             --glow-color: rgba(59, 130, 246, 0.95);
             --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3');
+            --sigma-cursor-url: auto;
         }
         body {
             background-image: var(--bg-url);
@@ -23,6 +24,14 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            cursor: auto;
+        }
+        body.sigma-cursor,
+        body.sigma-cursor * {
+            cursor: var(--sigma-cursor-url, auto) !important;
+        }
+        #clientFrame.sigma-cursor-frame {
+            cursor: var(--sigma-cursor-url, auto) !important;
         }
         body.low-lag {
             background-image: none !important;
@@ -84,7 +93,6 @@
             box-shadow: 0 0 30px var(--glow-color);
         }
 
-        /* ── Search Bar ── */
         .search-container {
             display: flex;
             justify-content: center;
@@ -215,7 +223,6 @@
         }
         .cycle-status.error { color: #f87171; }
 
-        /* Star icon */
         .star-fav {
             position: absolute;
             top: 4px;
@@ -574,7 +581,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 82 games available</div>
+            <div class="subtitle" id="gameCounter">🎮 102 games available</div>
         </div>
 
         <div class="controls">
@@ -631,9 +638,9 @@
             <button class="btn" id="rainToggleBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn rainbow-btn" id="rainbowColorBtn" style="background:linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);">🌈 RAINBOW MODE</button>
             <button class="btn" id="sigmaToggleBtn" style="background:#ff6b00;">🔥 SIGMATOWN4LIFE</button>
+            <button class="btn" id="sigmaCursorBtn" style="background:#a855f7;">🖱️ Sigma Cursor</button>
         </div>
 
-        <!-- ── Search Bar ── -->
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="🔍 Search games...">
             <button id="searchClear" style="display:none;">✕</button>
@@ -673,7 +680,44 @@
     </div>
 
     <script>
-        // ─── Game definitions ───
+        const SIGMA_CURSOR_DATA_URI = "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23000%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-weight=%22bold%22 font-family=%22sans-serif%22%3E%26%23x3A3;%3C/text%3E%3C/svg%3E') 16 16, auto";
+
+        function injectSigmaCursorToIframe() {
+            const frame = document.getElementById('clientFrame');
+            if (!frame) return;
+            try {
+                const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+                if (!doc) return;
+                const sigmaActive = document.body.classList.contains('sigma-cursor');
+                let style = doc.getElementById('sigma-cursor-style');
+                if (!style) {
+                    style = doc.createElement('style');
+                    style.id = 'sigma-cursor-style';
+                    doc.head.appendChild(style);
+                }
+                if (sigmaActive) {
+                    const cursorUrl = getComputedStyle(document.documentElement).getPropertyValue('--sigma-cursor-url').trim();
+                    if (cursorUrl && cursorUrl !== 'auto') {
+                        style.textContent = `* { cursor: ${cursorUrl} !important; } html, body { cursor: ${cursorUrl} !important; }`;
+                    } else {
+                        style.textContent = `* { cursor: auto !important; }`;
+                    }
+                } else {
+                    style.textContent = `* { cursor: auto !important; }`;
+                }
+                if (doc.body) {
+                    doc.body.style.cursor = sigmaActive ? getComputedStyle(document.documentElement).getPropertyValue('--sigma-cursor-url') : 'auto';
+                }
+                if (doc.documentElement) {
+                    doc.documentElement.style.cursor = sigmaActive ? getComputedStyle(document.documentElement).getPropertyValue('--sigma-cursor-url') : 'auto';
+                }
+                frame.classList.toggle('sigma-cursor-frame', sigmaActive);
+            } catch(e) {
+                frame.classList.toggle('sigma-cursor-frame', document.body.classList.contains('sigma-cursor'));
+            }
+        }
+
+        // ─── Game definitions ─── (added Slope)
         const GAME_DATA = [
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
                 img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -817,9 +861,6 @@
                 img: 'https://67clicker.io/cache/data/image/game/obby-1-jump-per-click/obby-1-jump-per-click-m200x200.webp' },
             { id: 'obbybike', name: 'Obby Bike', file: 'clobbybike (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Rrq8kGP9K5eGZj21x3HZdQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── REMOVED Undertale Yellow ─── (already removed)
-            { id: 'undertalelastbreath', name: 'Undertale Last Breath', file: 'Undertale_ Last Breath.html',
-                img: 'https://tse4.mm.bing.net/th/id/OIP.OL2honTRfVZm7BWXvRKVNQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'magictiles3', name: 'Magic Tiles 3', file: 'Magic Tiles 3 (3).html',
@@ -832,18 +873,67 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.pKiLZRKQqhGpo9K4ZT7v9QHaDT?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'deltarune', name: 'Deltarune', file: 'cldeltarune.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.pwkKXYW2j0c4FBU_PuzGWgHaBg?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── Google Dino ───
             { id: 'googledino', name: 'Google Dino', file: 'clgoogledino (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.j4DwfTPDJ_DUPpNmNwaObAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── REPLACED FNAF World with new file ───
             { id: 'fnafworld', name: 'FNAF World', file: 'clfnafworldd.html',
                 img: 'https://images.stopgame.ru/games/logos/15516/c1120x1120/LJJHkWiM5kOoBgi0wc_BLQ/fnaf_world-square.jpg' },
-            // ─── Subway Surfers Miami ───
             { id: 'subwaysurfersmiami', name: 'Subway Surfers Miami', file: 'clsubwaysurfersmiami (1).html',
                 img: 'https://i.ytimg.com/vi/h-N7Eg8GH7U/maxresdefault.jpg?sqp=-oaymwEmCIAKENAF8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGEcgZShlMA8=&rs=AOn4CLCDQdvdSUUfXA-LAbuIRS7_Ol2HOg' },
-            // ─── NEW: Subway Surfers Houston ───
             { id: 'subwaysurfershouston', name: 'Subway Surfers Houston', file: 'clsubwaysurfershouston.html',
-                img: 'https://tse1.explicit.bing.net/th/id/OIP.HV2kW4ydd2jmJV8rcwXdRgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse1.explicit.bing.net/th/id/OIP.HV2kW4ydd2jmJV8rcwXdRgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'basketbattle', name: 'Basket Battle', file: 'Basket Battle.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.Wt6l_swlb7wV-BkfLjiKaAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'soccerrandom', name: 'Soccer Random', file: 'Soccer Random.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.2BAbi8rOVtnz2ugldhhlnAHaHu?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'sortthecourt', name: 'Sort the Court', file: 'Sort the Court.html',
+                img: 'https://merge-fellas.io/thumb/sort-the-court.webp' },
+            { id: 'volleyrandom', name: 'Volley Random', file: 'Volley Random.html',
+                img: 'https://www.coolmathgameskids.com/wp-content/uploads/2021/02/volley-random.jpeg' },
+            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.6vYkelfYmDvlz9h1v7GpCQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'stickmankombat', name: 'Stickman Kombat 2D', file: 'Stickman Kombat 2D.html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.L5HOhBR-3DmyWevhzOsIoAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'makeasuperboat', name: 'Make a SuperBoat', file: 'Make a SuperBoat.html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: '99nights', name: '99 Nights', file: 'cl99nightsitf (2).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.ToWfAuDvC1Nn2bD1K35CWQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'motox3m', name: 'Moto X3M', file: 'Moto X3M.html',
+                img: 'https://th.bing.com/th/id/R.2ded59c45977c3bc3786b17c02bb5599?rik=1ZnozzY%2fZZo31g&riu=http%3a%2f%2fwww.coolmathgames.com%2fsites%2fdefault%2ffiles%2fMotoX3M_OG-logo.jpg&ehk=lVQhOYP%2bFe4TEgaohqqxriFSefuVET0hx%2ff2exBCnjU%3d&risl=&pid=ImgRaw&r=0' },
+            { id: 'motox3m2', name: 'Moto X3M 2', file: 'Moto X3M 2.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.mMytlJ3c03t4vQtHR_hAzgHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'motox3m3', name: 'Moto X3M 3', file: 'Moto X3M 3.html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'candycrush', name: 'Candy Crush', file: 'Candy Crush (4).html',
+                img: 'https://th.bing.com/th/id/OIP.G77RDyiOu6q3efCa96wjuAHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── Hobo series (1-4) ───
+            { id: 'hobo1', name: 'Hobo 1', file: 'Hobo 1 (2).html',
+                img: 'https://archive.org/download/hobo1/Hobo_Brawl.png' },
+            { id: 'hobo2', name: 'Hobo 2', file: 'Hobo 2 (2).html',
+                img: 'https://images.launchbox-app.com/73fc8d19-fa65-4f4f-95f7-e628d27e9920.png' },
+            { id: 'hobo3', name: 'Hobo 3', file: 'Hobo 3 (2).html',
+                img: 'https://i.ytimg.com/vi/n_TKpeezS04/maxresdefault.jpg' },
+            { id: 'hobo4', name: 'Hobo 4', file: 'Hobo 4 (1).html',
+                img: 'https://files.gamezhero.com/game/a60/d5c/a60d5c6fc387409a/images/240/hobo4totalwar.jpg' },
+            // ─── Slope (added) ───
+            { id: 'slope', name: 'Slope', file: 'Slope (3).html',
+                img: 'https://sloperun.org/data/image/posts/slope-image.jpg' },
+            // ─── Other games ───
+            { id: 'undertale', name: 'Undertale: Last Breath', file: 'Undertale_ Last Breath (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.OL2honTRfVZm7BWXvRKVNQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'solarsmash', name: 'Solar Smash', file: 'Solar Smash (2).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.iQE28EK6W0DPWHgv9AHDWgHaDn?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'chessclassic', name: 'Chess Classic', file: 'Chess Classic.html',
+                img: 'https://www.hitgames.org/web/uploads/games/other/chess-classic/chess-classic.webp' },
+            { id: 'crazycattle', name: 'Crazy Cattle 3D', file: 'Crazy Cattle 3D.html',
+                img: 'https://rawcdn.githack.com/genizy/cc3d-mobile/main/CrazyCattle3D.png' },
+            { id: 'footballbros', name: 'Football Bros', file: 'Football Bros.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.1Z0YVZmdJoAVBPDLUb8sHwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'soccerbros', name: 'Soccer Bros', file: 'clsoccerbros.html',
+                img: 'https://images.crazygames.com/soccer-bros_16x9/20240109055124/soccer-bros_16x9-cover?auto=format%2Ccompress&q=45&cs=strip&ch=DPR&w=1200&h=630&fit=crop' }
         ];
 
         // ─── Favorites ───
@@ -927,16 +1017,9 @@
                 row.appendChild(wrapper);
             });
 
-            // Update game counter
             document.getElementById('gameCounter').textContent = '🎮 ' + visibleCount + ' games available';
-
-            // Show/hide clear button
             const clearBtn = document.getElementById('searchClear');
-            if (searchQuery.length > 0) {
-                clearBtn.style.display = 'block';
-            } else {
-                clearBtn.style.display = 'none';
-            }
+            clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
         }
 
         // ─── Search functionality ───
@@ -955,7 +1038,7 @@
             searchInput.focus();
         });
 
-        // ─── Game launcher with improved pointer lock ───
+        // ─── Game launcher with pointer lock and cursor injection ───
         (function() {
             const menuScreen = document.getElementById('menuScreen');
             const gameContainer = document.getElementById('gameContainer');
@@ -974,6 +1057,21 @@
                 loadTimeout = null;
             const gameFileMap = {};
             GAME_DATA.forEach(g => gameFileMap[g.id] = g.file);
+
+            frame.addEventListener('load', function() {
+                injectSigmaCursorToIframe();
+                setTimeout(injectSigmaCursorToIframe, 100);
+                try {
+                    const doc = frame.contentDocument;
+                    if (doc) {
+                        const observer = new MutationObserver(function() {
+                            injectSigmaCursorToIframe();
+                        });
+                        observer.observe(doc.documentElement, { childList: true, subtree: true, attributes: true });
+                        frame._cursorObserver = observer;
+                    }
+                } catch(e) {}
+            });
 
             function getStatusElement(id) {
                 return document.getElementById('status-' + id);
@@ -1061,6 +1159,9 @@
                     clearTimeout(loadTimeout);
                     loadTimeout = null;
                 }
+                if (frame._cursorObserver) {
+                    try { frame._cursorObserver.disconnect(); } catch(e) {}
+                }
                 releasePointerLock();
                 frame.src = '';
                 frame.srcdoc = '';
@@ -1103,6 +1204,7 @@
 
                 let gameName = game.name,
                     dotColor = 'purple';
+                // ─── Color assignments ───
                 if (gameId === '2048') dotColor = 'green';
                 else if (gameId === 'eaglercraft') dotColor = 'blue';
                 else if (gameId === '1v1lol') dotColor = 'blue';
@@ -1156,7 +1258,6 @@
                 else if (gameId === 'tripletobby') dotColor = 'pink';
                 else if (gameId === 'obbyjumperclicker') dotColor = 'green';
                 else if (gameId === 'obbybike') dotColor = 'yellow';
-                else if (gameId === 'undertalelastbreath') dotColor = 'red';
                 else if (gameId === 'supermario63') dotColor = 'red';
                 else if (gameId === 'magictiles3') dotColor = 'blue';
                 else if (gameId === 'hollowknight') dotColor = 'blue';
@@ -1167,6 +1268,30 @@
                 else if (gameId === 'fnafworld') dotColor = 'red';
                 else if (gameId === 'subwaysurfersmiami') dotColor = 'blue';
                 else if (gameId === 'subwaysurfershouston') dotColor = 'orange';
+                else if (gameId === 'basketbattle') dotColor = 'orange';
+                else if (gameId === 'soccerrandom') dotColor = 'green';
+                else if (gameId === 'sortthecourt') dotColor = 'purple';
+                else if (gameId === 'volleyrandom') dotColor = 'blue';
+                else if (gameId === 'tcubed') dotColor = 'pink';
+                else if (gameId === 'stickmankombat') dotColor = 'red';
+                else if (gameId === 'makeasuperboat') dotColor = 'cyan';
+                else if (gameId === 'oneshotlegacy') dotColor = 'gold';
+                else if (gameId === 'clarkingarena') dotColor = 'orange';
+                else if (gameId === '99nights') dotColor = 'purple';
+                else if (gameId === 'motox3m') dotColor = 'blue';
+                else if (gameId === 'motox3m2') dotColor = 'green';
+                else if (gameId === 'motox3m3') dotColor = 'red';
+                else if (gameId === 'candycrush') dotColor = 'pink';
+                else if (gameId === 'chessclassic') dotColor = 'gold';
+                else if (gameId === 'crazycattle') dotColor = 'orange';
+                else if (gameId === 'footballbros') dotColor = 'green';
+                else if (gameId === 'soccerbros') dotColor = 'green';
+                else if (gameId === 'solarsmash') dotColor = 'gold';
+                else if (gameId === 'undertale') dotColor = 'red';
+                else if (gameId === 'hobo1' || gameId === 'hobo2') dotColor = 'orange';
+                else if (gameId === 'hobo3') dotColor = 'gold';
+                else if (gameId === 'hobo4') dotColor = 'red';
+                else if (gameId === 'slope') dotColor = 'blue';
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -1202,6 +1327,7 @@
                     if (gameId === 'eaglercraft' || gameId === '1v1lol' || gameId === 'backrooms' || gameId === 'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId === 'fnaf4' || gameId === 'fnac1' || gameId === 'granny' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId === 'mortalkombat1' || gameId === 'mortalkombat2') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
+                    injectSigmaCursorToIframe();
                 }, 500);
             };
 
@@ -1210,7 +1336,6 @@
                 errorOverlay.classList.add('visible');
             }
 
-            // ── Fullscreen ──
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
                     gameContainer.requestFullscreen().catch(() => {});
@@ -1221,14 +1346,11 @@
                 }
             });
             document.addEventListener('fullscreenchange', () => {
-                if (!document.fullscreenElement) {
-                    fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Fullscreen';
-                } else {
-                    fullscreenBtn.innerHTML = '<span class="icon">⛶</span> Exit Fullscreen';
-                }
+                fullscreenBtn.innerHTML = document.fullscreenElement ?
+                    '<span class="icon">⛶</span> Exit Fullscreen' :
+                    '<span class="icon">⛶</span> Fullscreen';
             });
 
-            // ── Cursor lock ──
             cursorBtn.addEventListener('click', () => {
                 if (isPointerLocked()) {
                     releasePointerLock();
@@ -1247,31 +1369,6 @@
 
             document.addEventListener('pointerlockchange', updateCursorButtonState);
 
-            frame.addEventListener('load', () => {
-                try {
-                    if (frame.contentDocument) {
-                        frame.contentDocument.addEventListener('pointerlockchange', updateCursorButtonState);
-                    }
-                } catch (_) {}
-                updateCursorButtonState();
-                if (loadTimeout) {
-                    clearTimeout(loadTimeout);
-                    loadTimeout = null;
-                }
-                errorOverlay.classList.remove('visible');
-                if (currentGame) {
-                    setStatus(currentGame, 'running', false);
-                    if (currentGame === 'eaglercraft' || currentGame === '1v1lol' || currentGame === 'backrooms' || currentGame === 'baldi' || currentGame === 'caseoh' || currentGame === 'stealbrainrot' || currentGame === 'fnaf1' || currentGame === 'fnaf2' || currentGame === 'fnaf3' || currentGame === 'fnaf3remastered' || currentGame === 'fnaf4' || currentGame === 'fnac1' || currentGame === 'granny' || currentGame === 'nzp' || currentGame === 'smashkarts' || currentGame === 'fnaw' || currentGame === 'mortalkombat1' || currentGame === 'mortalkombat2') {
-                        showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
-                    }
-                }
-            });
-
-            frame.addEventListener('error', () => {
-                if (currentGame) setStatus(currentGame, 'error', false);
-                showError('The game file could not be loaded. Please check if the file exists and try again.');
-            });
-
             errorBackBtn.addEventListener('click', () => {
                 cleanupGame();
                 menuScreen.style.display = 'flex';
@@ -1286,12 +1383,10 @@
             resetAllStatus();
             gameTitleText.textContent = 'Scary Teacher 3D';
             statusDot.className = 'dot purple';
-            console.log('🎮 Launcher ready – 82 games (replaced FNAF World file, added Subway Surfers Houston).');
+            console.log('🎮 Launcher ready – 104 games (Slope added).');
         })();
 
-        // ─── Extra features ───
-
-        // Matrix rain
+        // ─── Extra features (rain, rainbow, music, soundboard, wallpaper) ───
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mctx = matrixCanvas.getContext('2d');
         let mw, mh, drops = [];
@@ -1349,7 +1444,6 @@
             }
         });
 
-        // Rainbow mode
         let rainbowMode = false,
             rainbowInterval = null;
         document.getElementById('rainbowColorBtn').addEventListener('click', function() {
@@ -1374,7 +1468,6 @@
             }
         });
 
-        // Music
         const MUSIC_TRACKS = {
             doors: 'https://www.myinstants.com/media/sounds/doors-elevator-music.mp3',
             mk: 'https://www.myinstants.com/media/sounds/mortal-kombat-snes-music-title-player-select.mp3',
@@ -1432,7 +1525,6 @@
         }
         initMenuMusic();
 
-        // Soundboard
         const soundTracks = [
             { id: 'typing', name: '⌨️ Fast Typing (Keyboard)',
                 url: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
@@ -1496,7 +1588,6 @@
         }
         buildSoundboard();
 
-        // Wallpaper / Background
         document.getElementById('wallpaperSelect').addEventListener('change', e => {
             document.documentElement.style.setProperty('--bg-url', 'url(\'' + e.target.value + '\')');
         });
@@ -1537,7 +1628,6 @@
             reader.readAsDataURL(file);
         };
 
-        // Lag killer
         window.toggleLagKiller = function() {
             document.getElementById('mainBody').classList.toggle('low-lag');
             if (rainActive && document.body.classList.contains('low-lag')) {
@@ -1547,7 +1637,22 @@
             }
         };
 
-        // ─── Cloak options ───
+        const sigmaBtn = document.getElementById('sigmaCursorBtn');
+        let sigmaActive = false;
+
+        sigmaBtn.addEventListener('click', function() {
+            sigmaActive = !sigmaActive;
+            document.body.classList.toggle('sigma-cursor', sigmaActive);
+            if (sigmaActive) {
+                document.documentElement.style.setProperty('--sigma-cursor-url', SIGMA_CURSOR_DATA_URI);
+            } else {
+                document.documentElement.style.removeProperty('--sigma-cursor-url');
+            }
+            this.textContent = sigmaActive ? '🖱️ Sigma ON' : '🖱️ Sigma Cursor';
+            this.style.background = sigmaActive ? '#22c55e' : '#a855f7';
+            injectSigmaCursorToIframe();
+        });
+
         const EDU_CLOAKS = [
             { title: 'IXL | Dashboard', fav: 'https://www.ixl.com/favicon.ico', head: '✨ IXL Learning Dashboard ✨' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico', head: 'Typing Agent Student Portal' },
@@ -1570,7 +1675,6 @@
             document.getElementById('main-title').innerText = c.head;
         };
 
-        // Sigma
         let sigmaMode = false;
         window.toggleSigmaMode = function() {
             sigmaMode = !sigmaMode;
@@ -1589,7 +1693,6 @@
         };
         document.getElementById('sigmaToggleBtn').addEventListener('click', toggleSigmaMode);
 
-        // Color picker
         document.getElementById('primaryColorPicker').addEventListener('input', e => {
             if (rainbowMode) toggleRainbowMode();
             const val = e.target.value;
@@ -1600,7 +1703,6 @@
             document.documentElement.style.setProperty('--glow-color', 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
         });
 
-        // Keyboard shortcut 6
         document.addEventListener('keydown', e => {
             if (e.key !== '6' && e.code !== 'Numpad6') return;
             const el = e.target;
@@ -1609,9 +1711,8 @@
             window.open('https://www.ixl.com', '_blank', 'noopener,noreferrer');
         });
 
-        // ─── Initial render ───
         renderCycles();
-        console.log('✅ All features – replaced FNAF World file, added Subway Surfers Houston.');
+        console.log('✅ All features – 105 games loaded (Slope added).');
     </script>
 </body>
 </html>
