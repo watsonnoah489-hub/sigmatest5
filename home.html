@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title id="tab-title">IXL | Dashboard</title>
     <link id="tab-favicon" rel="icon" type="image/x-icon" href="https://www.ixl.com/favicon.ico">
+    <!-- Preconnect to external image domains -->
+    <link rel="preconnect" href="https://tse1.mm.bing.net" crossorigin>
+    <link rel="preconnect" href="https://tse2.mm.bing.net" crossorigin>
+    <link rel="preconnect" href="https://tse3.mm.bing.net" crossorigin>
+    <link rel="preconnect" href="https://tse4.mm.bing.net" crossorigin>
+    <link rel="preconnect" href="https://th.bing.com" crossorigin>
+    <link rel="preconnect" href="https://images.igdb.com" crossorigin>
     <style>
         /* ── root variables ── */
         :root {
@@ -37,6 +44,10 @@
         body.low-lag {
             background-image: none !important;
             background-color: #050505 !important;
+        }
+        /* ── HIDE ALL GAME THUMBNAILS IN LAG KILLER MODE ── */
+        body.low-lag .cycle-overlay {
+            display: none !important;
         }
         body.low-lag .circle {
             background-image: none !important;
@@ -870,6 +881,28 @@
             filter: brightness(0.85);
         }
 
+        /* Load More button */
+        #loadMoreContainer {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 40px;
+        }
+        #loadMoreBtn {
+            background: #334155;
+            padding: 12px 40px;
+            border-radius: 40px;
+            border: 1px solid var(--primary-color);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+        #loadMoreBtn:hover {
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
         @media (max-width: 768px) {
             .cycle-btn {
                 width: 120px;
@@ -1332,6 +1365,11 @@
 
         <div class="cycles-row" id="cyclesRow"></div>
 
+        <!-- Load More button -->
+        <div id="loadMoreContainer">
+            <button id="loadMoreBtn">Load More Games</button>
+        </div>
+
         <div class="soundboard-section">
             <div class="soundboard-header">
                 <span>🎧 EDUCATIONAL VIDEOS FOR STUDENTS</span>
@@ -1364,6 +1402,7 @@
     </div>
 
     <script>
+        // ─── SIGMA CURSOR ───
         const SIGMA_CURSOR_DATA_URI = "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23000%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-weight=%22bold%22 font-family=%22sans-serif%22%3E%26%23x3A3;%3C/text%3E%3C/svg%3E') 16 16, auto";
 
         function injectSigmaCursorToIframe() {
@@ -1404,46 +1443,35 @@
             }
         }
 
-        // ─── Helper: assign categories based on game id and name ───
+        // ─── GAME DATA ───
         function getCategories(id, name) {
             if (!id) return ['Other'];
             const lower = id.toLowerCase();
             const nameLower = (name || '').toLowerCase();
             const cats = [];
-
-            // FNAF series (including fan games, FNAF World, etc.)
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
                 lower === 'fnaf3remastered' || lower === 'fnafworld') {
                 cats.push('FNAF');
                 cats.push('Horror');
             }
-            // Duck Life series
             if (lower.startsWith('ducklife')) {
                 cats.push('Duck Life');
             }
-            // Moto X3M series
             if (lower.startsWith('motox3m')) {
                 cats.push('Moto X3M');
             }
-            // Hobo series – hobovszombies should not get Horror
             if (lower.startsWith('hobo') || lower.includes('hobo')) {
                 cats.push('Hobo');
-                // if it's hobovszombies, do NOT push Horror
-                if (lower === 'hobovszombies') {
-                    // skip Horror
-                }
+                if (lower === 'hobovszombies') {}
             }
-            // Subway Surfers – also add to Runner
             if (lower.includes('subway') || lower.includes('subwaysurfer')) {
                 cats.push('Subway Surfers');
                 cats.push('Runner');
             }
-            // Mortal Kombat – also include Mario Combat and Stickman Kombat
             if (lower.includes('mortalkombat') || lower.includes('mortal kombat') ||
                 lower === 'mariocombat' || lower === 'stickmankombat') {
                 cats.push('Mortal Kombat');
             }
-            // Runner – exclude deltarune, include subway surfers already added, plus new additions
             if ((lower.includes('run') && lower !== 'deltarune') ||
                 lower.includes('runner') || lower.includes('templerun') ||
                 lower === 'run3' || lower === 'templerun2' || lower === 'slope' || lower === 'slope2player' ||
@@ -1454,7 +1482,6 @@
                 lower === 'clusterrush' || lower === 'deathrun3d') {
                 cats.push('Runner');
             }
-            // Horror – add deltarune, hollowknight, undertale, amongus, and keep existing
             if (lower.includes('baldi') || lower.includes('granny') || lower.includes('deadzed') ||
                 lower.includes('backrooms') || lower.includes('horror') ||
                 lower.includes('bendy') || lower === 'skibidibackrooms' || lower === 'fnafshooter' ||
@@ -1464,16 +1491,13 @@
                 lower === 'amongus') {
                 cats.push('Horror');
             }
-            // Zombie – only push Zombie for these, but NOT Horror for hobovszombies (already handled)
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') ||
                 lower === 'hobovszombies') {
                 cats.push('Zombie');
-                // only push Horror if not hobovszombies
                 if (lower !== 'hobovszombies') {
                     cats.push('Horror');
                 }
             }
-            // Sports – add stickmangolf
             if (lower.includes('soccer') || lower.includes('basketball') || lower.includes('baseball') ||
                 lower.includes('retrobowl') || lower.includes('football') || lower.includes('volley') ||
                 lower.includes('sport') || lower === '1on1soccer' || lower === 'basketballstars' ||
@@ -1482,7 +1506,6 @@
                 lower === 'soccerbros' || lower === 'stickmangolf') {
                 cats.push('Sports');
             }
-            // Clicker – add 10bullets, 10morebullets, and existing
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets') {
@@ -1491,21 +1514,17 @@
                     cats.push('Brainrot');
                 }
             }
-            // Brainrot – add tripletobby, caseoh, tcubed
             if (lower.includes('brainrot') || lower.includes('skibidi') || lower === 'tripletobby' ||
                 lower === 'caseoh' || lower === 'tcubed') {
                 cats.push('Brainrot');
             }
-            // Obby – include obby jumper clicker, speed per click, tripletobby, redball4, supermario63, supermario64, deathrun3d, obbycart
             if (lower.includes('obby') || lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'tripletobby' ||
                 lower === 'redball4' || lower === 'supermario63' || lower === 'supermario64' || lower === 'deathrun3d' || lower === 'obbycart') {
                 cats.push('Obby');
             }
-            // Stickman – for all stickman games
             if (lower.includes('stickman')) {
                 cats.push('Stickman');
             }
-            // Puzzle – add chessclassic, magictiles3, sortthecourt, uno, plus existing
             if (lower === 'bloxorz' || lower === '2048' || lower === '99balls' ||
                 lower === 'candycrush' || lower === 'cuttherope' || lower === 'oneshotlegacy' ||
                 lower === 'riddleschool1' || lower === 'riddleschool2' || lower === 'blackjack' ||
@@ -1513,39 +1532,25 @@
                 lower === 'uno') {
                 cats.push('Puzzle');
             }
-            // Relaxing – include all Puzzle except cuttherope and oneshotlegacy, plus bitlife, growagarden, elasticface, slowroads
             const isPuzzle = cats.includes('Puzzle');
             const excludedFromRelaxing = ['cuttherope', 'oneshotlegacy'];
             if (isPuzzle && !excludedFromRelaxing.includes(id)) {
                 cats.push('Relaxing');
             }
-            // Additional relaxing games
             if (lower === 'bitlife' || lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads') {
                 cats.push('Relaxing');
             }
-            // Shooter – add 1v1lol, buildnow, gunspin
             if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin') {
                 cats.push('Shooter');
             }
-            // Basics – add baldi, caseoh, tcubed
             if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') {
                 cats.push('Basics');
             }
-            // Monkey Mart – no specific category, will fallback to Other
-            // Explicitly set to 'Other' if id is 'monkeymart' to avoid accidental categorization
-            if (lower === 'monkeymart') {
-                // Do not add any other category, so it remains 'Other' (handled by fallback)
-            }
-
-            // If no categories assigned, set 'Other'
-            if (cats.length === 0) {
-                cats.push('Other');
-            }
-            // Remove duplicates
+            if (lower === 'monkeymart') {}
+            if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
 
-        // ─── Game definitions with categories array ───
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -1803,23 +1808,18 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.1Z0YVZmdJoAVBPDLUb8sHwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'soccerbros', name: 'Soccer Bros', file: 'clsoccerbros.html',
                 img: 'https://images.crazygames.com/soccer-bros_16x9/20240109055124/soccer-bros_16x9-cover?auto=format%2Ccompress&q=45&cs=strip&ch=DPR&w=1200&h=630&fit=crop' },
-            // ─── NEW GAMES ───
             { id: 'amongus', name: 'Among Us', file: 'clamongus (2).html',
               img: 'https://th.bing.com/th/id/OIP.FbBfocc-ivVhQCngdALYRQHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'clusterrush', name: 'Cluster Rush', file: 'clclusterrush.html',
               img: 'https://tse3.mm.bing.net/th/id/OIP.HYjCnGdZd2WTH3yTU7NKCwHaES?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── DEATH RUN 3D ───
             { id: 'deathrun3d', name: 'Death Run 3D', file: 'cldeathrun.html',
               img: 'https://tse2.mm.bing.net/th/id/OIP.UcQ9HJmx41-x2PKPkWxkNQHaEY?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── OBBY CART ───
             { id: 'obbycart', name: 'Obby Cart', file: 'clobbycart.html',
               img: 'https://play-lh.googleusercontent.com/jXGqUhCN3t5zgqmG0urjHazzeEl1M1bpu474cMXyZ3A6Aro6Vq2D9ubx7Jx9m1FWc_2U637mW_SVzMu0RcgX_A' },
-            // ─── MONKEY MART ───
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
               img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
-        // Attach categories to each game
         const GAME_DATA = GAME_DATA_RAW.map(game => {
             if (game.id === 'randompicker') {
                 return { ...game, categories: ['Random'] };
@@ -1833,7 +1833,6 @@
         document.getElementById('themeToggleBtn').addEventListener('click', function() {
             const body = document.body;
             body.classList.remove('dark-theme', 'light-theme');
-
             if (themeState === 'default') {
                 body.classList.add('dark-theme');
                 themeState = 'dark';
@@ -1870,10 +1869,14 @@
             renderCycles();
         }
 
-        // ─── Render cycles with search and multi-category filters ───
-        function renderCycles() {
-            const row = document.getElementById('cyclesRow');
-            const filteredGames = GAME_DATA.filter(game => {
+        // ─── Pagination & lazy-loading ───
+        const PAGE_SIZE = 20;
+        let currentPage = 0;
+        let filteredGames = [];
+        let renderedGameIds = new Set();
+
+        function getFilteredGames() {
+            return GAME_DATA.filter(game => {
                 if (game.id === 'randompicker') return true;
                 const matchesSearch = game.name.toLowerCase().includes(searchQuery.toLowerCase());
                 let matchesCategory = false;
@@ -1884,32 +1887,44 @@
                 }
                 return matchesSearch && matchesCategory;
             });
+        }
 
-            // ─── SORT: favorites first, then A-Z with numbers after letters ───
+        function renderCycles(resetPage = true) {
+            if (resetPage) {
+                currentPage = 0;
+                renderedGameIds.clear();
+            }
+            filteredGames = getFilteredGames();
             const sorted = [...filteredGames].sort((a, b) => {
-                // Random picker always first
                 if (a.id === 'randompicker') return -1;
                 if (b.id === 'randompicker') return 1;
-                // Favorites first
                 const fa = favorites.includes(a.id);
                 const fb = favorites.includes(b.id);
                 if (fa && !fb) return -1;
                 if (!fa && fb) return 1;
-                // Both favorites or both not favorites: sort by name with numbers after letters
                 const aStartsWithDigit = /^[0-9]/.test(a.name);
                 const bStartsWithDigit = /^[0-9]/.test(b.name);
-                if (aStartsWithDigit && !bStartsWithDigit) return 1;  // numbers after letters
+                if (aStartsWithDigit && !bStartsWithDigit) return 1;
                 if (!aStartsWithDigit && bStartsWithDigit) return -1;
-                // Both letters or both numbers: normal localeCompare
                 return a.name.localeCompare(b.name);
             });
 
-            row.innerHTML = '';
-            let visibleCount = 0;
-            sorted.forEach(game => {
-                const isRandom = game.id === 'randompicker';
-                visibleCount++;
+            const row = document.getElementById('cyclesRow');
+            if (resetPage) {
+                row.innerHTML = '';
+            }
 
+            const start = currentPage * PAGE_SIZE;
+            const end = Math.min(start + PAGE_SIZE, sorted.length);
+            const pageItems = sorted.slice(start, end);
+
+            const fragment = document.createDocumentFragment();
+
+            pageItems.forEach(game => {
+                if (renderedGameIds.has(game.id)) return;
+                renderedGameIds.add(game.id);
+
+                const isRandom = game.id === 'randompicker';
                 const wrapper = document.createElement('div');
                 wrapper.className = 'cycle-wrapper';
                 wrapper.dataset.game = game.id;
@@ -1927,9 +1942,11 @@
                 } else {
                     const overlay = document.createElement('img');
                     overlay.className = 'cycle-overlay';
-                    overlay.src = game.img;
+                    overlay.dataset.src = game.img;
                     overlay.alt = game.name;
                     overlay.loading = 'lazy';
+                    // placeholder
+                    overlay.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
                     btn.appendChild(overlay);
                 }
 
@@ -1969,28 +1986,83 @@
                 wrapper.appendChild(btn);
                 wrapper.appendChild(label);
                 wrapper.appendChild(status);
-                row.appendChild(wrapper);
+                fragment.appendChild(wrapper);
             });
 
-            // game counter removed — no need to update it
+            row.appendChild(fragment);
+
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (end >= sorted.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+
+            // Lazy-load images (observer will check low-lag)
+            lazyLoadImages();
 
             const clearBtn = document.getElementById('searchClear');
             clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
         }
 
+        // ─── Lazy-load images with low-lag awareness ───
+        let imageObserver = null;
+
+        function lazyLoadImages() {
+            if ('IntersectionObserver' in window) {
+                if (imageObserver) imageObserver.disconnect();
+                imageObserver = new IntersectionObserver((entries) => {
+                    // If low-lag is active, skip loading any images
+                    if (document.body.classList.contains('low-lag')) return;
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                                img.removeAttribute('data-src');
+                            }
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                }, { rootMargin: '200px' });
+
+                document.querySelectorAll('.cycle-overlay[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            } else {
+                // Fallback: load immediately if not low-lag
+                if (!document.body.classList.contains('low-lag')) {
+                    document.querySelectorAll('.cycle-overlay[data-src]').forEach(img => {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    });
+                }
+            }
+        }
+
+        // ─── Load More ───
+        document.getElementById('loadMoreBtn').addEventListener('click', function() {
+            currentPage++;
+            renderCycles(false);
+        });
+
         // ─── Search ───
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
 
+        let searchTimeout;
         searchInput.addEventListener('input', function() {
-            searchQuery = this.value;
-            renderCycles();
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                searchQuery = this.value;
+                renderCycles(true);
+            }, 200);
         });
 
         searchClear.addEventListener('click', function() {
             searchInput.value = '';
             searchQuery = '';
-            renderCycles();
+            renderCycles(true);
             searchInput.focus();
         });
 
@@ -2005,7 +2077,7 @@
                 }
             }
             selectedCategories = selected;
-            renderCycles();
+            renderCycles(true);
         });
 
         // ─── Random Game ───
@@ -2017,7 +2089,7 @@
             launchGame(game.id);
         }
 
-        // ─── Game launcher (unchanged) ───
+        // ─── Game launcher ───
         (function() {
             const menuScreen = document.getElementById('menuScreen');
             const gameContainer = document.getElementById('gameContainer');
@@ -2191,118 +2263,36 @@
 
                 let gameName = game.name,
                     dotColor = 'purple';
-                // ─── Color assignments ───
-                if (gameId === 'stealbrainrotonline') dotColor = 'pink';
-                else if (gameId === 'stealbrainrot2') dotColor = 'purple';
-                else if (gameId === 'buildnow') dotColor = 'blue';
-                else if (gameId === 'redball4') dotColor = 'red';
-                else if (gameId === 'skibidibackrooms') dotColor = 'yellow';
-                else if (gameId === 'skibidishooter') dotColor = 'orange';
-                else if (gameId === 'cuttherope') dotColor = 'green';
-                else if (gameId === 'fnafshooter') dotColor = 'red';
-                else if (gameId === 'blackjack') dotColor = 'gold';
-                else if (gameId === 'fnac2') dotColor = 'red';
-                else if (gameId === 'bendy') dotColor = 'gold';
-                else if (gameId === 'gdlite') dotColor = 'cyan';
-                else if (gameId === '2048') dotColor = 'green';
-                else if (gameId === 'eaglercraft') dotColor = 'blue';
-                else if (gameId === '1v1lol') dotColor = 'blue';
-                else if (gameId === '1on1soccer') dotColor = 'green';
-                else if (gameId === 'burritobison') dotColor = 'orange';
-                else if (gameId === 'backrooms') dotColor = 'yellow';
-                else if (gameId === 'baldi') dotColor = 'red';
-                else if (gameId === 'basketballstars') dotColor = 'orange';
-                else if (gameId === 'bloxorz') dotColor = 'teal';
-                else if (gameId === 'bitlife') dotColor = 'green';
-                else if (gameId === 'caseoh') dotColor = 'pink';
-                else if (gameId === 'capybara') dotColor = 'teal';
-                else if (gameId === 'stealbrainrot') dotColor = 'pink';
-                else if (gameId === 'ducklife1' || gameId === 'ducklife2' || gameId === 'ducklife3' || gameId ===
-                    'ducklife4' || gameId === 'ducklife5') dotColor = 'yellow';
-                else if (gameId === 'deadzed1' || gameId === 'deadzed2') dotColor = 'red';
-                else if (gameId === 'elasticface') dotColor = 'teal';
-                else if (gameId === 'fnaf1' || gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' ||
-                    gameId === 'fnaf4') dotColor = 'red';
-                else if (gameId === 'fnac1' || gameId === 'fnac2') dotColor = 'red';
-                else if (gameId === 'granny1' || gameId === 'granny2') dotColor = 'red';
-                else if (gameId === 'googlebaseball') dotColor = 'blue';
-                else if (gameId === 'growagarden') dotColor = 'green';
-                else if (gameId === 'nzp') dotColor = 'gold';
-                else if (gameId === 'omeganugget') dotColor = 'orange';
-                else if (gameId === 'retrobowl') dotColor = 'orange';
-                else if (gameId === 'gunspin') dotColor = 'red';
-                else if (gameId === 'smashkarts') dotColor = 'orange';
-                else if (gameId === 'run3') dotColor = 'blue';
-                else if (gameId === 'stickmanhook') dotColor = 'teal';
-                else if (gameId === 'subwaylondon' || gameId === 'subwaymexico' || gameId === 'subwaysanfran' || gameId ===
-                    'subwaybeijing' || gameId === 'subwayberlin') dotColor = 'blue';
-                else if (gameId === 'supermario64') dotColor = 'orange';
-                else if (gameId === 'templerun2') dotColor = 'blue';
-                else if (gameId === 'zombierush') dotColor = 'red';
-                else if (gameId === '10bullets' || gameId === '10morebullets') dotColor = 'yellow';
-                else if (gameId === 'learntofly1' || gameId === 'learntofly2') dotColor = 'green';
-                else if (gameId === 'fnaw') dotColor = 'red';
-                else if (gameId === 'raft') dotColor = 'blue';
-                else if (gameId === 'uno') dotColor = 'red';
-                else if (gameId === 'spongebobrun') dotColor = 'yellow';
-                else if (gameId === 'mariocombat') dotColor = 'orange';
-                else if (gameId === 'mortalkombat1' || gameId === 'mortalkombat2') dotColor = 'red';
-                else if (gameId === 'stickmangolf') dotColor = 'green';
-                else if (gameId === 'riddleschool1' || gameId === 'riddleschool2') dotColor = 'yellow';
-                else if (gameId === 'flappybird') dotColor = 'orange';
-                else if (gameId === '99balls') dotColor = 'orange';
-                else if (gameId === 'baseballbros') dotColor = 'blue';
-                else if (gameId === 'retrobowlcollege') dotColor = 'orange';
-                else if (gameId === 'rainbowobby') dotColor = 'pink';
-                else if (gameId === 'soniccd') dotColor = 'cyan';
-                else if (gameId === 'slowroads') dotColor = 'teal';
-                else if (gameId === 'fruitninja') dotColor = 'orange';
-                else if (gameId === 'tripletobby') dotColor = 'pink';
-                else if (gameId === 'obbyjumperclicker') dotColor = 'green';
-                else if (gameId === 'obbybike') dotColor = 'yellow';
-                else if (gameId === 'supermario63') dotColor = 'red';
-                else if (gameId === 'magictiles3') dotColor = 'blue';
-                else if (gameId === 'hollowknight') dotColor = 'blue';
-                else if (gameId === 'dontyoulectureme') dotColor = 'pink';
-                else if (gameId === 'ruffle') dotColor = 'orange';
-                else if (gameId === 'deltarune') dotColor = 'purple';
-                else if (gameId === 'googledino') dotColor = 'yellow';
-                else if (gameId === 'fnafworld') dotColor = 'red';
-                else if (gameId === 'subwaysurfersmiami') dotColor = 'blue';
-                else if (gameId === 'subwaysurfershouston') dotColor = 'orange';
-                else if (gameId === 'basketbattle') dotColor = 'orange';
-                else if (gameId === 'soccerrandom') dotColor = 'green';
-                else if (gameId === 'sortthecourt') dotColor = 'purple';
-                else if (gameId === 'volleyrandom') dotColor = 'blue';
-                else if (gameId === 'tcubed') dotColor = 'pink';
-                else if (gameId === 'stickmankombat') dotColor = 'red';
-                else if (gameId === 'makeasuperboat') dotColor = 'cyan';
-                else if (gameId === 'oneshotlegacy') dotColor = 'gold';
-                else if (gameId === 'clarkingarena') dotColor = 'orange';
-                else if (gameId === '99nights') dotColor = 'purple';
-                else if (gameId === 'motox3m') dotColor = 'blue';
-                else if (gameId === 'motox3m2') dotColor = 'green';
-                else if (gameId === 'motox3m3') dotColor = 'red';
-                else if (gameId === 'candycrush') dotColor = 'pink';
-                else if (gameId === 'chessclassic') dotColor = 'gold';
-                else if (gameId === 'crazycattle') dotColor = 'orange';
-                else if (gameId === 'footballbros') dotColor = 'green';
-                else if (gameId === 'soccerbros') dotColor = 'green';
-                else if (gameId === 'solarsmash') dotColor = 'gold';
-                else if (gameId === 'undertale') dotColor = 'red';
-                else if (gameId === 'hobo1' || gameId === 'hobo2' || gameId === 'hobo3' || gameId === 'hobo4' || gameId ===
-                    'hobo5' || gameId === 'hobo6' || gameId === 'hobo7') dotColor = 'orange';
-                else if (gameId === 'hobovszombies') dotColor = 'orange';
-                else if (gameId === 'slope') dotColor = 'blue';
-                else if (gameId === 'slope2player') dotColor = 'green';
-                else if (gameId === 'speedperclick') dotColor = 'pink';
-                else if (gameId === 'minecraftpe') dotColor = 'green';
-                else if (gameId === 'paperio2') dotColor = 'cyan';
-                else if (gameId === 'amongus') dotColor = 'red';
-                else if (gameId === 'clusterrush') dotColor = 'orange';
-                else if (gameId === 'deathrun3d') dotColor = 'red';
-                else if (gameId === 'obbycart') dotColor = 'orange';
-                else if (gameId === 'monkeymart') dotColor = 'green';
+                const colorMap = {
+                    'stealbrainrotonline':'pink','stealbrainrot2':'purple','buildnow':'blue','redball4':'red',
+                    'skibidibackrooms':'yellow','skibidishooter':'orange','cuttherope':'green','fnafshooter':'red',
+                    'blackjack':'gold','fnac2':'red','bendy':'gold','gdlite':'cyan','2048':'green','eaglercraft':'blue',
+                    '1v1lol':'blue','1on1soccer':'green','burritobison':'orange','backrooms':'yellow','baldi':'red',
+                    'basketballstars':'orange','bloxorz':'teal','bitlife':'green','caseoh':'pink','capybara':'teal',
+                    'stealbrainrot':'pink','ducklife1':'yellow','ducklife2':'yellow','ducklife3':'yellow','ducklife4':'yellow',
+                    'ducklife5':'yellow','deadzed1':'red','deadzed2':'red','elasticface':'teal','fnaf1':'red','fnaf2':'red',
+                    'fnaf3':'red','fnaf3remastered':'red','fnaf4':'red','fnac1':'red','granny1':'red','granny2':'red',
+                    'googlebaseball':'blue','growagarden':'green','nzp':'gold','omeganugget':'orange','retrobowl':'orange',
+                    'gunspin':'red','smashkarts':'orange','run3':'blue','stickmanhook':'teal','subwaylondon':'blue',
+                    'subwaymexico':'blue','subwaysanfran':'blue','subwaybeijing':'blue','subwayberlin':'blue',
+                    'supermario64':'orange','templerun2':'blue','zombierush':'red','10bullets':'yellow','10morebullets':'yellow',
+                    'learntofly1':'green','learntofly2':'green','fnaw':'red','raft':'blue','uno':'red','spongebobrun':'yellow',
+                    'mariocombat':'orange','mortalkombat1':'red','mortalkombat2':'red','stickmangolf':'green',
+                    'riddleschool1':'yellow','riddleschool2':'yellow','flappybird':'orange','99balls':'orange',
+                    'baseballbros':'blue','retrobowlcollege':'orange','rainbowobby':'pink','soniccd':'cyan','slowroads':'teal',
+                    'fruitninja':'orange','tripletobby':'pink','obbyjumperclicker':'green','obbybike':'yellow',
+                    'supermario63':'red','magictiles3':'blue','hollowknight':'blue','dontyoulectureme':'pink','ruffle':'orange',
+                    'deltarune':'purple','googledino':'yellow','fnafworld':'red','subwaysurfersmiami':'blue',
+                    'subwaysurfershouston':'orange','basketbattle':'orange','soccerrandom':'green','sortthecourt':'purple',
+                    'volleyrandom':'blue','tcubed':'pink','stickmankombat':'red','makeasuperboat':'cyan','oneshotlegacy':'gold',
+                    'clarkingarena':'orange','99nights':'purple','motox3m':'blue','motox3m2':'green','motox3m3':'red',
+                    'candycrush':'pink','chessclassic':'gold','crazycattle':'orange','footballbros':'green','soccerbros':'green',
+                    'solarsmash':'gold','undertale':'red','hobo1':'orange','hobo2':'orange','hobo3':'orange','hobo4':'orange',
+                    'hobo5':'orange','hobo6':'orange','hobo7':'orange','hobovszombies':'orange','slope':'blue',
+                    'slope2player':'green','speedperclick':'pink','minecraftpe':'green','paperio2':'cyan','amongus':'red',
+                    'clusterrush':'orange','deathrun3d':'red','obbycart':'orange','monkeymart':'green'
+                };
+                if (colorMap[gameId]) dotColor = colorMap[gameId];
 
                 gameTitleText.textContent = gameName;
                 statusDot.className = 'dot ' + dotColor;
@@ -2405,13 +2395,34 @@
             console.log('🎮 Launcher ready.');
         })();
 
+        // ─── LAG KILLER – toggles low-lag and also hides images via CSS ───
+        window.toggleLagKiller = function() {
+            const body = document.body;
+            body.classList.toggle('low-lag');
+            const btn = document.querySelector('[onclick="toggleLagKiller()"]');
+            if (body.classList.contains('low-lag')) {
+                btn.textContent = '⚡ LAG KILLER ON';
+                btn.style.background = '#22c55e';
+                // Ensure no new images load while active
+                if (imageObserver) {
+                    imageObserver.disconnect();
+                    imageObserver = null;
+                }
+            } else {
+                btn.textContent = '⚡ LAG KILLER';
+                btn.style.background = '#f59e0b';
+                // Re-enable lazy loading for images not yet loaded
+                lazyLoadImages();
+            }
+            // Also handle rain if active
+            if (rainActive && body.classList.contains('low-lag')) {
+                if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
+            } else if (rainActive && !body.classList.contains('low-lag')) {
+                drawRain();
+            }
+        };
+
         // ─── Extra features (rain, music, soundboard, panic, etc.) ───
-        // (Keep all existing extra features code unchanged, they are below)
-        // For brevity, I will include the essential parts but we assume they are present.
-        // Since the code is large, I'll keep them as they were in the previous version.
-        // The only changes are in the renderCycles and category filter logic above.
-        // The rest (rain, music, soundboard, panic) remains exactly the same.
-        // I'll paste them but with the same content as before.
 
         // ─── Matrix rain ───
         const matrixCanvas = document.getElementById('matrixCanvas');
@@ -2495,14 +2506,12 @@
             }
         });
 
-        // ─── UPDATED MUSIC: Single track ───
+        // ─── MUSIC ───
         const MUSIC_TRACKS = {
             maskoff: 'Future - Mask Off Instrumental (Slowed & Reverb) Bass Boosted.mp3'
         };
-
         let menuMusic = null,
-            musicPlaying = true,
-            currentTrack = 'maskoff';
+            musicPlaying = true;
 
         function initMenuMusic() {
             menuMusic = new Audio(MUSIC_TRACKS.maskoff);
@@ -2530,7 +2539,6 @@
                 if (menuMusic) menuMusic.playbackRate = s;
                 document.getElementById('musicSpeedValue').textContent = s.toFixed(1) + 'x';
             });
-            // track selector removed – we only have one track
         }
         initMenuMusic();
 
@@ -2637,18 +2645,8 @@
             reader.readAsDataURL(file);
         };
 
-        window.toggleLagKiller = function() {
-            document.getElementById('mainBody').classList.toggle('low-lag');
-            if (rainActive && document.body.classList.contains('low-lag')) {
-                if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
-            } else if (rainActive && !document.body.classList.contains('low-lag')) {
-                drawRain();
-            }
-        };
-
         const sigmaBtn = document.getElementById('sigmaCursorBtn');
         let sigmaActive = false;
-
         sigmaBtn.addEventListener('click', function() {
             sigmaActive = !sigmaActive;
             document.body.classList.toggle('sigma-cursor', sigmaActive);
@@ -2674,7 +2672,6 @@
                 head: 'Schoology' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico', head: 'Khan Academy' }
         ];
-
         let currentCloakIndex = 0;
         window.toggleCloak = function() {
             currentCloakIndex = (currentCloakIndex + 1) % EDU_CLOAKS.length;
@@ -2684,14 +2681,12 @@
             document.getElementById('main-title').innerText = c.head;
         };
 
-        // ─── UPDATED SIGMATOWN: uses your image, now BIGGER (80px) ───
         let sigmaMode = false;
         window.toggleSigmaMode = function() {
             sigmaMode = !sigmaMode;
             const titleEl = document.getElementById('main-title');
             const btn = document.getElementById('sigmaToggleBtn');
             if (sigmaMode) {
-                // Replace title with your image – height increased to 80px
                 titleEl.innerHTML = '<img src="ChatGPT Image Jul 30, 2026, 08_16_00 PM.png" style="height: 80px; vertical-align: middle;" alt="Sigma">';
                 btn.textContent = '🔥 SIGMATOWN4LIFE ON';
                 btn.style.background = '#ff4500';
@@ -2714,7 +2709,7 @@
             document.documentElement.style.setProperty('--glow-color', 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
         });
 
-        // ─── Panic Button System (unchanged) ───
+        // ─── Panic Button System ───
         const DEFAULT_PANIC_BUTTONS = [
             { key: '6', url: 'https://www.ixl.com', label: 'IXL' },
             { key: '7', url: 'https://classroom.google.com', label: 'Google Classroom' },
@@ -2943,8 +2938,8 @@
         });
 
         // ─── Initial render ───
-        renderCycles();
-        console.log('✅ Dashboard with multi-category support loaded. Total games: ' + GAME_DATA.length);
+        renderCycles(true);
+        console.log('✅ Optimized dashboard loaded with pagination, lazy loading, and Lag Killer hiding images.');
     </script>
 </body>
 </html>
