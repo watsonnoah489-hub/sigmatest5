@@ -1258,7 +1258,7 @@
     <div id="menuScreen">
         <div class="header">
             <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle" id="gameCounter">🎮 102 games available</div>
+            <!-- game counter removed -->
         </div>
 
         <div class="controls">
@@ -1279,11 +1279,10 @@
                 <input type="range" id="musicSpeedSlider" min="0.5" max="2.0" step="0.1" value="1.0" style="width:140px; accent-color:#a855f7;">
                 <span class="speed-value" id="musicSpeedValue">1.0x</span>
                 <span style="font-size:18px;">🐇</span>
-                <select id="musicTrackSelect" style="background:#1a1a2e; color:white; border:1px solid var(--primary-color); border-radius:30px; padding:6px 12px; font-weight:bold; font-size:12px;">
-                    <option value="doors">🚪 Doors Elevator</option>
-                    <option value="mk">⚔️ Mortal Kombat I</option>
-                    <option value="wii">🎮 Wii Sports</option>
-                </select>
+                <!-- Replaced track selector with fixed label -->
+                <span style="background:#1a1a2e; padding:6px 16px; border-radius:30px; border:1px solid var(--primary-color); color:white;">
+                  🎵 Mask Off
+                </span>
             </div>
             <button class="btn" style="background:#ec4899;" onclick="toggleCloak()">🎭 CYCLE CLOAK</button>
             <span style="font-size:11px;opacity:0.85;background:rgba(0,0,0,0.5);padding:6px 12px;border-radius:20px;border:1px solid rgba(59,130,246,0.4);">Key <strong>6</strong> → IXL in new tab</span>
@@ -1973,9 +1972,7 @@
                 row.appendChild(wrapper);
             });
 
-            const totalGames = GAME_DATA.filter(g => g.id !== 'randompicker').length;
-            const visibleGames = sorted.filter(g => g.id !== 'randompicker').length;
-            document.getElementById('gameCounter').textContent = '🎮 ' + visibleGames + ' of ' + totalGames + ' games available';
+            // game counter removed — no need to update it
 
             const clearBtn = document.getElementById('searchClear');
             clearBtn.style.display = searchQuery.length > 0 ? 'block' : 'none';
@@ -2498,20 +2495,21 @@
             }
         });
 
+        // ─── UPDATED MUSIC: Single track ───
         const MUSIC_TRACKS = {
-            doors: 'https://www.myinstants.com/media/sounds/doors-elevator-music.mp3',
-            mk: 'https://www.myinstants.com/media/sounds/mortal-kombat-snes-music-title-player-select.mp3',
-            wii: 'https://www.myinstants.com/media/sounds/wii-sports-soundtrack.mp3'
+            maskoff: 'Future - Mask Off Instrumental (Slowed & Reverb) Bass Boosted.mp3'
         };
+
         let menuMusic = null,
             musicPlaying = true,
-            currentTrack = 'doors';
+            currentTrack = 'maskoff';
 
         function initMenuMusic() {
-            menuMusic = new Audio(MUSIC_TRACKS.doors);
+            menuMusic = new Audio(MUSIC_TRACKS.maskoff);
             menuMusic.loop = true;
             menuMusic.volume = 0.45;
             menuMusic.play().catch(() => {});
+
             document.getElementById('musicToggleBtn').addEventListener('click', function() {
                 musicPlaying = !musicPlaying;
                 if (musicPlaying) {
@@ -2526,32 +2524,13 @@
                     this.style.background = '#6b7280';
                 }
             });
+
             document.getElementById('musicSpeedSlider').addEventListener('input', function() {
                 const s = parseFloat(this.value);
                 if (menuMusic) menuMusic.playbackRate = s;
                 document.getElementById('musicSpeedValue').textContent = s.toFixed(1) + 'x';
             });
-            document.getElementById('musicTrackSelect').addEventListener('change', function() {
-                const trackKey = this.value;
-                if (trackKey === currentTrack && menuMusic && !menuMusic.paused) return;
-                currentTrack = trackKey;
-                const wasPlaying = musicPlaying && menuMusic && !menuMusic.paused;
-                if (menuMusic) {
-                    menuMusic.pause();
-                    menuMusic.src = MUSIC_TRACKS[trackKey];
-                    menuMusic.load();
-                    if (wasPlaying || musicPlaying) {
-                        menuMusic.play().catch(() => {});
-                    }
-                } else {
-                    menuMusic = new Audio(MUSIC_TRACKS[trackKey]);
-                    menuMusic.loop = true;
-                    menuMusic.volume = 0.45;
-                    if (musicPlaying) {
-                        menuMusic.play().catch(() => {});
-                    }
-                }
-            });
+            // track selector removed – we only have one track
         }
         initMenuMusic();
 
@@ -2705,13 +2684,15 @@
             document.getElementById('main-title').innerText = c.head;
         };
 
+        // ─── UPDATED SIGMATOWN: uses your image, now BIGGER (80px) ───
         let sigmaMode = false;
         window.toggleSigmaMode = function() {
             sigmaMode = !sigmaMode;
             const titleEl = document.getElementById('main-title');
             const btn = document.getElementById('sigmaToggleBtn');
             if (sigmaMode) {
-                titleEl.textContent = '🔥 SIGMATOWN4LIFE 🔥';
+                // Replace title with your image – height increased to 80px
+                titleEl.innerHTML = '<img src="ChatGPT Image Jul 30, 2026, 08_16_00 PM.png" style="height: 80px; vertical-align: middle;" alt="Sigma">';
                 btn.textContent = '🔥 SIGMATOWN4LIFE ON';
                 btn.style.background = '#ff4500';
             } else {
