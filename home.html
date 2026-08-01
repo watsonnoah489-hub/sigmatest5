@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://th.bing.com" crossorigin>
     <link rel="preconnect" href="https://images.igdb.com" crossorigin>
     <style>
-        /* ────── ALL STYLES (unchanged from previous) ────── */
+        /* ────── ALL STYLES (same as previous) ────── */
         :root { --primary-color: #3b82f6; --glow-color: rgba(59,130,246,0.95); --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3'); --sigma-cursor-url: auto; }
         body { background-image: var(--bg-url); background-size: cover; background-position: center; background-attachment: fixed; color: white; font-family: 'Segoe UI','Courier New',monospace; margin: 0; padding: 30px 20px; min-height: 100vh; overflow-x: hidden; position: relative; cursor: auto; transition: background-color 0.3s,color 0.3s; }
         body.sigma-cursor, body.sigma-cursor * { cursor: var(--sigma-cursor-url, auto) !important; }
@@ -282,17 +282,13 @@
         const SIGMA_CURSOR_DATA_URI = "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23000%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-weight=%22bold%22 font-family=%22sans-serif%22%3E%26%23x3A3;%3C/text%3E%3C/svg%3E') 16 16, auto";
 
         // ──────────────────────────────────────────────────────────────
-        //  SIGMATOWN MODE – tracks badge state
+        //  SIGMATOWN MODE
         // ──────────────────────────────────────────────────────────────
         let sigmaMode = false;
-        // Load from localStorage so the overlay can read it
-        if (localStorage.getItem('sigmaMode') === 'true') {
-            sigmaMode = true;
-        }
+        if (localStorage.getItem('sigmaMode') === 'true') sigmaMode = true;
 
         // ──────────────────────────────────────────────────────────────
-        //  NEW TAB – inject overlay with Fullscreen (blue) & Lock Cursor (green)
-        //  Badge changes to SIGMATOWN4LIFE when sigmaMode is true
+        //  NEW TAB – inject overlay with robust retry
         // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(gameId, file, gameName) {
             const newWin = window.open(file, '_blank');
@@ -301,17 +297,34 @@
                 return;
             }
 
-            const injectOverlay = () => {
+            let attempts = 0;
+            const maxAttempts = 10; // 5 seconds total
+
+            function tryInject() {
                 try {
                     const doc = newWin.document;
-                    if (!doc || !doc.body) return false;
-                    if (doc.getElementById('stBadge')) return true;
+                    // Check if document is ready and has a body
+                    if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
+                        // Document not ready yet
+                        if (++attempts < maxAttempts) {
+                            setTimeout(tryInject, 500);
+                        } else {
+                            showPanicToast('⚠️ Could not inject overlay after multiple attempts.', 3000);
+                            console.error('Injection failed after ' + maxAttempts + ' attempts for game: ' + gameName);
+                        }
+                        return;
+                    }
 
-                    // Read sigmaMode from localStorage (set by dashboard toggle)
+                    // If already injected, skip
+                    if (doc.getElementById('stBadge')) {
+                        console.log('Overlay already injected for ' + gameName);
+                        return;
+                    }
+
                     const isSigmaMode = localStorage.getItem('sigmaMode') === 'true';
                     const badgeText = isSigmaMode ? 'SIGMATOWN4LIFE' : 'ST';
 
-                    // ── Styles ──
+                    // ── Inject styles ──
                     const style = doc.createElement('style');
                     style.textContent = `
                         .st-overlay-controls {
@@ -355,19 +368,17 @@
                             background: ${isSigmaMode ? 'linear-gradient(135deg,#ff0000,#ff4500)' : 'linear-gradient(135deg,#ff6b00,#ff4500)'};
                             color: white;
                             font-weight: 900;
-                            font-size: ${isSigmaMode ? '12px' : '16px'};
-                            padding: ${isSigmaMode ? '6px 14px' : '4px 12px'};
+                            font-size: 16px;
+                            padding: 4px 12px;
                             border-radius: 30px;
                             border: 1px solid #ffd700;
                             box-shadow: 0 0 20px rgba(255,107,0,0.6);
                             margin-left: 6px;
-                            letter-spacing: ${isSigmaMode ? '0.5px' : '1px'};
+                            letter-spacing: 1px;
                             text-shadow: 0 0 8px #ffd700;
                             animation: stPulse 1.5s ease-in-out infinite;
                             user-select: none;
                             display: inline-block;
-                            font-size: ${isSigmaMode ? '14px' : '16px'};
-                            padding: ${isSigmaMode ? '6px 14px' : '4px 12px'};
                         }
                         .st-overlay-titlebar {
                             position: fixed;
@@ -452,21 +463,19 @@
                             '<span class="icon">🔒</span> Lock Cursor';
                     });
 
-                    return true;
+                    console.log('✅ Overlay injected for ' + gameName);
                 } catch (e) {
-                    return false;
+                    console.error('Injection error for ' + gameName + ':', e);
+                    if (++attempts < maxAttempts) {
+                        setTimeout(tryInject, 500);
+                    } else {
+                        showPanicToast('⚠️ Failed to inject overlay for ' + gameName, 3000);
+                    }
                 }
-            };
-
-            // Try immediately, then fallback
-            if (!injectOverlay()) {
-                newWin.addEventListener('DOMContentLoaded', () => {
-                    injectOverlay();
-                });
-                setTimeout(() => {
-                    injectOverlay();
-                }, 1000);
             }
+
+            // Start injection attempt after a short delay to allow page to load
+            setTimeout(tryInject, 300);
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -885,7 +894,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER – all games at once
+        //  RENDER
         // ──────────────────────────────────────────────────────────────
         function renderCycles() {
             const filtered = GAME_DATA.filter(game => {
@@ -1379,7 +1388,7 @@
         };
 
         // ──────────────────────────────────────────────────────────────
-        //  SIGMATOWN MODE – also updates the badge in the overlay
+        //  SIGMATOWN MODE
         // ──────────────────────────────────────────────────────────────
         window.toggleSigmaMode = function() {
             sigmaMode = !sigmaMode;
@@ -1629,7 +1638,7 @@
         //  INIT
         // ──────────────────────────────────────────────────────────────
         renderCycles();
-        console.log('🚀 Gameshack ready – Fullscreen (blue), Lock Cursor (green), ST ↔ SIGMATOWN4LIFE');
+        console.log('🚀 Gameshack ready – robust overlay injection (retry up to 10x)');
     </script>
 </body>
 </html>
