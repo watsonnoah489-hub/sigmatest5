@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://th.bing.com" crossorigin>
     <link rel="preconnect" href="https://images.igdb.com" crossorigin>
     <style>
-        /* ────── ALL STYLES (same as previous) ────── */
+        /* ────── ALL STYLES (unchanged from previous) ────── */
         :root { --primary-color: #3b82f6; --glow-color: rgba(59,130,246,0.95); --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3'); --sigma-cursor-url: auto; }
         body { background-image: var(--bg-url); background-size: cover; background-position: center; background-attachment: fixed; color: white; font-family: 'Segoe UI','Courier New',monospace; margin: 0; padding: 30px 20px; min-height: 100vh; overflow-x: hidden; position: relative; cursor: auto; transition: background-color 0.3s,color 0.3s; }
         body.sigma-cursor, body.sigma-cursor * { cursor: var(--sigma-cursor-url, auto) !important; }
@@ -291,6 +291,12 @@
         //  NEW TAB – inject overlay with robust retry
         // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(gameId, file, gameName) {
+            // Special handling for "Bug Reports" and "Game Suggestions" – open directly
+            if (gameId === 'bugreports' || gameId === 'gamesuggestions') {
+                window.open(file, '_blank');
+                return;
+            }
+
             const newWin = window.open(file, '_blank');
             if (!newWin) {
                 showPanicToast('⚠️ Popup blocked! Please allow popups for this site.', 3000);
@@ -298,14 +304,12 @@
             }
 
             let attempts = 0;
-            const maxAttempts = 10; // 5 seconds total
+            const maxAttempts = 10;
 
             function tryInject() {
                 try {
                     const doc = newWin.document;
-                    // Check if document is ready and has a body
                     if (!doc || !doc.body || doc.body.innerHTML.trim() === '') {
-                        // Document not ready yet
                         if (++attempts < maxAttempts) {
                             setTimeout(tryInject, 500);
                         } else {
@@ -315,16 +319,11 @@
                         return;
                     }
 
-                    // If already injected, skip
-                    if (doc.getElementById('stBadge')) {
-                        console.log('Overlay already injected for ' + gameName);
-                        return;
-                    }
+                    if (doc.getElementById('stBadge')) return;
 
                     const isSigmaMode = localStorage.getItem('sigmaMode') === 'true';
                     const badgeText = isSigmaMode ? 'SIGMATOWN4LIFE' : 'ST';
 
-                    // ── Inject styles ──
                     const style = doc.createElement('style');
                     style.textContent = `
                         .st-overlay-controls {
@@ -418,7 +417,6 @@
                     `;
                     doc.head.appendChild(style);
 
-                    // ── HTML ──
                     const controlsHTML = `
                         <div class="st-overlay-controls">
                             <button class="ctrl-btn fullscreen" id="stFullscreenBtn"><span class="icon">⛶</span> Fullscreen</button>
@@ -436,7 +434,6 @@
                         doc.body.appendChild(container.firstChild);
                     }
 
-                    // ── Fullscreen ──
                     const fsBtn = doc.getElementById('stFullscreenBtn');
                     fsBtn.addEventListener('click', () => {
                         if (!doc.fullscreenElement) {
@@ -446,7 +443,6 @@
                         }
                     });
 
-                    // ── Lock Cursor ──
                     const cursorBtn = doc.getElementById('stCursorBtn');
                     cursorBtn.addEventListener('click', () => {
                         if (doc.pointerLockElement) {
@@ -474,12 +470,12 @@
                 }
             }
 
-            // Start injection attempt after a short delay to allow page to load
             setTimeout(tryInject, 300);
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (full list)
+        //  GAME DATA (UPDATED: Skibidi Shooter to Shooter, Burrito Bison replaced,
+        //  Car King Arena (with fly) added, Pacman added)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             if (!id) return ['Other'];
@@ -564,9 +560,13 @@
             if (lower === 'bitlife' || lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads') {
                 cats.push('Relaxing');
             }
-            if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin') cats.push('Shooter');
+            // ─── UPDATED SHOOTER CATEGORY ───
+            if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin' || lower === 'skibidishooter') cats.push('Shooter');
             if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') cats.push('Basics');
             if (lower === 'monkeymart') {}
+            if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman') cats.push('Other');
+            // Ensure Car King Arena games get the right categories
+            if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -583,7 +583,8 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobisonlaunchalibre.html',
+            // ─── REPLACED BURRITO BISON ───
+            { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobison.html',
                 img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -755,7 +756,11 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── CAR KING ARENA (no fly) ───
             { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── CAR KING ARENA (with fly) ───
+            { id: 'carkingarena', name: 'Car King Arena (with fly)', file: 'carkingarena.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '99nights', name: '99 Nights', file: 'cl99nightsitf (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.ToWfAuDvC1Nn2bD1K35CWQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -808,6 +813,7 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'skibidibackrooms', name: 'Skibidi in the Backrooms', file: 'clskibidiinthebackrooms (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.DJOrcXU5HPSUlji-NDRPQAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── SKIBIDI SHOOTER (UPDATED TO SHOOTER CATEGORY) ───
             { id: 'skibidishooter', name: 'Skibidi Shooter', file: 'clskibidishooter.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.PT_F32EbqeOknYqNgQgGIgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stealbrainrotonline', name: 'Steal a Brainrot Online', file: 'clstealbrainrot.html',
@@ -837,7 +843,13 @@
             { id: 'obbycart', name: 'Obby Cart', file: 'clobbycart.html',
                 img: 'https://play-lh.googleusercontent.com/jXGqUhCN3t5zgqmG0urjHazzeEl1M1bpu474cMXyZ3A6Aro6Vq2D9ubx7Jx9m1FWc_2U637mW_SVzMu0RcgX_A' },
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── PACMAN ───
+            { id: 'pacman', name: 'Pacman', file: 'pacman.html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.1k6R3CFImsN4nJoE8-TnegHaEc?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── BUG REPORTS & GAME SUGGESTIONS ───
+            { id: 'bugreports', name: '🐛 Bug Reports', file: 'https://docs.google.com/forms/d/e/1FAIpQLSenQfSYj4HeA9fT1mQJB2L7cNUmQeh-Uw47VIovdr0H_U3FBA/viewform?usp=sharing&ouid=103001268642622547823', img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'gamesuggestions', name: '💡 Game Suggestions', file: 'https://docs.google.com/forms/d/e/1FAIpQLSeB3Z_E-XKzEtNZOVn8FcQtUwB186qt6SXYvIRKffvTcax6Ww/viewform?usp=publish-editor', img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -1638,7 +1650,7 @@
         //  INIT
         // ──────────────────────────────────────────────────────────────
         renderCycles();
-        console.log('🚀 Gameshack ready – robust overlay injection (retry up to 10x)');
+        console.log('🚀 Gameshack ready – Skibidi Shooter in Shooter, Burrito Bison replaced, both Car King Arenas, Pacman added!');
     </script>
 </body>
 </html>
