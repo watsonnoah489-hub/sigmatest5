@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://th.bing.com" crossorigin>
     <link rel="preconnect" href="https://images.igdb.com" crossorigin>
     <style>
-        /* ────── ALL STYLES (unchanged from previous) ────── */
+        /* ────── ALL STYLES ────── */
         :root { --primary-color: #3b82f6; --glow-color: rgba(59,130,246,0.95); --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3'); --sigma-cursor-url: auto; }
         body { background-image: var(--bg-url); background-size: cover; background-position: center; background-attachment: fixed; color: white; font-family: 'Segoe UI','Courier New',monospace; margin: 0; padding: 30px 20px; min-height: 100vh; overflow-x: hidden; position: relative; cursor: auto; transition: background-color 0.3s,color 0.3s; }
         body.sigma-cursor, body.sigma-cursor * { cursor: var(--sigma-cursor-url, auto) !important; }
@@ -166,6 +166,95 @@
         .controls .panic-btn { background:#dc2626; box-shadow:0 0 20px rgba(220,38,38,0.5); position:relative; }
         .controls .panic-btn:hover { background:#b91c1c; box-shadow:0 0 35px rgba(220,38,38,0.8); }
         .controls .panic-btn .badge-count { position:absolute; top:-6px; right:-6px; background:#facc15; color:#000; border-radius:50%; font-size:10px; font-weight:700; padding:2px 7px; min-width:20px; text-align:center; border:1px solid #000; }
+
+        /* ─── CREDITS MODAL ─── */
+        #creditsModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+        #creditsModal.open { display: flex; }
+        .credits-box {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 60px var(--glow-color);
+            color: white;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .credits-box h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .credits-box hr {
+            border-color: #334155;
+            margin-bottom: 20px;
+        }
+        .credits-box .dev {
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .credits-box .dev strong {
+            color: #facc15;
+        }
+        .credits-box .thanks-title {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .credits-box ul {
+            list-style: none;
+            padding: 0;
+            font-size: 16px;
+        }
+        .credits-box ul li {
+            padding: 8px 0;
+            border-bottom: 1px solid #2a2a3a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .credits-box ul li:last-child {
+            border-bottom: none;
+        }
+        .credits-box ul li .role {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+        .credits-close-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 30px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+        .credits-close-btn:hover {
+            filter: brightness(1.2);
+        }
+        @media (max-width: 540px) {
+            .credits-box { padding: 25px; }
+            .credits-box h2 { font-size: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -191,6 +280,24 @@
                 <button class="btn btn-reset" id="panicResetBtn">↺ Reset Defaults</button>
                 <button class="btn btn-secondary" id="panicCloseBtn">✕ Close</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ─── CREDITS MODAL ─── -->
+    <div id="creditsModal">
+        <div class="credits-box">
+            <h2>🎉 Credits</h2>
+            <hr>
+            <div class="dev"><strong>Lead Developer:</strong> Levi Watson (aka TimeBandit)</div>
+            <div class="thanks-title"><strong>Special Thanks To:</strong></div>
+            <ul>
+                <li>🙏 Jerrmiaah Triplelet <span class="role">– HTML game files</span></li>
+                <li>🙏 Hunter Kizziah <span class="role">– Promoting the site</span></li>
+                <li>🙏 Harvery Kizziah <span class="role">– Promoting the site</span></li>
+                <li>🙏 Justin / Cbo <span class="role">– Promoting the site</span></li>
+                <li>🙏 Everyone else who helped make this site possible!</li>
+            </ul>
+            <button class="credits-close-btn" onclick="document.getElementById('creditsModal').classList.remove('open')">✕ Close</button>
         </div>
     </div>
 
@@ -291,6 +398,12 @@
         //  NEW TAB – inject overlay with robust retry
         // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(gameId, file, gameName) {
+            // ─── CREDITS ───
+            if (gameId === 'credits') {
+                document.getElementById('creditsModal').classList.add('open');
+                return;
+            }
+
             // Special handling for "Bug Reports" and "Game Suggestions" – open directly
             if (gameId === 'bugreports' || gameId === 'gamesuggestions') {
                 window.open(file, '_blank');
@@ -474,8 +587,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (UPDATED: Skibidi Shooter to Shooter, Burrito Bison replaced,
-        //  Car King Arena (with fly) added, Pacman added)
+        //  GAME DATA
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             if (!id) return ['Other'];
@@ -529,7 +641,8 @@
                 lower.includes('sport') || lower === '1on1soccer' || lower === 'basketballstars' ||
                 lower === 'googlebaseball' || lower === 'retrobowlcollege' || lower === 'baseballbros' ||
                 lower === 'basketbattle' || lower === 'soccerrandom' || lower === 'footballbros' ||
-                lower === 'soccerbros' || lower === 'stickmangolf') {
+                lower === 'soccerbros' || lower === 'stickmangolf' ||
+                lower === 'polytrack') {
                 cats.push('Sports');
             }
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
@@ -543,7 +656,8 @@
                 cats.push('Brainrot');
             }
             if (lower.includes('obby') || lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'tripletobby' ||
-                lower === 'redball4' || lower === 'supermario63' || lower === 'supermario64' || lower === 'deathrun3d' || lower === 'obbycart') {
+                lower === 'redball4' || lower === 'supermario63' || lower === 'supermario64' || lower === 'deathrun3d' || lower === 'obbycart' ||
+                lower === 'blockcraftparkour') {
                 cats.push('Obby');
             }
             if (lower.includes('stickman')) cats.push('Stickman');
@@ -560,12 +674,10 @@
             if (lower === 'bitlife' || lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads') {
                 cats.push('Relaxing');
             }
-            // ─── UPDATED SHOOTER CATEGORY ───
             if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin' || lower === 'skibidishooter') cats.push('Shooter');
-            if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') cats.push('Basics');
+            if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed' || lower === 'blockcraftparkour') cats.push('Basics');
             if (lower === 'monkeymart') {}
-            if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman') cats.push('Other');
-            // Ensure Car King Arena games get the right categories
+            if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman' || lower === 'credits') cats.push('Other');
             if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
@@ -583,7 +695,6 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── REPLACED BURRITO BISON ───
             { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobison.html',
                 img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
@@ -756,10 +867,8 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── CAR KING ARENA (no fly) ───
             { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── CAR KING ARENA (with fly) ───
             { id: 'carkingarena', name: 'Car King Arena (with fly)', file: 'carkingarena.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '99nights', name: '99 Nights', file: 'cl99nightsitf (2).html',
@@ -813,7 +922,6 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'skibidibackrooms', name: 'Skibidi in the Backrooms', file: 'clskibidiinthebackrooms (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.DJOrcXU5HPSUlji-NDRPQAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── SKIBIDI SHOOTER (UPDATED TO SHOOTER CATEGORY) ───
             { id: 'skibidishooter', name: 'Skibidi Shooter', file: 'clskibidishooter.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.PT_F32EbqeOknYqNgQgGIgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stealbrainrotonline', name: 'Steal a Brainrot Online', file: 'clstealbrainrot.html',
@@ -844,6 +952,11 @@
                 img: 'https://play-lh.googleusercontent.com/jXGqUhCN3t5zgqmG0urjHazzeEl1M1bpu474cMXyZ3A6Aro6Vq2D9ubx7Jx9m1FWc_2U637mW_SVzMu0RcgX_A' },
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW GAMES (Kartbros REMOVED) ───
+            { id: 'blockcraftparkour', name: '⛏️ Minecraft Knockoff Parkour', file: 'clblockcraftparkour.html', img: 'https://tse2.mm.bing.net/th/id/OIP.oLZ3INEW4JOEoq6GXl-thQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'polytrack', name: '🏁 Polytrack', file: 'polytrack.html', img: 'https://th.bing.com/th/id/OIP.5ciuC7UTrvUVmwdfGNBVVgHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── CREDITS ───
+            { id: 'credits', name: '📜 Credits', file: 'credits', img: '' },
             // ─── PACMAN ───
             { id: 'pacman', name: 'Pacman', file: 'pacman.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.1k6R3CFImsN4nJoE8-TnegHaEc?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1650,7 +1763,7 @@
         //  INIT
         // ──────────────────────────────────────────────────────────────
         renderCycles();
-        console.log('🚀 Gameshack ready – Skibidi Shooter in Shooter, Burrito Bison replaced, both Car King Arenas, Pacman added!');
+        console.log('🚀 Gameshack ready – Kartbros removed!');
     </script>
 </body>
 </html>
