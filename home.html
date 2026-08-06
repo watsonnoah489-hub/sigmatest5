@@ -18,7 +18,6 @@
             --primary-color: #3b82f6;
             --glow-color: rgba(59, 130, 246, 0.95);
             --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3');
-            --sigma-cursor-url: auto;
         }
 
         /* ────── BODY & BASE ────── */
@@ -37,8 +36,6 @@
             cursor: auto;
             transition: background-color 0.3s, color 0.3s;
         }
-        body.sigma-cursor,
-        body.sigma-cursor * { cursor: var(--sigma-cursor-url, auto) !important; }
         body.low-lag {
             background-image: none !important;
             background-color: #050505 !important;
@@ -51,7 +48,6 @@
         }
         body.low-lag .circle::before { opacity: 0.2 !important; animation: none !important; }
         body.low-lag #matrixCanvas { display: none !important; }
-        body.low-lag .header,
         body.low-lag .controls,
         body.low-lag .soundboard-section,
         body.low-lag .cycle-btn {
@@ -68,7 +64,6 @@
             color: #4b7bec !important;
         }
         body.low-lag .cycle-btn .spinner-ring { opacity: 0 !important; }
-        body.low-lag .header .subtitle { opacity: 0.4 !important; }
 
         /* ────── DARK THEME ────── */
         body.dark-theme {
@@ -76,7 +71,6 @@
             background-color: #0a0a0a !important;
             color: #f0f0f0 !important;
         }
-        body.dark-theme .header,
         body.dark-theme .controls,
         body.dark-theme .soundboard-section,
         body.dark-theme .sound-item,
@@ -85,7 +79,6 @@
             border-color: #333 !important;
             box-shadow: none !important;
         }
-        body.dark-theme .header .subtitle,
         body.dark-theme .cycle-status,
         body.dark-theme .cycle-label {
             color: #aaa !important;
@@ -109,7 +102,6 @@
             background-color: #f4f6f8 !important;
             color: #111 !important;
         }
-        body.light-theme .header,
         body.light-theme .controls,
         body.light-theme .soundboard-section,
         body.light-theme .sound-item,
@@ -118,7 +110,6 @@
             border-color: #bbb !important;
             box-shadow: none !important;
         }
-        body.light-theme .header .subtitle,
         body.light-theme .cycle-status,
         body.light-theme .cycle-label {
             color: #333 !important;
@@ -160,62 +151,13 @@
         }
         body.rain-active #matrixCanvas { opacity: 0.65; }
 
-        /* ────── HEADER ────── */
-        .header,
+        /* ────── CONTROLS ────── */
         .controls,
         .cycles-row,
         .soundboard-section {
             position: relative;
             z-index: 10;
         }
-        .header {
-            background: rgba(13, 17, 23, 0.92);
-            padding: 15px 40px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            text-align: center;
-            width: 70%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            backdrop-filter: blur(6px);
-            border: 1px solid var(--primary-color);
-            box-shadow: 0 0 35px var(--glow-color);
-        }
-        .header .subtitle {
-            font-size: 14px;
-            opacity: 0.7;
-            margin-top: 4px;
-        }
-
-        /* ─── TEXT NOW USES PRIMARY COLOR ─── */
-        #main-title {
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        .cycle-label {
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        .cycle-status {
-            color: var(--primary-color);
-            opacity: 0.8;
-            transition: color 0.3s;
-        }
-        .soundboard-header span:first-child {
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        .game-title-bar {
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-        .credits-box h2 {
-            color: var(--primary-color);
-            transition: color 0.3s;
-        }
-
-        /* ────── CONTROLS ────── */
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -260,8 +202,7 @@
             background: rgba(0, 0, 0, 0.85);
         }
         #searchInput::placeholder {
-            color: #94a3b8;
-            font-style: italic;
+            color: transparent !important;
         }
         #searchClear {
             position: relative;
@@ -467,6 +408,8 @@
             align-items: center;
             flex-wrap: wrap;
         }
+        .soundboard-header span:first-child { display: none; }
+        .mute-note { display: none; }
         .soundboard-grid {
             display: flex;
             flex-wrap: wrap;
@@ -538,13 +481,6 @@
             padding: 4px 10px;
             font-size: 0.8rem;
             font-family: monospace;
-        }
-        .mute-note {
-            font-size: 12px;
-            background: #000000aa;
-            padding: 4px 12px;
-            border-radius: 20px;
-            margin-left: 15px;
         }
 
         /* ────── BUTTONS ────── */
@@ -636,12 +572,73 @@
         }
         input[type="text"]:focus { border-color: #a855f7; }
 
+        /* ────── WALLPAPER ICONS ────── */
+        .custom-bg-area .icon-btn img {
+            display: block;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+        .custom-bg-area .icon-btn {
+            padding: 4px 8px !important;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            cursor: pointer;
+        }
+        .custom-bg-area .icon-btn:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        /* ────── PANIC BUTTON ────── */
+        .controls .panic-btn {
+            background: #dc2626;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+            position: relative;
+            padding: 8px 12px;
+        }
+        .controls .panic-btn:hover {
+            background: #b91c1c;
+            box-shadow: 0 0 35px rgba(220, 38, 38, 0.8);
+        }
+        .controls .panic-btn .badge-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #facc15;
+            color: #000;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            min-width: 20px;
+            text-align: center;
+            border: 1px solid #000;
+        }
+        .controls .panic-btn img {
+            display: block;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+        }
+
+        /* ────── LAG KILLER BUTTON ────── */
+        .lag-killer-btn img {
+            display: block;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+        }
+        .lag-killer-btn {
+            padding: 8px 12px !important;
+        }
+
         /* ────── RESPONSIVE ────── */
         @media (max-width: 768px) {
             .cycle-btn { width: 120px; height: 120px; }
             .cycle-btn.random-btn .dice-icon { font-size: 60px; }
             .cycles-row { gap: 20px; }
-            .cycle-label { font-size: 15px; }
             .star-fav { font-size: 28px; right: 4px; top: 2px; padding: 2px 8px; }
             #searchInput { width: 80%; font-size: 14px; padding: 10px 18px; }
             #categoryFilter { min-width: 150px; font-size: 13px; padding: 8px 16px; max-height: 150px; }
@@ -650,7 +647,6 @@
             .cycle-btn { width: 100px; height: 100px; }
             .cycle-btn.random-btn .dice-icon { font-size: 50px; }
             .cycles-row { gap: 14px; }
-            .header h1 { font-size: 30px; }
             .controls { flex-direction: column; align-items: stretch; border-radius: 30px; padding: 15px; }
             .soundboard-section { padding: 16px; }
             .soundboard-header { font-size: 20px; }
@@ -1093,29 +1089,6 @@
             font-weight: 600;
             margin-left: 6px;
         }
-        .controls .panic-btn {
-            background: #dc2626;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-            position: relative;
-        }
-        .controls .panic-btn:hover {
-            background: #b91c1c;
-            box-shadow: 0 0 35px rgba(220, 38, 38, 0.8);
-        }
-        .controls .panic-btn .badge-count {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #facc15;
-            color: #000;
-            border-radius: 50%;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 7px;
-            min-width: 20px;
-            text-align: center;
-            border: 1px solid #000;
-        }
 
         /* ────── CREDITS MODAL ────── */
         #creditsModal {
@@ -1197,55 +1170,10 @@
             .credits-box h2 { font-size: 24px; }
         }
 
-        /* ────── HIDE ALL UNNECESSARY TEXT ────── */
-        /* Hide header title and subtitle */
-        .header h1, .header .subtitle {
-            display: none;
-        }
-        /* Hide game labels and status */
-        .cycle-label, .cycle-status {
-            display: none;
-        }
-        /* Hide search placeholder */
-        #searchInput::placeholder {
-            color: transparent !important;
-        }
-        /* Hide category filter text by making options empty? Better to hide the whole filter container? */
-        /* We'll keep the filter but remove option text */
-        #categoryFilter option {
-            font-size: 0;
-        }
-        #categoryFilter option::before {
-            content: attr(data-icon);
-            font-size: 16px;
-        }
-        /* But we need to add data-icon attributes to options in HTML */
-        /* Alternatively, we can hide the filter container entirely if they don't want it */
-        /* I'll hide it for now, but keep functionality by not rendering? */
-        /* Actually, user might want to keep filtering but without words, so we keep the emojis */
-        /* I'll add data-icon to each option and show only the emoji */
-        /* Also hide soundboard header text */
-        .soundboard-header span:first-child {
-            display: none;
-        }
-        .mute-note {
-            display: none;
-        }
-        /* Hide button text on controls but keep icons? Could leave as is, but they said ALL WORDS */
-        /* I'll hide text inside buttons, but keep emojis */
-        .controls .btn {
-            font-size: 0;
-        }
-        .controls .btn::before {
-            font-size: 16px;
-            content: attr(data-icon);
-        }
-        /* But that's too much work. Instead, I'll keep the buttons as they are but they have text. The user might want them too. */
-        /* Given the user said "ALL WORDS", I'll remove all text from the page, but functional labels like "PLAY" on soundboard might be needed. */
-        /* I'll take a more moderate approach: hide only the game labels and header text, as those are the main "words". */
-        /* I'll not hide controls because they are functional. */
-        /* Revert: I'll just hide cycle-label and cycle-status, header title and subtitle, and search placeholder. That should satisfy "on the thing". */
-        /* I'll keep the rest. */
+        /* ────── HIDE LABELS ────── */
+        .cycle-label, .cycle-status { display: none; }
+        .controls > span:not(.speed-value):not(.badge-count) { display: none; }
+        .controls .music-area span:not(.speed-value):not(:has(🐢)):not(:has(🐇)) { display: none; }
     </style>
 </head>
 <body>
@@ -1293,10 +1221,7 @@
     </div>
 
     <div id="menuScreen">
-        <div class="header">
-            <h1 id="main-title">✨ IXL Learning Dashboard ✨</h1>
-            <div class="subtitle">Click to launch</div>
-        </div>
+        <!-- HEADER REMOVED -->
 
         <div class="controls">
             <input type="color" id="primaryColorPicker" value="#3b82f6">
@@ -1304,30 +1229,36 @@
                 <option value="https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3">IXL Wallpaper</option>
             </select>
             <div class="custom-bg-area">
-                <div class="drag-area" id="dragDropZone" title="Drag & drop image or click to paste URL"> Drop/Upload BG</div>
+                <button class="icon-btn" id="dragDropZone" title="Drag & drop image or click to paste URL">
+                    <img src="https://img.freepik.com/free-vector/yellow-folder-flat-style_78370-6671.jpg" alt="Upload BG">
+                </button>
                 <input type="text" id="bgUrlInput" placeholder="Paste image URL" style="width:150px;">
-                <button class="btn" id="applyBgBtn" style="padding:4px 12px;">Set</button>
-                <button class="btn" onclick="document.getElementById('localFileInput').click()" style="background:#10b981;">📁 Choose File</button>
+                <button class="btn icon-btn" id="applyBgBtn" style="padding:4px 12px;">Set</button>
+                <button class="btn icon-btn" onclick="document.getElementById('localFileInput').click()" style="background:#10b981; padding:4px 12px;">📁</button>
                 <input type="file" id="localFileInput" accept="image/*" style="display:none;" onchange="handleLocalFile(this)">
             </div>
-            <div style="display:flex; gap:8px; align-items:center; background:rgba(0,0,0,0.7); padding:8px 16px; border-radius:40px; border:1px solid var(--primary-color);">
-                <button id="musicToggleBtn" class="btn" style="background:#a855f7; min-width:160px;">🎵 MENU MUSIC ON</button>
+
+            <!-- Music area - only symbols -->
+            <div class="music-area" style="display:flex; gap:8px; align-items:center; background:rgba(0,0,0,0.7); padding:8px 16px; border-radius:40px; border:1px solid var(--primary-color);">
+                <button id="musicToggleBtn" class="btn" style="background:#a855f7; min-width:50px; padding:8px 12px;">🎵</button>
                 <span style="font-size:18px;">🐢</span>
                 <input type="range" id="musicSpeedSlider" min="0.5" max="2.0" step="0.1" value="1.0" style="width:140px; accent-color:#a855f7;">
                 <span class="speed-value" id="musicSpeedValue">1.0x</span>
                 <span style="font-size:18px;">🐇</span>
-                <span style="background:#1a1a2e; padding:6px 16px; border-radius:30px; border:1px solid var(--primary-color); color:white;">🎵 Mask Off</span>
             </div>
-            <button class="btn" style="background:#ec4899;" onclick="toggleCloak()">🎭 CYCLE CLOAK</button>
-            <span style="font-size:11px;opacity:0.85;background:rgba(0,0,0,0.5);padding:6px 12px;border-radius:20px;border:1px solid rgba(59,130,246,0.4);">Key <strong>6</strong> → IXL in new tab</span>
-            <button class="btn" style="background:#f59e0b;" onclick="toggleLagKiller()">⚡ LAG KILLER</button>
+
+            <button class="btn" style="background:#ec4899;" onclick="toggleCloak()">🎭</button>
+
+            <button class="btn lag-killer-btn" style="background:#f59e0b;" onclick="toggleLagKiller()">
+                <img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag Killer">
+            </button>
             <button class="btn" id="rainToggleBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn rainbow-btn" id="rainbowColorBtn" style="background:linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);">🌈 RAINBOW MODE</button>
             <button class="btn" id="sigmaToggleBtn" style="background:#ff6b00;">🔥 SIGMATOWN4LIFE</button>
-            <button class="btn" id="sigmaCursorBtn" style="background:#a855f7;">🖱️ Sigma Cursor</button>
             <button class="btn" id="themeToggleBtn" style="background:#6c757d;">🌓 THEME</button>
             <button class="btn panic-btn" id="panicOpenBtn">
-                🚨 PANIC <span class="badge-count" id="panicBadgeCount">0</span>
+                <img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic">
+                <span class="badge-count" id="panicBadgeCount">0</span>
             </button>
         </div>
 
@@ -1404,11 +1335,6 @@
     </div>
 
     <script>
-        // ──────────────────────────────────────────────────────────────
-        //  SIGMA CURSOR
-        // ──────────────────────────────────────────────────────────────
-        const SIGMA_CURSOR_DATA_URI = "url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%23000%22 stroke=%22%23fff%22 stroke-width=%221%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2220%22 text-anchor=%22middle%22 fill=%22%23fff%22 font-weight=%22bold%22 font-family=%22sans-serif%22%3E%26%23x3A3;%3C/text%3E%3C/svg%3E') 16 16, auto";
-
         // ──────────────────────────────────────────────────────────────
         //  SIGMATOWN MODE
         // ──────────────────────────────────────────────────────────────
@@ -1605,10 +1531,9 @@
             if (!id) return ['Other'];
             const lower = id.toLowerCase();
             const cats = [];
-            // ─── Special cases ───
             if (lower === 'tungtunghorror') {
                 cats.push('Horror', 'Brainrot');
-                return cats; // early return to avoid duplicates
+                return cats;
             }
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
                 lower === 'fnaf3remastered' || lower === 'fnafworld') {
@@ -1619,7 +1544,6 @@
             if (lower.startsWith('motox3m')) cats.push('Moto X3M');
             if (lower.startsWith('hobo') || lower.includes('hobo')) {
                 cats.push('Hobo');
-                if (lower === 'hobovszombies') {}
             }
             if (lower.includes('subway') || lower.includes('subwaysurfer')) {
                 cats.push('Subway Surfers');
@@ -1693,7 +1617,6 @@
             }
             if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin' || lower === 'skibidishooter') cats.push('Shooter');
             if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') cats.push('Basics');
-            if (lower === 'monkeymart') {}
             if (lower === 'blockcraftparkour') cats.push('Other');
             if (lower === 'polytrack') cats.push('Other');
             if (lower === 'deathrun3d') cats.push('Other');
@@ -1714,7 +1637,6 @@
                 img: 'https://tse3.mm.bing.net/th/id/OIP.ycPMMSBon_CEagF-syK2ywHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html',
                 img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
-            // ─── Tung Tung Horror ───
             { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html',
@@ -1978,7 +1900,6 @@
                 img: 'https://play-lh.googleusercontent.com/jXGqUhCN3t5zgqmG0urjHazzeEl1M1bpu474cMXyZ3A6Aro6Vq2D9ubx7Jx9m1FWc_2U637mW_SVzMu0RcgX_A' },
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── NEW GAMES ───
             { id: 'blockcraftparkour', name: '⛏️ Minecraft Knockoff Parkour', file: 'clblockcraftparkour.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.oLZ3INEW4JOEoq6GXl-thQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'polytrack', name: '🏁 Polytrack', file: 'polytrack.html',
@@ -1989,19 +1910,15 @@
                 img: 'https://manuals.plus/wp-content/uploads/2023/01/WORLDE-logo.png' },
             { id: 'cookieclicker', name: '🍪 Cookie Clicker', file: 'cookieclicker.htm',
                 img: 'https://tse1.explicit.bing.net/th/id/OIP.xR0-Oj5LyBuCHJ8cfoFbFgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── CREDITS ───
             { id: 'credits', name: '📜 Credits', file: 'credits', img: '' },
             { id: 'pacman', name: 'Pacman', file: 'pacman.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.1k6R3CFImsN4nJoE8-TnegHaEc?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── BUG REPORTS ───
             { id: 'bugreports', name: '🐛 Bug Reports',
                 file: 'https://docs.google.com/forms/d/e/1FAIpQLSenQfSYj4HeA9fT1mQJB2L7cNUmQeh-Uw47VIovdr0H_U3FBA/viewform?usp=sharing&ouid=103001268642622547823',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── GAME SUGGESTIONS ───
             { id: 'gamesuggestions', name: '💡 Game Suggestions',
                 file: 'https://docs.google.com/forms/d/e/1FAIpQLSeB3Z_E-XKzEtNZOVn8FcQtUwB186qt6SXYvIRKffvTcax6Ww/viewform?usp=publish-editor',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── GAME REMOVAL REQUEST ───
             { id: 'removalrequest', name: '🚫 Game Removal Request',
                 file: 'https://docs.google.com/forms/d/e/1FAIpQLScgBP6R6ce2AMUcvvE71O88iaKDO2v5ojFJRWU552oHXCZOzQ/viewform?usp=sharing&ouid=103001268642622547823',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
@@ -2144,11 +2061,7 @@
                     }
                 });
 
-                // ─── LABELS AND STATUS ARE REMOVED (no text) ───
-                // We don't create .cycle-label and .cycle-status elements
-
                 wrapper.appendChild(btn);
-                // No label or status appended
                 fragment.appendChild(wrapper);
             });
 
@@ -2252,16 +2165,14 @@
         window.toggleLagKiller = function() {
             const body = document.body;
             body.classList.toggle('low-lag');
-            const btn = document.querySelector('[onclick="toggleLagKiller()"]');
+            const btn = document.querySelector('.lag-killer-btn');
             if (body.classList.contains('low-lag')) {
-                btn.textContent = '⚡ LAG KILLER ON';
                 btn.style.background = '#22c55e';
                 if (imageObserver) {
                     imageObserver.disconnect();
                     imageObserver = null;
                 }
             } else {
-                btn.textContent = '⚡ LAG KILLER';
                 btn.style.background = '#f59e0b';
                 lazyLoadImages();
             }
@@ -2380,11 +2291,9 @@
                     if (menuMusic.paused) {
                         menuMusic.play().catch(() => {});
                     }
-                    this.textContent = '🎵 MENU MUSIC ON';
                     this.style.background = '#a855f7';
                 } else {
                     menuMusic.pause();
-                    this.textContent = '🎵 MENU MUSIC OFF';
                     this.style.background = '#6b7280';
                 }
             });
@@ -2507,36 +2416,16 @@
         };
 
         // ──────────────────────────────────────────────────────────────
-        //  SIGMA CURSOR
-        // ──────────────────────────────────────────────────────────────
-        const sigmaBtn = document.getElementById('sigmaCursorBtn');
-        let sigmaActive = false;
-        sigmaBtn.addEventListener('click', function() {
-            sigmaActive = !sigmaActive;
-            document.body.classList.toggle('sigma-cursor', sigmaActive);
-            if (sigmaActive) {
-                document.documentElement.style.setProperty('--sigma-cursor-url', SIGMA_CURSOR_DATA_URI);
-            } else {
-                document.documentElement.style.removeProperty('--sigma-cursor-url');
-            }
-            this.textContent = sigmaActive ? '🖱️ Sigma ON' : '🖱️ Sigma Cursor';
-            this.style.background = sigmaActive ? '#22c55e' : '#a855f7';
-        });
-
-        // ──────────────────────────────────────────────────────────────
-        //  CLOAK
+        //  CLOAK – only tab title & favicon
         // ──────────────────────────────────────────────────────────────
         const EDU_CLOAKS = [
-            { title: 'IXL | Dashboard', fav: 'https://www.ixl.com/favicon.ico', head: '✨ IXL Learning Dashboard ✨' },
-            { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico', head: 'Typing Agent Student Portal' },
-            { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico', head: 'i-Ready Student Dashboard' },
-            { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64',
-                head: 'Infinite Campus - Student' },
-            { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64',
-                head: 'Clever' },
-            { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64',
-                head: 'Schoology' },
-            { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico', head: 'Khan Academy' }
+            { title: 'IXL | Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
+            { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
+            { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico' },
+            { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64' },
+            { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64' },
+            { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64' },
+            { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico' }
         ];
         let currentCloakIndex = 0;
         window.toggleCloak = function() {
@@ -2544,7 +2433,6 @@
             const c = EDU_CLOAKS[currentCloakIndex];
             document.getElementById('tab-title').innerText = c.title;
             document.getElementById('tab-favicon').href = c.fav;
-            document.getElementById('main-title').innerText = c.head;
         };
 
         // ──────────────────────────────────────────────────────────────
@@ -2553,16 +2441,11 @@
         window.toggleSigmaMode = function() {
             sigmaMode = !sigmaMode;
             localStorage.setItem('sigmaMode', sigmaMode ? 'true' : 'false');
-            const titleEl = document.getElementById('main-title');
             const btn = document.getElementById('sigmaToggleBtn');
             if (sigmaMode) {
-                titleEl.innerHTML =
-                    '<img src="ChatGPT Image Jul 30, 2026, 08_16_00 PM.png" style="height: 80px; vertical-align: middle;" alt="Sigma">';
                 btn.textContent = '🔥 SIGMATOWN4LIFE ON';
                 btn.style.background = '#ff4500';
             } else {
-                const c = EDU_CLOAKS[currentCloakIndex] || EDU_CLOAKS[0];
-                titleEl.textContent = c.head;
                 btn.textContent = '🔥 SIGMATOWN4LIFE';
                 btn.style.background = '#ff6b00';
             }
@@ -2984,7 +2867,6 @@
                 }
                 const gameName = game.name;
 
-                // ─── If it's one of the special cycles, they open directly in a new tab ───
                 if (gameId === 'bugreports' || gameId === 'gamesuggestions' || gameId === 'removalrequest') {
                     window.open(file, '_blank');
                     return;
@@ -2994,7 +2876,6 @@
                     return;
                 }
 
-                // ─── IFRAME MODE ───
                 if (isGameRunning) {
                     cleanupGame();
                     setTimeout(() => { launchGame(gameId); }, 100);
@@ -3190,7 +3071,6 @@
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
-                    injectSigmaCursorToIframe();
                 }, 500);
             };
 
@@ -3255,7 +3135,7 @@
         //  INIT
         // ──────────────────────────────────────────────────────────────
         renderCycles();
-        console.log('🚀 Gameshack ready – text now follows the primary color picker!');
+        console.log('🚀 Gameshack ready – header removed, text-free mode!');
     </script>
 </body>
 </html>
