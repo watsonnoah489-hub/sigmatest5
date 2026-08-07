@@ -1623,9 +1623,6 @@
             if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman' || lower === 'credits' || lower ===
                 'removalrequest') cats.push('Other');
             if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
-            if (lower === 'kartbros') cats.push('Sports', 'Racing');
-            if (lower === 'github') cats.push('Other');
-            if (lower === 'growden') cats.push('Relaxing', 'Simulation');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -1642,13 +1639,6 @@
                 img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
             { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── NEW GAMES ───
-            { id: 'kartbros', name: '🏎️ Kart Bros', file: 'kartbros.html',
-                img: 'https://tse1.mm.bing.net/th/id/OIP.ZmnwmjuDM5w08nv7-GVWXQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'github', name: '🐙 GitHub', file: 'https://github.com/watsonnoah489-hub',
-                img: 'https://th.bing.com/th/id/OIP.fqZ9-PPqcG_cm0k3JfoINQHaEK?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'growden', name: '🌱 Growden', file: 'growden.html',
-                img: 'https://growden.io/background-og.webp' },
             { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
@@ -2731,6 +2721,7 @@
             }
 
             frame.addEventListener('load', function() {
+                injectSigmaCursorToIframe();
                 setTimeout(injectSigmaCursorToIframe, 100);
                 try {
                     const doc = frame.contentDocument;
@@ -2911,9 +2902,6 @@
                     'eaglercraft': 'blue',
                     'eaglercrafttuff': 'orange',
                     'tungtunghorror': 'red',
-                    'kartbros': 'red',
-                    'github': 'purple',
-                    'growden': 'green',
                     '1v1lol': 'blue',
                     '1on1soccer': 'green',
                     'burritobison': 'orange',
@@ -3080,7 +3068,7 @@
                         gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId ===
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
-                        'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId === 'kartbros') {
+                        'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
