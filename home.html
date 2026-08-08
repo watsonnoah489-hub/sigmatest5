@@ -1522,14 +1522,7 @@
                 <input type="file" id="localFileInput" accept="image/*" style="display:none;" onchange="handleLocalFile(this)">
             </div>
 
-            <!-- Music area - only symbols -->
-            <div class="music-area" style="display:flex; gap:8px; align-items:center; background:rgba(0,0,0,0.7); padding:8px 16px; border-radius:40px; border:1px solid var(--primary-color);">
-                <button id="musicToggleBtn" class="btn" style="background:#a855f7; min-width:50px; padding:8px 12px;">🎵</button>
-                <span style="font-size:18px;">🐢</span>
-                <input type="range" id="musicSpeedSlider" min="0.5" max="2.0" step="0.1" value="1.0" style="width:140px; accent-color:#a855f7;">
-                <span class="speed-value" id="musicSpeedValue">1.0x</span>
-                <span style="font-size:18px;">🐇</span>
-            </div>
+            <!-- Music area removed -->
 
             <button class="btn" style="background:#ec4899;" onclick="toggleCloak()">🎭</button>
 
@@ -1870,8 +1863,14 @@
                 lower === 'wrestlebros') {
                 cats.push('Sports');
             }
-            // Basket Random -> Sports
-            if (lower === 'basketrandom') cats.push('Sports');
+            // Beach Boxing Simulator -> Sports
+            if (lower === 'beachboxingsim') cats.push('Sports');
+            // Konkr -> Other (or could add Strategy, but we'll keep Other)
+            if (lower === 'konkr') cats.push('Other');
+            // Kour -> Shooter
+            if (lower === 'kour') cats.push('Shooter');
+            // BitPlanes -> Other
+            if (lower === 'bitplanes') cats.push('Other');
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker') {
@@ -1903,8 +1902,6 @@
             }
             if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin' || lower === 'skibidishooter') cats.push(
             'Shooter');
-            // BitPlanes -> Shooter
-            if (lower === 'bitplanes') cats.push('Shooter');
             if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') cats.push('Basics');
             if (lower === 'blockcraftparkour') cats.push('Other');
             if (lower === 'polytrack') cats.push('Other');
@@ -2211,12 +2208,18 @@
             { id: 'removalrequest', name: '🚫 Game Removal Request',
                 file: 'https://docs.google.com/forms/d/e/1FAIpQLScgBP6R6ce2AMUcvvE71O88iaKDO2v5ojFJRWU552oHXCZOzQ/viewform?usp=sharing&ouid=103001268642622547823',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ BIT PLANES ═══════
+            // ═══════ BIT PLANES (moved to Other via categories) ═══════
             { id: 'bitplanes', name: '🛩️ Bit Planes', file: 'BitPlanes (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.IquOEV6wT-WQKzPHCzzTywAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ BASKET RANDOM ═══════
-            { id: 'basketrandom', name: '🏀 Basket Random', file: 'basketrandom.html',
-                img: 'https://tse4.mm.bing.net/th/id/OIP.N-WiksFLDQQReMFP2GWEwgHaD4?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+            // ═══════ BEACH BOXING SIM ═══════
+            { id: 'beachboxingsim', name: '🥊 Beach Boxing Sim', file: 'clbeachboxingsim (2).html',
+                img: 'https://minigamesville.com/wp-content/uploads/2025/08/Beach_Boxing_Simulator.png' },
+            // ═══════ KONKR (UPDATED LOGO, REMOVED .io) ═══════
+            { id: 'konkr', name: '⚔️ Konkr', file: 'clkonkrio (2).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.SnfxmLQF0ogulD0fRTv9fwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ KOUR (NEW) ═══════
+            { id: 'kour', name: '🔫 Kour', file: 'clkourio (2).html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -2564,42 +2567,6 @@
                 document.documentElement.style.setProperty('--glow-color', 'rgba(' + r + ',' + g + ',' + b + ',0.95)');
             }
         });
-
-        // ──────────────────────────────────────────────────────────────
-        //  MUSIC
-        // ──────────────────────────────────────────────────────────────
-        const MUSIC_TRACKS = {
-            maskoff: 'Future - Mask Off Instrumental (Slowed & Reverb) Bass Boosted.mp3'
-        };
-        let menuMusic = null,
-            musicPlaying = true;
-
-        function initMenuMusic() {
-            menuMusic = new Audio(MUSIC_TRACKS.maskoff);
-            menuMusic.loop = true;
-            menuMusic.volume = 0.45;
-            menuMusic.play().catch(() => {});
-
-            document.getElementById('musicToggleBtn').addEventListener('click', function() {
-                musicPlaying = !musicPlaying;
-                if (musicPlaying) {
-                    if (menuMusic.paused) {
-                        menuMusic.play().catch(() => {});
-                    }
-                    this.style.background = '#a855f7';
-                } else {
-                    menuMusic.pause();
-                    this.style.background = '#6b7280';
-                }
-            });
-
-            document.getElementById('musicSpeedSlider').addEventListener('input', function() {
-                const s = parseFloat(this.value);
-                if (menuMusic) menuMusic.playbackRate = s;
-                document.getElementById('musicSpeedValue').textContent = s.toFixed(1) + 'x';
-            });
-        }
-        initMenuMusic();
 
         // ──────────────────────────────────────────────────────────────
         //  SOUNDBOARD
@@ -3328,7 +3295,9 @@
                     'cookieclicker': 'gold',
                     'pacman': 'yellow',
                     'bitplanes': 'cyan',
-                    'basketrandom': 'orange'
+                    'beachboxingsim': 'orange',
+                    'konkr': 'purple',
+                    'kour': 'red'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3373,7 +3342,7 @@
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
-                        'bitplanes' || gameId === 'basketrandom') {
+                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3449,7 +3418,7 @@
         }
 
         renderCycles();
-        console.log('🚀 Gameshack ready – IXL V1.0 + BitPlanes + Basket Random!');
+        console.log('🚀 Gameshack ready – Kour added as Shooter, Bit Planes moved to Other!');
     </script>
 </body>
 </html>
