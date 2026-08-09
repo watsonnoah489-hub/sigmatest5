@@ -172,7 +172,7 @@
             opacity: 0.65;
         }
 
-        /* ────── IXL HEADER (UPDATED – NOW RESPONDS TO PRIMARY COLOR AND SIGMA) ────── */
+        /* ────── IXL HEADER – SIGMA MODE NOW FOLLOWS PRIMARY COLOR ────── */
         .ixl-header {
             position: relative;
             z-index: 15;
@@ -214,31 +214,31 @@
             color: var(--primary-color);
             text-shadow: 0 0 30px var(--glow-color);
         }
-        /* Sigma mode header style */
+        /* Sigma mode uses primary color variables – not hardcoded orange */
         body.sigma-mode .ixl-header {
-            border-color: #ff6b00;
-            box-shadow: 0 0 60px rgba(255, 107, 0, 0.7), inset 0 0 40px rgba(255, 107, 0, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 60px var(--glow-color), inset 0 0 40px var(--glow-color);
             background: rgba(20, 10, 0, 0.8);
         }
         body.sigma-mode .ixl-header .header-title {
-            color: #ff6b00;
-            text-shadow: 0 0 40px #ff6b00, 0 0 80px #ff4500;
+            color: var(--primary-color);
+            text-shadow: 0 0 40px var(--glow-color), 0 0 80px var(--glow-color);
         }
         body.light-theme.sigma-mode .ixl-header {
             background: rgba(255, 240, 220, 0.9);
-            border-color: #ff6b00;
+            border-color: var(--primary-color);
         }
         body.light-theme.sigma-mode .ixl-header .header-title {
-            color: #ff6b00;
-            text-shadow: 0 0 30px #ff6b00;
+            color: var(--primary-color);
+            text-shadow: 0 0 30px var(--glow-color);
         }
         body.dark-theme.sigma-mode .ixl-header {
             background: rgba(20, 8, 0, 0.9);
-            border-color: #ff6b00;
+            border-color: var(--primary-color);
         }
         body.dark-theme.sigma-mode .ixl-header .header-title {
-            color: #ff6b00;
-            text-shadow: 0 0 40px #ff6b00;
+            color: var(--primary-color);
+            text-shadow: 0 0 40px var(--glow-color);
         }
         @media (max-width: 640px) {
             .ixl-header {
@@ -1863,14 +1863,16 @@
                 lower === 'wrestlebros') {
                 cats.push('Sports');
             }
-            // Beach Boxing Simulator -> Sports
+            // Beach Boxing Sim -> Sports
             if (lower === 'beachboxingsim') cats.push('Sports');
-            // Konkr -> Other (or could add Strategy, but we'll keep Other)
+            // Konkr -> Other
             if (lower === 'konkr') cats.push('Other');
             // Kour -> Shooter
             if (lower === 'kour') cats.push('Shooter');
             // BitPlanes -> Other
             if (lower === 'bitplanes') cats.push('Other');
+            // Kart Bros -> Other (no Sports or Racing)
+            if (lower === 'kartbros') cats.push('Other');
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker') {
@@ -2219,7 +2221,10 @@
                 img: 'https://tse3.mm.bing.net/th/id/OIP.SnfxmLQF0ogulD0fRTv9fwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ KOUR (NEW) ═══════
             { id: 'kour', name: '🔫 Kour', file: 'clkourio (2).html',
-                img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ KART BROS (NEW) ═══════
+            { id: 'kartbros', name: '🏎️ Kart Bros', file: 'clkartbros (1).html',
+                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3297,7 +3302,8 @@
                     'bitplanes': 'cyan',
                     'beachboxingsim': 'orange',
                     'konkr': 'purple',
-                    'kour': 'red'
+                    'kour': 'red',
+                    'kartbros': 'blue'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3342,7 +3348,7 @@
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
-                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour') {
+                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3418,7 +3424,7 @@
         }
 
         renderCycles();
-        console.log('🚀 Gameshack ready – Kour added as Shooter, Bit Planes moved to Other!');
+        console.log('🚀 Gameshack ready – Kart Bros added, SigmaTown uses primary color!');
     </script>
 </body>
 </html>
