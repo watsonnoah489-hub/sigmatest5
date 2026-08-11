@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title id="tab-title">IXL | Dashboard</title>
+    <title id="tab-title">IXL - Dashboard</title>
     <link id="tab-favicon" rel="icon" type="image/x-icon" href="https://www.ixl.com/favicon.ico">
     <!-- Preconnect to external image domains -->
     <link rel="preconnect" href="https://tse1.mm.bing.net" crossorigin>
@@ -18,6 +18,7 @@
             --primary-color: #3b82f6;
             --glow-color: rgba(59, 130, 246, 0.95);
             --bg-url: url('https://tse2.mm.bing.net/th/id/OIP.f5HM4GcWYCV8lkGR3MiqjAHaDt?rs=1&pid=ImgDetMain&o=7&rm=3');
+            --sigma-cursor: url('https://th.bing.com/th/id/R.36632fd321fef9b063c75af6648c47b7?rik=IU%2bZPgezjYxM1w&riu=http%3a%2f%2fwww.ancient-symbols.com%2fimages%2fmath-symbols%2foriginal%2fsigma.jpg&ehk=U0UANkXusmAkB9pMSn1y5Aqu4EX14MoTNwIxKWZT6x8%3d&risl=&pid=ImgRaw&r=0') 16 16, auto;
         }
 
         /* ────── BODY & BASE ────── */
@@ -33,7 +34,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
-            cursor: auto;
+            cursor: var(--sigma-cursor);
             transition: background-color 0.3s, color 0.3s;
         }
         body.low-lag {
@@ -213,32 +214,6 @@
         body.dark-theme .ixl-header .header-title {
             color: var(--primary-color);
             text-shadow: 0 0 30px var(--glow-color);
-        }
-        /* Sigma mode uses primary color variables – not hardcoded orange */
-        body.sigma-mode .ixl-header {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 60px var(--glow-color), inset 0 0 40px var(--glow-color);
-            background: rgba(20, 10, 0, 0.8);
-        }
-        body.sigma-mode .ixl-header .header-title {
-            color: var(--primary-color);
-            text-shadow: 0 0 40px var(--glow-color), 0 0 80px var(--glow-color);
-        }
-        body.light-theme.sigma-mode .ixl-header {
-            background: rgba(255, 240, 220, 0.9);
-            border-color: var(--primary-color);
-        }
-        body.light-theme.sigma-mode .ixl-header .header-title {
-            color: var(--primary-color);
-            text-shadow: 0 0 30px var(--glow-color);
-        }
-        body.dark-theme.sigma-mode .ixl-header {
-            background: rgba(20, 8, 0, 0.9);
-            border-color: var(--primary-color);
-        }
-        body.dark-theme.sigma-mode .ixl-header .header-title {
-            color: var(--primary-color);
-            text-shadow: 0 0 40px var(--glow-color);
         }
         @media (max-width: 640px) {
             .ixl-header {
@@ -1411,9 +1386,6 @@
             align-items: center;
             gap: 10px;
         }
-        .credits-box ul li:last-child {
-            border-bottom: none;
-        }
         .credits-box ul li .role {
             color: #94a3b8;
             font-size: 14px;
@@ -1504,7 +1476,7 @@
 
         <!-- ═══════ UPDATED IXL V1.0 HEADER (now responds to SigmaTown) ═══════ -->
         <div class="ixl-header">
-            <span class="header-title" id="headerTitle">IXL V1.0</span>
+            <span class="header-title" id="headerTitle">SigmaTown4Life BETA</span>
         </div>
 
         <div class="controls">
@@ -1531,7 +1503,6 @@
             </button>
             <button class="btn" id="rainToggleBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn rainbow-btn" id="rainbowColorBtn" style="background:linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3);">🌈 RAINBOW MODE</button>
-            <button class="btn" id="sigmaToggleBtn" style="background:#ff6b00;">🔥 SIGMATOWN4LIFE</button>
             <button class="btn" id="themeToggleBtn" style="background:#6c757d;">🌓 THEME</button>
             <button class="btn panic-btn" id="panicOpenBtn">
                 <img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic">
@@ -1873,6 +1844,10 @@
             if (lower === 'bitplanes') cats.push('Other');
             // Kart Bros -> Other (no Sports or Racing)
             if (lower === 'kartbros') cats.push('Other');
+            // Drift Boss -> Other
+            if (lower === 'driftboss') cats.push('Other');
+            // Drive Mad -> Other
+            if (lower === 'drivemad') cats.push('Other');
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker') {
@@ -2224,7 +2199,13 @@
                 img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ KART BROS (NEW) ═══════
             { id: 'kartbros', name: '🏎️ Kart Bros', file: 'clkartbros (1).html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ DRIFT BOSS ═══════
+            { id: 'driftboss', name: '🏎️ Drift Boss', file: 'cldriftboss.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.Dvjy0a6djPJbWwFkPS3OHQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ DRIVE MAD ═══════
+            { id: 'drivemad', name: '🚗 Drive Mad', file: 'cldrivemad.html',
+                img: 'https://tse4.mm.bing.net/th/id/OIP.e1raXYJIL3sY2MCyZSrzhQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -2703,28 +2684,11 @@
         };
 
         // ──────────────────────────────────────────────────────────────
-        //  SIGMATOWN MODE (UPDATED: toggles header text and style)
+        //  SIGMATOWN MODE (removed toggle)
         // ──────────────────────────────────────────────────────────────
-        window.toggleSigmaMode = function() {
-            sigmaMode = !sigmaMode;
-            localStorage.setItem('sigmaMode', sigmaMode ? 'true' : 'false');
-            const btn = document.getElementById('sigmaToggleBtn');
-            const headerTitle = document.getElementById('headerTitle');
-            const body = document.body;
-
-            if (sigmaMode) {
-                btn.textContent = '🔥 SIGMATOWN4LIFE ON';
-                btn.style.background = '#ff4500';
-                headerTitle.textContent = 'SIGMATOWN4LIFE';
-                body.classList.add('sigma-mode');
-            } else {
-                btn.textContent = '🔥 SIGMATOWN4LIFE';
-                btn.style.background = '#ff6b00';
-                headerTitle.textContent = 'IXL V1.0';
-                body.classList.remove('sigma-mode');
-            }
-        };
-        document.getElementById('sigmaToggleBtn').addEventListener('click', toggleSigmaMode);
+        // Sigma mode is now always off, header stays "SigmaTown4Life BETA"
+        // The sigma toggle button has been removed from the UI.
+        // The sigma cursor is set via CSS --sigma-cursor variable.
 
         // ──────────────────────────────────────────────────────────────
         //  PRIMARY COLOR PICKER
@@ -3303,7 +3267,9 @@
                     'beachboxingsim': 'orange',
                     'konkr': 'purple',
                     'kour': 'red',
-                    'kartbros': 'blue'
+                    'kartbros': 'blue',
+                    'driftboss': 'orange',
+                    'drivemad': 'red'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3348,7 +3314,8 @@
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
-                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros') {
+                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
+                        gameId === 'driftboss' || gameId === 'drivemad') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3414,17 +3381,11 @@
         // ──────────────────────────────────────────────────────────────
         //  INIT
         // ──────────────────────────────────────────────────────────────
-        // Set initial sigma mode state if enabled
-        if (sigmaMode) {
-            document.body.classList.add('sigma-mode');
-            document.getElementById('headerTitle').textContent = 'SIGMATOWN4LIFE';
-            const btn = document.getElementById('sigmaToggleBtn');
-            btn.textContent = '🔥 SIGMATOWN4LIFE ON';
-            btn.style.background = '#ff4500';
-        }
+        // Sigma mode toggle removed. Header always shows "SigmaTown4Life BETA"
+        document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack ready – Kart Bros added, SigmaTown uses primary color!');
+        console.log('🚀 Gameshack ready – SigmaTown4Life BETA with Drift Boss & Drive Mad, Sigma cursor active!');
     </script>
 </body>
 </html>
