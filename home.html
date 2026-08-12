@@ -1535,7 +1535,8 @@
                 <option value="Puzzle">🧩 Puzzle Games</option>
                 <option value="Relaxing">🌿 Relaxing Games</option>
                 <option value="Shooter">🔫 Shooter Games</option>
-                <option value="Basics">📚 Basics Games</option>
+                <option value="Baldi's Basics">📚 Baldi's Basics Games</option>
+                <option value="Driving">🏎️ Driving Games</option>
                 <option value="Other">📦 Other</option>
             </select>
             <span style="font-size:12px;opacity:0.7;">Hold Ctrl/Cmd to select multiple</span>
@@ -1779,6 +1780,7 @@
             if (!id) return ['Other'];
             const lower = id.toLowerCase();
             const cats = [];
+            // Custom overrides for specific games (these are overridden later, but we keep generic logic)
             if (lower === 'tungtunghorror') {
                 cats.push('Horror', 'Brainrot');
                 return cats;
@@ -1808,7 +1810,7 @@
                 lower === 'burritobison' || lower === 'learntofly1' || lower === 'learntofly2' ||
                 lower === 'redball4' || lower === 'soniccd' || lower === 'slowroads' ||
                 lower === 'supermario63' || lower === 'supermario64' ||
-                lower === 'clusterrush') {
+                lower === 'clusterrush' || lower === 'rooftoprun' || lower === 'crossyroad') {
                 cats.push('Runner');
             }
             if (lower.includes('baldi') || lower.includes('granny') || lower.includes('deadzed') ||
@@ -1817,7 +1819,7 @@
                 lower === 'fnaw' || lower === 'fnac1' || lower === 'fnac2' ||
                 lower === '99nights' || lower === 'scaryteacher' || lower === 'tcubed' ||
                 lower === 'deltarune' || lower === 'hollowknight' || lower === 'undertale' ||
-                lower === 'amongus') {
+                lower === 'amongus' || lower === 'runfromwitheredfox' || lower === 'huggywuggypixel') {
                 cats.push('Horror');
             }
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') ||
@@ -1844,17 +1846,27 @@
             if (lower === 'bitplanes') cats.push('Other');
             // Kart Bros -> Other (no Sports or Racing)
             if (lower === 'kartbros') cats.push('Other');
-            // Drift Boss -> Other
+            // Drift Boss -> Other (will be overridden to Driving)
             if (lower === 'driftboss') cats.push('Other');
-            // Drive Mad -> Other
+            // Drive Mad -> Other (will be overridden to Driving)
             if (lower === 'drivemad') cats.push('Other');
             // DTA6 -> Other
             if (lower === 'dta6') cats.push('Other');
-            // Block Blast -> Puzzle and Other
-            if (lower === 'blockblast') { cats.push('Puzzle'); cats.push('Other'); }
+            // Block Blast -> Puzzle and Relaxing (will be overridden)
+            if (lower === 'blockblast') { cats.push('Puzzle'); cats.push('Relaxing'); }
+            // Stickman Duel -> Stickman
+            if (lower === 'stickmanduel') cats.push('Stickman');
+            // Run From Withered Foxy -> Horror, FNAF, Basics (Baldi's Basics)
+            if (lower === 'runfromwitheredfox') { cats.push('Horror'); cats.push('FNAF'); cats.push('Basics'); }
+            // Crossy Road -> Runner
+            if (lower === 'crossyroad') cats.push('Runner');
+            // Huggy Wuggy Pixel Nights -> Horror
+            if (lower === 'huggywuggypixel') cats.push('Horror');
+            // Polytrack, carkingarena, smashkarts will be overridden to Driving
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
-                lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker') {
+                lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker' ||
+                lower === 'fruitninja') {
                 cats.push('Clicker');
                 if (lower === 'omeganugget') cats.push('Brainrot');
             }
@@ -1890,6 +1902,8 @@
             if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman' || lower === 'credits' || lower ===
                 'removalrequest') cats.push('Other');
             if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
+            if (lower === 'smashkarts') cats.push('Other');
+            if (lower === 'kartbros') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -1914,7 +1928,7 @@
                 img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'baldi', name: "Baldi's Basics", file: 'clbaldisbasics (1).html',
+            { id: 'baldi', name: "Baldi's Basics", file: 'clbaldisbasics (1).html', categories: ['Baldi\'s Basics', 'Horror'],
                 img: 'https://th.bing.com/th/id/OIP.uSj87WtfdlcYP9rPpLGY_QHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'basketballstars', name: 'Basketball Stars', file: 'clbasketballstars.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.ZbCOXEfOBdRdeXiv_tXtWAHaEL?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1922,7 +1936,7 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.-0sNVbmWwzm_jytveGb-UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'bitlife', name: 'BitLife', file: 'clbitlife.html',
                 img: 'https://progameguides.com/wp-content/uploads/2022/03/featured-bitlife-audition.jpg?fit=1200%2C675' },
-            { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html',
+            { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html', categories: ['Baldi\'s Basics'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'capybara', name: 'Capybara Clicker', file: 'clcapybaraclicker (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.idOWS5nM7q9oM0UTX8Oq4wHaFs?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1974,7 +1988,7 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.XLzef_o_Ezeh-X9VAl06JwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gunspin', name: 'Gun Spin', file: 'clgun-spin.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.k0lsRAddB4us0YqBho2qwgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'smashkarts', name: 'Smash Karts', file: 'clsmashkartsworking.html',
+            { id: 'smashkarts', name: 'Smash Karts', file: 'clsmashkartsworking.html', categories: ['Driving'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.kQKRzgZXU1KvDKH_nnSDAQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'run3', name: 'Run 3', file: 'clrun3 (1).html',
                 img: 'https://www.coolmathgames.com/sites/default/files/Run3_OG-logo.jpg' },
@@ -1990,7 +2004,7 @@
                 img: 'https://i.ytimg.com/vi/zNjTTtyxXJ4/maxresdefault.jpg' },
             { id: 'subwayberlin', name: 'Subway Surfers Berlin', file: 'clsubwaysurfersberlin (1).html',
                 img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' },
-            { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html',
+            { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html', categories: ['Other'],
                 img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
             { id: 'templerun2', name: 'Temple Run 2', file: 'cltemplerun2.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TVn1IXCX8i0dTWY7mTuU0wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2036,9 +2050,9 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.Mrqv-zNe2VoFJi8rkM8x8AHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'soniccd', name: 'Sonic CD', file: 'Sonic CD (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.mflErb9vg1WtVNsr7BrArAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'slowroads', name: 'Slow Roads', file: 'Slowroads (1).html',
+            { id: 'slowroads', name: 'Slow Roads', file: 'Slowroads (1).html', categories: ['Relaxing', 'Driving'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.RnvDRpPKyz5JxzItXYslCgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'fruitninja', name: 'Fruit Ninja', file: 'clfruitninja (1).html',
+            { id: 'fruitninja', name: 'Fruit Ninja', file: 'clfruitninja (1).html', categories: ['Clicker'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.LErvjB9ApbZzsWMwz9WNsQHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'tripletobby', name: 'Triple T Obby', file: 'cltungtungtungsahurobby (2).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.mURQDdcvDzQzhAQ6rJAj-gHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2046,7 +2060,7 @@
                 img: 'https://67clicker.io/cache/data/image/game/obby-1-jump-per-click/obby-1-jump-per-click-m200x200.webp' },
             { id: 'obbybike', name: 'Obby Bike', file: 'clobbybike (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Rrq8kGP9K5eGZj21x3HZdQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html',
+            { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html', categories: ['Other'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'magictiles3', name: 'Magic Tiles 3', file: 'Magic Tiles 3 (3).html',
                 img: 'https://cdn.mobygames.com/covers/17514493-magic-tiles-3-piano-game-iphone-front-cover.png' },
@@ -2074,7 +2088,7 @@
                 img: 'https://merge-fellas.io/thumb/sort-the-court.webp' },
             { id: 'volleyrandom', name: 'Volley Random', file: 'Volley Random.html',
                 img: 'https://www.coolmathgameskids.com/wp-content/uploads/2021/02/volley-random.jpeg' },
-            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html',
+            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html', categories: ['Baldi\'s Basics', 'Puzzle'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.6vYkelfYmDvlz9h1v7GpCQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stickmankombat', name: 'Stickman Kombat 2D', file: 'Stickman Kombat 2D.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.L5HOhBR-3DmyWevhzOsIoAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2082,17 +2096,17 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html',
+            { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html', categories: ['Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'carkingarena', name: 'Car King Arena (with fly)', file: 'carkingarena.html',
+            { id: 'carkingarena', name: 'Car King Arena (with fly)', file: 'carkingarena.html', categories: ['Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '99nights', name: '99 Nights', file: 'cl99nightsitf (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.ToWfAuDvC1Nn2bD1K35CWQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'motox3m', name: 'Moto X3M', file: 'Moto X3M.html',
+            { id: 'motox3m', name: 'Moto X3M', file: 'Moto X3M.html', categories: ['Moto X3M', 'Driving'],
                 img: 'https://th.bing.com/th/id/R.2ded59c45977c3bc3786b17c02bb5599?rik=1ZnozzY%2fZZo31g&riu=http%3a%2f%2fwww.coolmathgames.com%2fsites%2fdefault%2ffiles%2fMotoX3M_OG-logo.jpg&ehk=lVQhOYP%2bFe4TEgaohqqxriFSefuVET0hx%2ff2exBCnjU%3d&risl=&pid=ImgRaw&r=0' },
-            { id: 'motox3m2', name: 'Moto X3M 2', file: 'Moto X3M 2.html',
+            { id: 'motox3m2', name: 'Moto X3M 2', file: 'Moto X3M 2.html', categories: ['Moto X3M', 'Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.mMytlJ3c03t4vQtHR_hAzgHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'motox3m3', name: 'Moto X3M 3', file: 'Moto X3M 3.html',
+            { id: 'motox3m3', name: 'Moto X3M 3', file: 'Moto X3M 3.html', categories: ['Moto X3M', 'Driving'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'candycrush', name: 'Candy Crush', file: 'Candy Crush (4).html',
                 img: 'https://th.bing.com/th/id/OIP.G77RDyiOu6q3efCa96wjuAHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2133,7 +2147,7 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Zxiqf_1J0r3PcP9-x_7xPwHaJ3?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'redball4', name: 'Red Ball 4', file: 'clRedBall4 (2).html',
+            { id: 'redball4', name: 'Red Ball 4', file: 'clRedBall4 (2).html', categories: ['Other'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'skibidibackrooms', name: 'Skibidi in the Backrooms', file: 'clskibidiinthebackrooms (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.DJOrcXU5HPSUlji-NDRPQAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2167,9 +2181,9 @@
                 img: 'https://play-lh.googleusercontent.com/jXGqUhCN3t5zgqmG0urjHazzeEl1M1bpu474cMXyZ3A6Aro6Vq2D9ubx7Jx9m1FWc_2U637mW_SVzMu0RcgX_A' },
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'blockcraftparkour', name: '⛏️ Minecraft Knockoff Parkour', file: 'clblockcraftparkour.html',
+            { id: 'blockcraftparkour', name: '⛏️ Minecraft Knockoff Parkour', file: 'clblockcraftparkour.html', categories: ['Obby'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.oLZ3INEW4JOEoq6GXl-thQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'polytrack', name: '🏁 Polytrack', file: 'polytrack.html',
+            { id: 'polytrack', name: '🏁 Polytrack', file: 'polytrack.html', categories: ['Driving'],
                 img: 'https://th.bing.com/th/id/OIP.5ciuC7UTrvUVmwdfGNBVVgHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'wrestlebros', name: '🤼 WrestleBros', file: 'wrestlebros.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.erEfbx5Irdz_n20GZMiJygHaCc?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2189,38 +2203,56 @@
             { id: 'removalrequest', name: '🚫 Game Removal Request',
                 file: 'https://docs.google.com/forms/d/e/1FAIpQLScgBP6R6ce2AMUcvvE71O88iaKDO2v5ojFJRWU552oHXCZOzQ/viewform?usp=sharing&ouid=103001268642622547823',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.BJZYFg0sCOJcUSlEdHwP0AHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ BIT PLANES (moved to Other via categories) ═══════
+            // ═══════ BIT PLANES ═══════
             { id: 'bitplanes', name: '🛩️ Bit Planes', file: 'BitPlanes (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.IquOEV6wT-WQKzPHCzzTywAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ BEACH BOXING SIM ═══════
             { id: 'beachboxingsim', name: '🥊 Beach Boxing Sim', file: 'clbeachboxingsim (2).html',
                 img: 'https://minigamesville.com/wp-content/uploads/2025/08/Beach_Boxing_Simulator.png' },
-            // ═══════ KONKR (UPDATED LOGO, REMOVED .io) ═══════
+            // ═══════ KONKR ═══════
             { id: 'konkr', name: '⚔️ Konkr', file: 'clkonkrio (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.SnfxmLQF0ogulD0fRTv9fwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ KOUR (NEW) ═══════
+            // ═══════ KOUR ═══════
             { id: 'kour', name: '🔫 Kour', file: 'clkourio (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ KART BROS (NEW) ═══════
-            { id: 'kartbros', name: '🏎️ Kart Bros', file: 'clkartbros (1).html',
+            // ═══════ KART BROS ═══════
+            { id: 'kartbros', name: '🏎️ Kart Bros', file: 'clkartbros (1).html', categories: ['Driving'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ DRIFT BOSS ═══════
-            { id: 'driftboss', name: '🏎️ Drift Boss', file: 'cldriftboss.html',
+            { id: 'driftboss', name: '🏎️ Drift Boss', file: 'cldriftboss.html', categories: ['Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Dvjy0a6djPJbWwFkPS3OHQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ DRIVE MAD ═══════
-            { id: 'drivemad', name: '🚗 Drive Mad', file: 'cldrivemad.html',
+            { id: 'drivemad', name: '🚗 Drive Mad', file: 'cldrivemad.html', categories: ['Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.e1raXYJIL3sY2MCyZSrzhQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ DTA6 ═══════
             { id: 'dta6', name: '🏎️ DTA6', file: 'dta6.html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.RSarEmbKFyXU_TxImDbdGAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ BLOCK BLAST ═══════
-            { id: 'blockblast', name: '🧩 Block Blast', file: 'clblockblast.html',
-                img: 'https://blockblast.game/assets/img/block-blast.png' }
+            { id: 'blockblast', name: '🧩 Block Blast', file: 'clblockblast.html', categories: ['Puzzle', 'Relaxing'],
+                img: 'https://blockblast.game/assets/img/block-blast.png' },
+            // ═══════ RUN FROM WITHERED FOXY ═══════
+            { id: 'runfromwitheredfox', name: '🏃 Run From Withered Foxy', file: 'clrunfromwitheredfox.html', categories: ['Horror', 'FNAF', 'Baldi\'s Basics'],
+                img: 'https://tse1.mm.bing.net/th/id/OIP.-tJOHcy7_C_pQsPQrW4NAwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ STICKMAN DUEL ═══════
+            { id: 'stickmanduel', name: '⚔️ Stickman Duel', file: 'clstickmanduel.html', categories: ['Stickman'],
+                img: 'https://tse1.mm.bing.net/th/id/OIP.oQg-LLk5ZZWgChYJEZjJJAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ ROOFTOP RUN ═══════
+            { id: 'rooftoprun', name: '🏃 Rooftop Run', file: 'clrooftoprun.html', categories: ['Runner'],
+                img: 'https://th.bing.com/th/id/OIP.zZsUQ2DrgQG4VF1edknWngHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ CROSSY ROAD ═══════
+            { id: 'crossyroad', name: '🐔 Crossy Road', file: 'clcrossyroad (3).html', categories: ['Runner'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.Hsx5t6dxVLbpG_gUDdj22QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ HUGGY WUGGY PIXEL NIGHTS ═══════
+            { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html', categories: ['Horror'],
+                img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
             if (game.id === 'randompicker') {
                 return { ...game, categories: ['Random'] };
+            }
+            if (game.categories) {
+                return { ...game, categories: game.categories };
             }
             const cats = getCategories(game.id, game.name);
             return { ...game, categories: cats };
@@ -3281,7 +3313,12 @@
                     'driftboss': 'orange',
                     'drivemad': 'red',
                     'dta6': 'cyan',
-                    'blockblast': 'teal'
+                    'blockblast': 'teal',
+                    'runfromwitheredfox': 'red',
+                    'stickmanduel': 'gold',
+                    'rooftoprun': 'cyan',
+                    'crossyroad': 'yellow',
+                    'huggywuggypixel': 'pink'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3327,7 +3364,9 @@
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
                         'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
-                        gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast') {
+                        gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast' ||
+                        gameId === 'runfromwitheredfox' || gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
+                        gameId === 'crossyroad' || gameId === 'huggywuggypixel') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3397,7 +3436,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack ready – SigmaTown4Life BETA with DTA6 and Block Blast added!');
+        console.log('🚀 Gameshack updated: All Moto games & Slow Roads -> Driving, Stickman Duel logo updated, Baldi\'s Basics series tagged, Crossy Road & Huggy Wuggy Pixel Nights added.');
     </script>
 </body>
 </html>
