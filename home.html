@@ -1848,6 +1848,10 @@
             if (lower === 'driftboss') cats.push('Other');
             // Drive Mad -> Other
             if (lower === 'drivemad') cats.push('Other');
+            // DTA6 -> Other
+            if (lower === 'dta6') cats.push('Other');
+            // Block Blast -> Puzzle and Other
+            if (lower === 'blockblast') { cats.push('Puzzle'); cats.push('Other'); }
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker') {
@@ -2205,7 +2209,13 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Dvjy0a6djPJbWwFkPS3OHQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ DRIVE MAD ═══════
             { id: 'drivemad', name: '🚗 Drive Mad', file: 'cldrivemad.html',
-                img: 'https://tse4.mm.bing.net/th/id/OIP.e1raXYJIL3sY2MCyZSrzhQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse4.mm.bing.net/th/id/OIP.e1raXYJIL3sY2MCyZSrzhQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ DTA6 ═══════
+            { id: 'dta6', name: '🏎️ DTA6', file: 'dta6.html',
+                img: 'https://tse1.mm.bing.net/th/id/OIP.RSarEmbKFyXU_TxImDbdGAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ BLOCK BLAST ═══════
+            { id: 'blockblast', name: '🧩 Block Blast', file: 'clblockblast.html',
+                img: 'https://blockblast.game/assets/img/block-blast.png' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3269,7 +3279,9 @@
                     'kour': 'red',
                     'kartbros': 'blue',
                     'driftboss': 'orange',
-                    'drivemad': 'red'
+                    'drivemad': 'red',
+                    'dta6': 'cyan',
+                    'blockblast': 'teal'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3315,7 +3327,7 @@
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
                         'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
-                        gameId === 'driftboss' || gameId === 'drivemad') {
+                        gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3385,7 +3397,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack ready – SigmaTown4Life BETA with Drift Boss & Drive Mad, Sigma cursor active!');
+        console.log('🚀 Gameshack ready – SigmaTown4Life BETA with DTA6 and Block Blast added!');
     </script>
 </body>
 </html>
