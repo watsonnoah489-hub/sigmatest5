@@ -40,9 +40,15 @@
         body.low-lag {
             background-image: none !important;
             background-color: #050505 !important;
+            background-attachment: scroll !important;
+        }
+        body.low-lag * {
+            animation-play-state: paused !important;
+            transition-duration: 0s !important;
         }
         body.low-lag .cycle-overlay {
-            display: none !important;
+            opacity: 0.3 !important;
+            filter: blur(2px) !important;
         }
         body.low-lag .circle {
             background-image: none !important;
@@ -1786,7 +1792,7 @@
                 return cats;
             }
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
-                lower === 'fnaf3remastered' || lower === 'fnafworld') {
+                lower === 'fnaf3remastered' || lower === 'fnafworld' || lower === 'fivenightsatyoshis') {
                 cats.push('FNAF');
                 cats.push('Horror');
             }
@@ -1819,7 +1825,8 @@
                 lower === 'fnaw' || lower === 'fnac1' || lower === 'fnac2' ||
                 lower === '99nights' || lower === 'scaryteacher' || lower === 'tcubed' ||
                 lower === 'deltarune' || lower === 'hollowknight' || lower === 'undertale' ||
-                lower === 'amongus' || lower === 'runfromwitheredfox' || lower === 'huggywuggypixel') {
+                lower === 'amongus' || lower === 'runfromwitheredfox' || lower === 'huggywuggypixel' ||
+                lower === 'fivenightsatyoshis') {
                 cats.push('Horror');
             }
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') ||
@@ -1862,6 +1869,10 @@
             if (lower === 'crossyroad') cats.push('Runner');
             // Huggy Wuggy Pixel Nights -> Horror
             if (lower === 'huggywuggypixel') cats.push('Horror');
+            // Five Nights at Yoshi's -> Horror, FNAF
+            if (lower === 'fivenightsatyoshis') { cats.push('Horror'); cats.push('FNAF'); }
+            // There Is No Game -> Puzzle, Relaxing
+            if (lower === 'thereisnofile') { cats.push('Puzzle'); cats.push('Relaxing'); }
             // Polytrack, carkingarena, smashkarts will be overridden to Driving
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
@@ -1884,13 +1895,14 @@
                 lower === 'candycrush' || lower === 'cuttherope' || lower === 'oneshotlegacy' ||
                 lower === 'riddleschool1' || lower === 'riddleschool2' || lower === 'blackjack' ||
                 lower === 'chessclassic' || lower === 'magictiles3' || lower === 'sortthecourt' ||
-                lower === 'uno' || lower === 'wordleunlimited') {
+                lower === 'uno' || lower === 'wordleunlimited' || lower === 'thereisnofile') {
                 cats.push('Puzzle');
             }
             const isPuzzle = cats.includes('Puzzle');
             const excludedFromRelaxing = ['cuttherope', 'oneshotlegacy'];
             if (isPuzzle && !excludedFromRelaxing.includes(id)) cats.push('Relaxing');
-            if (lower === 'bitlife' || lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads') {
+            if (lower === 'bitlife' || lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads' ||
+                lower === 'thereisnofile') {
                 cats.push('Relaxing');
             }
             if (lower === '1v1lol' || lower === 'buildnow' || lower === 'gunspin' || lower === 'skibidishooter') cats.push(
@@ -2244,7 +2256,13 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Hsx5t6dxVLbpG_gUDdj22QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ HUGGY WUGGY PIXEL NIGHTS ═══════
             { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html', categories: ['Horror'],
-                img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' }
+                img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' },
+            // ═══════ FIVE NIGHTS AT YOSHI'S ═══════
+            { id: 'fivenightsatyoshis', name: '🐣 Five Nights at Yoshi\'s', file: 'clfivenightsatyoshis.html', categories: ['Horror', 'FNAF'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.OrkbfU8XKDmbcBFNmAe5RgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ THERE IS NO GAME ═══════
+            { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle', 'Relaxing'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -2488,24 +2506,77 @@
         // ──────────────────────────────────────────────────────────────
         //  LAG KILLER
         // ──────────────────────────────────────────────────────────────
+        let lagKillerActive = false;
+        let lagKillerIntervals = [];
+
         window.toggleLagKiller = function() {
             const body = document.body;
-            body.classList.toggle('low-lag');
             const btn = document.querySelector('.lag-killer-btn');
-            if (body.classList.contains('low-lag')) {
-                btn.style.background = '#22c55e';
+
+            if (!lagKillerActive) {
+                // ACTIVATE LAG KILLER
+                lagKillerActive = true;
+                body.classList.add('low-lag');
+
+                // Kill all intervals
+                const highestId = setInterval(() => {}, 0);
+                for (let i = 0; i < highestId; i++) {
+                    clearInterval(i);
+                }
+                // Kill all timeouts (be careful, this might break things)
+                const highestTimeout = setTimeout(() => {}, 0);
+                for (let i = 0; i < highestTimeout; i++) {
+                    clearTimeout(i);
+                }
+
+                // Stop rain if active
+                if (rainActive) {
+                    if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
+                    rainActive = false;
+                    document.body.classList.remove('rain-active');
+                    const rainBtn = document.getElementById('rainToggleBtn');
+                    if (rainBtn) rainBtn.classList.remove('active');
+                }
+
+                // Pause all audio
+                if (soundboardAudios) {
+                    Object.values(soundboardAudios).forEach(audio => {
+                        if (audio && !audio.paused) {
+                            audio.pause();
+                        }
+                    });
+                }
+
+                // Stop search debounce
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = null;
+                }
+
+                // Disable image observer
                 if (imageObserver) {
                     imageObserver.disconnect();
                     imageObserver = null;
                 }
+
+                // Stop rainbow interval
+                if (rainbowInterval) {
+                    clearInterval(rainbowInterval);
+                    rainbowInterval = null;
+                }
+
+                btn.style.background = '#22c55e';
+                btn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag Killer"> ⚡ ON';
             } else {
-                btn.style.background = '#f59e0b';
+                // DEACTIVATE LAG KILLER
+                lagKillerActive = false;
+                body.classList.remove('low-lag');
+
+                // Restart image observer
                 lazyLoadImages();
-            }
-            if (rainActive && body.classList.contains('low-lag')) {
-                if (rainAnimFrame) cancelAnimationFrame(rainAnimFrame);
-            } else if (rainActive && !body.classList.contains('low-lag')) {
-                drawRain();
+
+                btn.style.background = '#f59e0b';
+                btn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag Killer">';
             }
         };
 
@@ -2557,6 +2628,10 @@
             rainAnimFrame = requestAnimationFrame(drawRain);
         }
         document.getElementById('rainToggleBtn').addEventListener('click', function() {
+            if (lagKillerActive) {
+                showPanicToast('⚠️ Lag Killer is active! Disable it first.', 2000);
+                return;
+            }
             rainActive = !rainActive;
             document.body.classList.toggle('rain-active', rainActive);
             this.classList.toggle('active', rainActive);
@@ -2575,6 +2650,10 @@
         let rainbowMode = false,
             rainbowInterval = null;
         document.getElementById('rainbowColorBtn').addEventListener('click', function() {
+            if (lagKillerActive) {
+                showPanicToast('⚠️ Lag Killer is active! Disable it first.', 2000);
+                return;
+            }
             rainbowMode = !rainbowMode;
             if (rainbowMode) {
                 let hue = Math.random() * 360;
@@ -2629,6 +2708,10 @@
                 container.appendChild(soundDiv);
             });
             document.querySelectorAll('.play-btn').forEach(btn => btn.addEventListener('click', () => {
+                if (lagKillerActive) {
+                    showPanicToast('⚠️ Lag Killer is active! Disable it first.', 2000);
+                    return;
+                }
                 const id = btn.getAttribute('data-id');
                 const aud = soundboardAudios[id];
                 if (aud) {
@@ -2736,7 +2819,13 @@
         //  PRIMARY COLOR PICKER
         // ──────────────────────────────────────────────────────────────
         document.getElementById('primaryColorPicker').addEventListener('input', e => {
-            if (rainbowMode) toggleRainbowMode();
+            if (rainbowMode) {
+                // Turn off rainbow mode if user picks a color manually
+                rainbowMode = false;
+                if (rainbowInterval) clearInterval(rainbowInterval);
+                rainbowInterval = null;
+                document.getElementById('rainbowColorBtn').classList.remove('active');
+            }
             const val = e.target.value;
             document.documentElement.style.setProperty('--primary-color', val);
             const r = parseInt(val.slice(1, 3), 16),
@@ -3318,7 +3407,9 @@
                     'stickmanduel': 'gold',
                     'rooftoprun': 'cyan',
                     'crossyroad': 'yellow',
-                    'huggywuggypixel': 'pink'
+                    'huggywuggypixel': 'pink',
+                    'fivenightsatyoshis': 'red',
+                    'thereisnofile': 'purple'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3366,7 +3457,8 @@
                         'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
                         gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast' ||
                         gameId === 'runfromwitheredfox' || gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
-                        gameId === 'crossyroad' || gameId === 'huggywuggypixel') {
+                        gameId === 'crossyroad' || gameId === 'huggywuggypixel' || gameId === 'fivenightsatyoshis' ||
+                        gameId === 'thereisnofile') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3436,7 +3528,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: All Moto games & Slow Roads -> Driving, Stickman Duel logo updated, Baldi\'s Basics series tagged, Crossy Road & Huggy Wuggy Pixel Nights added.');
+        console.log('🚀 Gameshack updated: Five Nights at Yoshi\'s (Horror/FNAF) and There Is No Game (Puzzle/Relaxing) added!');
     </script>
 </body>
 </html>
