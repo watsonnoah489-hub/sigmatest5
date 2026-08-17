@@ -1546,6 +1546,8 @@
                 <option value="Shooter">🔫 Shooter Games</option>
                 <option value="Baldi's Basics">📚 Baldi's Basics Games</option>
                 <option value="Driving">🏎️ Driving Games</option>
+                <option value="Crazy 3D Farm Games">🐓 Crazy 3D Farm Games</option>
+                <option value="Learn to Fly">✈️ Learn to Fly Series</option>
                 <option value="Other">📦 Other</option>
             </select>
             <span style="font-size:12px;opacity:0.7;">Hold Ctrl/Cmd to select multiple</span>
@@ -1812,11 +1814,12 @@
                 lower === 'mariocombat' || lower === 'stickmankombat') {
                 cats.push('Mortal Kombat');
             }
+            // Runner category - removed lear
             if ((lower.includes('run') && lower !== 'deltarune') ||
                 lower.includes('runner') || lower.includes('templerun') ||
                 lower === 'run3' || lower === 'templerun2' || lower === 'slope' || lower === 'slope2player' ||
                 lower === 'googledino' || lower === 'makeasuperboat' || lower === 'flappybird' ||
-                lower === 'burritobison' || lower === 'learntofly1' || lower === 'learntofly2' ||
+                lower === 'burritobison' ||
                 lower === 'redball4' || lower === 'soniccd' || lower === 'slowroads' ||
                 lower === 'supermario63' || lower === 'supermario64' ||
                 lower === 'clusterrush' || lower === 'rooftoprun' || lower === 'crossyroad') {
@@ -1828,7 +1831,7 @@
                 lower === 'fnaw' || lower === 'fnac1' || lower === 'fnac2' ||
                 lower === '99nights' || lower === 'scaryteacher' || lower === 'tcubed' ||
                 lower === 'deltarune' || lower === 'hollowknight' || lower === 'undertale' ||
-                lower === 'amongus' || lower === 'runfromwitheredfox' || lower === 'huggywuggypixel' ||
+                lower === 'amongus' || lower === 'huggywuggypixel' ||
                 lower === 'fivenightsatyoshis') {
                 cats.push('Horror');
             }
@@ -1866,8 +1869,6 @@
             if (lower === 'blockblast') { cats.push('Puzzle'); cats.push('Relaxing'); }
             // Stickman Duel -> Stickman
             if (lower === 'stickmanduel') cats.push('Stickman');
-            // Run From Withered Foxy -> Horror, FNAF, Basics (Baldi's Basics)
-            if (lower === 'runfromwitheredfox') { cats.push('Horror'); cats.push('FNAF'); cats.push('Basics'); }
             // Crossy Road -> Runner
             if (lower === 'crossyroad') cats.push('Runner');
             // Huggy Wuggy Pixel Nights -> Horror
@@ -1876,8 +1877,6 @@
             if (lower === 'fivenightsatyoshis') { cats.push('Horror'); cats.push('FNAF'); }
             // There Is No Game -> Puzzle, Relaxing
             if (lower === 'thereisnofile') { cats.push('Puzzle'); cats.push('Relaxing'); }
-            // Going Balls -> Puzzle, Relaxing (overridden by explicit categories)
-            if (lower === 'goingballs') { cats.push('Puzzle'); cats.push('Relaxing'); }
             // n-gon -> Other (handled by explicit categories)
             // Rooftop Snipers -> Shooter (handled by explicit categories)
             // Subway Surfers versions -> Runner, Subway Surfers (handled by explicit categories)
@@ -1927,6 +1926,11 @@
             if (lower === 'silk') cats.push('Other');
             if (lower === 'nautilus') cats.push('Other');
             if (lower === 'doblox') cats.push('Other');
+            if (lower === 'bladeball') cats.push('Other');
+            if (lower === 'blockysnakes') cats.push('Other');
+            if (lower === 'crazychicken' || lower === 'crazykitty' || lower === 'crazycattle') cats.push('Crazy 3D Farm Games');
+            if (lower === 'learntofly1' || lower === 'learntofly2' || lower === 'learntofly3' || lower === 'learntoflyidle') cats.push('Learn to Fly');
+            if (lower === 'dvd' || lower === 'dvdbonchin') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -2192,7 +2196,7 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.iQE28EK6W0DPWHgv9AHDWgHaDn?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'chessclassic', name: 'Chess Classic', file: 'Chess Classic.html',
                 img: 'https://www.hitgames.org/web/uploads/games/other/chess-classic/chess-classic.webp' },
-            { id: 'crazycattle', name: 'Crazy Cattle 3D', file: 'Crazy Cattle 3D.html',
+            { id: 'crazycattle', name: 'Crazy Cattle 3D', file: 'Crazy Cattle 3D.html', categories: ['Crazy 3D Farm Games'],
                 img: 'https://rawcdn.githack.com/genizy/cc3d-mobile/main/CrazyCattle3D.png' },
             { id: 'footballbros', name: 'Football Bros', file: 'Football Bros.html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.1Z0YVZmdJoAVBPDLUb8sHwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2218,7 +2222,7 @@
                 img: 'https://manuals.plus/wp-content/uploads/2023/01/WORLDE-logo.png' },
             { id: 'cookieclicker', name: '🍪 Cookie Clicker', file: 'cookieclicker.htm',
                 img: 'https://tse1.explicit.bing.net/th/id/OIP.xR0-Oj5LyBuCHJ8cfoFbFgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'credits', name: '📜 Credits', file: 'credits', img: '' },
+            { id: 'credits', name: '📜 Credits', file: 'credits', img: 'https://data.textstudio.com/output/sample/animated/5/7/1/5/credit-3-5175.gif' },
             { id: 'pacman', name: 'Pacman', file: 'pacman.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.1k6R3CFImsN4nJoE8-TnegHaEc?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'bugreports', name: '🐛 Bug Reports',
@@ -2257,9 +2261,7 @@
             // ═══════ BLOCK BLAST ═══════
             { id: 'blockblast', name: '🧩 Block Blast', file: 'clblockblast.html', categories: ['Puzzle', 'Relaxing'],
                 img: 'https://blockblast.game/assets/img/block-blast.png' },
-            // ═══════ RUN FROM WITHERED FOXY ═══════
-            { id: 'runfromwitheredfox', name: '🏃 Run From Withered Foxy', file: 'clrunfromwitheredfox.html', categories: ['Horror', 'FNAF', 'Baldi\'s Basics'],
-                img: 'https://tse1.mm.bing.net/th/id/OIP.-tJOHcy7_C_pQsPQrW4NAwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ RUN FROM WITHERED FOXY - REMOVED ═══════
             // ═══════ STICKMAN DUEL ═══════
             { id: 'stickmanduel', name: '⚔️ Stickman Duel', file: 'clstickmanduel.html', categories: ['Stickman'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.oQg-LLk5ZZWgChYJEZjJJAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2279,9 +2281,7 @@
             { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle', 'Relaxing'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ─── NEW GAMES ───
-            // ─── GOING BALLS: updated categories to Puzzle & Relaxing ───
-            { id: 'goingballs', name: '🎱 Going Balls', file: 'clgoingballs.html', categories: ['Puzzle', 'Relaxing'],
-                img: 'https://minigamesville.com/wp-content/uploads/2025/08/Going-Balls.png' },
+            // ─── GOING BALLS - REMOVED ───
             { id: 'ngon', name: '🔷 n-gon', file: 'clngon (1).html', categories: ['Other'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.uBYSx4LIKypBXjXRtharSQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'clrooftopsnipers.html', categories: ['Shooter'],
@@ -2302,7 +2302,29 @@
                 img: 'https://avatars.githubusercontent.com/u/240241840?s=200&v=4' },
             // ─── NEW: DOBLOX (replaces boblox) ───
             { id: 'doblox', name: '🧱 Doblox', file: 'cldoblox.html', categories: ['Other'],
-                img: 'https://www3.chatvpn.net/img/images/roblox-logo.png' }
+                img: 'https://www3.chatvpn.net/img/images/roblox-logo.png' },
+            // ─── NEW: Blade Ball ───
+            { id: 'bladeball', name: 'Blade Ball', file: 'Blade Ball.html', categories: ['Other'],
+                img: 'https://images.sftcdn.net/images/t_app-icon-m/p/2eb6cfb8-570e-4e5c-9578-58e00b04f5f8/234620725/new-blade-ball-logo' },
+            // ─── NEW: Blocky Snakes ───
+            { id: 'blockysnakes', name: 'Blocky Snakes', file: 'Blocky Snakes.html', categories: ['Other'],
+                img: 'https://img.gamesgo.net/storage/images/games/blocky-snakes/sn300jpg.jpg' },
+            // ─── NEW: Crazy Chicken 3D ───
+            { id: 'crazychicken', name: 'Crazy Chicken 3D', file: 'Crazy Chicken 3D (2).html', categories: ['Crazy 3D Farm Games'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.kR6doKnU-RN8y79Wtg0X2wHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW: Crazy Kitty 3D with image ───
+            { id: 'crazykitty', name: 'Crazy Kitty 3D', file: 'Crazy Kitty 3D (2).html', categories: ['Crazy 3D Farm Games'],
+                img: 'https://slithergame.io/data/image/game/crazy-kitty-3d.jpg' },
+            // ─── NEW: Flappy Dunk - REMOVED ───
+            // ─── NEW: Learn to Fly 3 ───
+            { id: 'learntofly3', name: 'Learn to Fly 3', file: 'Learn to Fly 3 (2).html', categories: ['Learn to Fly'],
+                img: 'https://www.experimonkey.com/games/swf-games/learn-to-fly-3/learn-to-fly-3.jpg' },
+            // ─── NEW: Learn to Fly Idle ───
+            { id: 'learntoflyidle', name: 'Learn to Fly Idle', file: 'Learn to Fly Idle (2).html', categories: ['Learn to Fly'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW: DVD Bonchin ───
+            { id: 'dvd', name: 'DVD Bonchin', file: 'DVD.HTML.htm', categories: ['Other'],
+                img: 'https://tse3.mm.bing.net/th/id/OIP.haWuKNwltvQpHN3vBkAn3QHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3444,14 +3466,13 @@
                     'drivemad': 'red',
                     'dta6': 'cyan',
                     'blockblast': 'teal',
-                    'runfromwitheredfox': 'red',
+                    // runfromwitheredfox removed
                     'stickmanduel': 'gold',
                     'rooftoprun': 'cyan',
                     'crossyroad': 'yellow',
                     'huggywuggypixel': 'pink',
                     'fivenightsatyoshis': 'red',
                     'thereisnofile': 'purple',
-                    'goingballs': 'blue',
                     'ngon': 'purple',
                     'rooftopsnipers': 'red',
                     'rooftopsnipers2': 'red',
@@ -3460,7 +3481,15 @@
                     'subwaysurfersbuenosaires': 'blue',
                     'silk': 'teal',
                     'nautilus': 'cyan',
-                    'doblox': 'red'
+                    'doblox': 'red',
+                    'bladeball': 'red',
+                    'blockysnakes': 'green',
+                    'crazychicken': 'orange',
+                    'crazykitty': 'pink',
+                    // flappydunk removed
+                    'learntofly3': 'cyan',
+                    'learntoflyidle': 'teal',
+                    'dvd': 'gold'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3507,13 +3536,16 @@
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
                         'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
                         gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast' ||
-                        gameId === 'runfromwitheredfox' || gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
+                        gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
                         gameId === 'crossyroad' || gameId === 'huggywuggypixel' || gameId === 'fivenightsatyoshis' ||
-                        gameId === 'thereisnofile' || gameId === 'goingballs' || gameId === 'ngon' ||
+                        gameId === 'thereisnofile' || gameId === 'ngon' ||
                         gameId === 'rooftopsnipers' || gameId === 'rooftopsnipers2' ||
                         gameId === 'subwaysurfersmonaco' || gameId === 'subwaysurfershavana' ||
                         gameId === 'subwaysurfersbuenosaires' ||
-                        gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox') {
+                        gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox' ||
+                        gameId === 'bladeball' || gameId === 'blockysnakes' || gameId === 'crazychicken' || gameId === 'crazykitty' ||
+                        // flappydunk removed
+                        gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'dvd') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3583,7 +3615,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Added Doblox (replaced boblox).');
+        console.log('🚀 Gameshack updated: Removed Flappy Dunk, removed Learn to Fly from Runner, added DVD Bonchin (Other).');
     </script>
 </body>
 </html>
