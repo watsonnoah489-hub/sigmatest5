@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://th.bing.com" crossorigin>
     <link rel="preconnect" href="https://images.igdb.com" crossorigin>
     <link rel="preconnect" href="https://manuals.plus" crossorigin>
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin>
+    <link rel="preconnect" href="https://turingninjas.com" crossorigin>
+    <link rel="preconnect" href="https://www3.chatvpn.net" crossorigin>
     <style>
         /* ────── ROOT VARIABLES ────── */
         :root {
@@ -1873,6 +1876,11 @@
             if (lower === 'fivenightsatyoshis') { cats.push('Horror'); cats.push('FNAF'); }
             // There Is No Game -> Puzzle, Relaxing
             if (lower === 'thereisnofile') { cats.push('Puzzle'); cats.push('Relaxing'); }
+            // Going Balls -> Puzzle, Relaxing (overridden by explicit categories)
+            if (lower === 'goingballs') { cats.push('Puzzle'); cats.push('Relaxing'); }
+            // n-gon -> Other (handled by explicit categories)
+            // Rooftop Snipers -> Shooter (handled by explicit categories)
+            // Subway Surfers versions -> Runner, Subway Surfers (handled by explicit categories)
             // Polytrack, carkingarena, smashkarts will be overridden to Driving
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
@@ -1916,6 +1924,9 @@
             if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
             if (lower === 'smashkarts') cats.push('Other');
             if (lower === 'kartbros') cats.push('Other');
+            if (lower === 'silk') cats.push('Other');
+            if (lower === 'nautilus') cats.push('Other');
+            if (lower === 'doblox') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -1926,10 +1937,14 @@
                 img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '2048', name: '2048', file: 'cl2048 (1).html',
                 img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
+            // ─── EAGLERCRAFT 1.8.8 – UPDATED LOGO ───
             { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html',
-                img: 'https://tse3.mm.bing.net/th/id/OIP.ycPMMSBon_CEagF-syK2ywHaEQ?rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html',
                 img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
+            // ─── Eaglercraft v1.5.2 ───
+            { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html', categories: ['Other'],
+                img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html',
@@ -1937,7 +1952,7 @@
             { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobison.html',
-                img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgGw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
+                img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgMw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'backrooms', name: 'Backrooms', file: 'clbackrooms (1).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.l0ujgLbPT6flYCOVzGy4ZQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'baldi', name: "Baldi's Basics", file: 'clbaldisbasics (1).html', categories: ['Baldi\'s Basics', 'Horror'],
@@ -2262,7 +2277,32 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.OrkbfU8XKDmbcBFNmAe5RgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ═══════ THERE IS NO GAME ═══════
             { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle', 'Relaxing'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW GAMES ───
+            // ─── GOING BALLS: updated categories to Puzzle & Relaxing ───
+            { id: 'goingballs', name: '🎱 Going Balls', file: 'clgoingballs.html', categories: ['Puzzle', 'Relaxing'],
+                img: 'https://minigamesville.com/wp-content/uploads/2025/08/Going-Balls.png' },
+            { id: 'ngon', name: '🔷 n-gon', file: 'clngon (1).html', categories: ['Other'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.uBYSx4LIKypBXjXRtharSQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'clrooftopsnipers.html', categories: ['Shooter'],
+                img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
+            { id: 'rooftopsnipers2', name: '🔫 Rooftop Snipers 2', file: 'clrooftopsnipers2.html', categories: ['Shooter'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.pSq_fG8wa8s6ziJS4U9RAAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'subwaysurfersmonaco', name: '🚇 Subway Surfers Monaco', file: 'clsubwaysurfersmonaco.html', categories: ['Subway Surfers', 'Runner'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.1KtzAiXk0RiodP6DyoAQ_wAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'subwaysurfershavana', name: '🚇 Subway Surfers Havana', file: 'clsubwaysurfershavana.html', categories: ['Subway Surfers', 'Runner'],
+                img: 'https://subwaysurfers-game.io/storage/images/games/havana/havana300jpg.jpg' },
+            { id: 'subwaysurfersbuenosaires', name: '🚇 Subway Surfers Buenos Aires', file: 'clsubwaysurfersbuenosaires.html', categories: ['Subway Surfers', 'Runner'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.qcTOsVjhLi0MzhhQneCy0gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW: SILK (Other) ───
+            { id: 'silk', name: '🎨 Silk (Art)', file: 'clsilk (1).html', categories: ['Other'],
+                img: 'https://turingninjas.com/images/blog/top-8sites-to-use-computer-mouse/Silkweave.JPG' },
+            // ─── NEW: NAUTILUS (Other) ───
+            { id: 'nautilus', name: '🐚 Nautilus OS', file: 'clNautilusOS.html', categories: ['Other'],
+                img: 'https://avatars.githubusercontent.com/u/240241840?s=200&v=4' },
+            // ─── NEW: DOBLOX (replaces boblox) ───
+            { id: 'doblox', name: '🧱 Doblox', file: 'cldoblox.html', categories: ['Other'],
+                img: 'https://www3.chatvpn.net/img/images/roblox-logo.png' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3270,6 +3310,7 @@
                     '2048': 'green',
                     'eaglercraft': 'blue',
                     'eaglercrafttuff': 'orange',
+                    'eaglercraft152': 'orange',
                     'tungtunghorror': 'red',
                     '1v1lol': 'blue',
                     '1on1soccer': 'green',
@@ -3409,7 +3450,17 @@
                     'crossyroad': 'yellow',
                     'huggywuggypixel': 'pink',
                     'fivenightsatyoshis': 'red',
-                    'thereisnofile': 'purple'
+                    'thereisnofile': 'purple',
+                    'goingballs': 'blue',
+                    'ngon': 'purple',
+                    'rooftopsnipers': 'red',
+                    'rooftopsnipers2': 'red',
+                    'subwaysurfersmonaco': 'blue',
+                    'subwaysurfershavana': 'blue',
+                    'subwaysurfersbuenosaires': 'blue',
+                    'silk': 'teal',
+                    'nautilus': 'cyan',
+                    'doblox': 'red'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3448,7 +3499,7 @@
                 setTimeout(() => {
                     updateCursorButtonState();
                     setStatus(gameId, 'running', false);
-                    if (gameId === 'eaglercraft' || gameId === 'eaglercrafttuff' || gameId === '1v1lol' || gameId === 'backrooms' || gameId ===
+                    if (gameId === 'eaglercraft' || gameId === 'eaglercrafttuff' || gameId === 'eaglercraft152' || gameId === '1v1lol' || gameId === 'backrooms' || gameId ===
                         'baldi' || gameId === 'caseoh' || gameId === 'stealbrainrot' || gameId === 'fnaf1' ||
                         gameId === 'fnaf2' || gameId === 'fnaf3' || gameId === 'fnaf3remastered' || gameId ===
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
@@ -3458,7 +3509,11 @@
                         gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast' ||
                         gameId === 'runfromwitheredfox' || gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
                         gameId === 'crossyroad' || gameId === 'huggywuggypixel' || gameId === 'fivenightsatyoshis' ||
-                        gameId === 'thereisnofile') {
+                        gameId === 'thereisnofile' || gameId === 'goingballs' || gameId === 'ngon' ||
+                        gameId === 'rooftopsnipers' || gameId === 'rooftopsnipers2' ||
+                        gameId === 'subwaysurfersmonaco' || gameId === 'subwaysurfershavana' ||
+                        gameId === 'subwaysurfersbuenosaires' ||
+                        gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3528,7 +3583,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Five Nights at Yoshi\'s (Horror/FNAF) and There Is No Game (Puzzle/Relaxing) added!');
+        console.log('🚀 Gameshack updated: Added Doblox (replaced boblox).');
     </script>
 </body>
 </html>
