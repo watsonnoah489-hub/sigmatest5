@@ -1930,7 +1930,7 @@
             if (lower === 'blockysnakes') cats.push('Other');
             if (lower === 'crazychicken' || lower === 'crazykitty' || lower === 'crazycattle') cats.push('Crazy 3D Farm Games');
             if (lower === 'learntofly1' || lower === 'learntofly2' || lower === 'learntofly3' || lower === 'learntoflyidle') cats.push('Learn to Fly');
-            if (lower === 'dvd' || lower === 'dvdbonchin') cats.push('Other');
+            if (lower === 'doodlejump') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -2322,9 +2322,9 @@
             // ─── NEW: Learn to Fly Idle ───
             { id: 'learntoflyidle', name: 'Learn to Fly Idle', file: 'Learn to Fly Idle (2).html', categories: ['Learn to Fly'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── NEW: DVD Bonchin ───
-            { id: 'dvd', name: 'DVD Bonchin', file: 'DVD.HTML.htm', categories: ['Other'],
-                img: 'https://tse3.mm.bing.net/th/id/OIP.haWuKNwltvQpHN3vBkAn3QHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+            // ─── NEW: Doodle Jump ───
+            { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Other'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3489,7 +3489,7 @@
                     // flappydunk removed
                     'learntofly3': 'cyan',
                     'learntoflyidle': 'teal',
-                    'dvd': 'gold'
+                    'doodlejump': 'lime'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3545,7 +3545,7 @@
                         gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox' ||
                         gameId === 'bladeball' || gameId === 'blockysnakes' || gameId === 'crazychicken' || gameId === 'crazykitty' ||
                         // flappydunk removed
-                        gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'dvd') {
+                        gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'doodlejump') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3615,7 +3615,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Removed Flappy Dunk, removed Learn to Fly from Runner, added DVD Bonchin (Other).');
+        console.log('🚀 Gameshack updated: Removed DVD, added Doodle Jump (Other).');
     </script>
 </body>
 </html>
