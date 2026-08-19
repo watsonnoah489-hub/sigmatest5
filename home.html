@@ -1435,37 +1435,6 @@
         .controls .music-area span:not(.speed-value):not(:has(🐢)):not(:has(🐇)) {
             display: none;
         }
-
-        /* ────── I-READY OVERLAY (UPDATED FILE NAME) ────── */
-        #ireadyOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            z-index: 99999;
-            display: none;
-            border: none;
-        }
-        #ireadyOverlay iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        #ireadyOverlay .close-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            color: #fff;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 14px;
-            pointer-events: none;
-            z-index: 1;
-        }
     </style>
 </head>
 <body>
@@ -1510,12 +1479,6 @@
             </ul>
             <button class="credits-close-btn" onclick="document.getElementById('creditsModal').classList.remove('open')">✕ Close</button>
         </div>
-    </div>
-
-    <!-- ─── I-READY OVERLAY ─── -->
-    <div id="ireadyOverlay">
-        <iframe src="iready html viewer.mhtml" id="ireadyFrame"></iframe>
-        <div class="close-hint">Press H+I to close</div>
     </div>
 
     <div id="menuScreen">
@@ -1632,39 +1595,6 @@
     </div>
 
     <script>
-        // ──────────────────────────────────────────────────────────────
-        //  I-READY OVERLAY TOGGLE (H + I)
-        // ──────────────────────────────────────────────────────────────
-        let ireadyKeys = { h: false, i: false };
-        document.addEventListener('keydown', function(e) {
-            const key = e.key.toLowerCase();
-            if (key === 'h') { ireadyKeys.h = true; e.preventDefault(); }
-            if (key === 'i') { ireadyKeys.i = true; e.preventDefault(); }
-            if (ireadyKeys.h && ireadyKeys.i) {
-                toggleIready();
-                ireadyKeys.h = false;
-                ireadyKeys.i = false;
-            }
-        });
-        document.addEventListener('keyup', function(e) {
-            const key = e.key.toLowerCase();
-            if (key === 'h') ireadyKeys.h = false;
-            if (key === 'i') ireadyKeys.i = false;
-        });
-
-        function toggleIready() {
-            const overlay = document.getElementById('ireadyOverlay');
-            if (overlay.style.display === 'block') {
-                overlay.style.display = 'none';
-                // restore focus to game if present
-                const frame = document.getElementById('clientFrame');
-                if (frame) frame.focus();
-            } else {
-                overlay.style.display = 'block';
-                document.getElementById('ireadyFrame').src = 'iready html viewer.mhtml';
-            }
-        }
-
         // ──────────────────────────────────────────────────────────────
         //  SIGMATOWN MODE
         // ──────────────────────────────────────────────────────────────
@@ -1953,7 +1883,7 @@
             if (lower.includes('clicker') || lower === 'capybara' || lower === 'omeganugget' ||
                 lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'capybaraclicker' ||
                 lower === '10morebullets' || lower === '10bullets' || lower === 'cookieclicker' ||
-                lower === 'fruitninja') {
+                lower === 'fruitninja' || lower === 'dogeminer') {
                 cats.push('Clicker');
                 if (lower === 'omeganugget') cats.push('Brainrot');
             }
@@ -2001,6 +1931,8 @@
             if (lower === 'learntofly1' || lower === 'learntofly2' || lower === 'learntofly3' || lower === 'learntoflyidle') cats.push('Learn to Fly');
             if (lower === 'doodlejump') cats.push('Other');
             if (lower === 'gorillatag') cats.push('Other');
+            if (lower === 'snowrider3d') cats.push('Other');
+            if (lower === 'attackhole') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -2395,7 +2327,16 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ─── NEW: Gorilla Tag ───
             { id: 'gorillatag', name: 'Gorilla Tag', file: 'clgorillatag.html', categories: ['Other'],
-                img: 'https://i.pinimg.com/474x/19/fd/c4/19fdc4bdd0c48967430da181be9176ba.jpg?nii=t' }
+                img: 'https://i.pinimg.com/474x/19/fd/c4/19fdc4bdd0c48967430da181be9176ba.jpg?nii=t' },
+            // ─── NEW: Snow Rider 3D ───
+            { id: 'snowrider3d', name: 'Snow Rider 3D', file: 'Snow Rider 3D (1).html', categories: ['Other'],
+                img: 'https://new66ez.github.io/img/snowrider3d/logo.png' },
+            // ─── NEW: Doge Miner ───
+            { id: 'dogeminer', name: 'Doge Miner', file: 'Doge Miner.html', categories: ['Clicker'],
+                img: 'https://images.crazygames.com/games/doge-miner/cover-1593443166599.png?auto=format,compress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop' },
+            // ─── NEW: Attack Hole ───
+            { id: 'attackhole', name: 'Attack Hole', file: 'Attack Hole (6).html', categories: ['Other'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.avW_vcNCbyWZau88DhAQWQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3561,7 +3502,10 @@
                     'learntofly3': 'cyan',
                     'learntoflyidle': 'teal',
                     'doodlejump': 'lime',
-                    'gorillatag': 'gold'
+                    'gorillatag': 'gold',
+                    'snowrider3d': 'blue',
+                    'dogeminer': 'orange',
+                    'attackhole': 'red'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3618,7 +3562,7 @@
                         gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox' ||
                         gameId === 'bladeball' || gameId === 'blockysnakes' || gameId === 'crazychicken' || gameId === 'crazykitty' ||
                         gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'doodlejump' ||
-                        gameId === 'gorillatag') {
+                        gameId === 'gorillatag' || gameId === 'snowrider3d' || gameId === 'dogeminer' || gameId === 'attackhole') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3688,7 +3632,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Removed Kart Bros, added Gorilla Tag (Other) and i-Ready overlay (H+I) - file: iready html viewer.mhtml');
+        console.log('🚀 Gameshack updated: Removed i-Ready overlay, added Snow Rider 3D, Doge Miner, and Attack Hole.');
     </script>
 </body>
 </html>
