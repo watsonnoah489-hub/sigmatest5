@@ -1435,6 +1435,37 @@
         .controls .music-area span:not(.speed-value):not(:has(🐢)):not(:has(🐇)) {
             display: none;
         }
+
+        /* ────── I-READY OVERLAY (UPDATED FILE NAME) ────── */
+        #ireadyOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 99999;
+            display: none;
+            border: none;
+        }
+        #ireadyOverlay iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #ireadyOverlay .close-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            pointer-events: none;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -1479,6 +1510,12 @@
             </ul>
             <button class="credits-close-btn" onclick="document.getElementById('creditsModal').classList.remove('open')">✕ Close</button>
         </div>
+    </div>
+
+    <!-- ─── I-READY OVERLAY ─── -->
+    <div id="ireadyOverlay">
+        <iframe src="iready html viewer.mhtml" id="ireadyFrame"></iframe>
+        <div class="close-hint">Press H+I to close</div>
     </div>
 
     <div id="menuScreen">
@@ -1595,6 +1632,39 @@
     </div>
 
     <script>
+        // ──────────────────────────────────────────────────────────────
+        //  I-READY OVERLAY TOGGLE (H + I)
+        // ──────────────────────────────────────────────────────────────
+        let ireadyKeys = { h: false, i: false };
+        document.addEventListener('keydown', function(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'h') { ireadyKeys.h = true; e.preventDefault(); }
+            if (key === 'i') { ireadyKeys.i = true; e.preventDefault(); }
+            if (ireadyKeys.h && ireadyKeys.i) {
+                toggleIready();
+                ireadyKeys.h = false;
+                ireadyKeys.i = false;
+            }
+        });
+        document.addEventListener('keyup', function(e) {
+            const key = e.key.toLowerCase();
+            if (key === 'h') ireadyKeys.h = false;
+            if (key === 'i') ireadyKeys.i = false;
+        });
+
+        function toggleIready() {
+            const overlay = document.getElementById('ireadyOverlay');
+            if (overlay.style.display === 'block') {
+                overlay.style.display = 'none';
+                // restore focus to game if present
+                const frame = document.getElementById('clientFrame');
+                if (frame) frame.focus();
+            } else {
+                overlay.style.display = 'block';
+                document.getElementById('ireadyFrame').src = 'iready html viewer.mhtml';
+            }
+        }
+
         // ──────────────────────────────────────────────────────────────
         //  SIGMATOWN MODE
         // ──────────────────────────────────────────────────────────────
@@ -1857,8 +1927,7 @@
             if (lower === 'kour') cats.push('Shooter');
             // BitPlanes -> Other
             if (lower === 'bitplanes') cats.push('Other');
-            // Kart Bros -> Other (no Sports or Racing)
-            if (lower === 'kartbros') cats.push('Other');
+            // Kart Bros removed
             // Drift Boss -> Other (will be overridden to Driving)
             if (lower === 'driftboss') cats.push('Other');
             // Drive Mad -> Other (will be overridden to Driving)
@@ -1922,7 +1991,7 @@
                 'removalrequest') cats.push('Other');
             if (lower === 'clarkingarena' || lower === 'carkingarena') cats.push('Other');
             if (lower === 'smashkarts') cats.push('Other');
-            if (lower === 'kartbros') cats.push('Other');
+            // kartbros removed
             if (lower === 'silk') cats.push('Other');
             if (lower === 'nautilus') cats.push('Other');
             if (lower === 'doblox') cats.push('Other');
@@ -1931,6 +2000,7 @@
             if (lower === 'crazychicken' || lower === 'crazykitty' || lower === 'crazycattle') cats.push('Crazy 3D Farm Games');
             if (lower === 'learntofly1' || lower === 'learntofly2' || lower === 'learntofly3' || lower === 'learntoflyidle') cats.push('Learn to Fly');
             if (lower === 'doodlejump') cats.push('Other');
+            if (lower === 'gorillatag') cats.push('Other');
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -2246,9 +2316,7 @@
             // ═══════ KOUR ═══════
             { id: 'kour', name: '🔫 Kour', file: 'clkourio (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.5ATPmtbrTAuarseER_7zfgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ═══════ KART BROS ═══════
-            { id: 'kartbros', name: '🏎️ Kart Bros', file: 'clkartbros (1).html', categories: ['Driving'],
-                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ═══════ KART BROS - REMOVED ═══════
             // ═══════ DRIFT BOSS ═══════
             { id: 'driftboss', name: '🏎️ Drift Boss', file: 'cldriftboss.html', categories: ['Driving'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Dvjy0a6djPJbWwFkPS3OHQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2324,7 +2392,10 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ─── NEW: Doodle Jump ───
             { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Other'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+                img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW: Gorilla Tag ───
+            { id: 'gorillatag', name: 'Gorilla Tag', file: 'clgorillatag.html', categories: ['Other'],
+                img: 'https://i.pinimg.com/474x/19/fd/c4/19fdc4bdd0c48967430da181be9176ba.jpg?nii=t' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3461,7 +3532,7 @@
                     'beachboxingsim': 'orange',
                     'konkr': 'purple',
                     'kour': 'red',
-                    'kartbros': 'blue',
+                    // kartbros removed
                     'driftboss': 'orange',
                     'drivemad': 'red',
                     'dta6': 'cyan',
@@ -3489,7 +3560,8 @@
                     // flappydunk removed
                     'learntofly3': 'cyan',
                     'learntoflyidle': 'teal',
-                    'doodlejump': 'lime'
+                    'doodlejump': 'lime',
+                    'gorillatag': 'gold'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3534,7 +3606,8 @@
                         'fnaf4' || gameId === 'fnac1' || gameId === 'fnac2' || gameId === 'granny1' || gameId ===
                         'granny2' || gameId === 'nzp' || gameId === 'smashkarts' || gameId === 'fnaw' || gameId ===
                         'mortalkombat1' || gameId === 'mortalkombat2' || gameId === 'tungtunghorror' || gameId ===
-                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' || gameId === 'kartbros' ||
+                        'bitplanes' || gameId === 'beachboxingsim' || gameId === 'konkr' || gameId === 'kour' ||
+                        // kartbros removed
                         gameId === 'driftboss' || gameId === 'drivemad' || gameId === 'dta6' || gameId === 'blockblast' ||
                         gameId === 'stickmanduel' || gameId === 'rooftoprun' ||
                         gameId === 'crossyroad' || gameId === 'huggywuggypixel' || gameId === 'fivenightsatyoshis' ||
@@ -3544,8 +3617,8 @@
                         gameId === 'subwaysurfersbuenosaires' ||
                         gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox' ||
                         gameId === 'bladeball' || gameId === 'blockysnakes' || gameId === 'crazychicken' || gameId === 'crazykitty' ||
-                        // flappydunk removed
-                        gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'doodlejump') {
+                        gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'doodlejump' ||
+                        gameId === 'gorillatag') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3615,7 +3688,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Removed DVD, added Doodle Jump (Other).');
+        console.log('🚀 Gameshack updated: Removed Kart Bros, added Gorilla Tag (Other) and i-Ready overlay (H+I) - file: iready html viewer.mhtml');
     </script>
 </body>
 </html>
