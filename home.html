@@ -1893,7 +1893,7 @@
             }
             if (lower.includes('obby') || lower === 'obbyjumperclicker' || lower === 'speedperclick' || lower === 'tripletobby' ||
                 lower === 'redball4' || lower === 'supermario63' || lower === 'supermario64' || lower === 'obbycart' ||
-                lower === 'blockcraftparkour') {
+                lower === 'blockcraftparkour' || lower === 'obby99willlose' || lower === 'obbyfriends') {
                 cats.push('Obby');
             }
             if (lower.includes('stickman')) cats.push('Stickman');
@@ -1932,7 +1932,7 @@
             if (lower === 'doodlejump') cats.push('Other');
             if (lower === 'gorillatag') cats.push('Other');
             if (lower === 'snowrider3d') cats.push('Other');
-            if (lower === 'attackhole') cats.push('Other');
+            // attackhole removed
             if (cats.length === 0) cats.push('Other');
             return [...new Set(cats)];
         }
@@ -2334,9 +2334,13 @@
             // ─── NEW: Doge Miner ───
             { id: 'dogeminer', name: 'Doge Miner', file: 'Doge Miner.html', categories: ['Clicker'],
                 img: 'https://images.crazygames.com/games/doge-miner/cover-1593443166599.png?auto=format,compress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop' },
-            // ─── NEW: Attack Hole ───
-            { id: 'attackhole', name: 'Attack Hole', file: 'Attack Hole (6).html', categories: ['Other'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.avW_vcNCbyWZau88DhAQWQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
+            // ─── NEW: Attack Hole - REMOVED ───
+            // ─── NEW: Obby 99% lose ───
+            { id: 'obby99willlose', name: 'Obby but u will 99% lose', file: 'clobby-99-will-lose (1).html', categories: ['Obby'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.OnRcoSNjOVv9091H3a_BvAHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW: Obby with Friends ───
+            { id: 'obbyfriends', name: 'Obby with Friends', file: 'clobbyfriends.html', categories: ['Obby'],
+                img: 'https://tse3.mm.bing.net/th/id/OIP.tQD_30Ccp6chx5IZ3v7l6QHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(game => {
@@ -3505,7 +3509,9 @@
                     'gorillatag': 'gold',
                     'snowrider3d': 'blue',
                     'dogeminer': 'orange',
-                    'attackhole': 'red'
+                    // attackhole removed
+                    'obby99willlose': 'green',
+                    'obbyfriends': 'cyan'
                 };
                 if (colorMap[gameId]) dotColor = colorMap[gameId];
 
@@ -3562,7 +3568,8 @@
                         gameId === 'silk' || gameId === 'nautilus' || gameId === 'doblox' ||
                         gameId === 'bladeball' || gameId === 'blockysnakes' || gameId === 'crazychicken' || gameId === 'crazykitty' ||
                         gameId === 'learntofly3' || gameId === 'learntoflyidle' || gameId === 'doodlejump' ||
-                        gameId === 'gorillatag' || gameId === 'snowrider3d' || gameId === 'dogeminer' || gameId === 'attackhole') {
+                        gameId === 'gorillatag' || gameId === 'snowrider3d' || gameId === 'dogeminer' ||
+                        gameId === 'obby99willlose' || gameId === 'obbyfriends') {
                         showPointerMessage('🖱️ Click inside the game window to lock cursor and move');
                     }
                 }, 500);
@@ -3632,7 +3639,7 @@
         document.getElementById('headerTitle').textContent = 'SigmaTown4Life BETA';
 
         renderCycles();
-        console.log('🚀 Gameshack updated: Removed i-Ready overlay, added Snow Rider 3D, Doge Miner, and Attack Hole.');
+        console.log('🚀 Gameshack updated: Removed Attack Hole, added Obby 99% lose and Obby with Friends.');
     </script>
 </body>
 </html>
