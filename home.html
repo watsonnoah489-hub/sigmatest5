@@ -1648,6 +1648,9 @@
     <!-- ─── MATRIX RAIN ─── -->
     <canvas id="matrixCanvas"></canvas>
 
+    <!-- ─── CLICK SOUND ─── -->
+    <audio id="clickSound" src="clicksoundeffect.mp3" preload="auto"></audio>
+
     <!-- ─── TOAST ─── -->
     <div id="toast"></div>
 
@@ -1694,7 +1697,7 @@
 
             <!-- HEADER -->
             <div class="header">
-                <h1 id="headerTitle">SigmaTown4Life BETA</h1>
+                <h1 id="headerTitle">SigmaTown4Life v1.0.0</h1>
             </div>
 
             <!-- CONTROLS -->
@@ -1795,6 +1798,37 @@
     </div>
 
     <script>
+        // ──────────────────────────────────────────────────────────────
+        //  CLICK SOUND (plays on any game or button click)
+        // ──────────────────────────────────────────────────────────────
+        (function() {
+            const clickAudio = document.getElementById('clickSound');
+            if (!clickAudio) return;
+            // Preload the audio
+            clickAudio.load();
+
+            // Function to play the sound (reset and play)
+            function playClick() {
+                try {
+                    clickAudio.currentTime = 0;
+                    clickAudio.play().catch(() => {});
+                } catch (_) {}
+            }
+
+            // Listen for clicks on the document, but only on interactive elements
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest(
+                    '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn'
+                );
+                if (target) {
+                    playClick();
+                }
+            }, true); // use capture phase to catch all clicks
+
+            // Also play when clicking on the search clear button
+            document.getElementById('searchClear').addEventListener('click', playClick);
+        })();
+
         // ──────────────────────────────────────────────────────────────
         //  PARTICLE SYSTEM
         // ──────────────────────────────────────────────────────────────
@@ -1940,13 +1974,11 @@
         // ──────────────────────────────────────────────────────────────
         function updateCursor(hexColor) {
             const clean = hexColor.replace('#', '');
-            // taller viewBox (40x48) with more room at bottom so sigma's lower part is fully visible
             const svg =
                 `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="48" viewBox="0 0 40 48"><text y="41" font-size="38" font-family="Arial, sans-serif" fill="%23${clean}">∑</text></svg>`;
             const encoded = encodeURIComponent(svg);
             const cursorUrl = `url('data:image/svg+xml;utf8,${encoded}') 20 24, auto`;
             document.documentElement.style.setProperty('--sigma-cursor', cursorUrl);
-            // Force reflow to update cursor on all elements
             document.body.style.cursor = 'default';
             requestAnimationFrame(() => {
                 document.body.style.cursor = '';
@@ -2454,9 +2486,8 @@
         let rainActive = false;
         let rainbowMode = false;
         let rainbowInterval = null;
-        let currentCloak = 1; // Start with IXL - Dashboard (index 1)
+        // Cloak list - SigmaTown4Life entry removed, IXL is first
         const cloakList = [
-            { title: '⚡ SigmaTown4Life', fav: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">⚡</text></svg>' },
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
             { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico' },
@@ -2464,6 +2495,7 @@
             { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico' }
         ];
+        let currentCloak = 0; // default to IXL
 
         // ──────────────────────────────────────────────────────────────
         //  DOM REFS
@@ -2903,7 +2935,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  CLOAK - Auto-set to IXL on load
+        //  CLOAK - default IXL
         // ──────────────────────────────────────────────────────────────
         function applyCloak(index) {
             const c = cloakList[index];
@@ -3125,15 +3157,15 @@
         // ──────────────────────────────────────────────────────────────
         //  INIT
         // ──────────────────────────────────────────────────────────────
-        // Apply IXL cloak on load
-        applyCloak(1);
-        // Set initial cursor with full sigma (taller viewBox)
+        // Apply IXL cloak by default (index 0)
+        applyCloak(0);
+        // Set initial cursor with full sigma
         updateCursor('#3b82f6');
         renderGrid();
         document.documentElement.style.setProperty('--primary', '#3b82f6');
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
-        console.log('🚀 SigmaTown4Life fully loaded with 30+ animations! Rain uses single color, IXL cloak active.');
+        console.log('🚀 SigmaTown4Life v1.0.0 loaded with click sound, IXL cloak default.');
     </script>
 </body>
 </html>
