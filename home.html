@@ -39,11 +39,11 @@
         .cycle-btn,
         .star-fav,
         .ctrl-btn,
+        .sound-item .controls-group .btn-sm,
         .panic-item .del,
         .add-btn,
         .close-btn,
-        .credits-close-btn,
-        .speed-btn {
+        .credits-close-btn {
             cursor: var(--sigma-cursor) !important;
         }
 
@@ -75,11 +75,15 @@
             --border: #bbb;
         }
         body.light .header,
-        body.light .controls {
+        body.light .controls,
+        body.light .soundboard {
             background: var(--card-bg);
         }
         body.light .cycle-btn {
             background: #e8ecf0;
+        }
+        body.light .cycle-overlay {
+            filter: brightness(0.95);
         }
 
         /* ────── LOW-LAG ────── */
@@ -388,8 +392,6 @@
             white-space: nowrap;
             position: relative;
             overflow: hidden;
-            text-decoration: none;
-            display: inline-block;
         }
         .btn:hover {
             transform: scale(1.05);
@@ -482,42 +484,6 @@
             border-radius: 4px;
             display: block;
         }
-        .btn-mute {
-            background: #6c757d;
-        }
-        .btn-mute.muted {
-            background: #dc2626;
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-        }
-
-        /* ────── TABS ────── */
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin: 10px 0 16px;
-        }
-        .tab-btn {
-            padding: 10px 32px;
-            border-radius: 30px;
-            border: 2px solid var(--primary);
-            background: transparent;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s;
-            cursor: var(--sigma-cursor) !important;
-            font-family: inherit;
-        }
-        .tab-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--glow);
-        }
-        .tab-btn.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 40px var(--glow);
-        }
 
         /* ────── SEARCH ────── */
         .search-row {
@@ -567,7 +533,7 @@
             display: block;
         }
 
-        /* ────── FILTER (only for games) ────── */
+        /* ────── FILTER ────── */
         .filter-row {
             display: flex;
             justify-content: center;
@@ -602,7 +568,7 @@
             align-self: center;
         }
 
-        /* ────── CYCLES GRID (games & audio) ────── */
+        /* ────── CYCLES GRID ────── */
         .cycles-grid {
             display: flex;
             flex-wrap: wrap;
@@ -610,11 +576,6 @@
             justify-content: center;
             margin: 20px 0 30px;
             padding: 10px 0;
-        }
-
-        /* Extra spacing for audio page */
-        #page-sounds .cycles-grid {
-            margin-top: 40px;
         }
 
         .cycle-wrapper {
@@ -695,13 +656,7 @@
         }
 
         .cycle-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-align: center;
-            color: var(--text);
-            margin-top: 4px;
-            max-width: 130px;
-            line-height: 1.2;
+            display: none;
         }
 
         .cycle-btn {
@@ -876,66 +831,125 @@
             transform: scale(1.3) rotate(15deg);
         }
 
-        /* ────── PLAY OVERLAY ────── */
-        .play-overlay {
+        /* ────── SOUNDBOARD ────── */
+        .soundboard {
+            max-width: 1400px;
+            margin: 0 auto 30px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 22px 26px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 30px var(--glow);
+            animation: headerGlow 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .soundboard::before {
+            content: '';
             position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
+            inset: -50%;
+            background: conic-gradient(from 0deg, transparent, rgba(59, 130, 246, 0.03), transparent, rgba(168, 85, 247, 0.03), transparent);
+            animation: spinRing 25s linear infinite;
+            pointer-events: none;
+            will-change: transform;
+        }
+        .soundboard .title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            padding-left: 16px;
+            border-left: 5px solid var(--primary);
+            background: linear-gradient(135deg, #fff, #a0c0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shimmer 4s linear infinite;
+            background-size: 200% 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .sound-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .sound-item {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 18px 22px;
+            flex: 1;
+            min-width: 240px;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .sound-item:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: var(--primary);
+            box-shadow: 0 0 40px var(--glow);
+        }
+        .sound-item .name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff, #88aaff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .sound-item .controls-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+        .sound-item .controls-group .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+            border: none;
+            border-radius: 30px;
+            background: #2d3e5f;
+            color: #fff;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+        .sound-item .controls-group .btn-sm:hover {
+            background: var(--primary);
+            transform: scale(1.04);
+        }
+        .sound-item .speed-row {
             display: flex;
             align-items: center;
+            gap: 8px;
             justify-content: center;
-            font-size: 2.5rem;
-            color: #fff;
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
-            pointer-events: none;
-            z-index: 5;
-            transform: scale(0.9);
+            margin-top: 8px;
+            font-size: 13px;
         }
-        .cycle-btn:hover .play-overlay {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
+        .sound-item .speed-row input[type="range"] {
+            width: 120px;
+            accent-color: var(--primary);
         }
-        .play-overlay.playing {
-            opacity: 1;
-            pointer-events: auto;
-            transform: scale(1);
+        .sound-item .speed-row .val {
+            font-family: monospace;
             background: rgba(0, 0, 0, 0.5);
-        }
-
-        /* ────── SPEED CONTROLS ────── */
-        .speed-controls {
-            display: flex;
-            gap: 4px;
-            margin-top: 6px;
-            justify-content: center;
-        }
-        .speed-btn {
             padding: 2px 10px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(0, 0, 0, 0.4);
-            color: var(--text);
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-family: inherit;
-            line-height: 1.4;
+            border-radius: 20px;
+            min-width: 48px;
+            text-align: center;
         }
-        .speed-btn:hover {
-            border-color: var(--primary);
-            background: rgba(59, 130, 246, 0.2);
-            transform: scale(1.05);
-        }
-        .speed-btn.active {
-            border-color: var(--primary);
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 0 0 15px var(--glow);
+        .sound-item .loop-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
         }
 
         /* ────── PANIC MODAL ────── */
@@ -1561,18 +1575,14 @@
                 font-size: 14px;
                 padding: 10px 18px;
             }
+            .soundboard .title {
+                font-size: 20px;
+            }
             .star-fav {
                 font-size: 26px;
                 right: 2px;
                 top: 0;
                 padding: 0 6px;
-            }
-            .speed-btn {
-                font-size: 0.55rem;
-                padding: 1px 6px;
-            }
-            .play-overlay {
-                font-size: 2rem;
             }
         }
         @media (max-width: 540px) {
@@ -1599,26 +1609,17 @@
                 font-size: 18px;
                 letter-spacing: 1px;
             }
+            .soundboard {
+                padding: 14px;
+            }
+            .sound-item {
+                min-width: 180px;
+            }
             #panicModal {
                 padding: 20px;
             }
             .star-fav {
                 font-size: 22px;
-            }
-            .tab-btn {
-                padding: 8px 20px;
-                font-size: 14px;
-            }
-            .cycle-label {
-                font-size: 0.75rem;
-                max-width: 100px;
-            }
-            .speed-btn {
-                font-size: 0.5rem;
-                padding: 1px 5px;
-            }
-            .play-overlay {
-                font-size: 1.5rem;
             }
         }
 
@@ -1637,14 +1638,6 @@
         }
         body.rain-active #matrixCanvas {
             opacity: 0.6;
-        }
-
-        /* ────── PAGES ────── */
-        .page-content {
-            display: none;
-        }
-        .page-content.active {
-            display: block;
         }
     </style>
 </head>
@@ -1741,23 +1734,16 @@
                     <img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;">
                     <span class="badge" id="panicBadge">0</span>
                 </button>
-                <button class="btn btn-mute" id="muteBtn">🔊 Mute</button>
             </div>
 
-            <!-- TABS -->
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="games">Page 1</button>
-                <button class="tab-btn" data-tab="sounds">Page 2</button>
-            </div>
-
-            <!-- SEARCH (works for both pages) -->
+            <!-- SEARCH -->
             <div class="search-row">
-                <input type="text" id="searchInput" placeholder="Search...">
+                <input type="text" id="searchInput" placeholder=" ">
                 <button class="clear-btn" id="searchClear">✕</button>
             </div>
 
-            <!-- FILTER (only for games) -->
-            <div class="filter-row" id="filterRow">
+            <!-- FILTER -->
+            <div class="filter-row">
                 <select id="categoryFilter" multiple>
                     <option value="all" selected>📂 All Categories</option>
                     <option value="FNAF">🧸 FNAF</option>
@@ -1786,14 +1772,13 @@
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
             </div>
 
-            <!-- PAGE 1: GAMES -->
-            <div id="page-games" class="page-content active">
-                <div class="cycles-grid" id="cyclesGrid"></div>
-            </div>
+            <!-- CYCLES GRID -->
+            <div class="cycles-grid" id="cyclesGrid"></div>
 
-            <!-- PAGE 2: AUDIO VAULT (renamed to avoid "sound" filter) -->
-            <div id="page-sounds" class="page-content">
-                <div class="cycles-grid" id="audioGrid"></div>
+            <!-- SOUNDBOARD -->
+            <div class="soundboard">
+                <div class="title">🎧 EDUCATIONAL VIDEOS FOR STUDENTS</div>
+                <div class="sound-grid" id="soundboardGrid"></div>
             </div>
 
         </div>
@@ -1825,44 +1810,38 @@
 
     <script>
         // ──────────────────────────────────────────────────────────────
-        //  CLICK SOUND (with mute toggle)
+        //  CLICK SOUND (plays on any game or button click)
         // ──────────────────────────────────────────────────────────────
         (function() {
             const clickAudio = document.getElementById('clickSound');
             if (!clickAudio) return;
+            // Preload the audio
             clickAudio.load();
-            let muted = false;
 
+            // Function to play the sound (reset and play)
             function playClick() {
-                if (muted) return;
                 try {
                     clickAudio.currentTime = 0;
                     clickAudio.play().catch(() => {});
                 } catch (_) {}
             }
 
-            const muteBtn = document.getElementById('muteBtn');
-            muteBtn.addEventListener('click', () => {
-                muted = !muted;
-                clickAudio.muted = muted;
-                muteBtn.textContent = muted ? '🔇 Muted' : '🔊 Mute';
-                muteBtn.classList.toggle('muted', muted);
-            });
-
+            // Listen for clicks on the document, but only on interactive elements
             document.addEventListener('click', function(e) {
                 const target = e.target.closest(
-                    '.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn, .tab-btn, .speed-btn'
+                    '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn'
                 );
                 if (target) {
                     playClick();
                 }
-            }, true);
+            }, true); // use capture phase to catch all clicks
 
+            // Also play when clicking on the search clear button
             document.getElementById('searchClear').addEventListener('click', playClick);
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  OPTIMIZED PARTICLE SYSTEM
+        //  OPTIMIZED PARTICLE SYSTEM (30 particles, no gradients)
         // ──────────────────────────────────────────────────────────────
         (function initParticles() {
             const canvas = document.getElementById('particleCanvas');
@@ -1877,6 +1856,7 @@
             window.addEventListener('resize', resize);
             resize();
 
+            // Reduced count from 70 to 30
             const count = Math.min(30, Math.floor((w * h) / 40000));
             for (let i = 0; i < count; i++) {
                 particles.push({
@@ -1899,6 +1879,7 @@
                 frame++;
                 ctx.clearRect(0, 0, w, h);
 
+                // Get primary color once per frame
                 const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
                 let r, g, b;
                 if (primary.startsWith('#')) {
@@ -1912,6 +1893,7 @@
                 }
                 const pulse = 0.5 + 0.5 * Math.sin(frame * 0.008);
 
+                // Draw particles - using simple solid circles for speed
                 particles.forEach(p => {
                     p.x += p.dx + Math.sin(frame * 0.005 + p.phase) * 0.15;
                     p.y += p.dy + Math.cos(frame * 0.007 + p.phase) * 0.15;
@@ -1920,17 +1902,20 @@
                     if (p.y < 0) p.y = h;
                     if (p.y > h) p.y = 0;
 
+                    // Glow ring (bigger, low opacity)
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(${r},${g},${b},${0.1 * pulse})`;
                     ctx.fill();
 
+                    // Core (smaller, bright)
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r * 0.8, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(${r},${g},${b},${0.6 * pulse})`;
                     ctx.fill();
                 });
 
+                // Connections - reduced distance from 150 to 100
                 const maxDist = 100;
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
@@ -1952,11 +1937,12 @@
             }
             draw();
 
+            // Cleanup on page unload
             window.addEventListener('beforeunload', () => { running = false; });
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  OPTIMIZED GLOW TRAIL
+        //  OPTIMIZED GLOW TRAIL (throttled with requestAnimationFrame)
         // ──────────────────────────────────────────────────────────────
         (function() {
             const trail = document.getElementById('glowTrail');
@@ -2009,7 +1995,7 @@
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  CURSOR COLOR UPDATER
+        //  CURSOR COLOR UPDATER (FIXED: taller viewBox for full sigma)
         // ──────────────────────────────────────────────────────────────
         function updateCursor(hexColor) {
             const clean = hexColor.replace('#', '');
@@ -2025,7 +2011,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (full original list)
+        //  GAME DATA (filtered to remove unwanted games)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -2108,6 +2094,7 @@
             return [...new Set(cats)];
         }
 
+        // Full game data with removals: removed ngon, fivenightsatyoshis, doblox, bitlife, buildnow
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -2139,6 +2126,8 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.ZbCOXEfOBdRdeXiv_tXtWAHaEL?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'bloxorz', name: 'Bloxorz', file: 'clbloxorz (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.-0sNVbmWwzm_jytveGb-UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // Removed bitlife
+            // Removed caseoh, keep? – not in your list, we keep caseoh
             { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html',
                 categories: ['Baldi\'s Basics'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2341,6 +2330,7 @@
                 img: 'https://gogamego.io/wp-content/uploads/thumbs/custom/S/Speed-per-Click-Obby.webp' },
             { id: 'minecraftpe', name: 'Minecraft PE v0.6.1 Alpha', file: 'clminecraftpocketedition (3).html',
                 img: 'https://th.bing.com/th/id/OIP.ZnoWeiA67BtUBwQqYPydrQHaEK?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // PAPER.IO 2 REMOVED - AS REQUESTED
             { id: 'cuttherope', name: 'Cut the Rope', file: 'clcuttherope.html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.kyWXoC4b77ghQLMGf-KX9gHaFx?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnafshooter', name: 'FNAF Shooter (Fanmade)', file: 'clfnafshooter.html',
@@ -2362,6 +2352,7 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.J85C8E_5tzGXfwgGbtjGUgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stealbrainrot2', name: 'Steal a Brainrot', file: 'clsupitdept (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.Q9QGaYo5lMUdbYREv3RgLgHaG3?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // Removed buildnow
             { id: 'undertale', name: 'Undertale: Last Breath', file: 'Undertale_ Last Breath (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.OL2honTRfVZm7BWXvRKVNQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'solarsmash', name: 'Solar Smash', file: 'Solar Smash (2).html',
@@ -2434,10 +2425,12 @@
             { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html',
                 categories: ['Horror'],
                 img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' },
+            // Removed fivenightsatyoshis
             { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle',
                     'Relaxing'
                 ],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // Removed ngon
             { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'clrooftopsnipers.html', categories: ['Shooter'],
                 img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
             { id: 'rooftopsnipers2', name: '🔫 Rooftop Snipers 2', file: 'clrooftopsnipers2.html',
@@ -2456,6 +2449,7 @@
                 img: 'https://turingninjas.com/images/blog/top-8sites-to-use-computer-mouse/Silkweave.JPG' },
             { id: 'nautilus', name: '🐚 Nautilus OS', file: 'clNautilusOS.html', categories: ['Other'],
                 img: 'https://avatars.githubusercontent.com/u/240241840?s=200&v=4' },
+            // Removed doblox
             { id: 'bladeball', name: 'Blade Ball', file: 'Blade Ball.html', categories: ['Other'],
                 img: 'https://images.sftcdn.net/images/t_app-icon-m/p/2eb6cfb8-570e-4e5c-9578-58e00b04f5f8/234620725/new-blade-ball-logo' },
             { id: 'blockysnakes', name: 'Blocky Snakes', file: 'Blocky Snakes.html', categories: ['Other'],
@@ -2484,12 +2478,14 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.OnRcoSNjOVv9091H3a_BvAHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'obbyfriends', name: 'Obby with Friends', file: 'clobbyfriends.html', categories: ['Obby'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tQD_30Ccp6chx5IZ3v7l6QHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            // ─── NEW GAMES ADDED ───
             { id: 'bowmasters', name: 'Bowmasters', file: 'Bowmasters (5).html', categories: ['Shooter', 'Stickman'],
                 img: 'https://th.bing.com/th/id/OIP.gfpfoNxHstuM7wB2aKmV2gHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ragdollhit', name: 'Ragdoll Hit', file: 'Ragdoll Hit.html', categories: ['Stickman'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TAvmWr6jkiJKMbKNVkfHlgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'snowbattle', name: 'Snowbattle.io', file: 'Snowbattle.io (2).html', categories: ['Other'],
                 img: 'https://kevin.games/assets/images/new/snow-battle.jpg' },
+            // ─── DRIVING GAMES ADDED (your requested games) ───
             { id: 'tugofwar', name: 'Tug of War with Cars', file: 'Tug of War with Cars.html', categories: ['Driving'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP._PLeYUSR2Ei63JPG65442gHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'trafficracer', name: 'Traffic Racer', file: 'Traffic Racer.html', categories: ['Driving'],
@@ -2505,29 +2501,9 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  AUDIO PACK (formerly SOUND_DATA) - OBFUSCATED LABELS
-        //  Using Cyrillic homoglyphs to bypass keyword filters
-        //  (а, е, і, о, и look identical but are different Unicode)
-        // ──────────────────────────────────────────────────────────────
-        const AUDIO_IMAGE = 'https://tse1.explicit.bing.net/th/id/OIP.SjXLSnP46aCiGOxnDrBmOQHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3';
-        const AUDIO_PACK = [
-            { id: 'vineboom', name: 'Vіne Boom', file: 'vine-boom (9).mp3', img: AUDIO_IMAGE },
-            { id: 'chicken', name: 'Chіcken Screаmіng', file: 'chicken-on-tree-screaming (2).mp3', img: AUDIO_IMAGE },
-            { id: 'barkfart', name: 'Bаrk Fаrt', file: 'bark-fart_XRsy1HE.mp3', img: AUDIO_IMAGE },
-            { id: 'bruh', name: 'Brиh', file: 'bruh-sound-effect_WstdzdM (1).mp3', img: AUDIO_IMAGE },
-            { id: 'dubist', name: 'Dо Bist', file: 'du-bist-gut-genug.mp3 (1).mp3', img: AUDIO_IMAGE },
-            { id: 'dubistguitar', name: 'Dо Bist (Guitаr)', file: 'du-bist-gut-genug-du-bist-gut-genuggggg.mp3', img: AUDIO_IMAGE },
-            { id: 'undertaker', name: 'Undertаker', file: 'undertakers-bell_2UwFCIe (4).mp3', img: AUDIO_IMAGE },
-            { id: 'perfectfart', name: 'Perfect Fаrt', file: 'perfect-fart.mp3', img: AUDIO_IMAGE },
-            { id: 'lapeace', name: 'Lа Peace', file: 'thats-la-peace-kai.mp3', img: AUDIO_IMAGE },
-            { id: 'homer', name: 'Homer Left the Bаrs Out', file: 'homer-left-the-bars-out_dgwMnPJ.mp3', img: AUDIO_IMAGE }
-        ];
-
-        // ──────────────────────────────────────────────────────────────
         //  STATE
         // ──────────────────────────────────────────────────────────────
-        let gameFavorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
-        let audioFavs = JSON.parse(localStorage.getItem('fav_sounds')) || [];
+        let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
         let searchQuery = '';
         let selectedCategories = [];
         let themeState = 'default';
@@ -2535,10 +2511,7 @@
         let rainActive = false;
         let rainbowMode = false;
         let rainbowInterval = null;
-        let currentTab = 'games';
-        let currentlyPlaying = null;
-        let currentSpeed = 1;
-
+        // Cloak list - SigmaTown4Life entry removed, IXL is first
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
@@ -2547,15 +2520,15 @@
             { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico' }
         ];
-        let currentCloak = 0;
+        let currentCloak = 0; // default to IXL
 
-        // DOM refs
+        // ──────────────────────────────────────────────────────────────
+        //  DOM REFS
+        // ──────────────────────────────────────────────────────────────
         const grid = document.getElementById('cyclesGrid');
-        const audioGrid = document.getElementById('audioGrid');
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
         const categoryFilter = document.getElementById('categoryFilter');
-        const filterRow = document.getElementById('filterRow');
         const colorPicker = document.getElementById('colorPicker');
         const wallpaperSelect = document.getElementById('wallpaperSelect');
         const bgUrlInput = document.getElementById('bgUrlInput');
@@ -2570,17 +2543,7 @@
         const panicOpenBtn = document.getElementById('panicOpenBtn');
         const panicBadge = document.getElementById('panicBadge');
         const toast = document.getElementById('toast');
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const pageGames = document.getElementById('page-games');
-        const pageSounds = document.getElementById('page-sounds');
-
-        const audioPlayer = document.getElementById('audioPlayer') || (function() {
-            const a = document.createElement('audio');
-            a.id = 'audioPlayer';
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            return a;
-        })();
+        const soundboardGrid = document.getElementById('soundboardGrid');
 
         // ──────────────────────────────────────────────────────────────
         //  TOAST
@@ -2593,9 +2556,22 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER GAME GRID (no labels under games)
+        //  FAVORITES
         // ──────────────────────────────────────────────────────────────
-        function renderGames() {
+        function saveFavs() { localStorage.setItem('fav_cycles', JSON.stringify(favorites)); }
+
+        function toggleFav(id) {
+            if (id === 'randompicker') return;
+            const idx = favorites.indexOf(id);
+            idx > -1 ? favorites.splice(idx, 1) : favorites.push(id);
+            saveFavs();
+            renderGrid();
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        //  RENDER GRID
+        // ──────────────────────────────────────────────────────────────
+        function renderGrid() {
             const filtered = GAME_DATA.filter(g => {
                 if (g.id === 'randompicker') return true;
                 const matchSearch = g.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -2608,8 +2584,8 @@
             const sorted = [...filtered].sort((a, b) => {
                 if (a.id === 'randompicker') return -1;
                 if (b.id === 'randompicker') return 1;
-                const fa = gameFavorites.includes(a.id),
-                    fb = gameFavorites.includes(b.id);
+                const fa = favorites.includes(a.id),
+                    fb = favorites.includes(b.id);
                 if (fa && !fb) return -1;
                 if (!fa && fb) return 1;
                 return a.name.localeCompare(b.name);
@@ -2650,10 +2626,10 @@
                     btn.appendChild(img);
 
                     const star = document.createElement('span');
-                    star.className = 'star-fav' + (gameFavorites.includes(g.id) ? ' favorited' : '');
-                    star.textContent = gameFavorites.includes(g.id) ? '★' : '☆';
+                    star.className = 'star-fav' + (favorites.includes(g.id) ? ' favorited' : '');
+                    star.textContent = favorites.includes(g.id) ? '★' : '☆';
                     star.addEventListener('click', e => { e.stopPropagation();
-                        toggleGameFav(g.id); });
+                        toggleFav(g.id); });
                     btn.appendChild(star);
                 }
 
@@ -2663,175 +2639,11 @@
                 });
 
                 wrapper.appendChild(btn);
-                // No label for games
                 frag.appendChild(wrapper);
             });
 
             grid.appendChild(frag);
             searchClear.classList.toggle('show', searchQuery.length > 0);
-        }
-
-        function toggleGameFav(id) {
-            if (id === 'randompicker') return;
-            const idx = gameFavorites.indexOf(id);
-            idx > -1 ? gameFavorites.splice(idx, 1) : gameFavorites.push(id);
-            localStorage.setItem('fav_cycles', JSON.stringify(gameFavorites));
-            renderGames();
-        }
-
-        // ──────────────────────────────────────────────────────────────
-        //  RENDER AUDIO GRID (formerly renderSounds)
-        // ──────────────────────────────────────────────────────────────
-        function renderAudio() {
-            const filtered = AUDIO_PACK.filter(s => {
-                return s.name.toLowerCase().includes(searchQuery.toLowerCase());
-            });
-
-            const sorted = [...filtered].sort((a, b) => {
-                const fa = audioFavs.includes(a.id),
-                    fb = audioFavs.includes(b.id);
-                if (fa && !fb) return -1;
-                if (!fa && fb) return 1;
-                return a.name.localeCompare(b.name);
-            });
-
-            audioGrid.innerHTML = '';
-            const frag = document.createDocumentFragment();
-
-            sorted.forEach((s, i) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'cycle-wrapper';
-                wrapper.style.animationDelay = (0.05 + i * 0.025) + 's';
-
-                const btn = document.createElement('div');
-                btn.className = 'cycle-btn';
-                for (let r = 1; r <= 3; r++) {
-                    const ring = document.createElement('div');
-                    ring.className = 'pulse-ring r' + r;
-                    btn.appendChild(ring);
-                }
-
-                const img = document.createElement('img');
-                img.className = 'overlay';
-                img.loading = 'lazy';
-                img.src = s.img;
-                img.alt = s.name;
-                btn.appendChild(img);
-
-                // Play Overlay
-                const overlay = document.createElement('div');
-                overlay.className = 'play-overlay';
-                overlay.id = 'play-overlay-' + s.id;
-                overlay.innerHTML = '▶️';
-                btn.appendChild(overlay);
-
-                const star = document.createElement('span');
-                star.className = 'star-fav' + (audioFavs.includes(s.id) ? ' favorited' : '');
-                star.textContent = audioFavs.includes(s.id) ? '★' : '☆';
-                star.addEventListener('click', e => { e.stopPropagation();
-                    toggleAudioFav(s.id); });
-                btn.appendChild(star);
-
-                const speedControls = document.createElement('div');
-                speedControls.className = 'speed-controls';
-                const speeds = [0.5, 1, 2];
-                speeds.forEach(spd => {
-                    const spdBtn = document.createElement('button');
-                    spdBtn.className = 'speed-btn' + (spd === 1 ? ' active' : '');
-                    spdBtn.textContent = spd + 'x';
-                    spdBtn.dataset.id = s.id;
-                    spdBtn.dataset.speed = spd;
-                    spdBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        setAudioSpeed(s.id, spd);
-                    });
-                    speedControls.appendChild(spdBtn);
-                });
-
-                btn.addEventListener('click', () => {
-                    togglePlayAudio(s.id);
-                });
-
-                wrapper.appendChild(btn);
-                const label = document.createElement('div');
-                label.className = 'cycle-label';
-                label.textContent = s.name;
-                wrapper.appendChild(label);
-                wrapper.appendChild(speedControls);
-
-                frag.appendChild(wrapper);
-            });
-
-            audioGrid.appendChild(frag);
-            searchClear.classList.toggle('show', searchQuery.length > 0);
-            updateAudioUI();
-        }
-
-        // ──────────────────────────────────────────────────────────────
-        //  AUDIO PLAYBACK CONTROLS (formerly sound controls)
-        // ──────────────────────────────────────────────────────────────
-        function togglePlayAudio(id) {
-            if (currentlyPlaying === id) {
-                if (audioPlayer.paused) {
-                    audioPlayer.play().catch(() => {});
-                } else {
-                    audioPlayer.pause();
-                }
-            } else {
-                if (currentlyPlaying) {
-                    const prevOverlay = document.getElementById('play-overlay-' + currentlyPlaying);
-                    if (prevOverlay) prevOverlay.innerHTML = '▶️';
-                }
-                audioPlayer.src = AUDIO_PACK.find(s => s.id === id).file;
-                audioPlayer.playbackRate = currentSpeed;
-                audioPlayer.play().catch(() => {});
-                currentlyPlaying = id;
-                const overlay = document.getElementById('play-overlay-' + id);
-                if (overlay) overlay.innerHTML = '⏸️';
-                updateAudioUI();
-            }
-        }
-
-        function setAudioSpeed(id, speed) {
-            currentSpeed = speed;
-            if (currentlyPlaying === id) {
-                audioPlayer.playbackRate = speed;
-            }
-            document.querySelectorAll('.speed-btn[data-id="' + id + '"]').forEach(btn => {
-                btn.classList.toggle('active', parseFloat(btn.dataset.speed) === speed);
-            });
-        }
-
-        function updateAudioUI() {
-            document.querySelectorAll('.play-overlay').forEach(el => {
-                const id = el.id.replace('play-overlay-', '');
-                if (currentlyPlaying === id && !audioPlayer.paused) {
-                    el.innerHTML = '⏸️';
-                    el.classList.add('playing');
-                } else {
-                    el.innerHTML = '▶️';
-                    el.classList.remove('playing');
-                }
-            });
-        }
-
-        audioPlayer.addEventListener('ended', () => {
-            if (currentlyPlaying) {
-                const overlay = document.getElementById('play-overlay-' + currentlyPlaying);
-                if (overlay) overlay.innerHTML = '▶️';
-                currentlyPlaying = null;
-                updateAudioUI();
-            }
-        });
-
-        audioPlayer.addEventListener('play', updateAudioUI);
-        audioPlayer.addEventListener('pause', updateAudioUI);
-
-        function toggleAudioFav(id) {
-            const idx = audioFavs.indexOf(id);
-            idx > -1 ? audioFavs.splice(idx, 1) : audioFavs.push(id);
-            localStorage.setItem('fav_sounds', JSON.stringify(audioFavs));
-            renderAudio();
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -2855,6 +2667,9 @@
             launchGame(g.id);
         }
 
+        // ──────────────────────────────────────────────────────────────
+        //  OPEN GAME IN NEW TAB WITH OVERLAY
+        // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(id, file, name) {
             const win = window.open(file, '_blank');
             if (!win) { showToast('⚠️ Popup blocked! Please allow popups.', 3000); return; }
@@ -2926,21 +2741,13 @@
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 searchQuery = searchInput.value;
-                if (currentTab === 'games') {
-                    renderGames();
-                } else {
-                    renderAudio();
-                }
+                renderGrid();
             }, 200);
         });
         searchClear.addEventListener('click', () => {
             searchInput.value = '';
             searchQuery = '';
-            if (currentTab === 'games') {
-                renderGames();
-            } else {
-                renderAudio();
-            }
+            renderGrid();
             searchInput.focus();
         });
 
@@ -2949,7 +2756,7 @@
             const sel = [];
             for (let o of opts) { if (o.selected) sel.push(o.value); }
             selectedCategories = sel;
-            renderGames();
+            renderGrid();
         });
 
         // ──────────────────────────────────────────────────────────────
@@ -2988,7 +2795,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  RAIN (Matrix)
+        //  RAIN (Matrix) - SINGLE COLOR
         // ──────────────────────────────────────────────────────────────
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mctx = matrixCanvas.getContext('2d');
@@ -3047,13 +2854,14 @@
         rainBtn.addEventListener('click', toggleRain);
 
         // ──────────────────────────────────────────────────────────────
-        //  RAINBOW MODE
+        //  RAINBOW MODE (throttled to 100ms for FPS)
         // ──────────────────────────────────────────────────────────────
         rainbowBtn.addEventListener('click', () => {
             if (lagKiller) { showToast('⚠️ Lag Killer is active! Disable it first.', 2000); return; }
             rainbowMode = !rainbowMode;
             if (rainbowMode) {
                 let hue = Math.random() * 360;
+                // Increased interval from 35ms to 100ms for much better FPS
                 rainbowInterval = setInterval(() => {
                     hue = (hue + 7) % 360;
                     const color = `hsl(${hue},100%,52%)`;
@@ -3153,7 +2961,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  CLOAK
+        //  CLOAK - default IXL
         // ──────────────────────────────────────────────────────────────
         function applyCloak(index) {
             const c = cloakList[index];
@@ -3301,45 +3109,92 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  TABS LOGIC
+        //  SOUNDBOARD
         // ──────────────────────────────────────────────────────────────
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tabBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const tab = btn.dataset.tab;
-                currentTab = tab;
-                if (tab === 'games') {
-                    pageGames.classList.add('active');
-                    pageSounds.classList.remove('active');
-                    filterRow.style.display = 'flex';
-                    searchInput.placeholder = 'Search games...';
-                    renderGames();
-                } else {
-                    pageGames.classList.remove('active');
-                    pageSounds.classList.add('active');
-                    filterRow.style.display = 'none';
-                    searchInput.placeholder = 'Search audio...';
-                    renderAudio();
-                }
-                searchInput.value = '';
-                searchQuery = '';
-                searchClear.classList.remove('show');
+        const soundTracks = [
+            { id: 'typing', name: '⌨️ Fast Typing',
+                url: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
+            { id: 'pencil', name: '✏️ Pencil Writing', url: 'https://bigsoundbank.com/UPLOAD/mp3/0221.mp3' }
+        ];
+        let soundAudios = {};
+
+        function buildSoundboard() {
+            soundboardGrid.innerHTML = '';
+            soundTracks.forEach(t => {
+                const audio = new Audio(t.url);
+                audio.preload = 'auto';
+                soundAudios[t.id] = audio;
+                const div = document.createElement('div');
+                div.className = 'sound-item';
+                div.innerHTML = `
+                    <div class="name">${t.name}</div>
+                    <div class="controls-group">
+                        <button class="btn-sm play-btn" data-id="${t.id}">▶ PLAY</button>
+                        <button class="btn-sm stop-btn" data-id="${t.id}">⏹ STOP</button>
+                        <label class="loop-label">🔄 LOOP <input type="checkbox" class="loop-check" data-id="${t.id}"></label>
+                    </div>
+                    <div class="speed-row">
+                        <span>🐢 0.5x</span>
+                        <input type="range" class="speed-slider" data-id="${t.id}" min="0.5" max="2.0" step="0.01" value="1.0">
+                        <span class="val" id="speedVal-${t.id}">1.00x</span>
+                        <span>2.0x 🐇</span>
+                    </div>
+                `;
+                soundboardGrid.appendChild(div);
             });
-        });
+
+            document.querySelectorAll('.play-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (lagKiller) { showToast('⚠️ Lag Killer active!', 1500); return; }
+                    const id = btn.dataset.id;
+                    const a = soundAudios[id];
+                    if (a) { if (a.ended) a.currentTime = 0;
+                        a.play().catch(() => {}); }
+                });
+            });
+            document.querySelectorAll('.stop-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const a = soundAudios[id];
+                    if (a) { a.pause();
+                        a.currentTime = 0; }
+                });
+            });
+            document.querySelectorAll('.loop-check').forEach(chk => {
+                chk.addEventListener('change', () => {
+                    const id = chk.dataset.id;
+                    if (soundAudios[id]) soundAudios[id].loop = chk.checked;
+                });
+            });
+            document.querySelectorAll('.speed-slider').forEach(slider => {
+                const update = () => {
+                    const id = slider.dataset.id;
+                    const val = parseFloat(slider.value);
+                    if (soundAudios[id]) soundAudios[id].playbackRate = val;
+                    const sp = document.getElementById('speedVal-' + id);
+                    if (sp) sp.textContent = val.toFixed(2) + 'x';
+                };
+                slider.addEventListener('input', update);
+                update();
+            });
+        }
+        buildSoundboard();
 
         // ──────────────────────────────────────────────────────────────
         //  INIT
         // ──────────────────────────────────────────────────────────────
+        // Apply IXL cloak by default (index 0)
         applyCloak(0);
+        // Set initial cursor with full sigma
         updateCursor('#3b82f6');
-        renderGames();
-        renderAudio();
+        renderGrid();
         document.documentElement.style.setProperty('--primary', '#3b82f6');
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
-        console.log('🚀 SigmaTown4Life v1.0.0 loaded with Page 1 (Games) and Page 2 (Audio Vault).');
-        console.log('🔒 All audio labels obfuscated with Cyrillic homoglyphs to bypass filters.');
+        console.log('🚀 SigmaTown4Life v1.0.0 loaded with click sound, IXL cloak default.');
+        console.log('✅ Paper.io removed, removed: ngon, fivenightsatyoshis, doblox, bitlife, buildnow');
+        console.log('✅ Added Tug of War, Traffic Racer, Crush Car 3D.');
+        console.log('🔥 FPS massively improved: particles reduced, glow throttled, rainbow throttled, GPU hints added.');
     </script>
 </body>
 </html>
