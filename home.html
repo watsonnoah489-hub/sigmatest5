@@ -612,6 +612,11 @@
             padding: 10px 0;
         }
 
+        /* Extra spacing for sounds page */
+        #page-sounds .cycles-grid {
+            margin-top: 40px;
+        }
+
         .cycle-wrapper {
             display: flex;
             flex-direction: column;
@@ -2586,7 +2591,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER GAME GRID
+        //  RENDER GAME GRID (no labels under games)
         // ──────────────────────────────────────────────────────────────
         function renderGames() {
             const filtered = GAME_DATA.filter(g => {
@@ -2656,11 +2661,7 @@
                 });
 
                 wrapper.appendChild(btn);
-                const label = document.createElement('div');
-                label.className = 'cycle-label';
-                label.textContent = g.name;
-                wrapper.appendChild(label);
-
+                // No label for games
                 frag.appendChild(wrapper);
             });
 
@@ -2677,7 +2678,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER SOUNDS GRID
+        //  RENDER SOUNDS GRID (with labels and speed controls)
         // ──────────────────────────────────────────────────────────────
         function renderSounds() {
             const filtered = SOUND_DATA.filter(s => {
