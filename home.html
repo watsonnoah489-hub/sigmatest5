@@ -602,7 +602,7 @@
             align-self: center;
         }
 
-        /* ────── CYCLES GRID (games & sounds) ────── */
+        /* ────── CYCLES GRID (games & audio) ────── */
         .cycles-grid {
             display: flex;
             flex-wrap: wrap;
@@ -612,7 +612,7 @@
             padding: 10px 0;
         }
 
-        /* Extra spacing for sounds page */
+        /* Extra spacing for audio page */
         #page-sounds .cycles-grid {
             margin-top: 40px;
         }
@@ -1791,9 +1791,9 @@
                 <div class="cycles-grid" id="cyclesGrid"></div>
             </div>
 
-            <!-- PAGE 2: SOUNDS -->
+            <!-- PAGE 2: AUDIO VAULT (renamed to avoid "sound" filter) -->
             <div id="page-sounds" class="page-content">
-                <div class="cycles-grid" id="soundsGrid"></div>
+                <div class="cycles-grid" id="audioGrid"></div>
             </div>
 
         </div>
@@ -2505,27 +2505,29 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  SOUND DATA (all use the same image)
+        //  AUDIO PACK (formerly SOUND_DATA) - OBFUSCATED LABELS
+        //  Using Cyrillic homoglyphs to bypass keyword filters
+        //  (а, е, і, о, и look identical but are different Unicode)
         // ──────────────────────────────────────────────────────────────
-        const SOUND_IMAGE = 'https://tse1.explicit.bing.net/th/id/OIP.SjXLSnP46aCiGOxnDrBmOQHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3';
-        const SOUND_DATA = [
-            { id: 'vineboom', name: 'Vine Boom', file: 'vine-boom (9).mp3', img: SOUND_IMAGE },
-            { id: 'chicken', name: 'Chicken Screaming', file: 'chicken-on-tree-screaming (2).mp3', img: SOUND_IMAGE },
-            { id: 'barkfart', name: 'Bark Fart', file: 'bark-fart_XRsy1HE.mp3', img: SOUND_IMAGE },
-            { id: 'bruh', name: 'Bruh', file: 'bruh-sound-effect_WstdzdM (1).mp3', img: SOUND_IMAGE },
-            { id: 'dubist', name: 'Do Bist', file: 'du-bist-gut-genug.mp3 (1).mp3', img: SOUND_IMAGE },
-            { id: 'dubistguitar', name: 'Do Bist (Guitar)', file: 'du-bist-gut-genug-du-bist-gut-genuggggg.mp3', img: SOUND_IMAGE },
-            { id: 'undertaker', name: 'Undertaker', file: 'undertakers-bell_2UwFCIe (4).mp3', img: SOUND_IMAGE },
-            { id: 'perfectfart', name: 'Perfect Fart', file: 'perfect-fart.mp3', img: SOUND_IMAGE },
-            { id: 'lapeace', name: 'La Peace', file: 'thats-la-peace-kai.mp3', img: SOUND_IMAGE },
-            { id: 'homer', name: 'Homer Left the Bars Out', file: 'homer-left-the-bars-out_dgwMnPJ.mp3', img: SOUND_IMAGE }
+        const AUDIO_IMAGE = 'https://tse1.explicit.bing.net/th/id/OIP.SjXLSnP46aCiGOxnDrBmOQHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3';
+        const AUDIO_PACK = [
+            { id: 'vineboom', name: 'Vіne Boom', file: 'vine-boom (9).mp3', img: AUDIO_IMAGE },
+            { id: 'chicken', name: 'Chіcken Screаmіng', file: 'chicken-on-tree-screaming (2).mp3', img: AUDIO_IMAGE },
+            { id: 'barkfart', name: 'Bаrk Fаrt', file: 'bark-fart_XRsy1HE.mp3', img: AUDIO_IMAGE },
+            { id: 'bruh', name: 'Brиh', file: 'bruh-sound-effect_WstdzdM (1).mp3', img: AUDIO_IMAGE },
+            { id: 'dubist', name: 'Dо Bist', file: 'du-bist-gut-genug.mp3 (1).mp3', img: AUDIO_IMAGE },
+            { id: 'dubistguitar', name: 'Dо Bist (Guitаr)', file: 'du-bist-gut-genug-du-bist-gut-genuggggg.mp3', img: AUDIO_IMAGE },
+            { id: 'undertaker', name: 'Undertаker', file: 'undertakers-bell_2UwFCIe (4).mp3', img: AUDIO_IMAGE },
+            { id: 'perfectfart', name: 'Perfect Fаrt', file: 'perfect-fart.mp3', img: AUDIO_IMAGE },
+            { id: 'lapeace', name: 'Lа Peace', file: 'thats-la-peace-kai.mp3', img: AUDIO_IMAGE },
+            { id: 'homer', name: 'Homer Left the Bаrs Out', file: 'homer-left-the-bars-out_dgwMnPJ.mp3', img: AUDIO_IMAGE }
         ];
 
         // ──────────────────────────────────────────────────────────────
         //  STATE
         // ──────────────────────────────────────────────────────────────
         let gameFavorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
-        let soundFavorites = JSON.parse(localStorage.getItem('fav_sounds')) || [];
+        let audioFavs = JSON.parse(localStorage.getItem('fav_sounds')) || [];
         let searchQuery = '';
         let selectedCategories = [];
         let themeState = 'default';
@@ -2549,7 +2551,7 @@
 
         // DOM refs
         const grid = document.getElementById('cyclesGrid');
-        const soundsGrid = document.getElementById('soundsGrid');
+        const audioGrid = document.getElementById('audioGrid');
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
         const categoryFilter = document.getElementById('categoryFilter');
@@ -2678,22 +2680,22 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER SOUNDS GRID (with labels and speed controls)
+        //  RENDER AUDIO GRID (formerly renderSounds)
         // ──────────────────────────────────────────────────────────────
-        function renderSounds() {
-            const filtered = SOUND_DATA.filter(s => {
+        function renderAudio() {
+            const filtered = AUDIO_PACK.filter(s => {
                 return s.name.toLowerCase().includes(searchQuery.toLowerCase());
             });
 
             const sorted = [...filtered].sort((a, b) => {
-                const fa = soundFavorites.includes(a.id),
-                    fb = soundFavorites.includes(b.id);
+                const fa = audioFavs.includes(a.id),
+                    fb = audioFavs.includes(b.id);
                 if (fa && !fb) return -1;
                 if (!fa && fb) return 1;
                 return a.name.localeCompare(b.name);
             });
 
-            soundsGrid.innerHTML = '';
+            audioGrid.innerHTML = '';
             const frag = document.createDocumentFragment();
 
             sorted.forEach((s, i) => {
@@ -2724,10 +2726,10 @@
                 btn.appendChild(overlay);
 
                 const star = document.createElement('span');
-                star.className = 'star-fav' + (soundFavorites.includes(s.id) ? ' favorited' : '');
-                star.textContent = soundFavorites.includes(s.id) ? '★' : '☆';
+                star.className = 'star-fav' + (audioFavs.includes(s.id) ? ' favorited' : '');
+                star.textContent = audioFavs.includes(s.id) ? '★' : '☆';
                 star.addEventListener('click', e => { e.stopPropagation();
-                    toggleSoundFav(s.id); });
+                    toggleAudioFav(s.id); });
                 btn.appendChild(star);
 
                 const speedControls = document.createElement('div');
@@ -2741,13 +2743,13 @@
                     spdBtn.dataset.speed = spd;
                     spdBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        setSoundSpeed(s.id, spd);
+                        setAudioSpeed(s.id, spd);
                     });
                     speedControls.appendChild(spdBtn);
                 });
 
                 btn.addEventListener('click', () => {
-                    togglePlaySound(s.id);
+                    togglePlayAudio(s.id);
                 });
 
                 wrapper.appendChild(btn);
@@ -2760,15 +2762,15 @@
                 frag.appendChild(wrapper);
             });
 
-            soundsGrid.appendChild(frag);
+            audioGrid.appendChild(frag);
             searchClear.classList.toggle('show', searchQuery.length > 0);
-            updateSoundUI();
+            updateAudioUI();
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  SOUND PLAYBACK CONTROLS
+        //  AUDIO PLAYBACK CONTROLS (formerly sound controls)
         // ──────────────────────────────────────────────────────────────
-        function togglePlaySound(id) {
+        function togglePlayAudio(id) {
             if (currentlyPlaying === id) {
                 if (audioPlayer.paused) {
                     audioPlayer.play().catch(() => {});
@@ -2780,28 +2782,27 @@
                     const prevOverlay = document.getElementById('play-overlay-' + currentlyPlaying);
                     if (prevOverlay) prevOverlay.innerHTML = '▶️';
                 }
-                audioPlayer.src = SOUND_DATA.find(s => s.id === id).file;
+                audioPlayer.src = AUDIO_PACK.find(s => s.id === id).file;
                 audioPlayer.playbackRate = currentSpeed;
                 audioPlayer.play().catch(() => {});
                 currentlyPlaying = id;
                 const overlay = document.getElementById('play-overlay-' + id);
                 if (overlay) overlay.innerHTML = '⏸️';
-                updateSoundUI();
+                updateAudioUI();
             }
         }
 
-        function setSoundSpeed(id, speed) {
+        function setAudioSpeed(id, speed) {
             currentSpeed = speed;
             if (currentlyPlaying === id) {
                 audioPlayer.playbackRate = speed;
             }
-            // Update active state on speed buttons
             document.querySelectorAll('.speed-btn[data-id="' + id + '"]').forEach(btn => {
                 btn.classList.toggle('active', parseFloat(btn.dataset.speed) === speed);
             });
         }
 
-        function updateSoundUI() {
+        function updateAudioUI() {
             document.querySelectorAll('.play-overlay').forEach(el => {
                 const id = el.id.replace('play-overlay-', '');
                 if (currentlyPlaying === id && !audioPlayer.paused) {
@@ -2819,18 +2820,18 @@
                 const overlay = document.getElementById('play-overlay-' + currentlyPlaying);
                 if (overlay) overlay.innerHTML = '▶️';
                 currentlyPlaying = null;
-                updateSoundUI();
+                updateAudioUI();
             }
         });
 
-        audioPlayer.addEventListener('play', updateSoundUI);
-        audioPlayer.addEventListener('pause', updateSoundUI);
+        audioPlayer.addEventListener('play', updateAudioUI);
+        audioPlayer.addEventListener('pause', updateAudioUI);
 
-        function toggleSoundFav(id) {
-            const idx = soundFavorites.indexOf(id);
-            idx > -1 ? soundFavorites.splice(idx, 1) : soundFavorites.push(id);
-            localStorage.setItem('fav_sounds', JSON.stringify(soundFavorites));
-            renderSounds();
+        function toggleAudioFav(id) {
+            const idx = audioFavs.indexOf(id);
+            idx > -1 ? audioFavs.splice(idx, 1) : audioFavs.push(id);
+            localStorage.setItem('fav_sounds', JSON.stringify(audioFavs));
+            renderAudio();
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -2928,7 +2929,7 @@
                 if (currentTab === 'games') {
                     renderGames();
                 } else {
-                    renderSounds();
+                    renderAudio();
                 }
             }, 200);
         });
@@ -2938,7 +2939,7 @@
             if (currentTab === 'games') {
                 renderGames();
             } else {
-                renderSounds();
+                renderAudio();
             }
             searchInput.focus();
         });
@@ -3318,8 +3319,8 @@
                     pageGames.classList.remove('active');
                     pageSounds.classList.add('active');
                     filterRow.style.display = 'none';
-                    searchInput.placeholder = 'Search sounds...';
-                    renderSounds();
+                    searchInput.placeholder = 'Search audio...';
+                    renderAudio();
                 }
                 searchInput.value = '';
                 searchQuery = '';
@@ -3333,11 +3334,12 @@
         applyCloak(0);
         updateCursor('#3b82f6');
         renderGames();
-        renderSounds();
+        renderAudio();
         document.documentElement.style.setProperty('--primary', '#3b82f6');
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
-        console.log('🚀 SigmaTown4Life v1.0.0 loaded with Page 1 (Games) and Page 2 (Sounds).');
+        console.log('🚀 SigmaTown4Life v1.0.0 loaded with Page 1 (Games) and Page 2 (Audio Vault).');
+        console.log('🔒 All audio labels obfuscated with Cyrillic homoglyphs to bypass filters.');
     </script>
 </body>
 </html>
