@@ -1549,6 +1549,103 @@
             filter: brightness(0.85);
         }
 
+        /* ────── NINTENDO CAROUSEL ────── */
+        body.nintendo-mode .cycles-grid {
+            display: none !important;
+        }
+        body.nintendo-mode #nintendoCarousel {
+            display: block !important;
+        }
+        #nintendoCarousel {
+            display: none;
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 20px 10px;
+            margin: 20px 0;
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 30px var(--glow);
+            position: relative;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        #nintendoCarousel .carousel-track {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            overflow: hidden;
+            padding: 10px 0;
+        }
+        #nintendoCarousel .carousel-item {
+            flex: 0 0 120px;
+            height: 120px;
+            border-radius: 12px;
+            border: 3px solid #555;
+            background: #222;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            opacity: 0.6;
+            transform: scale(0.9);
+        }
+        #nintendoCarousel .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* No .item-name – removed */
+        #nintendoCarousel .carousel-item.active {
+            opacity: 1;
+            transform: scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px var(--glow);
+            z-index: 2;
+        }
+        #nintendoCarousel .carousel-arrow {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--primary);
+            color: #fff;
+            font-size: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            user-select: none;
+            flex-shrink: 0;
+        }
+        #nintendoCarousel .carousel-arrow:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+        #nintendoCarousel .carousel-arrow:active {
+            transform: scale(0.95);
+        }
+        #nintendoCarousel .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        #nintendoCarousel .carousel-indicators span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #555;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        #nintendoCarousel .carousel-indicators span.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--glow);
+        }
+
         /* ────── RESPONSIVE ────── */
         @media (max-width: 768px) {
             .cycle-btn {
@@ -1582,6 +1679,15 @@
                 right: 2px;
                 top: 0;
                 padding: 0 6px;
+            }
+            #nintendoCarousel .carousel-item {
+                flex: 0 0 90px;
+                height: 90px;
+            }
+            #nintendoCarousel .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
             }
         }
         @media (max-width: 540px) {
@@ -1619,6 +1725,15 @@
             }
             .star-fav {
                 font-size: 22px;
+            }
+            #nintendoCarousel .carousel-item {
+                flex: 0 0 70px;
+                height: 70px;
+            }
+            #nintendoCarousel .carousel-arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
             }
         }
 
@@ -1660,6 +1775,8 @@
 
     <!-- ─── CLICK SOUND ─── -->
     <audio id="clickSound" src="clicksoundeffect.mp3" preload="auto"></audio>
+    <!-- ─── SWITCHCLICK SOUND ─── -->
+    <audio id="switchClick" src="switchclick.mp3" preload="auto"></audio>
 
     <!-- ─── TOAST ─── -->
     <div id="toast"></div>
@@ -1729,6 +1846,8 @@
                 <button class="btn" id="rainBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
                 <button class="btn btn-rainbow" id="rainbowBtn">🌈 RAINBOW MODE</button>
                 <button class="btn" id="themeBtn" style="background:#6c757d;">🌓 THEME</button>
+                <!-- NINTENDO TOGGLE: shows "N mode" or "2 mode" -->
+                <button class="btn" id="nintendoToggle" style="background:#e60000;">2 mode</button>
                 <button class="btn btn-panic" id="panicOpenBtn">
                     <img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;">
                     <span class="badge" id="panicBadge">0</span>
@@ -1773,8 +1892,18 @@
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
             </div>
 
-            <!-- CYCLES GRID -->
+            <!-- CYCLES GRID (normal) -->
             <div class="cycles-grid" id="cyclesGrid"></div>
+
+            <!-- NINTENDO CAROUSEL (no text, only images) -->
+            <div id="nintendoCarousel">
+                <div class="carousel-track">
+                    <div class="carousel-arrow" id="carouselPrev">◀</div>
+                    <div id="carouselItems" style="display:flex; gap:20px; overflow:hidden; flex:1; justify-content:center;"></div>
+                    <div class="carousel-arrow" id="carouselNext">▶</div>
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </div>
 
             <!-- SOUNDBOARD -->
             <div class="soundboard">
@@ -1811,29 +1940,32 @@
 
     <script>
         // ──────────────────────────────────────────────────────────────
-        //  CLICK SOUND
+        //  SOUND HANDLING (always on, no mute toggle)
         // ──────────────────────────────────────────────────────────────
-        (function() {
-            const clickAudio = document.getElementById('clickSound');
-            if (!clickAudio) return;
-            clickAudio.load();
+        const clickAudio = document.getElementById('clickSound');
+        const switchAudio = document.getElementById('switchClick');
 
-            function playClick() {
-                try {
-                    clickAudio.currentTime = 0;
-                    clickAudio.play().catch(() => {});
-                } catch (_) {}
+        function playSound(audioElement) {
+            if (!audioElement) return;
+            try {
+                audioElement.currentTime = 0;
+                audioElement.play().catch(() => {});
+            } catch (_) {}
+        }
+
+        // Default click sound on interactive elements
+        document.addEventListener('click', function(e) {
+            const target = e.target.closest(
+                '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn'
+            );
+            if (target) {
+                playSound(clickAudio);
             }
+        }, true);
 
-            document.addEventListener('click', function(e) {
-                const target = e.target.closest(
-                    '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn'
-                );
-                if (target) playClick();
-            }, true);
-
-            document.getElementById('searchClear').addEventListener('click', playClick);
-        })();
+        document.getElementById('searchClear').addEventListener('click', function() {
+            playSound(clickAudio);
+        });
 
         // ──────────────────────────────────────────────────────────────
         //  PARTICLE SYSTEM (optimized)
@@ -1997,17 +2129,16 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (with new games and category updates)
+        //  GAME DATA (same as before)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
             const cats = [];
 
-            // ── Platformer IDs ──
             const platformerIds = [
                 'supermario64', 'supermario63', 'redball4', 'doodlejump', 'soniccd', 'clusterrush',
                 'slope', 'slope2player', 'deathrun3d', 'flappybird', 'crossyroad', 'snowrider3d',
-                'gorillatag', 'burritobison', 'bladeball',
+                'gorillatag', 'burritobison', 'bladeball', 'gdlite',
                 'ducklife1', 'ducklife2', 'ducklife3', 'ducklife4', 'ducklife5',
                 'tripletobby', 'obbyjumperclicker', 'speedperclick', 'obbycart', 'blockcraftparkour',
                 'obby99willlose', 'obbyfriends', 'rainbowobby', 'obbybike',
@@ -2016,7 +2147,6 @@
             ];
             if (platformerIds.includes(id)) cats.push('Platformer');
 
-            // ── Existing logic ──
             if (lower === 'tungtunghorror') return [...cats, 'Horror', 'Brainrot'];
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
                 lower === 'fnaf3remastered' || lower === 'fnafworld') { cats.push('FNAF', 'Horror'); }
@@ -2026,8 +2156,7 @@
             if (lower.includes('subway') || lower.includes('subwaysurfer')) { cats.push('Subway Surfers', 'Runner'); }
             if (lower.includes('mortalkombat') || lower.includes('mortal kombat') ||
                 lower === 'mariocombat' || lower === 'stickmankombat') cats.push('Mortal Kombat');
-            
-            // ── Runner (removed soniccd) ──
+
             if ((lower.includes('run') && lower !== 'deltarune') || lower.includes('runner') || lower.includes('templerun') ||
                 lower === 'run3' || lower === 'templerun2' || lower === 'slope' || lower === 'slope2player' ||
                 lower === 'googledino' || lower === 'makeasuperboat' || lower === 'flappybird' ||
@@ -2051,13 +2180,16 @@
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
                 lower === 'beachboxingsim') cats.push('Sports');
 
-            // ── Other (removed deathrun3d, bladeball) ──
-            if (lower === 'konkr' || lower === 'bitplanes' || lower === 'driftboss' || lower === 'drivemad' ||
-                lower === 'dta6' || lower === 'blockcraftparkour' || lower === 'polytrack' ||
-                lower === 'clarkingarena' || lower === 'carkingarena' ||
-                lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' ||
-                lower === 'blockysnakes' || lower === 'doodlejump' || lower === 'gorillatag' ||
-                lower === 'snowrider3d' || lower === 'evilglitch') cats.push('Other');
+            const movedToPlatformer = ['gdlite', 'doodlejump', 'gorillatag', 'redball4', 'supermario63', 'supermario64'];
+            if (!movedToPlatformer.includes(id)) {
+                if (lower === 'konkr' || lower === 'bitplanes' || lower === 'driftboss' || lower === 'drivemad' ||
+                    lower === 'dta6' || lower === 'blockcraftparkour' || lower === 'polytrack' ||
+                    lower === 'clarkingarena' || lower === 'carkingarena' ||
+                    lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' ||
+                    lower === 'blockysnakes' || lower === 'snowrider3d' || lower === 'evilglitch' ||
+                    lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152')
+                    cats.push('Other');
+            }
 
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
             if (lower === 'stickmanduel') cats.push('Stickman');
@@ -2119,12 +2251,23 @@
             { id: '2048', name: '2048', file: 'cl2048 (1).html',
                 img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
             { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                categories: ['Minecraft'], img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html',
-                img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
+                categories: ['Minecraft'], img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
             { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html',
-                categories: ['Other', 'Minecraft'],
-                img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                categories: ['Minecraft'], img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Platformer'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html', categories: ['Platformer'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'gorillatag', name: 'Gorilla Tag', file: 'clgorillatag.html', categories: ['Platformer'],
+                img: 'https://i.pinimg.com/474x/19/fd/c4/19fdc4bdd0c48967430da181be9176ba.jpg?nii=t' },
+            { id: 'redball4', name: 'Red Ball 4', file: 'clRedBall4 (2).html', categories: ['Platformer'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html', categories: ['Platformer'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html', categories: ['Platformer'],
+                img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
             { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html',
@@ -2212,8 +2355,6 @@
                 img: 'https://i.ytimg.com/vi/zNjTTtyxXJ4/maxresdefault.jpg' },
             { id: 'subwayberlin', name: 'Subway Surfers Berlin', file: 'clsubwaysurfersberlin (1).html',
                 img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' },
-            { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html', categories: ['Other'],
-                img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
             { id: 'templerun2', name: 'Temple Run 2', file: 'cltemplerun2.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TVn1IXCX8i0dTWY7mTuU0wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'zombierush', name: 'Zombie Rush', file: 'clzombierush (2).html',
@@ -2268,8 +2409,6 @@
                 img: 'https://67clicker.io/cache/data/image/game/obby-1-jump-per-click/obby-1-jump-per-click-m200x200.webp' },
             { id: 'obbybike', name: 'Obby Bike', file: 'clobbybike (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Rrq8kGP9K5eGZj21x3HZdQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html', categories: ['Other'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'magictiles3', name: 'Magic Tiles 3', file: 'Magic Tiles 3 (3).html',
                 img: 'https://cdn.mobygames.com/covers/17514493-magic-tiles-3-piano-game-iphone-front-cover.png' },
             { id: 'dontyoulectureme', name: 'Don\'t You Lecture Me', file: 'DON\'T YOU LECTURE ME.html',
@@ -2350,10 +2489,6 @@
             { id: 'bendy', name: 'Bendy and the Ink Machine (All Chapters)',
                 file: 'Bendy and the Ink Machine_ ALL CHAPTERS (2).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.Zxiqf_1J0r3PcP9-x_7xPwHaJ3?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'redball4', name: 'Red Ball 4', file: 'clRedBall4 (2).html', categories: ['Other'],
-                img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'skibidibackrooms', name: 'Skibidi in the Backrooms', file: 'clskibidiinthebackrooms (1).html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.DJOrcXU5HPSUlji-NDRPQAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'skibidishooter', name: 'Skibidi Shooter', file: 'clskibidishooter.html',
@@ -2471,10 +2606,6 @@
             { id: 'learntoflyidle', name: 'Learn to Fly Idle', file: 'Learn to Fly Idle (2).html',
                 categories: ['Learn to Fly'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Other'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'gorillatag', name: 'Gorilla Tag', file: 'clgorillatag.html', categories: ['Other'],
-                img: 'https://i.pinimg.com/474x/19/fd/c4/19fdc4bdd0c48967430da181be9176ba.jpg?nii=t' },
             { id: 'snowrider3d', name: 'Snow Rider 3D', file: 'Snow Rider 3D (1).html', categories: ['Other'],
                 img: 'https://new66ez.github.io/img/snowrider3d/logo.png' },
             { id: 'dogeminer', name: 'Doge Miner', file: 'Doge Miner.html', categories: ['Clicker'],
@@ -2504,15 +2635,12 @@
                 img: 'https://www.unblockedgamers.com/wp-content/uploads/2022/11/Minecraft-Tower-Defense-2.jpg' },
             { id: 'punchthetrump', name: '👊 Punch the Trump', file: 'clpunchthetrump (2).html', categories: ['Other'],
                 img: 'https://i.ytimg.com/vi/G5L1oDk1vnc/hqdefault.jpg' },
-            // ─── NEW GAMES ───
-            { id: 'skinwalker', name: '👾 Skin Walker', file: 'clskinwalker.html',
-                categories: ['Horror'],
+            { id: 'skinwalker', name: '👾 Skin Walker', file: 'clskinwalker.html', categories: ['Horror'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TC3gmSCCdO95xkug8xnRBAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'elytraflight', name: '🪶 Elytra Flight', file: 'clelytraflight.html',
                 categories: ['Minecraft', 'Platformer'],
                 img: 'https://www.playschoolgames.com/web/uploads/games/other/elytra-flight/elytra-flight.jpg' },
-            { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html',
-                categories: ['Other'],
+            { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html', categories: ['Other'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.0rEL35BQ0y8fSadIWDjYiwHaEw?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
@@ -2533,6 +2661,10 @@
         let rainActive = false;
         let rainbowMode = false;
         let rainbowInterval = null;
+        let nintendoMode = false;
+        let selectedIndex = 0;
+        let carouselGames = [];
+
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
@@ -2565,6 +2697,12 @@
         const panicBadge = document.getElementById('panicBadge');
         const toast = document.getElementById('toast');
         const soundboardGrid = document.getElementById('soundboardGrid');
+        const nintendoToggle = document.getElementById('nintendoToggle');
+        const nintendoCarousel = document.getElementById('nintendoCarousel');
+        const carouselItems = document.getElementById('carouselItems');
+        const carouselIndicators = document.getElementById('carouselIndicators');
+        const carouselPrev = document.getElementById('carouselPrev');
+        const carouselNext = document.getElementById('carouselNext');
 
         // ──────────────────────────────────────────────────────────────
         //  TOAST
@@ -2590,7 +2728,27 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  RENDER GRID
+        //  GET FILTERED GAMES
+        // ──────────────────────────────────────────────────────────────
+        function getFilteredGames() {
+            return GAME_DATA.filter(g => {
+                if (g.id === 'randompicker') return false;
+                const matchSearch = g.name.toLowerCase().includes(searchQuery.toLowerCase());
+                let matchCat = false;
+                if (selectedCategories.length === 0 || selectedCategories.includes('all')) matchCat = true;
+                else matchCat = g.categories.some(c => selectedCategories.includes(c));
+                return matchSearch && matchCat;
+            }).sort((a, b) => {
+                const fa = favorites.includes(a.id),
+                    fb = favorites.includes(b.id);
+                if (fa && !fb) return -1;
+                if (!fa && fb) return 1;
+                return a.name.localeCompare(b.name);
+            });
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        //  RENDER GRID (normal)
         // ──────────────────────────────────────────────────────────────
         function renderGrid() {
             const filtered = GAME_DATA.filter(g => {
@@ -2602,7 +2760,7 @@
                 return matchSearch && matchCat;
             });
 
-            const sorted = [...filtered].sort((a, b) => {
+            const sorted = filtered.sort((a, b) => {
                 if (a.id === 'randompicker') return -1;
                 if (b.id === 'randompicker') return 1;
                 const fa = favorites.includes(a.id),
@@ -2668,6 +2826,90 @@
 
             grid.appendChild(frag);
             searchClear.classList.toggle('show', searchQuery.length > 0);
+
+            if (nintendoMode) renderCarousel();
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        //  RENDER CAROUSEL (Nintendo mode - no text, only images)
+        // ──────────────────────────────────────────────────────────────
+        function renderCarousel() {
+            const games = getFilteredGames();
+            if (games.length === 0) {
+                carouselItems.innerHTML = '<div style="color:#888;padding:40px;font-size:40px;">🎮</div>';
+                carouselIndicators.innerHTML = '';
+                return;
+            }
+            carouselGames = games;
+            if (selectedIndex >= games.length) selectedIndex = games.length - 1;
+            if (selectedIndex < 0) selectedIndex = 0;
+
+            carouselItems.innerHTML = '';
+            const total = games.length;
+            const half = 3;
+            let start = selectedIndex - half;
+            let end = selectedIndex + half;
+            if (start < 0) { end += -start;
+                start = 0; }
+            if (end >= total) { start -= (end - total + 1);
+                end = total - 1; }
+            if (start < 0) start = 0;
+
+            for (let i = start; i <= end; i++) {
+                const g = games[i];
+                const div = document.createElement('div');
+                div.className = 'carousel-item' + (i === selectedIndex ? ' active' : '');
+                div.dataset.index = i;
+                const img = document.createElement('img');
+                img.src = g.img ||
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23222" width="100" height="100"/><text y=".9em" font-size="60" x="50%" text-anchor="middle">🎮</text></svg>';
+                img.alt = g.name;
+                div.appendChild(img);
+                // No text label - only image
+                div.addEventListener('click', () => {
+                    if (i !== selectedIndex) {
+                        selectedIndex = i;
+                        renderCarousel();
+                        playSound(switchAudio);
+                    } else {
+                        launchGame(g.id);
+                        playSound(switchAudio);
+                    }
+                });
+                carouselItems.appendChild(div);
+            }
+
+            // Indicators
+            carouselIndicators.innerHTML = '';
+            const maxIndicators = Math.min(total, 10);
+            const step = Math.max(1, Math.floor(total / maxIndicators));
+            for (let i = 0; i < total; i += step) {
+                const dot = document.createElement('span');
+                dot.className = (i === selectedIndex ? 'active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => {
+                    selectedIndex = i;
+                    renderCarousel();
+                    playSound(switchAudio);
+                });
+                carouselIndicators.appendChild(dot);
+            }
+            const dots = carouselIndicators.querySelectorAll('span');
+            dots.forEach(d => d.classList.toggle('active', parseInt(d.dataset.index) === selectedIndex));
+        }
+
+        function navigateCarousel(direction) {
+            if (!nintendoMode) return;
+            const games = getFilteredGames();
+            if (games.length === 0) return;
+            let newIdx = selectedIndex + direction;
+            if (newIdx < 0) newIdx = games.length - 1;
+            if (newIdx >= games.length) newIdx = 0;
+            if (newIdx !== selectedIndex) {
+                selectedIndex = newIdx;
+                renderCarousel();
+                playSound(switchAudio);
+            }
         }
 
         // ──────────────────────────────────────────────────────────────
@@ -3204,6 +3446,48 @@
         buildSoundboard();
 
         // ──────────────────────────────────────────────────────────────
+        //  NINTENDO TOGGLE
+        // ──────────────────────────────────────────────────────────────
+        nintendoToggle.addEventListener('click', function() {
+            nintendoMode = !nintendoMode;
+            document.body.classList.toggle('nintendo-mode', nintendoMode);
+            if (nintendoMode) {
+                renderCarousel();
+                grid.style.display = 'none';
+                nintendoCarousel.style.display = 'block';
+                this.textContent = 'N mode';
+                showToast('🕹️', 1000);
+            } else {
+                grid.style.display = 'flex';
+                nintendoCarousel.style.display = 'none';
+                this.textContent = '2 mode';
+                showToast('📋', 1000);
+            }
+        });
+
+        // ──────────────────────────────────────────────────────────────
+        //  CAROUSEL NAVIGATION
+        // ──────────────────────────────────────────────────────────────
+        carouselPrev.addEventListener('click', () => navigateCarousel(-1));
+        carouselNext.addEventListener('click', () => navigateCarousel(1));
+
+        document.addEventListener('keydown', (e) => {
+            if (!nintendoMode) return;
+            if (e.key === 'ArrowLeft') { e.preventDefault();
+                navigateCarousel(-1); }
+            if (e.key === 'ArrowRight') { e.preventDefault();
+                navigateCarousel(1); }
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const games = getFilteredGames();
+                if (games.length && games[selectedIndex]) {
+                    launchGame(games[selectedIndex].id);
+                    playSound(switchAudio);
+                }
+            }
+        });
+
+        // ──────────────────────────────────────────────────────────────
         //  INIT
         // ──────────────────────────────────────────────────────────────
         applyCloak(0);
@@ -3212,10 +3496,10 @@
         document.documentElement.style.setProperty('--primary', '#3b82f6');
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
-        console.log('🚀 SigmaTown4Life v1.0.0 loaded with updates.');
-        console.log('✅ Added Skin Walker (Horror), Elytra Flight (Minecraft/Platformer), Evil Glitch (Other).');
-        console.log('✅ Removed Hollow Knight. Removed Sonic CD from Runner, Death Run 3D from Other.');
-        console.log('✅ Updated Platformer category with Blade Ball, SM64, SM63, Red Ball 4, etc.');
+        nintendoCarousel.style.display = 'none';
+        grid.style.display = 'flex';
+
+        console.log('🚀 SigmaTown4Life with Nintendo mode (no text, N mode / 2 mode toggle, mute removed).');
     </script>
 </body>
 </html>
