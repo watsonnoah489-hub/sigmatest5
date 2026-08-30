@@ -25,7 +25,6 @@
             cursor: var(--sigma-cursor) !important;
         }
 
-        /* ────── TEXT INPUT OVERRIDE ────── */
         input,
         textarea,
         select {
@@ -61,7 +60,6 @@
             overflow-x: hidden;
         }
 
-        /* ────── THEMES ────── */
         body.dark {
             --bg: #0a0a0a;
             --text: #f0f0f0;
@@ -86,7 +84,6 @@
             filter: brightness(0.95);
         }
 
-        /* ────── LOW-LAG ────── */
         body.low-lag * {
             animation-play-state: paused !important;
             transition-duration: 0s !important;
@@ -100,7 +97,7 @@
             display: none !important;
         }
 
-        /* ────── ANIMATIONS (GPU-optimized) ────── */
+        /* ────── ANIMATIONS ────── */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -659,6 +656,7 @@
             display: none;
         }
 
+        /* ────── CYCLE BUTTON ────── */
         .cycle-btn {
             width: 150px;
             height: 150px;
@@ -671,7 +669,7 @@
             transition: transform 0.3s, box-shadow 0.4s, border-color 0.3s;
             position: relative;
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.10);
-            overflow: visible;
+            overflow: hidden;
             will-change: transform, box-shadow;
             transform: translateZ(0);
         }
@@ -716,6 +714,7 @@
             transition: opacity 0.4s, transform 0.4s;
             pointer-events: none;
             will-change: transform;
+            background: #1a1a2e;
         }
         .cycle-btn:hover .overlay {
             opacity: 1;
@@ -1290,7 +1289,7 @@
             filter: brightness(1.2);
         }
 
-        /* ────── GAME OVERLAY (iframe) ────── */
+        /* ────── GAME OVERLAY ────── */
         #gameOverlay {
             display: none;
             position: fixed;
@@ -1767,6 +1766,8 @@
                     <option value="Driving">🏎️ Driving</option>
                     <option value="Crazy 3D Farm Games">🐓 Crazy 3D Farm</option>
                     <option value="Learn to Fly">✈️ Learn to Fly</option>
+                    <option value="Minecraft">⛏️ Minecraft</option>
+                    <option value="Platformer">🎮 Platformer</option>
                     <option value="Other">📦 Other</option>
                 </select>
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
@@ -1810,15 +1811,13 @@
 
     <script>
         // ──────────────────────────────────────────────────────────────
-        //  CLICK SOUND (plays on any game or button click)
+        //  CLICK SOUND
         // ──────────────────────────────────────────────────────────────
         (function() {
             const clickAudio = document.getElementById('clickSound');
             if (!clickAudio) return;
-            // Preload the audio
             clickAudio.load();
 
-            // Function to play the sound (reset and play)
             function playClick() {
                 try {
                     clickAudio.currentTime = 0;
@@ -1826,22 +1825,18 @@
                 } catch (_) {}
             }
 
-            // Listen for clicks on the document, but only on interactive elements
             document.addEventListener('click', function(e) {
                 const target = e.target.closest(
                     '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn'
                 );
-                if (target) {
-                    playClick();
-                }
-            }, true); // use capture phase to catch all clicks
+                if (target) playClick();
+            }, true);
 
-            // Also play when clicking on the search clear button
             document.getElementById('searchClear').addEventListener('click', playClick);
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  OPTIMIZED PARTICLE SYSTEM (30 particles, no gradients)
+        //  PARTICLE SYSTEM (optimized)
         // ──────────────────────────────────────────────────────────────
         (function initParticles() {
             const canvas = document.getElementById('particleCanvas');
@@ -1856,7 +1851,6 @@
             window.addEventListener('resize', resize);
             resize();
 
-            // Reduced count from 70 to 30
             const count = Math.min(30, Math.floor((w * h) / 40000));
             for (let i = 0; i < count; i++) {
                 particles.push({
@@ -1879,21 +1873,17 @@
                 frame++;
                 ctx.clearRect(0, 0, w, h);
 
-                // Get primary color once per frame
                 const primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
                 let r, g, b;
                 if (primary.startsWith('#')) {
                     r = parseInt(primary.slice(1, 3), 16) || 59;
                     g = parseInt(primary.slice(3, 5), 16) || 130;
                     b = parseInt(primary.slice(5, 7), 16) || 246;
-                } else {
-                    r = 59;
+                } else { r = 59;
                     g = 130;
-                    b = 246;
-                }
+                    b = 246; }
                 const pulse = 0.5 + 0.5 * Math.sin(frame * 0.008);
 
-                // Draw particles - using simple solid circles for speed
                 particles.forEach(p => {
                     p.x += p.dx + Math.sin(frame * 0.005 + p.phase) * 0.15;
                     p.y += p.dy + Math.cos(frame * 0.007 + p.phase) * 0.15;
@@ -1902,20 +1892,17 @@
                     if (p.y < 0) p.y = h;
                     if (p.y > h) p.y = 0;
 
-                    // Glow ring (bigger, low opacity)
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r * 5, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(${r},${g},${b},${0.1 * pulse})`;
                     ctx.fill();
 
-                    // Core (smaller, bright)
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.r * 0.8, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(${r},${g},${b},${0.6 * pulse})`;
                     ctx.fill();
                 });
 
-                // Connections - reduced distance from 150 to 100
                 const maxDist = 100;
                 for (let i = 0; i < particles.length; i++) {
                     for (let j = i + 1; j < particles.length; j++) {
@@ -1937,12 +1924,11 @@
             }
             draw();
 
-            // Cleanup on page unload
             window.addEventListener('beforeunload', () => { running = false; });
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  OPTIMIZED GLOW TRAIL (throttled with requestAnimationFrame)
+        //  GLOW TRAIL (throttled)
         // ──────────────────────────────────────────────────────────────
         (function() {
             const trail = document.getElementById('glowTrail');
@@ -1995,7 +1981,7 @@
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  CURSOR COLOR UPDATER (FIXED: taller viewBox for full sigma)
+        //  CURSOR COLOR UPDATER
         // ──────────────────────────────────────────────────────────────
         function updateCursor(hexColor) {
             const clean = hexColor.replace('#', '');
@@ -2011,12 +1997,27 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (filtered to remove unwanted games)
+        //  GAME DATA (with new games and category updates)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
             const cats = [];
-            if (lower === 'tungtunghorror') return ['Horror', 'Brainrot'];
+
+            // ── Platformer IDs ──
+            const platformerIds = [
+                'supermario64', 'supermario63', 'redball4', 'doodlejump', 'soniccd', 'clusterrush',
+                'slope', 'slope2player', 'deathrun3d', 'flappybird', 'crossyroad', 'snowrider3d',
+                'gorillatag', 'burritobison', 'bladeball',
+                'ducklife1', 'ducklife2', 'ducklife3', 'ducklife4', 'ducklife5',
+                'tripletobby', 'obbyjumperclicker', 'speedperclick', 'obbycart', 'blockcraftparkour',
+                'obby99willlose', 'obbyfriends', 'rainbowobby', 'obbybike',
+                'hobo1', 'hobo2', 'hobo3', 'hobo4', 'hobo5', 'hobo6', 'hobo7', 'hobovszombies',
+                'mariocombat', 'stickmanhook'
+            ];
+            if (platformerIds.includes(id)) cats.push('Platformer');
+
+            // ── Existing logic ──
+            if (lower === 'tungtunghorror') return [...cats, 'Horror', 'Brainrot'];
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
                 lower === 'fnaf3remastered' || lower === 'fnafworld') { cats.push('FNAF', 'Horror'); }
             if (lower.startsWith('ducklife')) cats.push('Duck Life');
@@ -2025,18 +2026,21 @@
             if (lower.includes('subway') || lower.includes('subwaysurfer')) { cats.push('Subway Surfers', 'Runner'); }
             if (lower.includes('mortalkombat') || lower.includes('mortal kombat') ||
                 lower === 'mariocombat' || lower === 'stickmankombat') cats.push('Mortal Kombat');
+            
+            // ── Runner (removed soniccd) ──
             if ((lower.includes('run') && lower !== 'deltarune') || lower.includes('runner') || lower.includes('templerun') ||
                 lower === 'run3' || lower === 'templerun2' || lower === 'slope' || lower === 'slope2player' ||
                 lower === 'googledino' || lower === 'makeasuperboat' || lower === 'flappybird' ||
-                lower === 'burritobison' || lower === 'redball4' || lower === 'soniccd' || lower === 'slowroads' ||
+                lower === 'burritobison' || lower === 'redball4' || lower === 'slowroads' ||
                 lower === 'supermario63' || lower === 'supermario64' || lower === 'clusterrush' ||
                 lower === 'rooftoprun' || lower === 'crossyroad') cats.push('Runner');
+
             if (lower.includes('baldi') || lower.includes('granny') || lower.includes('deadzed') ||
                 lower.includes('backrooms') || lower.includes('horror') || lower.includes('bendy') ||
                 lower === 'skibidibackrooms' || lower === 'fnafshooter' || lower === 'fnaw' ||
                 lower === 'fnac1' || lower === 'fnac2' || lower === '99nights' || lower === 'scaryteacher' ||
                 lower === 'tcubed' || lower === 'deltarune' || lower === 'hollowknight' || lower === 'undertale' ||
-                lower === 'amongus' || lower === 'huggywuggypixel') cats.push('Horror');
+                lower === 'amongus' || lower === 'huggywuggypixel' || lower === 'skinwalker') cats.push('Horror');
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') || lower === 'hobovszombies') { cats
                     .push('Zombie'); if (lower !== 'hobovszombies') cats.push('Horror'); }
             if (lower.includes('soccer') || lower.includes('basketball') || lower.includes('baseball') ||
@@ -2046,12 +2050,15 @@
                 lower === 'basketbattle' || lower === 'soccerrandom' || lower === 'footballbros' ||
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
                 lower === 'beachboxingsim') cats.push('Sports');
+
+            // ── Other (removed deathrun3d, bladeball) ──
             if (lower === 'konkr' || lower === 'bitplanes' || lower === 'driftboss' || lower === 'drivemad' ||
                 lower === 'dta6' || lower === 'blockcraftparkour' || lower === 'polytrack' ||
-                lower === 'deathrun3d' || lower === 'clarkingarena' || lower === 'carkingarena' ||
-                lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' || lower === 'bladeball' ||
+                lower === 'clarkingarena' || lower === 'carkingarena' ||
+                lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' ||
                 lower === 'blockysnakes' || lower === 'doodlejump' || lower === 'gorillatag' ||
-                lower === 'snowrider3d') cats.push('Other');
+                lower === 'snowrider3d' || lower === 'evilglitch') cats.push('Other');
+
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
             if (lower === 'stickmanduel') cats.push('Stickman');
             if (lower === 'crossyroad') cats.push('Runner');
@@ -2073,11 +2080,18 @@
                 lower === 'cuttherope' || lower === 'oneshotlegacy' || lower === 'riddleschool1' ||
                 lower === 'riddleschool2' || lower === 'blackjack' || lower === 'chessclassic' ||
                 lower === 'magictiles3' || lower === 'sortthecourt' || lower === 'uno' ||
-                lower === 'wordleunlimited' || lower === 'thereisnofile') cats.push('Puzzle');
+                lower === 'wordleunlimited' || lower === 'thereisnofile' || lower === 'minecaves') cats.push('Puzzle');
+            if (lower === 'minecaves') cats.push('Relaxing', 'Minecraft');
+            if (lower === 'minecrafttowerdefense') cats.push('Minecraft');
+            if (lower === 'elytraflight') cats.push('Minecraft', 'Platformer');
+            if (lower === 'punchthetrump') cats.push('Other');
+            if (lower === 'blockcraftparkour') cats.push('Minecraft');
+            if (lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152') cats.push('Minecraft');
+            if (lower === 'minecraftpe') cats.push('Minecraft');
             const isPuzzle = cats.includes('Puzzle');
-            if (isPuzzle && !['cuttherope', 'oneshotlegacy'].includes(id)) cats.push('Relaxing');
+            if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves'].includes(id)) cats.push('Relaxing');
             if (lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads' ||
-                lower === 'thereisnofile') cats.push('Relaxing');
+                lower === 'thereisnofile' || lower === 'minecaves') cats.push('Relaxing');
             if (lower === '1v1lol' || lower === 'gunspin' || lower === 'skibidishooter' ||
                 lower === 'kour') cats.push('Shooter');
             if (lower === 'baldi' || lower === 'caseoh' || lower === 'tcubed') cats.push('Baldi\'s Basics');
@@ -2086,15 +2100,18 @@
             if (lower === 'learntofly1' || lower === 'learntofly2' || lower === 'learntofly3' ||
                 lower === 'learntoflyidle') cats.push('Learn to Fly');
             if (lower === 'bugreports' || lower === 'gamesuggestions' || lower === 'pacman' || lower === 'credits' ||
-                lower === 'removalrequest') cats.push('Other');
+                lower === 'removalrequest' || lower === 'punchthetrump') cats.push('Other');
             if (lower === 'bowmasters') { cats.push('Shooter', 'Stickman'); }
             if (lower === 'ragdollhit') { cats.push('Stickman'); }
             if (lower === 'snowbattle') { cats.push('Other'); }
+            if (lower === 'tugofwar') cats.push('Driving');
+            if (lower === 'trafficracer') cats.push('Driving');
+            if (lower === 'crushcar3d') cats.push('Driving');
             if (cats.length === 0) cats.push('Other');
+
             return [...new Set(cats)];
         }
 
-        // Full game data with removals: removed ngon, fivenightsatyoshis, doblox, bitlife, buildnow
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -2106,7 +2123,7 @@
             { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html',
                 img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
             { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html',
-                categories: ['Other'],
+                categories: ['Other', 'Minecraft'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2126,8 +2143,6 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.ZbCOXEfOBdRdeXiv_tXtWAHaEL?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'bloxorz', name: 'Bloxorz', file: 'clbloxorz (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.-0sNVbmWwzm_jytveGb-UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // Removed bitlife
-            // Removed caseoh, keep? – not in your list, we keep caseoh
             { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html',
                 categories: ['Baldi\'s Basics'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2154,7 +2169,7 @@
             { id: 'fnaf1', name: 'Five Nights at Freddy\'s', file: 'clFNAF (6).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.XW_OsPwLtSFaQrOSHEr5eAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnaf2', name: 'Five Nights at Freddy\'s 2', file: 'clFNAF2 (2).html',
-                img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2f%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2ffnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
+                img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2f%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2fnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'fnaf3', name: 'Five Nights at Freddy\'s 3', file: 'clFNAF3 (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP._CWgr-vY9AA8jLa7jCUgUgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html',
@@ -2257,8 +2272,6 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'magictiles3', name: 'Magic Tiles 3', file: 'Magic Tiles 3 (3).html',
                 img: 'https://cdn.mobygames.com/covers/17514493-magic-tiles-3-piano-game-iphone-front-cover.png' },
-            { id: 'hollowknight', name: 'Hollow Knight', file: 'Hollow Knight.html',
-                img: 'https://assets-prd.ignimgs.com/2021/12/07/hollowknight-1638908888257.png?crop=1%3A1' },
             { id: 'dontyoulectureme', name: 'Don\'t You Lecture Me', file: 'DON\'T YOU LECTURE ME.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.KQ30R9-6p_fwb0F_ulaKvgHaEL?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ruffle', name: 'Ruffle Player', file: 'Ruffle (3).html',
@@ -2281,9 +2294,7 @@
                 img: 'https://merge-fellas.io/thumb/sort-the-court.webp' },
             { id: 'volleyrandom', name: 'Volley Random', file: 'Volley Random.html',
                 img: 'https://www.coolmathgameskids.com/wp-content/uploads/2021/02/volley-random.jpeg' },
-            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html', categories: ['Baldi\'s Basics',
-                    'Puzzle'
-                ],
+            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html', categories: ['Baldi\'s Basics'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.6vYkelfYmDvlz9h1v7GpCQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stickmankombat', name: 'Stickman Kombat 2D', file: 'Stickman Kombat 2D.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.L5HOhBR-3DmyWevhzOsIoAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2330,7 +2341,6 @@
                 img: 'https://gogamego.io/wp-content/uploads/thumbs/custom/S/Speed-per-Click-Obby.webp' },
             { id: 'minecraftpe', name: 'Minecraft PE v0.6.1 Alpha', file: 'clminecraftpocketedition (3).html',
                 img: 'https://th.bing.com/th/id/OIP.ZnoWeiA67BtUBwQqYPydrQHaEK?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // PAPER.IO 2 REMOVED - AS REQUESTED
             { id: 'cuttherope', name: 'Cut the Rope', file: 'clcuttherope.html',
                 img: 'https://tse1.mm.bing.net/th/id/OIP.kyWXoC4b77ghQLMGf-KX9gHaFx?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnafshooter', name: 'FNAF Shooter (Fanmade)', file: 'clfnafshooter.html',
@@ -2352,7 +2362,6 @@
                 img: 'https://tse1.mm.bing.net/th/id/OIP.J85C8E_5tzGXfwgGbtjGUgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stealbrainrot2', name: 'Steal a Brainrot', file: 'clsupitdept (1).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.Q9QGaYo5lMUdbYREv3RgLgHaG3?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // Removed buildnow
             { id: 'undertale', name: 'Undertale: Last Breath', file: 'Undertale_ Last Breath (1).html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.OL2honTRfVZm7BWXvRKVNQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'solarsmash', name: 'Solar Smash', file: 'Solar Smash (2).html',
@@ -2377,7 +2386,7 @@
             { id: 'monkeymart', name: 'Monkey Mart', file: 'clmonkeymart.html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Alq3mAr-KKZOvIBkR5G27gAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'blockcraftparkour', name: '⛏️ Minecraft Knockoff Parkour', file: 'clblockcraftparkour.html',
-                categories: ['Obby'],
+                categories: ['Obby', 'Minecraft'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.oLZ3INEW4JOEoq6GXl-thQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'polytrack', name: '🏁 Polytrack', file: 'polytrack.html', categories: ['Driving'],
                 img: 'https://th.bing.com/th/id/OIP.5ciuC7UTrvUVmwdfGNBVVgHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2425,12 +2434,10 @@
             { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html',
                 categories: ['Horror'],
                 img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' },
-            // Removed fivenightsatyoshis
             { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle',
                     'Relaxing'
                 ],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // Removed ngon
             { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'clrooftopsnipers.html', categories: ['Shooter'],
                 img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
             { id: 'rooftopsnipers2', name: '🔫 Rooftop Snipers 2', file: 'clrooftopsnipers2.html',
@@ -2449,8 +2456,7 @@
                 img: 'https://turingninjas.com/images/blog/top-8sites-to-use-computer-mouse/Silkweave.JPG' },
             { id: 'nautilus', name: '🐚 Nautilus OS', file: 'clNautilusOS.html', categories: ['Other'],
                 img: 'https://avatars.githubusercontent.com/u/240241840?s=200&v=4' },
-            // Removed doblox
-            { id: 'bladeball', name: 'Blade Ball', file: 'Blade Ball.html', categories: ['Other'],
+            { id: 'bladeball', name: 'Blade Ball', file: 'Blade Ball.html',
                 img: 'https://images.sftcdn.net/images/t_app-icon-m/p/2eb6cfb8-570e-4e5c-9578-58e00b04f5f8/234620725/new-blade-ball-logo' },
             { id: 'blockysnakes', name: 'Blocky Snakes', file: 'Blocky Snakes.html', categories: ['Other'],
                 img: 'https://img.gamesgo.net/storage/images/games/blocky-snakes/sn300jpg.jpg' },
@@ -2478,20 +2484,36 @@
                 img: 'https://tse2.mm.bing.net/th/id/OIP.OnRcoSNjOVv9091H3a_BvAHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'obbyfriends', name: 'Obby with Friends', file: 'clobbyfriends.html', categories: ['Obby'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.tQD_30Ccp6chx5IZ3v7l6QHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── NEW GAMES ADDED ───
             { id: 'bowmasters', name: 'Bowmasters', file: 'Bowmasters (5).html', categories: ['Shooter', 'Stickman'],
                 img: 'https://th.bing.com/th/id/OIP.gfpfoNxHstuM7wB2aKmV2gHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ragdollhit', name: 'Ragdoll Hit', file: 'Ragdoll Hit.html', categories: ['Stickman'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TAvmWr6jkiJKMbKNVkfHlgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'snowbattle', name: 'Snowbattle.io', file: 'Snowbattle.io (2).html', categories: ['Other'],
                 img: 'https://kevin.games/assets/images/new/snow-battle.jpg' },
-            // ─── DRIVING GAMES ADDED (your requested games) ───
             { id: 'tugofwar', name: 'Tug of War with Cars', file: 'Tug of War with Cars.html', categories: ['Driving'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP._PLeYUSR2Ei63JPG65442gHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'trafficracer', name: 'Traffic Racer', file: 'Traffic Racer.html', categories: ['Driving'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.gS1Byi3mj6eY4AaaNN7COQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'crushcar3d', name: 'Crush Car 3D', file: 'Crush Cars 3D.html', categories: ['Driving'],
-                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/383.png' }
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/383.png' },
+            { id: 'minecaves', name: '⛏️ Minecaves', file: 'clminecaves.html',
+                categories: ['Puzzle', 'Relaxing', 'Minecraft'],
+                img: 'https://tse2.mm.bing.net/th/id/OIP.JUJphxOCizCYnKFLmQNS4wHaDa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'minecrafttowerdefense', name: '🏰 Minecraft Tower Defense', file: 'MINECRAFTTOWERDEFENSE.html',
+                categories: ['Minecraft'],
+                img: 'https://www.unblockedgamers.com/wp-content/uploads/2022/11/Minecraft-Tower-Defense-2.jpg' },
+            { id: 'punchthetrump', name: '👊 Punch the Trump', file: 'clpunchthetrump (2).html', categories: ['Other'],
+                img: 'https://i.ytimg.com/vi/G5L1oDk1vnc/hqdefault.jpg' },
+            // ─── NEW GAMES ───
+            { id: 'skinwalker', name: '👾 Skin Walker', file: 'clskinwalker.html',
+                categories: ['Horror'],
+                img: 'https://tse3.mm.bing.net/th/id/OIP.TC3gmSCCdO95xkug8xnRBAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'elytraflight', name: '🪶 Elytra Flight', file: 'clelytraflight.html',
+                categories: ['Minecraft', 'Platformer'],
+                img: 'https://www.playschoolgames.com/web/uploads/games/other/elytra-flight/elytra-flight.jpg' },
+            { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html',
+                categories: ['Other'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.0rEL35BQ0y8fSadIWDjYiwHaEw?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(g => {
@@ -2511,7 +2533,6 @@
         let rainActive = false;
         let rainbowMode = false;
         let rainbowInterval = null;
-        // Cloak list - SigmaTown4Life entry removed, IXL is first
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
             { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
@@ -2520,7 +2541,7 @@
             { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64' },
             { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico' }
         ];
-        let currentCloak = 0; // default to IXL
+        let currentCloak = 0;
 
         // ──────────────────────────────────────────────────────────────
         //  DOM REFS
@@ -2623,6 +2644,9 @@
                     img.src = g.img ||
                         'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23222" width="100" height="100"/><text y=".9em" font-size="60" x="50%" text-anchor="middle">🎮</text></svg>';
                     img.alt = g.name;
+                    img.style.objectFit = 'cover';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
                     btn.appendChild(img);
 
                     const star = document.createElement('span');
@@ -2795,7 +2819,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  RAIN (Matrix) - SINGLE COLOR
+        //  RAIN (Matrix)
         // ──────────────────────────────────────────────────────────────
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mctx = matrixCanvas.getContext('2d');
@@ -2839,7 +2863,7 @@
         }
 
         function toggleRain() {
-            if (lagKiller) { showToast('⚠️ Lag Killer is active! Disable it first.', 2000); return; }
+            if (lagKiller) { showToast('⚠️ Lag Killer active! Disable it first.', 2000); return; }
             rainActive = !rainActive;
             document.body.classList.toggle('rain-active', rainActive);
             rainBtn.classList.toggle('active', rainActive);
@@ -2854,14 +2878,13 @@
         rainBtn.addEventListener('click', toggleRain);
 
         // ──────────────────────────────────────────────────────────────
-        //  RAINBOW MODE (throttled to 100ms for FPS)
+        //  RAINBOW MODE
         // ──────────────────────────────────────────────────────────────
         rainbowBtn.addEventListener('click', () => {
-            if (lagKiller) { showToast('⚠️ Lag Killer is active! Disable it first.', 2000); return; }
+            if (lagKiller) { showToast('⚠️ Lag Killer active! Disable it first.', 2000); return; }
             rainbowMode = !rainbowMode;
             if (rainbowMode) {
                 let hue = Math.random() * 360;
-                // Increased interval from 35ms to 100ms for much better FPS
                 rainbowInterval = setInterval(() => {
                     hue = (hue + 7) % 360;
                     const color = `hsl(${hue},100%,52%)`;
@@ -2961,7 +2984,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  CLOAK - default IXL
+        //  CLOAK
         // ──────────────────────────────────────────────────────────────
         function applyCloak(index) {
             const c = cloakList[index];
@@ -3183,18 +3206,16 @@
         // ──────────────────────────────────────────────────────────────
         //  INIT
         // ──────────────────────────────────────────────────────────────
-        // Apply IXL cloak by default (index 0)
         applyCloak(0);
-        // Set initial cursor with full sigma
         updateCursor('#3b82f6');
         renderGrid();
         document.documentElement.style.setProperty('--primary', '#3b82f6');
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
-        console.log('🚀 SigmaTown4Life v1.0.0 loaded with click sound, IXL cloak default.');
-        console.log('✅ Paper.io removed, removed: ngon, fivenightsatyoshis, doblox, bitlife, buildnow');
-        console.log('✅ Added Tug of War, Traffic Racer, Crush Car 3D.');
-        console.log('🔥 FPS massively improved: particles reduced, glow throttled, rainbow throttled, GPU hints added.');
+        console.log('🚀 SigmaTown4Life v1.0.0 loaded with updates.');
+        console.log('✅ Added Skin Walker (Horror), Elytra Flight (Minecraft/Platformer), Evil Glitch (Other).');
+        console.log('✅ Removed Hollow Knight. Removed Sonic CD from Runner, Death Run 3D from Other.');
+        console.log('✅ Updated Platformer category with Blade Ball, SM64, SM63, Red Ball 4, etc.');
     </script>
 </body>
 </html>
