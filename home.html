@@ -1553,7 +1553,7 @@
         });
 
         // ──────────────────────────────────────────────────────────────
-        //  STATE & FUNCTIONS (same as before, all remain)
+        //  STATE & FUNCTIONS
         // ──────────────────────────────────────────────────────────────
         let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
         let searchQuery = '';
@@ -1789,24 +1789,7 @@
             }
         }
 
-        function launchGame(id) {
-            const game = GAME_DATA.find(g => g.id === id);
-            if (!game) { showToast('Game not found.', 2000); return; }
-            if (id === 'credits') { document.getElementById('creditsOverlay').classList.add('open'); return; }
-            if (id === 'bugreports' || id === 'gamesuggestions' || id === 'removalrequest') {
-                window.open(game.file, '_blank');
-                return;
-            }
-            openGameInNewTab(id, game.file, game.name);
-        }
-
-        function launchRandom() {
-            const regular = GAME_DATA.filter(g => g.id !== 'randompicker');
-            if (!regular.length) return;
-            const g = regular[Math.floor(Math.random() * regular.length)];
-            launchGame(g.id);
-        }
-
+        // ─── MODIFIED: openGameInNewTab – removed .st-title and its content ───
         function openGameInNewTab(id, file, name) {
             const win = window.open(file, '_blank');
             if (!win) { showToast('⚠️ Popup blocked! Please allow popups.', 3000); return; }
@@ -1828,23 +1811,20 @@
                         .st-ctrl .btn.fs { background:#3b82f6; }
                         .st-ctrl .btn.ptr { background:#22c55e; }
                         .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
-                        .st-title { position:fixed; top:18px; left:24px; color:#e2e8f0; font-size:17px; font-weight:600; background:rgba(0,0,0,0.7); padding:4px 16px; border-radius:10px; border:1px solid #334155; z-index:999999; backdrop-filter:blur(4px); display:flex; align-items:center; gap:10px; pointer-events:none; }
-                        .st-title .dot { width:10px; height:10px; border-radius:50%; background:#22c55e; animation:pulse-dot 1.8s ease-in-out infinite; display:inline-block; }
-                        @keyframes pulse { 0%,100%{box-shadow:0 0 10px rgba(255,107,0,0.3);}50%{box-shadow:0 0 35px rgba(255,215,0,0.8),0 0 60px rgba(255,107,0,0.4);} }
-                        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.3;transform:scale(0.7);} }
                     `;
                     doc.head.appendChild(style);
+                    // Only inject the control bar, no title bar
                     const html = `
                         <div class="st-ctrl">
                             <button class="btn fs" id="stFS">⛶ Fullscreen</button>
                             <span class="badge">ST</span>
                             <button class="btn ptr" id="stPtr">🖱️ Lock Cursor</button>
                         </div>
-                        <div class="st-title"><span class="dot"></span>${name}</div>
                     `;
                     const div = doc.createElement('div');
                     div.innerHTML = html;
                     while (div.firstChild) doc.body.appendChild(div.firstChild);
+
                     doc.getElementById('stFS').addEventListener('click', () => {
                         if (!doc.fullscreenElement) doc.documentElement.requestFullscreen().catch(() => {});
                         else doc.exitFullscreen().catch(() => {});
@@ -1862,6 +1842,24 @@
                 }
             }
             setTimeout(inject, 300);
+        }
+
+        function launchGame(id) {
+            const game = GAME_DATA.find(g => g.id === id);
+            if (!game) { showToast('Game not found.', 2000); return; }
+            if (id === 'credits') { document.getElementById('creditsOverlay').classList.add('open'); return; }
+            if (id === 'bugreports' || id === 'gamesuggestions' || id === 'removalrequest') {
+                window.open(game.file, '_blank');
+                return;
+            }
+            openGameInNewTab(id, game.file, game.name);
+        }
+
+        function launchRandom() {
+            const regular = GAME_DATA.filter(g => g.id !== 'randompicker');
+            if (!regular.length) return;
+            const g = regular[Math.floor(Math.random() * regular.length)];
+            launchGame(g.id);
         }
 
         // ─── Search ───
@@ -2301,7 +2299,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – all games loaded, files renamed (learn.html, math.html).');
+        console.log('🚀 SigmaTown4Life – dot and game name removed from overlay.');
     </script>
 </body>
 </html>
