@@ -1007,7 +1007,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST)
+        //  GAME DATA (FULL LIST – with renamed files for rooftoprun and rooftopsnipers)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -1132,7 +1132,8 @@
             return [...new Set(cats)];
         }
 
-        // ─── FULL GAME DATA (all games from your repository + new ones) ───
+        // ─── FULL GAME DATA ───
+        // (rooftoprun and rooftopsnipers have renamed files: learn.html and math.html)
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -1449,8 +1450,12 @@
                 img: 'https://blockblast.game/assets/img/block-blast.png' },
             { id: 'stickmanduel', name: '⚔️ Stickman Duel', file: 'clstickmanduel.html', categories: ['Stickman'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.oQg-LLk5ZZWgChYJEZjJJAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'rooftoprun', name: '🏃 Rooftop Run', file: 'clrooftoprun.html', categories: ['Runner'],
+            // ─── Renamed files ───
+            { id: 'rooftoprun', name: '🏃 Rooftop Run', file: 'learn.html', categories: ['Runner'],
                 img: 'https://th.bing.com/th/id/OIP.zZsUQ2DrgQG4VF1edknWngHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'math.html', categories: ['Shooter'],
+                img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
+            // ─── Continue with rest ───
             { id: 'crossyroad', name: '🐔 Crossy Road', file: 'clcrossyroad (3).html', categories: ['Runner'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Hsx5t6dxVLbpG_gUDdj22QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html',
@@ -1458,8 +1463,6 @@
                 img: 'https://pixreduce.com/wp-content/uploads/thumbs/gamearter/H/huggy-wuggy-pixel-nights_img1.jpg' },
             { id: 'thereisnofile', name: '❓ There Is No Game', file: 'clthereisnofile.html', categories: ['Puzzle', 'Relaxing'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.1ma2U08WCreoYAR3850I2QHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'clrooftopsnipers.html', categories: ['Shooter'],
-                img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
             { id: 'rooftopsnipers2', name: '🔫 Rooftop Snipers 2', file: 'clrooftopsnipers2.html',
                 categories: ['Shooter'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.pSq_fG8wa8s6ziJS4U9RAAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2298,7 +2301,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – all games loaded including the new ones!');
+        console.log('🚀 SigmaTown4Life – all games loaded, files renamed (learn.html, math.html).');
     </script>
 </body>
 </html>
