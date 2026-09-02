@@ -1007,7 +1007,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with renamed files for rooftoprun and rooftopsnipers)
+        //  GAME DATA (FULL LIST – with Summer Rider added)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -1072,7 +1072,8 @@
                     lower === 'clarkingarena' || lower === 'carkingarena' ||
                     lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' ||
                     lower === 'blockysnakes' || lower === 'snowrider3d' || lower === 'evilglitch' ||
-                    lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152')
+                    lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152' ||
+                    lower === 'summerrider')
                     cats.push('Other');
             }
 
@@ -1133,7 +1134,6 @@
         }
 
         // ─── FULL GAME DATA ───
-        // (rooftoprun and rooftopsnipers have renamed files: learn.html and math.html)
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -1455,7 +1455,6 @@
                 img: 'https://th.bing.com/th/id/OIP.zZsUQ2DrgQG4VF1edknWngHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'math.html', categories: ['Shooter'],
                 img: 'https://www.playrooftopsnipers.com/Rooftop-Snipers.webp' },
-            // ─── Continue with rest ───
             { id: 'crossyroad', name: '🐔 Crossy Road', file: 'clcrossyroad (3).html', categories: ['Runner'],
                 img: 'https://tse2.mm.bing.net/th/id/OIP.Hsx5t6dxVLbpG_gUDdj22QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'huggywuggypixel', name: '👾 Huggy Wuggy Pixel Nights', file: 'clhuggywuggypixel.html',
@@ -1542,7 +1541,10 @@
                 img: 'https://eggy-car.co.uk/wp-content/uploads/2025/11/crazy-motorcycle.webp' },
             { id: 'minecraftshooter', name: '🔫 Minecraft Shooter', file: 'clminecraftshooter.html',
                 categories: ['Shooter', 'Minecraft'],
-                img: 'https://img-hws.y8.com/cloud/v2-y8-thumbs-big-thumbnails-001/123969/big.gif' }
+                img: 'https://img-hws.y8.com/cloud/v2-y8-thumbs-big-thumbnails-001/123969/big.gif' },
+            // ─── SUMMER RIDER ───
+            { id: 'summerrider', name: '🏄 Summer Rider', file: 'clsummerrider.html', categories: ['Other'],
+                img: 'https://snake-game.io/data/image/game/summer-rider-3d/summer-rider-3d.png' }
         ];
 
         // Build final game data
@@ -1789,7 +1791,7 @@
             }
         }
 
-        // ─── MODIFIED: openGameInNewTab – removed .st-title and its content ───
+        // ─── Overlay injector (removed .st-title) ───
         function openGameInNewTab(id, file, name) {
             const win = window.open(file, '_blank');
             if (!win) { showToast('⚠️ Popup blocked! Please allow popups.', 3000); return; }
@@ -1813,7 +1815,6 @@
                         .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
                     `;
                     doc.head.appendChild(style);
-                    // Only inject the control bar, no title bar
                     const html = `
                         <div class="st-ctrl">
                             <button class="btn fs" id="stFS">⛶ Fullscreen</button>
@@ -2299,7 +2300,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – dot and game name removed from overlay.');
+        console.log('🚀 SigmaTown4Life – All games loaded including Summer Rider. Dot & game name removed from overlay.');
     </script>
 </body>
 </html>
