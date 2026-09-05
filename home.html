@@ -1820,7 +1820,7 @@
     <div id="menuScreen">
         <div class="container">
 
-            <!-- HEADER (original text) -->
+            <!-- HEADER -->
             <div class="header">
                 <h1 id="headerTitle">SigmaTown4Life v1.0.0</h1>
             </div>
@@ -1884,6 +1884,10 @@
                     <option value="Learn to Fly">✈️ Learn to Fly</option>
                     <option value="Minecraft">⛏️ Minecraft</option>
                     <option value="Platformer">🎮 Platformer</option>
+                    <option value="Papa's Restaurants">🍔 Papa's Restaurants</option>
+                    <option value="Riddle School">🧩 Riddle School</option>
+                    <option value="Time Shooter Series">⏱️ Time Shooter Series</option>
+                    <option value="Uncategorized">📦 Uncategorized</option>
                     <option value="Other">📦 Other</option>
                 </select>
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
@@ -2124,12 +2128,13 @@
             ];
             if (platformerIds.includes(id)) cats.push('Platformer');
 
-            // Existing category logic
-            if (lower === 'tungtunghorror') return [...cats, 'Horror', 'Brainrot'];
+            // FNAF (added fivenightsatshreks)
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
-                lower === 'fnaf3remastered' || lower === 'fnafworld') { cats.push('FNAF', 'Horror'); }
+                lower === 'fnaf3remastered' || lower === 'fnafworld' || lower === 'fivenightsatshreks') {
+                cats.push('FNAF', 'Horror');
+            }
             if (lower.startsWith('ducklife')) cats.push('Duck Life');
-            if (lower.startsWith('motox3m')) cats.push('Moto X3M');
+            if (lower.startsWith('motox3m') || lower === 'motox3mpoolparty') cats.push('Moto X3M');
             if (lower.startsWith('hobo') || lower.includes('hobo')) cats.push('Hobo');
             if (lower.includes('subway') || lower.includes('subwaysurfer')) { cats.push('Subway Surfers', 'Runner'); }
             if (lower.includes('mortalkombat') || lower.includes('mortal kombat') ||
@@ -2143,14 +2148,15 @@
                 lower === 'supermario63' || lower === 'supermario64' || lower === 'clusterrush' ||
                 lower === 'rooftoprun' || lower === 'crossyroad') cats.push('Runner');
 
-            // Horror
+            // Horror (add fivenightsatshreks already handled by FNAF, but ensure it's also Horror)
             if (lower.includes('baldi') || lower.includes('granny') || lower.includes('deadzed') ||
                 lower.includes('backrooms') || lower.includes('horror') || lower.includes('bendy') ||
                 lower === 'skibidibackrooms' || lower === 'fnafshooter' || lower === 'fnaw' ||
                 lower === 'fnac1' || lower === 'fnac2' || lower === '99nights' || lower === 'scaryteacher' ||
                 lower === 'tcubed' || lower === 'deltarune' || lower === 'hollowknight' || lower === 'undertale' ||
                 lower === 'amongus' || lower === 'huggywuggypixel' || lower === 'skinwalker' ||
-                lower === 'burgerandfrights') cats.push('Horror');
+                lower === 'burgerandfrights' || lower === 'fivenightsatshreks' || lower === 'midnightshift')
+                cats.push('Horror');
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') || lower === 'hobovszombies') { cats
                     .push('Zombie'); if (lower !== 'hobovszombies') cats.push('Horror'); }
             // Sports
@@ -2161,19 +2167,6 @@
                 lower === 'basketbattle' || lower === 'soccerrandom' || lower === 'footballbros' ||
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
                 lower === 'beachboxingsim') cats.push('Sports');
-
-            // Other (exclude moved platformer games)
-            const movedToPlatformer = ['gdlite', 'doodlejump', 'gorillatag', 'redball4', 'supermario63', 'supermario64'];
-            if (!movedToPlatformer.includes(id) && !platformerIds.includes(id)) {
-                if (lower === 'konkr' || lower === 'bitplanes' || lower === 'driftboss' || lower === 'drivemad' ||
-                    lower === 'dta6' || lower === 'blockcraftparkour' || lower === 'polytrack' ||
-                    lower === 'clarkingarena' || lower === 'carkingarena' ||
-                    lower === 'smashkarts' || lower === 'silk' || lower === 'nautilus' ||
-                    lower === 'blockysnakes' || lower === 'snowrider3d' || lower === 'evilglitch' ||
-                    lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152' ||
-                    lower === 'summerrider')
-                    cats.push('Other');
-            }
 
             // Misc
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
@@ -2187,7 +2180,7 @@
                 lower === 'fruitninja' || lower === 'dogeminer') { cats.push('Clicker'); if (lower === 'omeganugget')
                     cats.push('Brainrot'); }
             if (lower.includes('brainrot') || lower.includes('skibidi') || lower === 'tripletobby' ||
-                lower === 'caseoh' || lower === 'tcubed') cats.push('Brainrot');
+                lower === 'caseoh' || lower === 'tcubed' || lower === 'fivenightsatshreks') cats.push('Brainrot');
             if (lower.includes('obby') || lower === 'obbyjumperclicker' || lower === 'speedperclick' ||
                 lower === 'tripletobby' || lower === 'redball4' || lower === 'supermario63' ||
                 lower === 'supermario64' || lower === 'obbycart' || lower === 'blockcraftparkour' ||
@@ -2195,9 +2188,12 @@
             if (lower.includes('stickman')) cats.push('Stickman');
             if (lower === 'bloxorz' || lower === '2048' || lower === '99balls' || lower === 'candycrush' ||
                 lower === 'cuttherope' || lower === 'oneshotlegacy' || lower === 'riddleschool1' ||
-                lower === 'riddleschool2' || lower === 'blackjack' || lower === 'chessclassic' ||
+                lower === 'riddleschool2' || lower === 'riddleschool3' || lower === 'riddleschool4' ||
+                lower === 'riddleschool5' || lower === 'blackjack' || lower === 'chessclassic' ||
                 lower === 'magictiles3' || lower === 'sortthecourt' || lower === 'uno' ||
-                lower === 'wordleunlimited' || lower === 'thereisnofile' || lower === 'minecaves') cats.push('Puzzle');
+                lower === 'wordleunlimited' || lower === 'thereisnofile' || lower === 'minecaves' ||
+                lower === 'impossiblequiz')
+                cats.push('Puzzle');
             if (lower === 'minecaves') cats.push('Relaxing', 'Minecraft');
             if (lower === 'minecrafttowerdefense') cats.push('Minecraft');
             if (lower === 'elytraflight') cats.push('Minecraft', 'Platformer');
@@ -2208,7 +2204,7 @@
             if (lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152') cats.push('Minecraft');
             if (lower === 'minecraftpe') cats.push('Minecraft');
             const isPuzzle = cats.includes('Puzzle');
-            if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves'].includes(id)) cats.push('Relaxing');
+            if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves', 'impossiblequiz'].includes(id)) cats.push('Relaxing');
             if (lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads' ||
                 lower === 'thereisnofile' || lower === 'minecaves') cats.push('Relaxing');
             if (lower === '1v1lol' || lower === 'gunspin' || lower === 'skibidishooter' ||
@@ -2227,8 +2223,89 @@
             if (lower === 'trafficracer') cats.push('Driving');
             if (lower === 'crushcar3d') cats.push('Driving');
 
-            if (cats.length === 0) cats.push('Other');
-            return [...new Set(cats)];
+            // New category for Papa's games
+            if (lower === 'papasbakeria' || lower === 'papasburgeria' || lower === 'papaspancakeria' ||
+                lower === 'papaspizeria') {
+                cats.push('Papa\'s Restaurants');
+            }
+
+            // Riddle School series: add 'Riddle School' category and ensure Puzzle & Relaxing are present
+            if (lower.startsWith('riddleschool')) {
+                cats.push('Riddle School');
+                if (!cats.includes('Puzzle')) cats.push('Puzzle');
+                if (!cats.includes('Relaxing')) cats.push('Relaxing');
+            }
+
+            // ─── NEW: Stickman Destruction ───
+            if (lower === 'stickmandestruction') {
+                cats.push('Stickman');
+            }
+
+            // ─── NEW: Time Shooter Series ───
+            if (lower === 'timeshooter1' || lower === 'timeshooter2' || lower === 'timeshooter3') {
+                cats.push('Shooter');
+                cats.push('Time Shooter Series');
+            }
+
+            // ─── NEW: Uncategorized category ───
+            const uncategorizedIds = [
+                'konkr', 'summerrider', 'dta6', 'punchthetrump', 'evilglitch',
+                'bitplanes', 'blockysnakes', 'monkeymart', 'pacman', 'raft',
+                'ruffle', 'snowrider3d', 'snowbattle', 'solarsmash'
+            ];
+
+            // Check if this game should be in Uncategorized
+            const isUncategorized = uncategorizedIds.includes(id);
+
+            // If it's uncategorized, add that instead of "Other"
+            if (isUncategorized) {
+                cats.push('Uncategorized');
+            }
+
+            // If no other category was added (and not uncategorized), default to Other
+            // But we want to keep existing "Other" logic for games that aren't in the list
+            // The existing code already handles "Other" at the end, but we need to make sure
+            // the uncategorized games don't also get "Other" added.
+            // We'll handle this by filtering at the end.
+
+            // Other games that should keep "Other" (excluding uncategorized ones)
+            const otherGames = [
+                'konkr', 'bitplanes', 'driftboss', 'drivemad', 'dta6', 'blockcraftparkour',
+                'polytrack', 'clarkingarena', 'carkingarena', 'smashkarts', 'silk', 'nautilus',
+                'blockysnakes', 'snowrider3d', 'evilglitch', 'eaglercraft', 'eaglercrafttuff',
+                'eaglercraft152', 'summerrider'
+            ];
+
+            // Only add "Other" if the game is in the otherGames list AND not already categorized
+            if (otherGames.includes(id) && cats.length === 0) {
+                cats.push('Other');
+            }
+
+            // For any game that's not specifically handled and has no categories, push Other
+            // But we need to make sure uncategorized games don't get "Other" too
+            const finalCats = [...new Set(cats)];
+
+            // If no categories at all, default to Other (but skip uncategorized games since they already have Uncategorized)
+            if (finalCats.length === 0) {
+                // Only add "Other" if it's not already in the uncategorized list
+                if (!uncategorizedIds.includes(id)) {
+                    return ['Other'];
+                } else {
+                    // Should already have Uncategorized, but just in case
+                    if (!finalCats.includes('Uncategorized')) {
+                        return ['Uncategorized'];
+                    }
+                    return finalCats;
+                }
+            }
+
+            // Ensure uncategorized games don't also get "Other" added accidentally
+            if (isUncategorized && finalCats.includes('Other')) {
+                const idx = finalCats.indexOf('Other');
+                if (idx > -1) finalCats.splice(idx, 1);
+            }
+
+            return [...new Set(finalCats)];
         }
 
         // ─── FULL GAME DATA ───
@@ -2239,11 +2316,11 @@
             { id: '2048', name: '2048', file: 'cl2048 (1).html',
                 img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
             { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html',
-                categories: ['Minecraft'], img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html',
-                categories: ['Minecraft'], img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
+                img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
             { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html',
-                categories: ['Minecraft'], img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Platformer'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html', categories: ['Platformer'],
@@ -2400,7 +2477,8 @@
             { id: 'dontyoulectureme', name: 'Don\'t You Lecture Me', file: 'DON\'T YOU LECTURE ME.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.KQ30R9-6p_fwb0F_ulaKvgHaEL?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ruffle', name: 'Ruffle Player', file: 'Ruffle (3).html',
-                img: 'https://tse2.mm.bing.net/th/id/OIP.pKiLZRKQqhGpo9K4ZT7v9QHaDT?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://tse2.mm.bing.net/th/id/OIP.pKiLZRKQqhGpo9K4ZT7v9QHaDT?r=0&rs=1&pid=ImgDetMain&o=7&rm=3',
+                categories: ['Other'] },
             { id: 'deltarune', name: 'Deltarune', file: 'cldeltarune.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.pwkKXYW2j0c4FBU_PuzGWgHaBg?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'googledino', name: 'Google Dino', file: 'clgoogledino (2).html',
@@ -2435,11 +2513,11 @@
             { id: '99nights', name: '99 Nights', file: 'cl99nightsitf (2).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.ToWfAuDvC1Nn2bD1K35CWQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'motox3m', name: 'Moto X3M', file: 'Moto X3M.html', categories: ['Moto X3M', 'Driving'],
-                img: 'https://th.bing.com/th/id/R.2ded59c45977c3bc3786b17c02bb5599?rik=1ZnozzY%2fZZo31g&riu=http%3a%2f%2fwww.coolmathgames.com%2fsites%2fdefault%2ffiles%2fMotoX3M_OG-logo.jpg&ehk=lVQhOYP%2bFe4TEgaohqqxriFSefuVET0hx%2ff2exBCnjU%3d&risl=&pid=ImgRaw&r=0' },
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/96.png' },
             { id: 'motox3m2', name: 'Moto X3M 2', file: 'Moto X3M 2.html', categories: ['Moto X3M', 'Driving'],
-                img: 'https://tse4.mm.bing.net/th/id/OIP.mMytlJ3c03t4vQtHR_hAzgHaFj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/97.png' },
             { id: 'motox3m3', name: 'Moto X3M 3', file: 'Moto X3M 3.html', categories: ['Moto X3M', 'Driving'],
-                img: 'https://tse2.mm.bing.net/th/id/OIP.4cyt5uzxCFkBXERZDIj3wgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/98.png' },
             { id: 'candycrush', name: 'Candy Crush', file: 'Candy Crush (4).html',
                 img: 'https://th.bing.com/th/id/OIP.G77RDyiOu6q3efCa96wjuAHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'hobo1', name: 'Hobo 1', file: 'Hobo 1 (2).html',
@@ -2578,7 +2656,7 @@
                 img: 'https://avatars.githubusercontent.com/u/240241840?s=200&v=4' },
             { id: 'bladeball', name: 'Blade Ball', file: 'Blade Ball.html',
                 img: 'https://images.sftcdn.net/images/t_app-icon-m/p/2eb6cfb8-570e-4e5c-9578-58e00b04f5f8/234620725/new-blade-ball-logo' },
-            { id: 'blockysnakes', name: 'Blocky Snakes', file: 'Blocky Snakes.html', categories: ['Other'],
+            { id: 'blockysnakes', name: 'Blocky Snakes', file: 'Blocky Snakes.html',
                 img: 'https://img.gamesgo.net/storage/images/games/blocky-snakes/sn300jpg.jpg' },
             { id: 'crazychicken', name: 'Crazy Chicken 3D', file: 'Crazy Chicken 3D (2).html',
                 categories: ['Crazy 3D Farm Games'],
@@ -2591,7 +2669,7 @@
             { id: 'learntoflyidle', name: 'Learn to Fly Idle', file: 'Learn to Fly Idle (2).html',
                 categories: ['Learn to Fly'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'snowrider3d', name: 'Snow Rider 3D', file: 'Snow Rider 3D (1).html', categories: ['Other'],
+            { id: 'snowrider3d', name: 'Snow Rider 3D', file: 'Snow Rider 3D (1).html',
                 img: 'https://new66ez.github.io/img/snowrider3d/logo.png' },
             { id: 'dogeminer', name: 'Doge Miner', file: 'Doge Miner.html', categories: ['Clicker'],
                 img: 'https://images.crazygames.com/games/doge-miner/cover-1593443166599.png?auto=format,compress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop' },
@@ -2604,7 +2682,7 @@
                 img: 'https://th.bing.com/th/id/OIP.gfpfoNxHstuM7wB2aKmV2gHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ragdollhit', name: 'Ragdoll Hit', file: 'Ragdoll Hit.html', categories: ['Stickman'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TAvmWr6jkiJKMbKNVkfHlgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'snowbattle', name: 'Snowbattle.io', file: 'Snowbattle.io (2).html', categories: ['Other'],
+            { id: 'snowbattle', name: 'Snowbattle.io', file: 'Snowbattle.io (2).html',
                 img: 'https://kevin.games/assets/images/new/snow-battle.jpg' },
             { id: 'tugofwar', name: 'Tug of War with Cars', file: 'Tug of War with Cars.html', categories: ['Driving'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP._PLeYUSR2Ei63JPG65442gHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2618,14 +2696,14 @@
             { id: 'minecrafttowerdefense', name: '🏰 Minecraft Tower Defense', file: 'MINECRAFTTOWERDEFENSE.html',
                 categories: ['Minecraft'],
                 img: 'https://www.unblockedgamers.com/wp-content/uploads/2022/11/Minecraft-Tower-Defense-2.jpg' },
-            { id: 'punchthetrump', name: '👊 Punch the Trump', file: 'clpunchthetrump (2).html', categories: ['Other'],
+            { id: 'punchthetrump', name: '👊 Punch the Trump', file: 'clpunchthetrump (2).html',
                 img: 'https://i.ytimg.com/vi/G5L1oDk1vnc/hqdefault.jpg' },
             { id: 'skinwalker', name: '👾 Skin Walker', file: 'clskinwalker.html', categories: ['Horror'],
                 img: 'https://tse3.mm.bing.net/th/id/OIP.TC3gmSCCdO95xkug8xnRBAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'elytraflight', name: '🪶 Elytra Flight', file: 'clelytraflight.html',
                 categories: ['Minecraft', 'Platformer'],
                 img: 'https://www.playschoolgames.com/web/uploads/games/other/elytra-flight/elytra-flight.jpg' },
-            { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html', categories: ['Other'],
+            { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.0rEL35BQ0y8fSadIWDjYiwHaEw?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             // ─── NEW GAMES ───
             { id: 'burgerandfrights', name: '🍔 Burger and Frights', file: 'clburgerandfrights (2).html',
@@ -2641,8 +2719,44 @@
                 categories: ['Shooter', 'Minecraft'],
                 img: 'https://img-hws.y8.com/cloud/v2-y8-thumbs-big-thumbnails-001/123969/big.gif' },
             // ─── SUMMER RIDER ───
-            { id: 'summerrider', name: '🏄 Summer Rider', file: 'clsummerrider.html', categories: ['Other'],
-                img: 'https://snake-game.io/data/image/game/summer-rider-3d/summer-rider-3d.png' }
+            { id: 'summerrider', name: '🏄 Summer Rider', file: 'clsummerrider.html',
+                img: 'https://snake-game.io/data/image/game/summer-rider-3d/summer-rider-3d.png' },
+            // ─── NEW ADDITIONS ───
+            { id: 'fivenightsatshreks', name: 'Five Nights at Shrek\'s Hotel', file: 'clfivenightsatshreks.html',
+                img: 'https://tse3.mm.bing.net/th/id/OIP.Krf5F4HJIHnNbeyzIFegggHaH9?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'midnightshift', name: 'Midnight Shift', file: 'Midnight Shift (1).html',
+                img: 'https://img.itch.zone/aW1nLzE0MTA3NDkucG5n/original/%2BJ%2BW1d.png' },
+            { id: 'papasbakeria', name: 'Papa\'s Bakeria', file: 'Papa\'s Bakeria (1).html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/218.png' },
+            { id: 'papasburgeria', name: 'Papa\'s Burgeria', file: 'Papa\'s Burgeria (1).html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/219.png' },
+            // ─── Papa's Pancakeria & Pizeria, Riddle School 3-5 ───
+            { id: 'papaspancakeria', name: 'Papa\'s Pancakeria', file: 'Papa\'s Pancakeria.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/225.png' },
+            { id: 'papaspizeria', name: 'Papa\'s Pizeria', file: 'Papa\'s Pizeria.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/227.png' },
+            { id: 'riddleschool3', name: 'Riddle School 3', file: 'Riddle School 3.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/289.png' },
+            { id: 'riddleschool4', name: 'Riddle School 4', file: 'Riddle School 4.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/290.png' },
+            { id: 'riddleschool5', name: 'Riddle School 5', file: 'Riddle School 5.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/291.png' },
+            // ─── NEW: Stickman Destruction ───
+            { id: 'stickmandestruction', name: 'Stickman Destruction', file: 'Stickman Destruction.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/699.png' },
+            // ─── NEW: Time Shooter Series ───
+            { id: 'timeshooter1', name: 'Time Shooter 1', file: 'Time Shooter 1.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/199.png' },
+            { id: 'timeshooter2', name: 'Time Shooter 2', file: 'Time Shooter 2.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/200.png' },
+            { id: 'timeshooter3', name: 'Time Shooter 3', file: 'Time Shooter 3.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/201.png' },
+            // ─── NEW: Moto X3M Pool Party ───
+            { id: 'motox3mpoolparty', name: 'Moto X3M Pool Party', file: 'Moto X3M Pool Party.html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/124.png' },
+            // ─── NEW: The Impossible Quiz ───
+            { id: 'impossiblequiz', name: 'The Impossible Quiz', file: 'The Impossible Quiz (1).html',
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/507.png' }
         ];
 
         // Build final game data
@@ -3475,7 +3589,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – Header restored, overlay injection fixed.');
+        console.log('🚀 SigmaTown4Life – All games loaded including new additions.');
     </script>
 </body>
 </html>
