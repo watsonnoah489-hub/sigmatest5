@@ -2015,12 +2015,15 @@
                 return originalOpen.call(this, url, name, specs, replace);
             };
 
-            // Remove ad elements from DOM
+            // Remove ad elements from DOM, but skip our own overlay
             const observer = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
                     mutation.addedNodes.forEach(node => {
                         if (node.nodeType === 1) {
-                            // Remove if id, class, or src contains ad patterns
+                            // Skip our own overlay elements
+                            if (node.dataset && node.dataset.stOverlay === 'true') return;
+                            if (node.closest && node.closest('[data-st-overlay="true"]')) return;
+
                             const attrs = node.attributes || [];
                             let isAd = false;
                             for (let attr of attrs) {
@@ -3176,7 +3179,7 @@
                     `;
                     doc.head.appendChild(style);
                     const html = `
-                        <div class="st-ctrl">
+                        <div class="st-ctrl" data-st-overlay="true">
                             <button class="btn fs" id="stFS">⛶ Fullscreen</button>
                             <span class="badge">ST</span>
                             <button class="btn ptr" id="stPtr">🖱️ Lock Cursor</button>
