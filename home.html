@@ -1941,6 +1941,138 @@
 
     <script>
         // ──────────────────────────────────────────────────────────────
+        //  AD BLOCKER – Blocks ads, popups, and trackers
+        // ──────────────────────────────────────────────────────────────
+        (function adBlocker() {
+            // Block known ad domains
+            const adDomains = [
+                'googlesyndication.com', 'doubleclick.net', 'googleadservices.com',
+                'google-analytics.com', 'googletagmanager.com', 'adservice.google.com',
+                'pagead2.googlesyndication.com', 'youtube.com/ads', 'cpmstar.com',
+                'adzerk.net', 'amazon-adsystem.com', 'outbrain.com', 'taboola.com',
+                'revcontent.com', 'pubmatic.com', 'openx.net', 'rubiconproject.com',
+                'indexexchange.com', 'contextweb.com', 'sovrn.com', 'google.com/ads',
+                'facebook.com/ads', 'instagram.com/ads', 'twitter.com/ads',
+                'tiktok.com/ads', 'snapchat.com/ads', 'pinterest.com/ads',
+                'linkedin.com/ads', 'reddit.com/ads', 'applovin.com',
+                'ironsrc.com', 'unity3d.com/ads', 'vungle.com', 'adcolony.com',
+                'chartboost.com', 'heyzap.com', 'inmobi.com', 'tapjoy.com',
+                'fyber.com', 'admost.com', 'adfox.ru', 'yandex.ru/ads',
+                'mail.ru/ads', 'vk.com/ads', 'ok.ru/ads', 'odnoklassniki.ru/ads',
+                'mts.ru/ads', 'beeline.ru/ads', 'megafon.ru/ads', 'tele2.ru/ads',
+                'adsrvr.org', 'adnxs.com', 'adform.net', 'adition.com',
+                'adition.de', 'adition.at', 'adition.ch', 'adition.co.uk',
+                'adition.nl', 'adition.be', 'adition.fr', 'adition.es',
+                'adition.it', 'adition.pl', 'adition.se', 'adition.no',
+                'adition.dk', 'adition.fi', 'adition.ee', 'adition.lv',
+                'adition.lt', 'adition.ua', 'adition.by', 'adition.kz',
+                'adition.ro', 'adition.bg', 'adition.gr', 'adition.cy',
+                'adition.mt', 'adition.is', 'adition.ie', 'adition.pt'
+            ];
+
+            // Intercept fetch requests
+            const originalFetch = window.fetch;
+            window.fetch = function(input, init) {
+                const url = typeof input === 'string' ? input : input.url;
+                if (adDomains.some(domain => url.includes(domain))) {
+                    return Promise.reject(new Error('Ad blocked'));
+                }
+                return originalFetch.call(this, input, init);
+            };
+
+            // Intercept XMLHttpRequest
+            const originalXHR = window.XMLHttpRequest;
+            window.XMLHttpRequest = function() {
+                const xhr = new originalXHR();
+                const originalOpen = xhr.open;
+                xhr.open = function(method, url, async, user, password) {
+                    if (adDomains.some(domain => url.includes(domain))) {
+                        this.abort = function() {};
+                        this.send = function() {};
+                        this.onreadystatechange = null;
+                        return;
+                    }
+                    originalOpen.call(this, method, url, async, user, password);
+                };
+                return xhr;
+            };
+
+            // Block document.write from ad scripts
+            const originalWrite = document.write;
+            document.write = function(html) {
+                if (typeof html === 'string' && adDomains.some(domain => html.includes(domain))) {
+                    return;
+                }
+                originalWrite.call(document, html);
+            };
+
+            // Block popups
+            const originalOpen = window.open;
+            window.open = function(url, name, specs, replace) {
+                if (adDomains.some(domain => url.includes(domain))) {
+                    return null;
+                }
+                return originalOpen.call(this, url, name, specs, replace);
+            };
+
+            // Remove ad elements from DOM
+            const observer = new MutationObserver(mutations => {
+                mutations.forEach(mutation => {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) {
+                            // Remove if id, class, or src contains ad patterns
+                            const attrs = node.attributes || [];
+                            let isAd = false;
+                            for (let attr of attrs) {
+                                const val = attr.value;
+                                if (val && (val.includes('ad') || val.includes('ads') ||
+                                        val.includes('banner') || val.includes('popup') ||
+                                        val.includes('sponsor') || val.includes('promotion'))) {
+                                    isAd = true;
+                                    break;
+                                }
+                            }
+                            if (isAd || adDomains.some(domain => node.innerHTML && node.innerHTML.includes(domain))) {
+                                node.remove();
+                            }
+                        }
+                    });
+                });
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+
+            // Also block <script> tags that load from ad domains
+            const originalCreateElement = document.createElement;
+            document.createElement = function(tagName) {
+                const element = originalCreateElement.call(document, tagName);
+                if (tagName === 'script') {
+                    const originalSetAttribute = element.setAttribute;
+                    element.setAttribute = function(name, value) {
+                        if (name === 'src' && adDomains.some(domain => value.includes(domain))) {
+                            return;
+                        }
+                        originalSetAttribute.call(this, name, value);
+                    };
+                    const originalSrcSetter = Object.getOwnPropertyDescriptor(element, 'src');
+                    if (originalSrcSetter) {
+                        Object.defineProperty(element, 'src', {
+                            get: function() { return this.getAttribute('src'); },
+                            set: function(value) {
+                                if (adDomains.some(domain => value.includes(domain))) {
+                                    return;
+                                }
+                                this.setAttribute('src', value);
+                            }
+                        });
+                    }
+                }
+                return element;
+            };
+
+            console.log('🛡️ Ad blocker active');
+        })();
+
+        // ──────────────────────────────────────────────────────────────
         //  SOUND HANDLING (always on)
         // ──────────────────────────────────────────────────────────────
         const clickAudio = document.getElementById('clickSound');
