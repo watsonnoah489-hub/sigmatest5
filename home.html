@@ -1791,7 +1791,7 @@
             }
         }
 
-        // ─── The SNEAKY Game Launcher (with math disguise) ───
+        // ─── Overlay injector (removed .st-title) ───
         function openGameInNewTab(id, file, name) {
             const win = window.open(file, '_blank');
             if (!win) { showToast('⚠️ Popup blocked! Please allow popups.', 3000); return; }
@@ -1805,77 +1805,16 @@
                         return;
                     }
                     if (doc.getElementById('stBadge')) return;
-
-                    // ─── 1. MATH WORKSHEET BACKGROUND (CSS grid pattern) ───
                     const style = doc.createElement('style');
                     style.textContent = `
-                        /* Math worksheet background */
-                        body {
-                            background-image: 
-                                linear-gradient(rgba(59,130,246,0.08) 1px, transparent 1px),
-                                linear-gradient(90deg, rgba(59,130,246,0.08) 1px, transparent 1px);
-                            background-size: 40px 40px;
-                            background-color: #f0f4f9;
-                            position: relative;
-                            min-height: 100vh;
-                            margin: 0;
-                            padding: 0;
-                        }
-                        /* Make sure the game container (if any) is transparent or on top */
-                        canvas, #gameCanvas, .game-container, iframe {
-                            background: transparent !important;
-                        }
-                        /* Ensure any fullscreen game doesn't hide the background completely */
                         .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.88); backdrop-filter:blur(10px); padding:10px 16px; border-radius:14px; border:1px solid #334155; z-index:999999; box-shadow:0 10px 30px rgba(0,0,0,0.6); align-items:center; flex-wrap:wrap; }
                         .st-ctrl .btn { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; border:none; color:#fff; background:#1e293b; transition:0.2s; display:flex; align-items:center; gap:6px; }
                         .st-ctrl .btn:hover { background:#2d3b54; transform:scale(1.04); box-shadow:0 0 20px rgba(59,130,246,0.4); }
                         .st-ctrl .btn.fs { background:#3b82f6; }
                         .st-ctrl .btn.ptr { background:#22c55e; }
                         .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
-                        /* Floating math badge */
-                        .math-badge {
-                            position: fixed;
-                            bottom: 80px;
-                            left: 20px;
-                            background: rgba(255,255,255,0.92);
-                            padding: 10px 18px;
-                            border-radius: 16px;
-                            border-left: 5px solid #3b82f6;
-                            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-                            font-family: 'Segoe UI', Arial, sans-serif;
-                            font-size: 16px;
-                            font-weight: 600;
-                            color: #1e293b;
-                            pointer-events: none;
-                            z-index: 999999;
-                            user-select: none;
-                            backdrop-filter: blur(2px);
-                            max-width: 300px;
-                        }
-                        .math-badge small {
-                            display: block;
-                            font-weight: 400;
-                            font-size: 13px;
-                            color: #475569;
-                            margin-top: 2px;
-                        }
                     `;
                     doc.head.appendChild(style);
-
-                    // ─── 2. FLOATING MATH BADGE ───
-                    const badgeDiv = doc.createElement('div');
-                    badgeDiv.className = 'math-badge';
-                    badgeDiv.innerHTML = `📐 Algebra 2.1 – Solve for x <small>3x + 7 = 22  →  x = 5</small>`;
-                    doc.body.appendChild(badgeDiv);
-
-                    // ─── 3. TAB TITLE & FAVICON ───
-                    doc.title = 'IXL – Practice Math';
-                    let fav = doc.querySelector('link[rel="icon"]') || doc.createElement('link');
-                    fav.rel = 'icon';
-                    fav.href = 'https://www.ixl.com/favicon.ico';
-                    doc.head.appendChild(fav);
-
-                    // ─── 4. CONTROL BAR (ST overlay) ───
                     const html = `
                         <div class="st-ctrl">
                             <button class="btn fs" id="stFS">⛶ Fullscreen</button>
@@ -1899,7 +1838,6 @@
                     doc.addEventListener('pointerlockchange', () => {
                         ptrBtn.innerHTML = doc.pointerLockElement ? '🖱️ Show Cursor' : '🖱️ Lock Cursor';
                     });
-
                 } catch (e) {
                     if (++attempts < maxAttempts) setTimeout(inject, 400);
                 }
@@ -2362,7 +2300,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – SNEAKY MATH DISGUISE ACTIVATED!');
+        console.log('🚀 SigmaTown4Life – All games loaded including Summer Rider. Dot & game name removed from overlay.');
     </script>
 </body>
 </html>
