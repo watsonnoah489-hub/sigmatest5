@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="tab-title">IXL - Dashboard</title>
-    <link id="tab-favicon" rel="icon" href="https://www.ixl.com/favicon.ico">
+    <link id="tab-favicon" rel="icon" href="https://www.ixl.com/favicon.ico" />
     <style>
         /* ────── ROOT ────── */
         :root {
@@ -1944,7 +1944,6 @@
         //  AD BLOCKER – Blocks ads, popups, and trackers
         // ──────────────────────────────────────────────────────────────
         (function adBlocker() {
-            // Block known ad domains
             const adDomains = [
                 'googlesyndication.com', 'doubleclick.net', 'googleadservices.com',
                 'google-analytics.com', 'googletagmanager.com', 'adservice.google.com',
@@ -1960,17 +1959,9 @@
                 'fyber.com', 'admost.com', 'adfox.ru', 'yandex.ru/ads',
                 'mail.ru/ads', 'vk.com/ads', 'ok.ru/ads', 'odnoklassniki.ru/ads',
                 'mts.ru/ads', 'beeline.ru/ads', 'megafon.ru/ads', 'tele2.ru/ads',
-                'adsrvr.org', 'adnxs.com', 'adform.net', 'adition.com',
-                'adition.de', 'adition.at', 'adition.ch', 'adition.co.uk',
-                'adition.nl', 'adition.be', 'adition.fr', 'adition.es',
-                'adition.it', 'adition.pl', 'adition.se', 'adition.no',
-                'adition.dk', 'adition.fi', 'adition.ee', 'adition.lv',
-                'adition.lt', 'adition.ua', 'adition.by', 'adition.kz',
-                'adition.ro', 'adition.bg', 'adition.gr', 'adition.cy',
-                'adition.mt', 'adition.is', 'adition.ie', 'adition.pt'
+                'adsrvr.org', 'adnxs.com', 'adform.net', 'adition.com'
             ];
 
-            // Intercept fetch requests
             const originalFetch = window.fetch;
             window.fetch = function(input, init) {
                 const url = typeof input === 'string' ? input : input.url;
@@ -1980,7 +1971,6 @@
                 return originalFetch.call(this, input, init);
             };
 
-            // Intercept XMLHttpRequest
             const originalXHR = window.XMLHttpRequest;
             window.XMLHttpRequest = function() {
                 const xhr = new originalXHR();
@@ -1997,7 +1987,6 @@
                 return xhr;
             };
 
-            // Block document.write from ad scripts
             const originalWrite = document.write;
             document.write = function(html) {
                 if (typeof html === 'string' && adDomains.some(domain => html.includes(domain))) {
@@ -2006,7 +1995,6 @@
                 originalWrite.call(document, html);
             };
 
-            // Block popups
             const originalOpen = window.open;
             window.open = function(url, name, specs, replace) {
                 if (adDomains.some(domain => url.includes(domain))) {
@@ -2015,15 +2003,12 @@
                 return originalOpen.call(this, url, name, specs, replace);
             };
 
-            // Remove ad elements from DOM, but skip our own overlay
             const observer = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
                     mutation.addedNodes.forEach(node => {
                         if (node.nodeType === 1) {
-                            // Skip our own overlay elements
                             if (node.dataset && node.dataset.stOverlay === 'true') return;
                             if (node.closest && node.closest('[data-st-overlay="true"]')) return;
-
                             const attrs = node.attributes || [];
                             let isAd = false;
                             for (let attr of attrs) {
@@ -2044,7 +2029,6 @@
             });
             observer.observe(document.body, { childList: true, subtree: true });
 
-            // Also block <script> tags that load from ad domains
             const originalCreateElement = document.createElement;
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
@@ -2071,7 +2055,6 @@
                 }
                 return element;
             };
-
             console.log('🛡️ Ad blocker active');
         })();
 
@@ -2250,7 +2233,6 @@
             const lower = id.toLowerCase();
             const cats = [];
 
-            // Platformer IDs (includes all moved games)
             const platformerIds = [
                 'supermario64', 'supermario63', 'redball4', 'doodlejump', 'soniccd', 'clusterrush',
                 'slope', 'slope2player', 'deathrun3d', 'flappybird', 'crossyroad', 'snowrider3d',
@@ -2263,7 +2245,6 @@
             ];
             if (platformerIds.includes(id)) cats.push('Platformer');
 
-            // FNAF (added fivenightsatshreks)
             if (lower.includes('fnaf') || lower.includes('fnac') || lower.includes('fnaw') || lower === 'fnafshooter' ||
                 lower === 'fnaf3remastered' || lower === 'fnafworld' || lower === 'fivenightsatshreks') {
                 cats.push('FNAF', 'Horror');
@@ -2275,7 +2256,6 @@
             if (lower.includes('mortalkombat') || lower.includes('mortal kombat') ||
                 lower === 'mariocombat' || lower === 'stickmankombat') cats.push('Mortal Kombat');
 
-            // Runner (removed soniccd)
             if ((lower.includes('run') && lower !== 'deltarune') || lower.includes('runner') || lower.includes('templerun') ||
                 lower === 'run3' || lower === 'templerun2' || lower === 'slope' || lower === 'slope2player' ||
                 lower === 'googledino' || lower === 'makeasuperboat' || lower === 'flappybird' ||
@@ -2283,7 +2263,6 @@
                 lower === 'supermario63' || lower === 'supermario64' || lower === 'clusterrush' ||
                 lower === 'rooftoprun' || lower === 'crossyroad') cats.push('Runner');
 
-            // Horror (add fivenightsatshreks already handled by FNAF, but ensure it's also Horror)
             if (lower.includes('baldi') || lower.includes('granny') || lower.includes('deadzed') ||
                 lower.includes('backrooms') || lower.includes('horror') || lower.includes('bendy') ||
                 lower === 'skibidibackrooms' || lower === 'fnafshooter' || lower === 'fnaw' ||
@@ -2294,7 +2273,7 @@
                 cats.push('Horror');
             if (lower === 'nzp' || lower === 'zombierush' || lower.includes('deadzed') || lower === 'hobovszombies') { cats
                     .push('Zombie'); if (lower !== 'hobovszombies') cats.push('Horror'); }
-            // Sports
+
             if (lower.includes('soccer') || lower.includes('basketball') || lower.includes('baseball') ||
                 lower.includes('retrobowl') || lower.includes('football') || lower.includes('volley') ||
                 lower.includes('sport') || lower === '1on1soccer' || lower === 'basketballstars' ||
@@ -2303,7 +2282,6 @@
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
                 lower === 'beachboxingsim') cats.push('Sports');
 
-            // Misc
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
             if (lower === 'stickmanduel') cats.push('Stickman');
             if (lower === 'crossyroad') cats.push('Runner');
@@ -2339,7 +2317,8 @@
             if (lower === 'eaglercraft' || lower === 'eaglercrafttuff' || lower === 'eaglercraft152') cats.push('Minecraft');
             if (lower === 'minecraftpe') cats.push('Minecraft');
             const isPuzzle = cats.includes('Puzzle');
-            if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves', 'impossiblequiz'].includes(id)) cats.push('Relaxing');
+            if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves', 'impossiblequiz'].includes(id)) cats.push(
+            'Relaxing');
             if (lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads' ||
                 lower === 'thereisnofile' || lower === 'minecaves') cats.push('Relaxing');
             if (lower === '1v1lol' || lower === 'gunspin' || lower === 'skibidishooter' ||
@@ -2358,52 +2337,37 @@
             if (lower === 'trafficracer') cats.push('Driving');
             if (lower === 'crushcar3d') cats.push('Driving');
 
-            // New category for Papa's games
             if (lower === 'papasbakeria' || lower === 'papasburgeria' || lower === 'papaspancakeria' ||
                 lower === 'papaspizeria') {
                 cats.push('Papa\'s Restaurants');
             }
 
-            // Riddle School series: add 'Riddle School' category and ensure Puzzle & Relaxing are present
             if (lower.startsWith('riddleschool')) {
                 cats.push('Riddle School');
                 if (!cats.includes('Puzzle')) cats.push('Puzzle');
                 if (!cats.includes('Relaxing')) cats.push('Relaxing');
             }
 
-            // ─── NEW: Stickman Destruction ───
             if (lower === 'stickmandestruction') {
                 cats.push('Stickman');
             }
 
-            // ─── NEW: Time Shooter Series ───
             if (lower === 'timeshooter1' || lower === 'timeshooter2' || lower === 'timeshooter3') {
                 cats.push('Shooter');
                 cats.push('Time Shooter Series');
             }
 
-            // ─── NEW: Uncategorized category ───
             const uncategorizedIds = [
                 'konkr', 'summerrider', 'dta6', 'punchthetrump', 'evilglitch',
                 'bitplanes', 'blockysnakes', 'monkeymart', 'pacman', 'raft',
                 'ruffle', 'snowrider3d', 'snowbattle', 'solarsmash'
             ];
 
-            // Check if this game should be in Uncategorized
             const isUncategorized = uncategorizedIds.includes(id);
-
-            // If it's uncategorized, add that instead of "Other"
             if (isUncategorized) {
                 cats.push('Uncategorized');
             }
 
-            // If no other category was added (and not uncategorized), default to Other
-            // But we want to keep existing "Other" logic for games that aren't in the list
-            // The existing code already handles "Other" at the end, but we need to make sure
-            // the uncategorized games don't also get "Other" added.
-            // We'll handle this by filtering at the end.
-
-            // Other games that should keep "Other" (excluding uncategorized ones)
             const otherGames = [
                 'konkr', 'bitplanes', 'driftboss', 'drivemad', 'dta6', 'blockcraftparkour',
                 'polytrack', 'clarkingarena', 'carkingarena', 'smashkarts', 'silk', 'nautilus',
@@ -2411,22 +2375,16 @@
                 'eaglercraft152', 'summerrider'
             ];
 
-            // Only add "Other" if the game is in the otherGames list AND not already categorized
             if (otherGames.includes(id) && cats.length === 0) {
                 cats.push('Other');
             }
 
-            // For any game that's not specifically handled and has no categories, push Other
-            // But we need to make sure uncategorized games don't get "Other" too
             const finalCats = [...new Set(cats)];
 
-            // If no categories at all, default to Other (but skip uncategorized games since they already have Uncategorized)
             if (finalCats.length === 0) {
-                // Only add "Other" if it's not already in the uncategorized list
                 if (!uncategorizedIds.includes(id)) {
                     return ['Other'];
                 } else {
-                    // Should already have Uncategorized, but just in case
                     if (!finalCats.includes('Uncategorized')) {
                         return ['Uncategorized'];
                     }
@@ -2434,7 +2392,6 @@
                 }
             }
 
-            // Ensure uncategorized games don't also get "Other" added accidentally
             if (isUncategorized && finalCats.includes('Other')) {
                 const idx = finalCats.indexOf('Other');
                 if (idx > -1) finalCats.splice(idx, 1);
@@ -2761,7 +2718,6 @@
                 img: 'https://blockblast.game/assets/img/block-blast.png' },
             { id: 'stickmanduel', name: '⚔️ Stickman Duel', file: 'clstickmanduel.html', categories: ['Stickman'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.oQg-LLk5ZZWgChYJEZjJJAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── Renamed files ───
             { id: 'rooftoprun', name: '🏃 Rooftop Run', file: 'learn.html', categories: ['Runner'],
                 img: 'https://th.bing.com/th/id/OIP.zZsUQ2DrgQG4VF1edknWngHaD4?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'rooftopsnipers', name: '🔫 Rooftop Snipers', file: 'math.html', categories: ['Shooter'],
@@ -2840,7 +2796,6 @@
                 img: 'https://www.playschoolgames.com/web/uploads/games/other/elytra-flight/elytra-flight.jpg' },
             { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html',
                 img: 'https://tse4.mm.bing.net/th/id/OIP.0rEL35BQ0y8fSadIWDjYiwHaEw?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            // ─── NEW GAMES ───
             { id: 'burgerandfrights', name: '🍔 Burger and Frights', file: 'clburgerandfrights (2).html',
                 categories: ['Horror'],
                 img: 'https://tse1.mm.bing.net/th/id/OIP.nO8BEwq8CR7ETr7NrWhV4QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -2853,10 +2808,8 @@
             { id: 'minecraftshooter', name: '🔫 Minecraft Shooter', file: 'clminecraftshooter.html',
                 categories: ['Shooter', 'Minecraft'],
                 img: 'https://img-hws.y8.com/cloud/v2-y8-thumbs-big-thumbnails-001/123969/big.gif' },
-            // ─── SUMMER RIDER ───
             { id: 'summerrider', name: '🏄 Summer Rider', file: 'clsummerrider.html',
                 img: 'https://snake-game.io/data/image/game/summer-rider-3d/summer-rider-3d.png' },
-            // ─── NEW ADDITIONS ───
             { id: 'fivenightsatshreks', name: 'Five Nights at Shrek\'s Hotel', file: 'clfivenightsatshreks.html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.Krf5F4HJIHnNbeyzIFegggHaH9?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'midnightshift', name: 'Midnight Shift', file: 'Midnight Shift (1).html',
@@ -2865,7 +2818,6 @@
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/218.png' },
             { id: 'papasburgeria', name: 'Papa\'s Burgeria', file: 'Papa\'s Burgeria (1).html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/219.png' },
-            // ─── Papa's Pancakeria & Pizeria, Riddle School 3-5 ───
             { id: 'papaspancakeria', name: 'Papa\'s Pancakeria', file: 'Papa\'s Pancakeria.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/225.png' },
             { id: 'papaspizeria', name: 'Papa\'s Pizeria', file: 'Papa\'s Pizeria.html',
@@ -2876,20 +2828,16 @@
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/290.png' },
             { id: 'riddleschool5', name: 'Riddle School 5', file: 'Riddle School 5.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/291.png' },
-            // ─── NEW: Stickman Destruction ───
             { id: 'stickmandestruction', name: 'Stickman Destruction', file: 'Stickman Destruction.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/699.png' },
-            // ─── NEW: Time Shooter Series ───
             { id: 'timeshooter1', name: 'Time Shooter 1', file: 'Time Shooter 1.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/199.png' },
             { id: 'timeshooter2', name: 'Time Shooter 2', file: 'Time Shooter 2.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/200.png' },
             { id: 'timeshooter3', name: 'Time Shooter 3', file: 'Time Shooter 3.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/201.png' },
-            // ─── NEW: Moto X3M Pool Party ───
             { id: 'motox3mpoolparty', name: 'Moto X3M Pool Party', file: 'Moto X3M Pool Party.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/124.png' },
-            // ─── NEW: The Impossible Quiz ───
             { id: 'impossiblequiz', name: 'The Impossible Quiz', file: 'The Impossible Quiz (1).html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/507.png' }
         ];
@@ -3144,80 +3092,217 @@
             }
         }
 
-        // ─── ROBUST OVERLAY INJECTOR (FIXED: works forever) ───
+        // ──────────────────────────────────────────────────────────────
+        //  🔥 ULTIMATE GAME INJECTOR – Fullscreen + Cursor + ST Badge
+        //  Works online AND offline. Bulletproof.
+        // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(id, file, name) {
-            const win = window.open(file, '_blank');
+            // Try to open the game
+            let win = window.open(file, '_blank');
             if (!win) {
-                showToast('⚠️ Popup blocked! Please allow popups.', 3000);
-                return;
+                // If blocked, try with a more aggressive approach
+                const a = document.createElement('a');
+                a.href = file;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                // Check if it worked
+                win = window.open('', '_blank');
+                if (!win || win.closed) {
+                    showToast('⚠️ Popup blocked! Please allow popups and try again.', 3000);
+                    return;
+                }
+                win.location.href = file;
             }
 
+            // ----- INJECTOR ENGINE -----
             let injected = false;
             let attempts = 0;
-            const maxAttempts = 40;
+            const maxAttempts = 60;
             let retryInterval = null;
             let loadHandler = null;
+            let mutationObserver = null;
+            let injectTimeout = null;
 
-            function injectOverlay(doc) {
-                if (injected) return;
+            // The overlay HTML + CSS we'll inject
+            const overlayHTML = `
+                <style data-st-inject="true">
+                    .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.92); backdrop-filter:blur(12px); padding:10px 16px; border-radius:16px; border:2px solid #3b82f6; z-index:999999; box-shadow:0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items:center; flex-wrap:wrap; font-family:'Segoe UI',system-ui,sans-serif; transition:all 0.3s; }
+                    .st-ctrl:hover { box-shadow:0 10px 50px rgba(0,0,0,0.9), 0 0 60px rgba(59,130,246,0.5); border-color:#60a5fa; }
+                    .st-ctrl .st-btn { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:none; color:#fff; background:rgba(30,41,59,0.9); transition:0.25s; display:flex; align-items:center; gap:6px; user-select:none; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+                    .st-ctrl .st-btn:hover { background:#3b82f6; transform:scale(1.05); box-shadow:0 0 25px rgba(59,130,246,0.5); }
+                    .st-ctrl .st-btn.fs { background:#2563eb; }
+                    .st-ctrl .st-btn.fs:hover { background:#1d4ed8; }
+                    .st-ctrl .st-btn.ptr { background:#059669; }
+                    .st-ctrl .st-btn.ptr:hover { background:#047857; }
+                    .st-ctrl .st-badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:16px; padding:4px 14px; border-radius:30px; border:2px solid #ffd700; box-shadow:0 0 25px rgba(255,107,0,0.6); animation:stPulseGlobal 1.5s ease-in-out infinite; user-select:none; letter-spacing:1px; text-shadow:0 0 10px #ffd700; }
+                    @keyframes stPulseGlobal { 0% { box-shadow:0 0 10px rgba(255,107,0,0.3); } 50% { box-shadow:0 0 40px rgba(255,215,0,0.9),0 0 70px rgba(255,107,0,0.5); } 100% { box-shadow:0 0 10px rgba(255,107,0,0.3); } }
+                    .st-ctrl .st-close { background:rgba(239,68,68,0.2); border:1px solid rgba(239,68,68,0.3); color:#f87171; padding:4px 10px; border-radius:8px; font-size:16px; cursor:pointer; transition:0.2s; }
+                    .st-ctrl .st-close:hover { background:rgba(239,68,68,0.4); transform:scale(1.1); }
+                    .st-ctrl .st-label { color:#94a3b8; font-size:11px; font-weight:400; letter-spacing:0.5px; margin-right:4px; }
+                    .st-ctrl.draggable { cursor:grab; }
+                    .st-ctrl.dragging { cursor:grabbing; opacity:0.85; }
+                    @media (max-width:600px) { .st-ctrl { bottom:12px; right:12px; padding:8px 12px; gap:6px; flex-wrap:wrap; } .st-ctrl .st-btn { font-size:11px; padding:4px 10px; } .st-ctrl .st-badge { font-size:13px; padding:3px 10px; } }
+                </style>
+                <div class="st-ctrl" data-st-overlay="true" id="stCtrl">
+                    <span class="st-label">⚡</span>
+                    <button class="st-btn fs" id="stFS">⛶ Fullscreen</button>
+                    <span class="st-badge" id="stBadgeGlobal">ST</span>
+                    <button class="st-btn ptr" id="stPtr">🖱️ Lock</button>
+                    <button class="st-close" id="stClose">✕</button>
+                </div>
+            `;
+
+            // Injection function
+            function injectIntoDocument(doc) {
+                if (injected) return true;
                 try {
-                    if (!doc || !doc.body) return;
+                    if (!doc || !doc.body || !doc.head) return false;
                     // Already injected?
-                    if (doc.getElementById('stBadge')) {
+                    if (doc.getElementById('stCtrl')) {
                         injected = true;
-                        return;
+                        return true;
                     }
-                    // Build overlay HTML
-                    const style = doc.createElement('style');
-                    style.textContent = `
-                        .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.88); backdrop-filter:blur(10px); padding:10px 16px; border-radius:14px; border:1px solid #334155; z-index:999999; box-shadow:0 10px 30px rgba(0,0,0,0.6); align-items:center; flex-wrap:wrap; }
-                        .st-ctrl .btn { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; border:none; color:#fff; background:#1e293b; transition:0.2s; display:flex; align-items:center; gap:6px; }
-                        .st-ctrl .btn:hover { background:#2d3b54; transform:scale(1.04); box-shadow:0 0 20px rgba(59,130,246,0.4); }
-                        .st-ctrl .btn.fs { background:#3b82f6; }
-                        .st-ctrl .btn.ptr { background:#22c55e; }
-                        .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
-                    `;
-                    doc.head.appendChild(style);
-                    const html = `
-                        <div class="st-ctrl" data-st-overlay="true">
-                            <button class="btn fs" id="stFS">⛶ Fullscreen</button>
-                            <span class="badge">ST</span>
-                            <button class="btn ptr" id="stPtr">🖱️ Lock Cursor</button>
-                        </div>
-                    `;
-                    const div = doc.createElement('div');
-                    div.innerHTML = html;
-                    while (div.firstChild) doc.body.appendChild(div.firstChild);
 
-                    doc.getElementById('stFS').addEventListener('click', () => {
-                        if (!doc.fullscreenElement) doc.documentElement.requestFullscreen().catch(() => {});
-                        else doc.exitFullscreen().catch(() => {});
-                    });
+                    // Inject styles and HTML
+                    const div = doc.createElement('div');
+                    div.innerHTML = overlayHTML;
+                    while (div.firstChild) {
+                        doc.body.appendChild(div.firstChild);
+                    }
+
+                    // ---- Wire up controls ----
+                    const fsBtn = doc.getElementById('stFS');
                     const ptrBtn = doc.getElementById('stPtr');
-                    ptrBtn.addEventListener('click', () => {
-                        if (doc.pointerLockElement) doc.exitPointerLock();
-                        else doc.body.requestPointerLock().catch(() => {});
-                    });
-                    doc.addEventListener('pointerlockchange', () => {
-                        ptrBtn.innerHTML = doc.pointerLockElement ? '🖱️ Show Cursor' : '🖱️ Lock Cursor';
-                    });
+                    const closeBtn = doc.getElementById('stClose');
+                    const ctrl = doc.getElementById('stCtrl');
+
+                    if (fsBtn) {
+                        fsBtn.addEventListener('click', () => {
+                            const el = doc.documentElement;
+                            if (!doc.fullscreenElement) {
+                                el.requestFullscreen().catch(() => {});
+                            } else {
+                                doc.exitFullscreen().catch(() => {});
+                            }
+                        });
+                    }
+
+                    if (ptrBtn) {
+                        ptrBtn.addEventListener('click', () => {
+                            if (doc.pointerLockElement) {
+                                doc.exitPointerLock();
+                                ptrBtn.innerHTML = '🖱️ Lock';
+                            } else {
+                                doc.body.requestPointerLock().catch(() => {});
+                                ptrBtn.innerHTML = '🔓 Unlock';
+                            }
+                        });
+                        doc.addEventListener('pointerlockchange', () => {
+                            if (ptrBtn) {
+                                ptrBtn.innerHTML = doc.pointerLockElement ? '🔓 Unlock' : '🖱️ Lock';
+                            }
+                        });
+                    }
+
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => {
+                            if (ctrl) ctrl.style.display = 'none';
+                        });
+                    }
+
+                    // ---- Make it draggable ----
+                    if (ctrl) {
+                        let isDragging = false,
+                            startX, startY, origX, origY;
+                        ctrl.addEventListener('mousedown', (e) => {
+                            if (e.target.closest('button')) return;
+                            isDragging = true;
+                            const rect = ctrl.getBoundingClientRect();
+                            startX = e.clientX;
+                            startY = e.clientY;
+                            origX = rect.left;
+                            origY = rect.top;
+                            ctrl.classList.add('dragging');
+                            ctrl.classList.add('draggable');
+                            e.preventDefault();
+                        });
+                        doc.addEventListener('mousemove', (e) => {
+                            if (!isDragging) return;
+                            const dx = e.clientX - startX;
+                            const dy = e.clientY - startY;
+                            ctrl.style.left = (origX + dx) + 'px';
+                            ctrl.style.top = (origY + dy) + 'px';
+                            ctrl.style.right = 'auto';
+                            ctrl.style.bottom = 'auto';
+                            ctrl.style.transform = 'none';
+                        });
+                        doc.addEventListener('mouseup', () => {
+                            if (isDragging) {
+                                isDragging = false;
+                                ctrl.classList.remove('dragging');
+                            }
+                        });
+                    }
 
                     injected = true;
+                    // Clean up all timers/observers
                     if (retryInterval) { clearInterval(retryInterval);
                         retryInterval = null; }
                     if (loadHandler) { try { win.removeEventListener('load', loadHandler); } catch (_) {} }
-                } catch (e) { /* retry later */ }
+                    if (mutationObserver) { try { mutationObserver.disconnect(); } catch (_) {} }
+                    if (injectTimeout) { clearTimeout(injectTimeout);
+                        injectTimeout = null; }
+                    return true;
+                } catch (e) {
+                    return false;
+                }
             }
 
-            // 1. Immediate attempt
-            try { injectOverlay(win.document); } catch (_) {}
+            // ---- STRATEGY 1: Immediate injection ----
+            try {
+                if (win.document && win.document.body) {
+                    if (injectIntoDocument(win.document)) {
+                        // Success! We're done.
+                        return;
+                    }
+                }
+            } catch (_) {}
 
-            // 2. Load event
-            loadHandler = function() { try { injectOverlay(win.document); } catch (_) {} };
+            // ---- STRATEGY 2: Load event ----
+            loadHandler = function() {
+                try { injectIntoDocument(win.document); } catch (_) {}
+            };
             try { win.addEventListener('load', loadHandler); } catch (_) {}
 
-            // 3. Interval retry with exponential backoff (starts fast, slows down)
-            let delay = 150;
+            // ---- STRATEGY 3: MutationObserver on the new document ----
+            try {
+                const observeDoc = win.document;
+                if (observeDoc && observeDoc.body) {
+                    mutationObserver = new MutationObserver(() => {
+                        if (!injected) {
+                            try { injectIntoDocument(observeDoc); } catch (_) {}
+                        }
+                    });
+                    mutationObserver.observe(observeDoc.body, { childList: true, subtree: true });
+                    // Also observe head for style injection
+                    if (observeDoc.head) {
+                        const headObs = new MutationObserver(() => {
+                            if (!injected) {
+                                try { injectIntoDocument(observeDoc); } catch (_) {}
+                            }
+                        });
+                        headObs.observe(observeDoc.head, { childList: true, subtree: true });
+                        // Store it to clean up later
+                        window._stHeadObs = headObs;
+                    }
+                }
+            } catch (_) {}
+
+            // ---- STRATEGY 4: Exponential backoff retry ----
+            let delay = 100;
             retryInterval = setInterval(() => {
                 if (injected || attempts > maxAttempts) {
                     if (retryInterval) { clearInterval(retryInterval);
@@ -3227,24 +3312,45 @@
                 attempts++;
                 try {
                     if (win.document && win.document.body) {
-                        injectOverlay(win.document);
+                        if (injectIntoDocument(win.document)) {
+                            // Success!
+                            if (retryInterval) { clearInterval(retryInterval);
+                                retryInterval = null; }
+                            return;
+                        }
                     }
                 } catch (_) {}
-                // Exponential backoff up to 1.5s
-                delay = Math.min(delay * 1.15, 1500);
+                // Exponential backoff up to 2s
+                delay = Math.min(delay * 1.2, 2000);
             }, delay);
 
-            // 4. Safety: if not injected after 15s, show a non-intrusive message
-            setTimeout(() => {
+            // ---- STRATEGY 5: Final safety net after 20s ----
+            injectTimeout = setTimeout(() => {
                 if (!injected) {
-                    // Try one last time
-                    try { injectOverlay(win.document); } catch (_) {}
-                    if (!injected && retryInterval) {
-                        clearInterval(retryInterval);
-                        retryInterval = null;
-                    }
+                    try {
+                        if (win.document && win.document.body) {
+                            injectIntoDocument(win.document);
+                        }
+                    } catch (_) {}
                 }
-            }, 15000);
+                if (retryInterval) { clearInterval(retryInterval);
+                    retryInterval = null; }
+                if (injectTimeout) { clearTimeout(injectTimeout);
+                    injectTimeout = null; }
+            }, 20000);
+
+            // ---- Cleanup when window closes ----
+            const checkClosed = setInterval(() => {
+                if (win.closed) {
+                    clearInterval(checkClosed);
+                    if (retryInterval) { clearInterval(retryInterval);
+                        retryInterval = null; }
+                    if (injectTimeout) { clearTimeout(injectTimeout);
+                        injectTimeout = null; }
+                    if (mutationObserver) { try { mutationObserver.disconnect(); } catch (_) {} }
+                    if (window._stHeadObs) { try { window._stHeadObs.disconnect(); } catch (_) {} }
+                }
+            }, 3000);
         }
 
         function launchGame(id) {
@@ -3724,7 +3830,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – All games loaded including new additions.');
+        console.log('🚀 SigmaTown4Life – All games loaded. Injector ready (online + offline).');
     </script>
 </body>
 </html>
