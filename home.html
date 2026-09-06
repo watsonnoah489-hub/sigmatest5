@@ -1944,7 +1944,6 @@
         //  AD BLOCKER – Blocks ads for the first 10 seconds only
         // ──────────────────────────────────────────────────────────────
         (function adBlocker() {
-            // List of ad-related domains to block
             const adDomains = [
                 'googlesyndication.com', 'doubleclick.net', 'googleadservices.com',
                 'google-analytics.com', 'googletagmanager.com', 'adservice.google.com',
@@ -1963,14 +1962,7 @@
                 'adsrvr.org', 'adnxs.com', 'adform.net', 'adition.com'
             ];
 
-            // Store original functions
             const originalFetch = window.fetch;
-            const originalXHR = window.XMLHttpRequest;
-            const originalWrite = document.write;
-            const originalOpen = window.open;
-            const originalCreateElement = document.createElement;
-
-            // Blocking fetch
             window.fetch = function(input, init) {
                 const url = typeof input === 'string' ? input : input.url;
                 if (adDomains.some(domain => url.includes(domain))) {
@@ -1979,13 +1971,12 @@
                 return originalFetch.call(this, input, init);
             };
 
-            // Blocking XHR
+            const originalXHR = window.XMLHttpRequest;
             window.XMLHttpRequest = function() {
                 const xhr = new originalXHR();
                 const originalOpenXHR = xhr.open;
                 xhr.open = function(method, url, async, user, password) {
                     if (adDomains.some(domain => url.includes(domain))) {
-                        // Abort and ignore
                         this.abort = function() {};
                         this.send = function() {};
                         this.onreadystatechange = null;
@@ -1996,7 +1987,7 @@
                 return xhr;
             };
 
-            // Blocking document.write
+            const originalWrite = document.write;
             document.write = function(html) {
                 if (typeof html === 'string' && adDomains.some(domain => html.includes(domain))) {
                     return;
@@ -2004,7 +1995,7 @@
                 originalWrite.call(document, html);
             };
 
-            // Blocking window.open
+            const originalOpen = window.open;
             window.open = function(url, name, specs, replace) {
                 if (adDomains.some(domain => url.includes(domain))) {
                     return null;
@@ -2012,7 +2003,7 @@
                 return originalOpen.call(this, url, name, specs, replace);
             };
 
-            // Blocking createElement for script tags with ad src
+            const originalCreateElement = document.createElement;
             document.createElement = function(tagName) {
                 const element = originalCreateElement.call(document, tagName);
                 if (tagName === 'script') {
@@ -2039,7 +2030,6 @@
                 return element;
             };
 
-            // DOM observer to remove ad elements
             const observer = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
                     mutation.addedNodes.forEach(node => {
@@ -2068,9 +2058,7 @@
 
             console.log('🛡️ Ad blocker active (will stop after 10s)');
 
-            // ─── DISABLE AFTER 10 SECONDS ───
             setTimeout(() => {
-                // Restore all original functions
                 window.fetch = originalFetch;
                 window.XMLHttpRequest = originalXHR;
                 document.write = originalWrite;
@@ -2250,7 +2238,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with Summer Rider added)
+        //  GAME DATA (FULL LIST – with Paper.io 2 & Papa's Sushiria)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -2341,7 +2329,7 @@
             if (lower === 'minecraftpe') cats.push('Minecraft');
             const isPuzzle = cats.includes('Puzzle');
             if (isPuzzle && !['cuttherope', 'oneshotlegacy', 'minecaves', 'impossiblequiz'].includes(id)) cats.push(
-            'Relaxing');
+                'Relaxing');
             if (lower === 'growagarden' || lower === 'elasticface' || lower === 'slowroads' ||
                 lower === 'thereisnofile' || lower === 'minecaves') cats.push('Relaxing');
             if (lower === '1v1lol' || lower === 'gunspin' || lower === 'skibidishooter' ||
@@ -2361,7 +2349,7 @@
             if (lower === 'crushcar3d') cats.push('Driving');
 
             if (lower === 'papasbakeria' || lower === 'papasburgeria' || lower === 'papaspancakeria' ||
-                lower === 'papaspizeria') {
+                lower === 'papaspizeria' || lower === 'papasushiria') {
                 cats.push('Papa\'s Restaurants');
             }
 
@@ -2383,7 +2371,7 @@
             const uncategorizedIds = [
                 'konkr', 'summerrider', 'dta6', 'punchthetrump', 'evilglitch',
                 'bitplanes', 'blockysnakes', 'monkeymart', 'pacman', 'raft',
-                'ruffle', 'snowrider3d', 'snowbattle', 'solarsmash'
+                'ruffle', 'snowrider3d', 'snowbattle', 'solarsmash', 'paperio2'
             ];
 
             const isUncategorized = uncategorizedIds.includes(id);
@@ -2862,7 +2850,12 @@
             { id: 'motox3mpoolparty', name: 'Moto X3M Pool Party', file: 'Moto X3M Pool Party.html',
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/124.png' },
             { id: 'impossiblequiz', name: 'The Impossible Quiz', file: 'The Impossible Quiz (1).html',
-                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/507.png' }
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/507.png' },
+            // ─── NEW GAMES ───
+            { id: 'paperio2', name: 'Paper.io 2', file: 'paperio2.htm', categories: ['Uncategorized'],
+                img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"],
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' }
         ];
 
         // Build final game data
@@ -3117,13 +3110,12 @@
 
         // ──────────────────────────────────────────────────────────────
         //  🔥 ULTIMATE GAME INJECTOR – Fullscreen + Cursor + ST Badge
-        //  Works online AND offline. Bulletproof.
+        //  NOW DELAYED 12 SECONDS – Controls appear AFTER 12s of loading
         // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(id, file, name) {
             // Try to open the game
             let win = window.open(file, '_blank');
             if (!win) {
-                // If blocked, try with a more aggressive approach
                 const a = document.createElement('a');
                 a.href = file;
                 a.target = '_blank';
@@ -3131,7 +3123,6 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-                // Check if it worked
                 win = window.open('', '_blank');
                 if (!win || win.closed) {
                     showToast('⚠️ Popup blocked! Please allow popups and try again.', 3000);
@@ -3140,7 +3131,6 @@
                 win.location.href = file;
             }
 
-            // ----- INJECTOR ENGINE -----
             let injected = false;
             let attempts = 0;
             const maxAttempts = 60;
@@ -3148,6 +3138,7 @@
             let loadHandler = null;
             let mutationObserver = null;
             let injectTimeout = null;
+            let delayTimeout = null;
 
             // The overlay HTML + CSS we'll inject
             const overlayHTML = `
@@ -3183,20 +3174,17 @@
                 if (injected) return true;
                 try {
                     if (!doc || !doc.body || !doc.head) return false;
-                    // Already injected?
                     if (doc.getElementById('stCtrl')) {
                         injected = true;
                         return true;
                     }
 
-                    // Inject styles and HTML
                     const div = doc.createElement('div');
                     div.innerHTML = overlayHTML;
                     while (div.firstChild) {
                         doc.body.appendChild(div.firstChild);
                     }
 
-                    // ---- Wire up controls ----
                     const fsBtn = doc.getElementById('stFS');
                     const ptrBtn = doc.getElementById('stPtr');
                     const closeBtn = doc.getElementById('stClose');
@@ -3236,7 +3224,6 @@
                         });
                     }
 
-                    // ---- Make it draggable ----
                     if (ctrl) {
                         let isDragging = false,
                             startX, startY, origX, origY;
@@ -3271,32 +3258,38 @@
                     }
 
                     injected = true;
-                    // Clean up all timers/observers
                     if (retryInterval) { clearInterval(retryInterval);
                         retryInterval = null; }
                     if (loadHandler) { try { win.removeEventListener('load', loadHandler); } catch (_) {} }
                     if (mutationObserver) { try { mutationObserver.disconnect(); } catch (_) {} }
                     if (injectTimeout) { clearTimeout(injectTimeout);
                         injectTimeout = null; }
+                    if (delayTimeout) { clearTimeout(delayTimeout);
+                        delayTimeout = null; }
                     return true;
                 } catch (e) {
                     return false;
                 }
             }
 
-            // ---- STRATEGY 1: Immediate injection ----
-            try {
-                if (win.document && win.document.body) {
-                    if (injectIntoDocument(win.document)) {
-                        // Success! We're done.
-                        return;
-                    }
+            // ---- STRATEGY 1: DELAYED INJECTION (12 seconds) ----
+            // This is the primary strategy – wait 12 seconds before first injection
+            delayTimeout = setTimeout(() => {
+                if (!injected) {
+                    try {
+                        if (win.document && win.document.body) {
+                            injectIntoDocument(win.document);
+                        }
+                    } catch (_) {}
                 }
-            } catch (_) {}
+            }, 12000);
 
-            // ---- STRATEGY 2: Load event ----
+            // ---- STRATEGY 2: Load event (with delay) ----
             loadHandler = function() {
-                try { injectIntoDocument(win.document); } catch (_) {}
+                // Wait an additional 2s after load to ensure page is ready
+                setTimeout(() => {
+                    try { injectIntoDocument(win.document); } catch (_) {}
+                }, 2000);
             };
             try { win.addEventListener('load', loadHandler); } catch (_) {}
 
@@ -3310,7 +3303,6 @@
                         }
                     });
                     mutationObserver.observe(observeDoc.body, { childList: true, subtree: true });
-                    // Also observe head for style injection
                     if (observeDoc.head) {
                         const headObs = new MutationObserver(() => {
                             if (!injected) {
@@ -3318,14 +3310,13 @@
                             }
                         });
                         headObs.observe(observeDoc.head, { childList: true, subtree: true });
-                        // Store it to clean up later
                         window._stHeadObs = headObs;
                     }
                 }
             } catch (_) {}
 
-            // ---- STRATEGY 4: Exponential backoff retry ----
-            let delay = 100;
+            // ---- STRATEGY 4: Exponential backoff retry (starts after 13s) ----
+            let delay = 1500;
             retryInterval = setInterval(() => {
                 if (injected || attempts > maxAttempts) {
                     if (retryInterval) { clearInterval(retryInterval);
@@ -3336,18 +3327,16 @@
                 try {
                     if (win.document && win.document.body) {
                         if (injectIntoDocument(win.document)) {
-                            // Success!
                             if (retryInterval) { clearInterval(retryInterval);
                                 retryInterval = null; }
                             return;
                         }
                     }
                 } catch (_) {}
-                // Exponential backoff up to 2s
-                delay = Math.min(delay * 1.2, 2000);
+                delay = Math.min(delay * 1.15, 3000);
             }, delay);
 
-            // ---- STRATEGY 5: Final safety net after 20s ----
+            // ---- STRATEGY 5: Final safety net after 30s ----
             injectTimeout = setTimeout(() => {
                 if (!injected) {
                     try {
@@ -3360,7 +3349,9 @@
                     retryInterval = null; }
                 if (injectTimeout) { clearTimeout(injectTimeout);
                     injectTimeout = null; }
-            }, 20000);
+                if (delayTimeout) { clearTimeout(delayTimeout);
+                    delayTimeout = null; }
+            }, 30000);
 
             // ---- Cleanup when window closes ----
             const checkClosed = setInterval(() => {
@@ -3370,6 +3361,8 @@
                         retryInterval = null; }
                     if (injectTimeout) { clearTimeout(injectTimeout);
                         injectTimeout = null; }
+                    if (delayTimeout) { clearTimeout(delayTimeout);
+                        delayTimeout = null; }
                     if (mutationObserver) { try { mutationObserver.disconnect(); } catch (_) {} }
                     if (window._stHeadObs) { try { window._stHeadObs.disconnect(); } catch (_) {} }
                 }
@@ -3853,7 +3846,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – All games loaded. Injector ready (online + offline).');
+        console.log('🚀 SigmaTown4Life – All games loaded. Injector delayed 12s. Paper.io 2 & Papa\'s Sushiria added.');
     </script>
 </body>
 </html>
