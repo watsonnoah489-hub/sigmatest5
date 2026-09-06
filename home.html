@@ -851,85 +851,6 @@
 
     <script>
         // ──────────────────────────────────────────────────────────────
-        //  AD BLOCKER – light, doesn't block our overlay
-        // ──────────────────────────────────────────────────────────────
-        (function adBlocker() {
-            // Only block specific ad domains
-            const adDomains = [
-                'googlesyndication.com', 'doubleclick.net', 'googleadservices.com',
-                'adservice.google.com', 'pagead2.googlesyndication.com',
-                'amazon-adsystem.com', 'outbrain.com', 'taboola.com',
-                'revcontent.com', 'pubmatic.com', 'openx.net', 'rubiconproject.com',
-                'indexexchange.com', 'contextweb.com', 'sovrn.com'
-            ];
-
-            // Intercept fetch requests
-            const origFetch = window.fetch;
-            window.fetch = function(input, init) {
-                const url = typeof input === 'string' ? input : input.url;
-                if (adDomains.some(d => url.includes(d))) {
-                    return Promise.reject(new Error('Ad blocked'));
-                }
-                return origFetch.call(this, input, init);
-            };
-
-            // Intercept XHR
-            const origXHR = window.XMLHttpRequest;
-            window.XMLHttpRequest = function() {
-                const xhr = new origXHR();
-                const origOpen = xhr.open;
-                xhr.open = function(method, url, async, user, password) {
-                    if (adDomains.some(d => url.includes(d))) {
-                        this.abort = function() {};
-                        this.send = function() {};
-                        this.onreadystatechange = null;
-                        return;
-                    }
-                    origOpen.call(this, method, url, async, user, password);
-                };
-                return xhr;
-            };
-
-            // Block popups only if from ad domains
-            const origOpen = window.open;
-            window.open = function(url, name, specs, replace) {
-                if (adDomains.some(d => url.includes(d))) {
-                    return null;
-                }
-                return origOpen.call(this, url, name, specs, replace);
-            };
-
-            // Remove ad elements but skip our overlay (marked with data-st-overlay)
-            const observer = new MutationObserver(mutations => {
-                mutations.forEach(mutation => {
-                    mutation.addedNodes.forEach(node => {
-                        if (node.nodeType === 1) {
-                            if (node.dataset && node.dataset.stOverlay === 'true') return;
-                            if (node.closest && node.closest('[data-st-overlay="true"]')) return;
-                            const attrs = node.attributes || [];
-                            let isAd = false;
-                            for (let attr of attrs) {
-                                const val = attr.value;
-                                if (val && (val.includes('ad') || val.includes('ads') ||
-                                        val.includes('banner') || val.includes('popup') ||
-                                        val.includes('sponsor'))) {
-                                    isAd = true;
-                                    break;
-                                }
-                            }
-                            if (isAd || adDomains.some(d => node.innerHTML && node.innerHTML.includes(d))) {
-                                node.remove();
-                            }
-                        }
-                    });
-                });
-            });
-            observer.observe(document.body, { childList: true, subtree: true });
-
-            console.log('🛡️ Light ad blocker active');
-        })();
-
-        // ──────────────────────────────────────────────────────────────
         //  SOUND HANDLING (always on)
         // ──────────────────────────────────────────────────────────────
         const clickAudio = document.getElementById('clickSound');
@@ -1212,7 +1133,6 @@
         }
 
         // ─── FULL GAME DATA ───
-        // (rooftoprun and rooftopsnipers have renamed files: learn.html and math.html)
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html',
@@ -1868,106 +1788,8 @@
             }
         }
 
-        // ─── OVERLAY INJECTOR (FIXED: works forever, with ST badge, Fullscreen, Lock Cursor) ───
-        function openGameInNewTab(id, file, name) {
-            const win = window.open(file, '_blank');
-            if (!win) {
-                showToast('⚠️ Popup blocked! Please allow popups.', 3000);
-                return;
-            }
-
-            let injected = false;
-            let attempts = 0;
-            const maxAttempts = 40;
-            let retryInterval = null;
-            let loadHandler = null;
-
-            function injectOverlay(doc) {
-                if (injected) return;
-                try {
-                    if (!doc || !doc.body) return;
-                    // Already injected?
-                    if (doc.getElementById('stBadge')) {
-                        injected = true;
-                        return;
-                    }
-                    // Build overlay HTML with data-st-overlay to avoid ad-blocker
-                    const style = doc.createElement('style');
-                    style.textContent = `
-                        .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.88); backdrop-filter:blur(10px); padding:10px 16px; border-radius:14px; border:1px solid #334155; z-index:999999; box-shadow:0 10px 30px rgba(0,0,0,0.6); align-items:center; flex-wrap:wrap; }
-                        .st-ctrl .btn { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; border:none; color:#fff; background:#1e293b; transition:0.2s; display:flex; align-items:center; gap:6px; }
-                        .st-ctrl .btn:hover { background:#2d3b54; transform:scale(1.04); box-shadow:0 0 20px rgba(59,130,246,0.4); }
-                        .st-ctrl .btn.fs { background:#3b82f6; }
-                        .st-ctrl .btn.ptr { background:#22c55e; }
-                        .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
-                    `;
-                    doc.head.appendChild(style);
-                    const html = `
-                        <div class="st-ctrl" data-st-overlay="true">
-                            <button class="btn fs" id="stFS">⛶ Fullscreen</button>
-                            <span class="badge">ST</span>
-                            <button class="btn ptr" id="stPtr">🖱️ Lock Cursor</button>
-                        </div>
-                    `;
-                    const div = doc.createElement('div');
-                    div.innerHTML = html;
-                    while (div.firstChild) doc.body.appendChild(div.firstChild);
-
-                    doc.getElementById('stFS').addEventListener('click', () => {
-                        if (!doc.fullscreenElement) doc.documentElement.requestFullscreen().catch(() => {});
-                        else doc.exitFullscreen().catch(() => {});
-                    });
-                    const ptrBtn = doc.getElementById('stPtr');
-                    ptrBtn.addEventListener('click', () => {
-                        if (doc.pointerLockElement) doc.exitPointerLock();
-                        else doc.body.requestPointerLock().catch(() => {});
-                    });
-                    doc.addEventListener('pointerlockchange', () => {
-                        ptrBtn.innerHTML = doc.pointerLockElement ? '🖱️ Show Cursor' : '🖱️ Lock Cursor';
-                    });
-
-                    injected = true;
-                    if (retryInterval) { clearInterval(retryInterval); retryInterval = null; }
-                    if (loadHandler) { try { win.removeEventListener('load', loadHandler); } catch (_) {} }
-                } catch (e) { /* retry later */ }
-            }
-
-            // 1. Immediate attempt
-            try { injectOverlay(win.document); } catch (_) {}
-
-            // 2. Load event
-            loadHandler = function() { try { injectOverlay(win.document); } catch (_) {} };
-            try { win.addEventListener('load', loadHandler); } catch (_) {}
-
-            // 3. Interval retry with exponential backoff
-            let delay = 150;
-            retryInterval = setInterval(() => {
-                if (injected || attempts > maxAttempts) {
-                    if (retryInterval) { clearInterval(retryInterval); retryInterval = null; }
-                    return;
-                }
-                attempts++;
-                try {
-                    if (win.document && win.document.body) {
-                        injectOverlay(win.document);
-                    }
-                } catch (_) {}
-                delay = Math.min(delay * 1.15, 1500);
-            }, delay);
-
-            // 4. Safety timeout
-            setTimeout(() => {
-                if (!injected) {
-                    try { injectOverlay(win.document); } catch (_) {}
-                    if (!injected && retryInterval) {
-                        clearInterval(retryInterval);
-                        retryInterval = null;
-                    }
-                }
-            }, 15000);
-        }
-
-        function launchGame(id) {
+        // ─── FETCH-BASED OVERLAY INJECTOR (FIXED: works forever) ───
+        async function launchGame(id) {
             const game = GAME_DATA.find(g => g.id === id);
             if (!game) { showToast('Game not found.', 2000); return; }
             if (id === 'credits') { document.getElementById('creditsOverlay').classList.add('open'); return; }
@@ -1975,7 +1797,82 @@
                 window.open(game.file, '_blank');
                 return;
             }
-            openGameInNewTab(id, game.file, game.name);
+
+            try {
+                // Fetch the game HTML
+                const response = await fetch(game.file);
+                if (!response.ok) throw new Error('Failed to fetch game');
+                let html = await response.text();
+
+                // Build overlay HTML to inject
+                const overlayHTML = `
+                    <style>
+                        .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.88); backdrop-filter:blur(10px); padding:10px 16px; border-radius:14px; border:1px solid #334155; z-index:999999; box-shadow:0 10px 30px rgba(0,0,0,0.6); align-items:center; flex-wrap:wrap; }
+                        .st-ctrl .btn { padding:6px 14px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; border:none; color:#fff; background:#1e293b; transition:0.2s; display:flex; align-items:center; gap:6px; }
+                        .st-ctrl .btn:hover { background:#2d3b54; transform:scale(1.04); box-shadow:0 0 20px rgba(59,130,246,0.4); }
+                        .st-ctrl .btn.fs { background:#3b82f6; }
+                        .st-ctrl .btn.ptr { background:#22c55e; }
+                        .st-ctrl .badge { background:linear-gradient(135deg,#ff6b00,#ff4500); color:#fff; font-weight:900; font-size:15px; padding:3px 12px; border-radius:30px; border:1px solid #ffd700; box-shadow:0 0 20px rgba(255,107,0,0.5); animation:pulse 1.5s ease-in-out infinite; user-select:none; }
+                    </style>
+                    <div class="st-ctrl" data-st-overlay="true">
+                        <button class="btn fs" id="stFS">⛶ Fullscreen</button>
+                        <span class="badge">ST</span>
+                        <button class="btn ptr" id="stPtr">🖱️ Lock Cursor</button>
+                    </div>
+                `;
+
+                // Inject overlay just before </body>
+                html = html.replace(/<\/body>/i, overlayHTML + '</body>');
+
+                // Ensure <base> tag points to the game's directory (if missing)
+                const baseHref = game.file.substring(0, game.file.lastIndexOf('/') + 1) || './';
+                if (!html.includes('<base')) {
+                    html = html.replace(/<head>/i, `<head><base href="${baseHref}">`);
+                }
+
+                // Open a blank tab
+                const win = window.open('', '_blank');
+                if (!win) {
+                    showToast('⚠️ Popup blocked! Please allow popups.', 3000);
+                    return;
+                }
+
+                // Write the modified HTML
+                win.document.write(html);
+                win.document.close(); // Important to finish writing
+
+                // Wait for the overlay to be rendered, then attach event listeners
+                setTimeout(() => {
+                    try {
+                        const fsBtn = win.document.getElementById('stFS');
+                        const ptrBtn = win.document.getElementById('stPtr');
+                        if (fsBtn) {
+                            fsBtn.addEventListener('click', () => {
+                                if (!win.document.fullscreenElement) {
+                                    win.document.documentElement.requestFullscreen().catch(() => {});
+                                } else {
+                                    win.document.exitFullscreen().catch(() => {});
+                                }
+                            });
+                        }
+                        if (ptrBtn) {
+                            ptrBtn.addEventListener('click', () => {
+                                if (win.document.pointerLockElement) {
+                                    win.document.exitPointerLock();
+                                } else {
+                                    win.document.body.requestPointerLock().catch(() => {});
+                                }
+                            });
+                            win.document.addEventListener('pointerlockchange', () => {
+                                ptrBtn.innerHTML = win.document.pointerLockElement ? '🖱️ Show Cursor' : '🖱️ Lock Cursor';
+                            });
+                        }
+                    } catch (e) { /* ignore errors */ }
+                }, 300);
+            } catch (error) {
+                console.error('Failed to launch game:', error);
+                showToast('⚠️ Failed to load game. Try again.', 3000);
+            }
         }
 
         function launchRandom() {
@@ -2422,7 +2319,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – Overlay restored (Fullscreen, ST badge, Lock Cursor).');
+        console.log('🚀 SigmaTown4Life – Fetch-based overlay injector active. Fullscreen, ST badge, and Lock Cursor will work.');
     </script>
 </body>
 </html>
