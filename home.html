@@ -2238,7 +2238,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with Paper.io 2 & Papa's Sushiria)
+        //  GAME DATA (FULL LIST – with Basketball Legends 2020 added)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -2291,7 +2291,7 @@
                 lower === 'googlebaseball' || lower === 'retrobowlcollege' || lower === 'baseballbros' ||
                 lower === 'basketbattle' || lower === 'soccerrandom' || lower === 'footballbros' ||
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
-                lower === 'beachboxingsim') cats.push('Sports');
+                lower === 'beachboxingsim' || lower === 'basketballlegends2020') cats.push('Sports');
 
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
             if (lower === 'stickmanduel') cats.push('Stickman');
@@ -2855,7 +2855,10 @@
             { id: 'paperio2', name: 'Paper.io 2', file: 'paperio2.htm', categories: ['Uncategorized'],
                 img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"],
-                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' }
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
+            // ─── Basketball Legends 2020 ───
+            { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'],
+                img: 'https://coolbrnd.com/game-images/basketball-legends.png' }
         ];
 
         // Build final game data
@@ -3846,7 +3849,7 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – All games loaded. Injector delayed 12s. Paper.io 2 & Papa\'s Sushiria added.');
+        console.log('🚀 SigmaTown4Life – All games loaded. Injector delayed 12s. Basketball Legends 2020 added.');
     </script>
 </body>
 </html>
