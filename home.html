@@ -84,17 +84,25 @@
             filter: brightness(0.95);
         }
 
-        body.low-lag * {
+        /* ────── LAG KILLER FEATURES ────── */
+        body.lag-killer .particle-canvas,
+        body.lag-killer .glow-orb,
+        body.lag-killer .meteor,
+        body.lag-killer .bubble,
+        body.lag-killer #glowTrail,
+        body.lag-killer .grid-scan {
+            display: none !important;
+        }
+        body.lag-killer.lag-no-particles .particle-canvas { display: none !important; }
+        body.lag-killer.lag-no-glow .glow-orb,
+        body.lag-killer.lag-no-glow #glowTrail { display: none !important; }
+        body.lag-killer.lag-no-grid .grid-scan { display: none !important; }
+        body.lag-killer.lag-no-meteor .meteor { display: none !important; }
+        body.lag-killer.lag-no-bubble .bubble { display: none !important; }
+        body.lag-killer.lag-no-rain #matrixCanvas { display: none !important; }
+        body.lag-killer.lag-no-anim * {
             animation-play-state: paused !important;
             transition-duration: 0s !important;
-        }
-        body.low-lag .particle-canvas,
-        body.low-lag .glow-orb,
-        body.low-lag .meteor,
-        body.low-lag .bubble,
-        body.low-lag #glowTrail,
-        body.low-lag .grid-scan {
-            display: none !important;
         }
 
         /* ────── ANIMATIONS ────── */
@@ -1751,6 +1759,81 @@
         body.rain-active #matrixCanvas {
             opacity: 0.6;
         }
+
+        /* ────── LAG KILLER SETTINGS MODAL ────── */
+        #lagSettingsOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            z-index: 1100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        #lagSettingsOverlay.open {
+            display: flex;
+        }
+        #lagSettingsModal {
+            background: rgba(13, 17, 23, 0.97);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 24px 28px;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 0 40px var(--glow);
+            color: #fff;
+        }
+        #lagSettingsModal h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #lagSettingsModal .setting {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        #lagSettingsModal .setting label {
+            cursor: pointer;
+            font-size: 15px;
+        }
+        #lagSettingsModal .setting input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        #lagSettingsModal .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        #lagSettingsModal .actions .btn {
+            padding: 6px 20px;
+            font-size: 14px;
+        }
+        #lagSettingsModal .master-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+        #lagSettingsModal .master-toggle label {
+            font-weight: 700;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -1816,6 +1899,48 @@
         </div>
     </div>
 
+    <!-- ─── LAG KILLER SETTINGS MODAL ─── -->
+    <div id="lagSettingsOverlay">
+        <div id="lagSettingsModal">
+            <h2>⚡ Lag Killer Settings</h2>
+            <div class="master-toggle">
+                <label for="lagMaster">Master Toggle</label>
+                <input type="checkbox" id="lagMaster" />
+            </div>
+            <div class="setting">
+                <label for="lagParticles">Disable Particles</label>
+                <input type="checkbox" id="lagParticles" checked />
+            </div>
+            <div class="setting">
+                <label for="lagGlow">Disable Glow Orbs &amp; Trail</label>
+                <input type="checkbox" id="lagGlow" checked />
+            </div>
+            <div class="setting">
+                <label for="lagGrid">Disable Grid Scan</label>
+                <input type="checkbox" id="lagGrid" checked />
+            </div>
+            <div class="setting">
+                <label for="lagMeteor">Disable Meteors</label>
+                <input type="checkbox" id="lagMeteor" checked />
+            </div>
+            <div class="setting">
+                <label for="lagBubble">Disable Bubbles</label>
+                <input type="checkbox" id="lagBubble" checked />
+            </div>
+            <div class="setting">
+                <label for="lagRain">Disable Rain Effect</label>
+                <input type="checkbox" id="lagRain" checked />
+            </div>
+            <div class="setting">
+                <label for="lagAnim">Disable All Animations</label>
+                <input type="checkbox" id="lagAnim" checked />
+            </div>
+            <div class="actions">
+                <button class="btn" id="lagSettingsClose">Close</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ─── MAIN MENU ─── -->
     <div id="menuScreen">
         <div class="container">
@@ -1840,6 +1965,7 @@
                 <button class="btn" id="cloakBtn" style="background:#ec4899;">🎭</button>
                 <button class="btn" id="lagKillerBtn" style="background:#f59e0b;">
                     <img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;">
+                    <span style="margin-left:4px;">⚡</span>
                 </button>
                 <button class="btn" id="rainBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
                 <button class="btn btn-rainbow" id="rainbowBtn">🌈 RAINBOW MODE</button>
@@ -2099,6 +2225,7 @@
             const ctx = canvas.getContext('2d');
             let w, h, particles = [];
             let running = true;
+            let animationId = null;
 
             function resize() { w = canvas.width = window.innerWidth;
                 h = canvas.height = window.innerHeight; }
@@ -2118,8 +2245,8 @@
             let frame = 0;
 
             function draw() {
-                if (!running || document.body.classList.contains('low-lag') || document.hidden) {
-                    requestAnimationFrame(draw);
+                if (!running || document.body.classList.contains('lag-killer') || document.hidden) {
+                    animationId = requestAnimationFrame(draw);
                     return;
                 }
                 frame++;
@@ -2167,10 +2294,11 @@
                         }
                     }
                 }
-                requestAnimationFrame(draw);
+                animationId = requestAnimationFrame(draw);
             }
             draw();
-            window.addEventListener('beforeunload', () => { running = false; });
+            window.addEventListener('beforeunload', () => { running = false; if (animationId) cancelAnimationFrame(
+                    animationId); });
         })();
 
         // ──────────────────────────────────────────────────────────────
@@ -2238,7 +2366,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with Basketball Legends 2020 added)
+        //  GAME DATA (FULL LIST – with Sherk Dash & SofloWheelieLife added)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -2252,7 +2380,8 @@
                 'tripletobby', 'obbyjumperclicker', 'speedperclick', 'obbycart', 'blockcraftparkour',
                 'obby99willlose', 'obbyfriends', 'rainbowobby', 'obbybike',
                 'hobo1', 'hobo2', 'hobo3', 'hobo4', 'hobo5', 'hobo6', 'hobo7', 'hobovszombies',
-                'mariocombat', 'stickmanhook', 'crazyplanelanding', 'crazymotorcycle'
+                'mariocombat', 'stickmanhook', 'crazyplanelanding', 'crazymotorcycle',
+                'sherkdash'
             ];
             if (platformerIds.includes(id)) cats.push('Platformer');
 
@@ -2347,6 +2476,7 @@
             if (lower === 'tugofwar') cats.push('Driving');
             if (lower === 'trafficracer') cats.push('Driving');
             if (lower === 'crushcar3d') cats.push('Driving');
+            if (lower === 'soflowheelielife') cats.push('Driving');
 
             if (lower === 'papasbakeria' || lower === 'papasburgeria' || lower === 'papaspancakeria' ||
                 lower === 'papaspizeria' || lower === 'papasushiria') {
@@ -2858,7 +2988,13 @@
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
             // ─── Basketball Legends 2020 ───
             { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'],
-                img: 'https://coolbrnd.com/game-images/basketball-legends.png' }
+                img: 'https://coolbrnd.com/game-images/basketball-legends.png' },
+            // ─── Sherk Dash (Platformer) ───
+            { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer'],
+                img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
+            // ─── SofloWheelieLife (Driving) ───
+            { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'],
+                img: 'Screenshot_7-9-2026_163557_.JPEG' }
         ];
 
         // Build final game data
@@ -2876,6 +3012,15 @@
         let selectedCategories = [];
         let themeState = 'default';
         let lagKiller = false;
+        let lagSettings = {
+            particles: true,
+            glow: true,
+            grid: true,
+            meteor: true,
+            bubble: true,
+            rain: true,
+            anim: true
+        };
         let rainActive = false;
         let rainbowMode = false;
         let rainbowInterval = null;
@@ -2920,6 +3065,109 @@
         const carouselPrev = document.getElementById('carouselPrev');
         const carouselNext = document.getElementById('carouselNext');
 
+        // ─── LAG KILLER SETTINGS ───
+        function loadLagSettings() {
+            const stored = localStorage.getItem('lagSettings');
+            if (stored) {
+                try { const parsed = JSON.parse(stored); Object.assign(lagSettings, parsed); } catch (e) {}
+            }
+        }
+        function saveLagSettings() {
+            localStorage.setItem('lagSettings', JSON.stringify(lagSettings));
+        }
+
+        function applyLagKiller() {
+            const body = document.body;
+            body.classList.toggle('lag-killer', lagKiller);
+
+            body.classList.toggle('lag-no-particles', lagKiller && !lagSettings.particles);
+            body.classList.toggle('lag-no-glow', lagKiller && !lagSettings.glow);
+            body.classList.toggle('lag-no-grid', lagKiller && !lagSettings.grid);
+            body.classList.toggle('lag-no-meteor', lagKiller && !lagSettings.meteor);
+            body.classList.toggle('lag-no-bubble', lagKiller && !lagSettings.bubble);
+            body.classList.toggle('lag-no-rain', lagKiller && !lagSettings.rain);
+            body.classList.toggle('lag-no-anim', lagKiller && !lagSettings.anim);
+
+            if (lagKiller) {
+                lagKillerBtn.style.background = '#22c55e';
+                lagKillerBtn.innerHTML =
+                    '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON';
+            } else {
+                lagKillerBtn.style.background = '#f59e0b';
+                lagKillerBtn.innerHTML =
+                    '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡';
+            }
+
+            if (rainActive && lagKiller && !lagSettings.rain) {
+                document.body.classList.add('lag-no-rain');
+            } else if (rainActive) {
+                document.body.classList.remove('lag-no-rain');
+            }
+
+            saveLagSettings();
+        }
+
+        // ─── LAG KILLER TOGGLE & SETTINGS ───
+        const lagMaster = document.getElementById('lagMaster');
+        const lagParticles = document.getElementById('lagParticles');
+        const lagGlow = document.getElementById('lagGlow');
+        const lagGrid = document.getElementById('lagGrid');
+        const lagMeteor = document.getElementById('lagMeteor');
+        const lagBubble = document.getElementById('lagBubble');
+        const lagRain = document.getElementById('lagRain');
+        const lagAnim = document.getElementById('lagAnim');
+        const lagSettingsOverlay = document.getElementById('lagSettingsOverlay');
+        const lagSettingsClose = document.getElementById('lagSettingsClose');
+
+        function updateSettingsUI() {
+            lagMaster.checked = lagKiller;
+            lagParticles.checked = lagSettings.particles;
+            lagGlow.checked = lagSettings.glow;
+            lagGrid.checked = lagSettings.grid;
+            lagMeteor.checked = lagSettings.meteor;
+            lagBubble.checked = lagSettings.bubble;
+            lagRain.checked = lagSettings.rain;
+            lagAnim.checked = lagSettings.anim;
+        }
+
+        function applySettingsFromUI() {
+            lagKiller = lagMaster.checked;
+            lagSettings.particles = lagParticles.checked;
+            lagSettings.glow = lagGlow.checked;
+            lagSettings.grid = lagGrid.checked;
+            lagSettings.meteor = lagMeteor.checked;
+            lagSettings.bubble = lagBubble.checked;
+            lagSettings.rain = lagRain.checked;
+            lagSettings.anim = lagAnim.checked;
+            applyLagKiller();
+            showToast(lagKiller ? '⚡ Lag Killer ON' : '⚡ Lag Killer OFF');
+        }
+
+        lagKillerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            updateSettingsUI();
+            lagSettingsOverlay.classList.add('open');
+        });
+
+        lagSettingsClose.addEventListener('click', () => {
+            applySettingsFromUI();
+            lagSettingsOverlay.classList.remove('open');
+        });
+
+        lagSettingsOverlay.addEventListener('click', (e) => {
+            if (e.target === lagSettingsOverlay) {
+                applySettingsFromUI();
+                lagSettingsOverlay.classList.remove('open');
+            }
+        });
+
+        [lagMaster, lagParticles, lagGlow, lagGrid, lagMeteor, lagBubble, lagRain, lagAnim].forEach(el => {
+            el.addEventListener('change', () => {});
+        });
+
+        // ──────────────────────────────────────────────────────────────
+        //  TOAST
+        // ──────────────────────────────────────────────────────────────
         function showToast(msg, dur = 2500) {
             toast.textContent = msg;
             toast.classList.add('show');
@@ -2927,6 +3175,9 @@
             toast._t = setTimeout(() => toast.classList.remove('show'), dur);
         }
 
+        // ──────────────────────────────────────────────────────────────
+        //  FAVORITES
+        // ──────────────────────────────────────────────────────────────
         function saveFavs() { localStorage.setItem('fav_cycles', JSON.stringify(favorites)); }
 
         function toggleFav(id) {
@@ -2937,6 +3188,9 @@
             renderGrid();
         }
 
+        // ──────────────────────────────────────────────────────────────
+        //  GRID & CAROUSEL RENDERING
+        // ──────────────────────────────────────────────────────────────
         function getFilteredGames() {
             return GAME_DATA.filter(g => {
                 if (g.id === 'randompicker') return false;
@@ -3112,11 +3366,9 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  🔥 ULTIMATE GAME INJECTOR – Fullscreen + Cursor + ST Badge
-        //  NOW DELAYED 12 SECONDS – Controls appear AFTER 12s of loading
+        //  GAME INJECTOR – 12 second delay
         // ──────────────────────────────────────────────────────────────
         function openGameInNewTab(id, file, name) {
-            // Try to open the game
             let win = window.open(file, '_blank');
             if (!win) {
                 const a = document.createElement('a');
@@ -3143,7 +3395,6 @@
             let injectTimeout = null;
             let delayTimeout = null;
 
-            // The overlay HTML + CSS we'll inject
             const overlayHTML = `
                 <style data-st-inject="true">
                     .st-ctrl { position:fixed; bottom:24px; right:24px; display:flex; gap:10px; background:rgba(15,23,42,0.92); backdrop-filter:blur(12px); padding:10px 16px; border-radius:16px; border:2px solid #3b82f6; z-index:999999; box-shadow:0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items:center; flex-wrap:wrap; font-family:'Segoe UI',system-ui,sans-serif; transition:all 0.3s; }
@@ -3172,7 +3423,6 @@
                 </div>
             `;
 
-            // Injection function
             function injectIntoDocument(doc) {
                 if (injected) return true;
                 try {
@@ -3275,8 +3525,6 @@
                 }
             }
 
-            // ---- STRATEGY 1: DELAYED INJECTION (12 seconds) ----
-            // This is the primary strategy – wait 12 seconds before first injection
             delayTimeout = setTimeout(() => {
                 if (!injected) {
                     try {
@@ -3287,16 +3535,13 @@
                 }
             }, 12000);
 
-            // ---- STRATEGY 2: Load event (with delay) ----
             loadHandler = function() {
-                // Wait an additional 2s after load to ensure page is ready
                 setTimeout(() => {
                     try { injectIntoDocument(win.document); } catch (_) {}
                 }, 2000);
             };
             try { win.addEventListener('load', loadHandler); } catch (_) {}
 
-            // ---- STRATEGY 3: MutationObserver on the new document ----
             try {
                 const observeDoc = win.document;
                 if (observeDoc && observeDoc.body) {
@@ -3318,7 +3563,6 @@
                 }
             } catch (_) {}
 
-            // ---- STRATEGY 4: Exponential backoff retry (starts after 13s) ----
             let delay = 1500;
             retryInterval = setInterval(() => {
                 if (injected || attempts > maxAttempts) {
@@ -3339,7 +3583,6 @@
                 delay = Math.min(delay * 1.15, 3000);
             }, delay);
 
-            // ---- STRATEGY 5: Final safety net after 30s ----
             injectTimeout = setTimeout(() => {
                 if (!injected) {
                     try {
@@ -3356,7 +3599,6 @@
                     delayTimeout = null; }
             }, 30000);
 
-            // ---- Cleanup when window closes ----
             const checkClosed = setInterval(() => {
                 if (win.closed) {
                     clearInterval(checkClosed);
@@ -3422,25 +3664,6 @@
                 themeBtn.textContent = '🌓 THEME'; }
         });
 
-        // ─── Lag Killer ───
-        lagKillerBtn.addEventListener('click', () => {
-            lagKiller = !lagKiller;
-            document.body.classList.toggle('low-lag', lagKiller);
-            if (lagKiller) {
-                if (rainActive) { toggleRain(); }
-                if (rainbowInterval) { clearInterval(rainbowInterval);
-                    rainbowInterval = null; }
-                lagKillerBtn.style.background = '#22c55e';
-                lagKillerBtn.innerHTML =
-                    '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON';
-            } else {
-                lagKillerBtn.style.background = '#f59e0b';
-                lagKillerBtn.innerHTML =
-                    '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;">';
-            }
-            showToast(lagKiller ? '⚡ Lag Killer ON - Animations paused' : '⚡ Lag Killer OFF');
-        });
-
         // ─── Rain ───
         const matrixCanvas = document.getElementById('matrixCanvas');
         const mctx = matrixCanvas.getContext('2d');
@@ -3484,19 +3707,22 @@
         }
 
         function toggleRain() {
-            if (lagKiller) { showToast('⚠️ Lag Killer active! Disable it first.', 2000); return; }
             rainActive = !rainActive;
             document.body.classList.toggle('rain-active', rainActive);
             rainBtn.classList.toggle('active', rainActive);
             if (rainActive) { initRainMatrix();
                 drawRainMatrix(); } else { if (rainFrame) cancelAnimationFrame(rainFrame);
                 mctx.clearRect(0, 0, mw, mh); }
+            if (lagKiller && !lagSettings.rain) {
+                document.body.classList.add('lag-no-rain');
+            } else {
+                document.body.classList.remove('lag-no-rain');
+            }
         }
         rainBtn.addEventListener('click', toggleRain);
 
         // ─── Rainbow ───
         rainbowBtn.addEventListener('click', () => {
-            if (lagKiller) { showToast('⚠️ Lag Killer active! Disable it first.', 2000); return; }
             rainbowMode = !rainbowMode;
             if (rainbowMode) {
                 let hue = Math.random() * 360;
@@ -3766,7 +3992,6 @@
             });
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    if (lagKiller) { showToast('⚠️ Lag Killer active!', 1500); return; }
                     const id = btn.dataset.id;
                     const a = soundAudios[id];
                     if (a) { if (a.ended) a.currentTime = 0;
@@ -3840,6 +4065,7 @@
         });
 
         // ─── INIT ───
+        loadLagSettings();
         applyCloak(0);
         updateCursor('#3b82f6');
         renderGrid();
@@ -3849,7 +4075,8 @@
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
 
-        console.log('🚀 SigmaTown4Life – All games loaded. Injector delayed 12s. Basketball Legends 2020 added.');
+        console.log('🚀 SigmaTown4Life – All games loaded. Lag Killer upgraded with custom settings.');
+        console.log('✅ Added: Sherk Dash (Platformer) & SofloWheelieLife (Driving)');
     </script>
 </body>
 </html>
