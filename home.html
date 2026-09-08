@@ -93,6 +93,14 @@
         body.lag-killer .grid-scan {
             display: none !important;
         }
+        /* ── NEW: Disable logos in lag killer ── */
+        body.lag-killer .cycle-btn .overlay {
+            display: none !important;
+        }
+        /* ── NEW: Disable dice animation in lag killer ── */
+        body.lag-killer .cycle-btn.random .dice {
+            animation-play-state: paused !important;
+        }
         body.lag-killer.lag-no-particles .particle-canvas { display: none !important; }
         body.lag-killer.lag-no-glow .glow-orb,
         body.lag-killer.lag-no-glow #glowTrail { display: none !important; }
@@ -2366,7 +2374,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with Sherk Dash & SofloWheelieLife added)
+        //  GAME DATA (FULL LIST – with Basket Random added)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -2420,7 +2428,8 @@
                 lower === 'googlebaseball' || lower === 'retrobowlcollege' || lower === 'baseballbros' ||
                 lower === 'basketbattle' || lower === 'soccerrandom' || lower === 'footballbros' ||
                 lower === 'soccerbros' || lower === 'stickmangolf' || lower === 'wrestlebros' ||
-                lower === 'beachboxingsim' || lower === 'basketballlegends2020') cats.push('Sports');
+                lower === 'beachboxingsim' || lower === 'basketballlegends2020' || lower === 'basketrandom')
+                cats.push('Sports');
 
             if (lower === 'blockblast') { cats.push('Puzzle', 'Relaxing'); }
             if (lower === 'stickmanduel') cats.push('Stickman');
@@ -2992,12 +3001,15 @@
             // ─── Sherk Dash (Platformer) ───
             { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer'],
                 img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
-            // ─── SofloWheelieLife (Driving) – NEW LOGO ───
+            // ─── SofloWheelieLife (Driving) ───
             { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'],
                 img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fit/w_624,h_472,q_70,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
             // ─── Burger Clicker ───
             { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'],
-                img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' }
+                img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
+            // ─── Basket Random (NEW) ───
+            { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'],
+                img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' }
         ];
 
         // Build final game data
@@ -3090,6 +3102,8 @@
             body.classList.toggle('lag-no-bubble', lagKiller && !lagSettings.bubble);
             body.classList.toggle('lag-no-rain', lagKiller && !lagSettings.rain);
             body.classList.toggle('lag-no-anim', lagKiller && !lagSettings.anim);
+
+            // Logos are hidden via CSS when lag-killer class is on the body (handled in CSS)
 
             if (lagKiller) {
                 lagKillerBtn.style.background = '#22c55e';
@@ -4080,6 +4094,8 @@
 
         console.log('🚀 SigmaTown4Life – All games loaded. Lag Killer upgraded with custom settings.');
         console.log('✅ Added: Sherk Dash (Platformer) & SofloWheelieLife (Driving)');
+        console.log('✅ Added: Basket Random (Sports)');
+        console.log('✅ Lag Killer: Logos disabled, Dice animation paused when active.');
     </script>
 </body>
 </html>
