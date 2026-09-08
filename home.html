@@ -93,11 +93,9 @@
         body.lag-killer .grid-scan {
             display: none !important;
         }
-        /* ── NEW: Disable logos in lag killer ── */
         body.lag-killer .cycle-btn .overlay {
             display: none !important;
         }
-        /* ── NEW: Disable dice animation in lag killer ── */
         body.lag-killer .cycle-btn.random .dice {
             animation-play-state: paused !important;
         }
@@ -3256,6 +3254,8 @@
 
                 const btn = document.createElement('div');
                 btn.className = 'cycle-btn' + (isRandom ? ' random' : '');
+                // Set title for tooltip
+                btn.title = isRandom ? 'Random' : g.name;
 
                 if (!isRandom) {
                     for (let r = 1; r <= 3; r++) {
@@ -3277,6 +3277,7 @@
                     img.src = g.img ||
                         'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23222" width="100" height="100"/><text y=".9em" font-size="60" x="50%" text-anchor="middle">🎮</text></svg>';
                     img.alt = g.name;
+                    img.title = g.name; // tooltip for image too
                     img.style.objectFit = 'cover';
                     img.style.width = '100%';
                     img.style.height = '100%';
@@ -3336,6 +3337,7 @@
                 img.src = g.img ||
                     'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23222" width="100" height="100"/><text y=".9em" font-size="60" x="50%" text-anchor="middle">🎮</text></svg>';
                 img.alt = g.name;
+                img.title = g.name; // tooltip for carousel
                 div.appendChild(img);
                 div.addEventListener('click', () => {
                     if (i !== selectedIndex) {
@@ -4096,6 +4098,7 @@
         console.log('✅ Added: Sherk Dash (Platformer) & SofloWheelieLife (Driving)');
         console.log('✅ Added: Basket Random (Sports)');
         console.log('✅ Lag Killer: Logos disabled, Dice animation paused when active.');
+        console.log('✅ Tooltips on hover show game name.');
     </script>
 </body>
 </html>
