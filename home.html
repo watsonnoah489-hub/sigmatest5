@@ -3110,14 +3110,13 @@
             return { ...g, categories: getCategories(g.id, g.name) };
         });
 
-        // ─── SOUND DATA (expanded) ───
+        // ─── SOUND DATA (expanded with all new sounds) ───
         const SOUNDS = [
             { id: 'tacobell', name: 'Taco Bell Bong', file: 'taco-bell-bong-sfx (1).mp3' },
             { id: 'fartreverb', name: 'Fart with Reverb', file: 'fart-with-reverb.mp3' },
             { id: 'fah', name: 'Fahhhhh', file: 'fahhhhh.mp3' },
             { id: 'mommyno', name: 'My Mommy Say No More Skibidi Toilet', file: 'my-mommy-said-no-more-skibidi-toilet.mp3' },
             { id: 'boneless', name: 'Boneless Wing Phonk', file: 'boneless-wing-funk.mp3' },
-            // ─── new sounds ───
             { id: 'tungfunk', name: 'Tung Tung Tung Sahur Funk', file: 'tung-funk-tung-sahur-funk.mp3' },
             { id: 'homer', name: 'Homer Lets the Barts Out', file: 'homer-lets-the-barts-out.mp3' },
             { id: 'babylaugh', name: 'Baby Laughing Meme', file: 'baby-laughing-meme.mp3' },
@@ -3138,7 +3137,22 @@
             { id: 'veritygreet', name: 'Verity Greeting', file: 'verity-greeting_yhorpTs.mp3' },
             { id: 'miseryxlife', name: 'Misery x Life Goes x Verity', file: 'misery-x-life-goes-x-verity.mp3' },
             { id: 'veritydisstrack', name: 'Verity Diss Track Chorus', file: 'verity-disstrack-chorus.mp3' },
-            { id: 'lowqualityjob', name: 'Low Quality - I Was Looking for a Job', file: 'low-quality-i-was-looking-for-a-job.mp3' }
+            { id: 'lowqualityjob', name: 'Low Quality - I Was Looking for a Job', file: 'low-quality-i-was-looking-for-a-job.mp3' },
+            // ─── 14 NEW SOUNDS (all with .mp3) ───
+            { id: 'goofy-ahh', name: 'Goofy Ahh Quandale Dingle Song', file: 'goofy-ahh-uncle-productions-1.mp3' },
+            { id: 'homeless', name: 'My Home is Kinda Homeless', file: 'please-speed-i-need-this_cOYk2rt.mp3' },
+            { id: 'italian-brainrot', name: 'Italian Brainrot Ringtone', file: 'italian-brainrot-ringtone.mp3' },
+            { id: 'hehehehaw', name: 'Hehehe - Clash Royal', file: 'hehehehaw.mp3' },
+            { id: 'triple-t', name: 'That\'s Triple T', file: 'copy_1BAE9F2C-6BFD-4BDC-8B6D-D78E7CCA0316.mp3' },
+            { id: 'chicken-scream', name: 'Chicken Screaming', file: 'chicken-on-tree-screaming (3).mp3' },
+            { id: 'bruh', name: 'Bruh', file: 'bruh.mp3' },
+            { id: 'undertaker', name: 'The Undertaker', file: 'the-undertaker-bell.mp3' },
+            { id: 'du-bist', name: 'Do Bist Gut Genug', file: 'du-bist-gut-genug (2).mp3' },
+            { id: 'bone-crack', name: 'Bone Crack', file: 'bone-crack.mp3' },
+            { id: 'tung-scary', name: 'Tung Tung Tung Shaury (Scary)', file: 'tung-tung-tung-sahur-scary.mp3' },
+            { id: 'tung-original', name: 'Tung Tung Tung Shaury (Original)', file: 'tung-tung-tung-tung-tung-tung-sahur.mp3' },
+            { id: 'driving-car', name: 'Driving in My Car', file: 'driving-in-my-car-asgore.mp3' },
+            { id: 'diddy-blud', name: 'What is This Diddy Blud Doing', file: 'diddy-blud.mp3' }
         ];
 
         // ─── OLD SOUNDS (typing, pencil) ───
@@ -3280,7 +3294,6 @@
                 } else if (lagKiller && !lagSettings.ultra && !lagSettings.particles) {
                     if (window._particleStop) window._particleStop();
                 } else if (!lagKiller && !lagSettings.particles) {
-                    // if particles disabled but lag-killer off, stop them
                     if (window._particleStop) window._particleStop();
                 } else if (!lagKiller && lagSettings.particles && window._particleStart) {
                     window._particleStart();
