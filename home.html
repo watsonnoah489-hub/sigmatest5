@@ -24,14 +24,6 @@
             padding: 0;
             cursor: var(--sigma-cursor) !important;
         }
-        /* ULTRA LAG: override cursor to default */
-        body.ultra-lag * {
-            cursor: auto !important;
-        }
-        body.ultra-lag #glowTrail {
-            display: none !important;
-        }
-
         input,
         textarea,
         select {
@@ -52,23 +44,9 @@
         .credits-close-btn,
         .tab-btn,
         .sound-btn,
-        .stop-all-btn {
+        .stop-all-btn,
+        .mute-btn {
             cursor: var(--sigma-cursor) !important;
-        }
-        body.ultra-lag button,
-        body.ultra-lag .btn,
-        body.ultra-lag .cycle-btn,
-        body.ultra-lag .star-fav,
-        body.ultra-lag .ctrl-btn,
-        body.ultra-lag .sound-item .controls-group .btn-sm,
-        body.ultra-lag .panic-item .del,
-        body.ultra-lag .add-btn,
-        body.ultra-lag .close-btn,
-        body.ultra-lag .credits-close-btn,
-        body.ultra-lag .tab-btn,
-        body.ultra-lag .sound-btn,
-        body.ultra-lag .stop-all-btn {
-            cursor: auto !important;
         }
 
         body {
@@ -111,7 +89,23 @@
         }
 
         /* ────── LAG KILLER FEATURES ────── */
-        body.lag-killer .particle-canvas,
+        body.lag-killer * {
+            animation-play-state: paused !important;
+            transition-duration: 0s !important;
+            transition-delay: 0s !important;
+        }
+        body.lag-killer .pulse-ring {
+            display: none !important;
+        }
+        body.lag-killer .cycle-btn::before {
+            animation-play-state: paused !important;
+        }
+        body.lag-killer .cycle-btn.random .dice {
+            animation-play-state: paused !important;
+        }
+        body.lag-killer .cycle-btn.random {
+            animation-play-state: paused !important;
+        }
         body.lag-killer .glow-orb,
         body.lag-killer .meteor,
         body.lag-killer .bubble,
@@ -119,11 +113,8 @@
         body.lag-killer .grid-scan {
             display: none !important;
         }
-        body.lag-killer .cycle-btn .overlay {
+        body.lag-killer .particle-canvas {
             display: none !important;
-        }
-        body.lag-killer .cycle-btn.random .dice {
-            animation-play-state: paused !important;
         }
         body.lag-killer.lag-no-particles .particle-canvas { display: none !important; }
         body.lag-killer.lag-no-glow .glow-orb,
@@ -136,10 +127,14 @@
             animation-play-state: paused !important;
             transition-duration: 0s !important;
         }
-        /* ultra lag: also disable all animations and transitions on all elements */
         body.ultra-lag * {
-            animation-play-state: paused !important;
-            transition-duration: 0s !important;
+            cursor: auto !important;
+        }
+        body.ultra-lag #glowTrail {
+            display: none !important;
+        }
+        body.ultra-lag .particle-canvas {
+            display: none !important;
         }
 
         /* ────── ANIMATIONS ────── */
@@ -854,9 +849,6 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        .soundboard-title {
-            display: none; /* hidden */
-        }
         .stop-all-btn {
             padding: 10px 24px;
             background: #dc2626;
@@ -873,25 +865,24 @@
             transform: scale(1.05);
             box-shadow: 0 0 50px rgba(220, 38, 38, 0.9);
         }
-        .toggle-names-btn {
+        .mute-btn {
             padding: 10px 24px;
-            background: #dc2626;
+            background: #6b7280;
             border: none;
             border-radius: 40px;
             color: #fff;
             font-size: 18px;
             font-weight: 700;
-            box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
             transition: 0.3s;
             cursor: pointer;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
         }
-        .toggle-names-btn:hover {
+        .mute-btn.active {
+            background: #dc2626;
+            box-shadow: 0 0 30px rgba(220, 38, 38, 0.6);
+        }
+        .mute-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(220, 38, 38, 0.9);
-        }
-        .toggle-names-btn.active {
-            background: #22c55e;
-            box-shadow: 0 0 30px rgba(34, 197, 94, 0.6);
         }
 
         .sound-grid {
@@ -917,20 +908,8 @@
             box-shadow: 0 0 30px var(--glow);
             transform: translateY(-4px);
         }
-        /* Sound name hidden by default, shown on hover via title, or when show-names class is on container */
         .sound-card .sound-name {
             display: none;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #fff, #a0c0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        #soundboardContainer.show-names .sound-card .sound-name {
-            display: block;
         }
         .sound-card .sound-controls {
             display: flex;
@@ -949,7 +928,7 @@
             cursor: pointer;
         }
         .sound-card .play-btn {
-            background: #dc2626; /* red */
+            background: #dc2626;
             color: #fff;
         }
         .sound-card .play-btn:hover {
@@ -992,6 +971,20 @@
             accent-color: var(--primary);
             width: 16px;
             height: 16px;
+        }
+
+        #oldSoundsContainer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border);
+        }
+        #oldSoundsContainer .old-sounds-title {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #94a3b8;
+            letter-spacing: 1px;
         }
 
         /* ────── PANIC MODAL ────── */
@@ -1592,7 +1585,7 @@
             filter: brightness(0.85);
         }
 
-        /* ────── NINTENDO CAROUSEL (theme‑aware) ────── */
+        /* ────── NINTENDO CAROUSEL ────── */
         body.nintendo-mode .cycles-grid {
             display: none !important;
         }
@@ -1715,9 +1708,6 @@
                 font-size: 14px;
                 padding: 10px 18px;
             }
-            .soundboard .title {
-                font-size: 20px;
-            }
             .star-fav {
                 font-size: 26px;
                 right: 2px;
@@ -1760,12 +1750,6 @@
             .header h1 {
                 font-size: 18px;
                 letter-spacing: 1px;
-            }
-            .soundboard {
-                padding: 14px;
-            }
-            .sound-item {
-                min-width: 180px;
             }
             #panicModal {
                 padding: 20px;
@@ -1878,7 +1862,6 @@
             font-weight: 700;
             font-size: 16px;
         }
-        /* new ultra mode */
         #lagSettingsModal .ultra-toggle {
             display: flex;
             align-items: center;
@@ -2092,7 +2075,7 @@
             <!-- CYCLES GRID (normal) -->
             <div class="cycles-grid" id="cyclesGrid"></div>
 
-            <!-- NINTENDO CAROUSEL (theme‑aware) -->
+            <!-- NINTENDO CAROUSEL -->
             <div id="nintendoCarousel">
                 <div class="carousel-track">
                     <div class="carousel-arrow" id="carouselPrev">◀</div>
@@ -2105,13 +2088,19 @@
             <!-- SOUNDBOARD CONTAINER -->
             <div id="soundboardContainer">
                 <div class="soundboard-header">
-                    <button class="toggle-names-btn" id="toggleNamesBtn">🔴 Show Names</button>
+                    <button class="mute-btn" id="muteBtn">🔊 Click Sounds</button>
                     <button class="stop-all-btn" id="stopAllBtn">⏹ STOP ALL</button>
                 </div>
+                <!-- Main sounds -->
                 <div class="sound-grid" id="soundGrid"></div>
+                <!-- Old sounds (typing, pencil) -->
+                <div id="oldSoundsContainer">
+                    <div class="old-sounds-title">—— Educational Sounds ——</div>
+                    <div class="sound-grid" id="oldSoundGrid"></div>
+                </div>
             </div>
 
-            <!-- OLD SOUNDBOARD (kept for compatibility, but hidden) -->
+            <!-- OLD SOUNDBOARD (hidden) -->
             <div class="soundboard" style="display:none;">
                 <div class="title">🎧 EDUCATIONAL VIDEOS FOR STUDENTS</div>
                 <div class="sound-grid" id="soundboardGrid"></div>
@@ -2275,12 +2264,14 @@
         })();
 
         // ──────────────────────────────────────────────────────────────
-        //  SOUND HANDLING (always on)
+        //  SOUND HANDLING (always on) – with mute toggle
         // ──────────────────────────────────────────────────────────────
         const clickAudio = document.getElementById('clickSound');
         const switchAudio = document.getElementById('switchClick');
+        let clickMuted = false;
 
         function playSound(audioElement) {
+            if (clickMuted) return;
             if (!audioElement) return;
             try {
                 audioElement.currentTime = 0;
@@ -2290,14 +2281,24 @@
 
         document.addEventListener('click', function(e) {
             const target = e.target.closest(
-                '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn, .tab-btn, .sound-btn, .stop-all-btn, .toggle-names-btn'
+                '.cycle-btn, .btn, .ctrl-btn, .sound-item .btn-sm, .star-fav, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, #panicOpenBtn, #cloakBtn, #lagKillerBtn, #rainBtn, #rainbowBtn, #themeBtn, #applyBgBtn, #uploadBgBtn, #fullscreenBtn, #cursorBtn, #errorBackBtn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn'
             );
             if (target) playSound(clickAudio);
         }, true);
         document.getElementById('searchClear').addEventListener('click', function() { playSound(clickAudio); });
 
+        // Mute button
+        const muteBtn = document.getElementById('muteBtn');
+        muteBtn.addEventListener('click', function() {
+            clickMuted = !clickMuted;
+            this.classList.toggle('active', clickMuted);
+            this.textContent = clickMuted ? '🔇 Click Sounds' : '🔊 Click Sounds';
+            playSound(switchAudio);
+            showToast(clickMuted ? '🔇 Click sounds muted' : '🔊 Click sounds unmuted', 1500);
+        });
+
         // ──────────────────────────────────────────────────────────────
-        //  PARTICLE SYSTEM (optimized) - will be paused on lag-killer
+        //  PARTICLE SYSTEM (optimized)
         // ──────────────────────────────────────────────────────────────
         let particleRunning = true;
         let particleAnimationId = null;
@@ -2325,13 +2326,10 @@
 
             function draw() {
                 if (!particleRunning || document.body.classList.contains('lag-killer') || document.hidden) {
-                    // If lag-killer is active, we stop the loop and don't request next frame
                     if (particleAnimationId) {
                         cancelAnimationFrame(particleAnimationId);
                         particleAnimationId = null;
                     }
-                    // But we need to re-request when lag-killer is off, so we'll check periodically
-                    // We'll restart from the toggle logic.
                     return;
                 }
                 frame++;
@@ -2382,22 +2380,22 @@
                 particleAnimationId = requestAnimationFrame(draw);
             }
 
-            // Start the loop
             function startParticles() {
                 if (particleAnimationId) cancelAnimationFrame(particleAnimationId);
                 particleRunning = true;
                 draw();
             }
 
-            // Expose start/stop
-            window._particleStart = startParticles;
-            window._particleStop = function() {
+            function stopParticles() {
                 particleRunning = false;
                 if (particleAnimationId) {
                     cancelAnimationFrame(particleAnimationId);
                     particleAnimationId = null;
                 }
-            };
+            }
+
+            window._particleStart = startParticles;
+            window._particleStop = stopParticles;
 
             startParticles();
 
@@ -2472,7 +2470,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        //  GAME DATA (FULL LIST – with Basket Random added)
+        //  GAME DATA (FULL LIST – with Basket Random)
         // ──────────────────────────────────────────────────────────────
         function getCategories(id, name) {
             const lower = id.toLowerCase();
@@ -3093,19 +3091,14 @@
                 img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"],
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
-            // ─── Basketball Legends 2020 ───
             { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'],
                 img: 'https://coolbrnd.com/game-images/basketball-legends.png' },
-            // ─── Sherk Dash (Platformer) ───
             { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer'],
                 img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
-            // ─── SofloWheelieLife (Driving) ───
             { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'],
                 img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fit/w_624,h_472,q_70,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
-            // ─── Burger Clicker ───
             { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'],
                 img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
-            // ─── Basket Random (NEW) ───
             { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'],
                 img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' }
         ];
@@ -3117,13 +3110,41 @@
             return { ...g, categories: getCategories(g.id, g.name) };
         });
 
-        // ─── SOUND DATA ───
+        // ─── SOUND DATA (expanded) ───
         const SOUNDS = [
             { id: 'tacobell', name: 'Taco Bell Bong', file: 'taco-bell-bong-sfx (1).mp3' },
             { id: 'fartreverb', name: 'Fart with Reverb', file: 'fart-with-reverb.mp3' },
             { id: 'fah', name: 'Fahhhhh', file: 'fahhhhh.mp3' },
             { id: 'mommyno', name: 'My Mommy Say No More Skibidi Toilet', file: 'my-mommy-said-no-more-skibidi-toilet.mp3' },
-            { id: 'boneless', name: 'Boneless Wing Phonk', file: 'boneless-wing-funk.mp3' }
+            { id: 'boneless', name: 'Boneless Wing Phonk', file: 'boneless-wing-funk.mp3' },
+            // ─── new sounds ───
+            { id: 'tungfunk', name: 'Tung Tung Tung Sahur Funk', file: 'tung-funk-tung-sahur-funk.mp3' },
+            { id: 'homer', name: 'Homer Lets the Barts Out', file: 'homer-lets-the-barts-out.mp3' },
+            { id: 'babylaugh', name: 'Baby Laughing Meme', file: 'baby-laughing-meme.mp3' },
+            { id: 'core', name: 'Core Sound Effect', file: 'core-sound-effect.mp3' },
+            { id: 'ripgranny', name: 'Rest in Peace My Granny (Boosted)', file: 'rip-my-granny-loud-asf.mp3' },
+            { id: 'gokudrip', name: 'Goku Drip (Dragon Ball Super)', file: 'drip-goku-meme-song-original-dragon-ball-super-music-clash-of-gods-in-description (1).mp3' },
+            { id: 'anderdingus', name: 'Anderdingus', file: 'anderdingus.mp3' },
+            { id: 'mariojump', name: 'Mario Jump', file: 'maro-jump-sound-effect_1.mp3' },
+            { id: 'heehee', name: 'Hee Hee - MJ', file: 'michael-jackson-hee-hee.mp3' },
+            { id: 'funkyehh', name: 'Funky Ehh', file: 'funky-ehh.mp3' },
+            { id: 'dexter', name: 'Dexter Meme', file: 'dexter-meme.mp3' },
+            { id: 'vineboom', name: 'Vine Boom', file: 'shocked-sound-effect (1).mp3' },
+            { id: 'spideypoly', name: 'Spiderman Polyester Edit', file: 'spiderman-polyester-edit.mp3' },
+            { id: 'metalpipe', name: 'Metal Pipe Falling', file: 'jixaw-metal-pipe-falling-sound.mp3' },
+            { id: 'longbrainfart', name: 'Long Brain Fart', file: 'long-brain-fart.mp3' },
+            { id: 'verityshutup', name: 'Verity - Shut Up', file: 'verity-shut-up.mp3' },
+            { id: 'verity67', name: 'Verity - 67', file: 'verity-67.mp3' },
+            { id: 'veritygreet', name: 'Verity Greeting', file: 'verity-greeting_yhorpTs.mp3' },
+            { id: 'miseryxlife', name: 'Misery x Life Goes x Verity', file: 'misery-x-life-goes-x-verity.mp3' },
+            { id: 'veritydisstrack', name: 'Verity Diss Track Chorus', file: 'verity-disstrack-chorus.mp3' },
+            { id: 'lowqualityjob', name: 'Low Quality - I Was Looking for a Job', file: 'low-quality-i-was-looking-for-a-job.mp3' }
+        ];
+
+        // ─── OLD SOUNDS (typing, pencil) ───
+        const OLD_SOUNDS = [
+            { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
+            { id: 'pencil', name: '✏️ Pencil Writing', file: 'https://bigsoundbank.com/UPLOAD/mp3/0221.mp3' }
         ];
 
         // ──────────────────────────────────────────────────────────────
@@ -3151,8 +3172,8 @@
         let selectedIndex = 0;
         let carouselGames = [];
 
-        // Sound instances
         let audioInstances = {};
+        let oldAudioInstances = {};
 
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
@@ -3191,10 +3212,9 @@
         const carouselPrev = document.getElementById('carouselPrev');
         const carouselNext = document.getElementById('carouselNext');
         const soundGrid = document.getElementById('soundGrid');
+        const oldSoundGrid = document.getElementById('oldSoundGrid');
         const stopAllBtn = document.getElementById('stopAllBtn');
-        const toggleNamesBtn = document.getElementById('toggleNamesBtn');
 
-        // Tab elements
         const tabBtns = document.querySelectorAll('.tab-btn');
         const gamesSearch = document.getElementById('gamesSearch');
         const gamesFilter = document.getElementById('gamesFilter');
@@ -3252,23 +3272,18 @@
             body.classList.toggle('lag-no-anim', lagKiller && !lagSettings.anim);
             body.classList.toggle('ultra-lag', lagKiller && lagSettings.ultra);
 
-            // Handle particle loop
             if (lagKiller && lagSettings.ultra) {
-                // Stop particles if ultra is on
                 if (window._particleStop) window._particleStop();
             } else {
-                // Restart particles if not ultra and lag-killer is off
                 if (!lagKiller && window._particleStart) {
                     window._particleStart();
                 } else if (lagKiller && !lagSettings.ultra && !lagSettings.particles) {
-                    // If particles disabled via individual toggle, stop them
                     if (window._particleStop) window._particleStop();
                 } else if (!lagKiller && !lagSettings.particles) {
-                    // If particles disabled but lag-killer off, we might want to stop them anyway? We'll keep the toggle logic.
-                    // Actually we should respect the individual toggle: if lagKiller is off and particles enabled, start.
-                    if (!lagKiller && lagSettings.particles && window._particleStart) {
-                        window._particleStart();
-                    }
+                    // if particles disabled but lag-killer off, stop them
+                    if (window._particleStop) window._particleStop();
+                } else if (!lagKiller && lagSettings.particles && window._particleStart) {
+                    window._particleStart();
                 }
             }
 
@@ -3291,7 +3306,7 @@
             saveLagSettings();
         }
 
-        // ─── LAG KILLER TOGGLE & SETTINGS ───
+        // ─── LAG KILLER TOGGLE ───
         const lagMaster = document.getElementById('lagMaster');
         const lagParticles = document.getElementById('lagParticles');
         const lagGlow = document.getElementById('lagGlow');
@@ -4149,26 +4164,17 @@
         });
 
         // ─── SOUNDBOARD ───
-        let showNames = false;
-        toggleNamesBtn.addEventListener('click', () => {
-            showNames = !showNames;
-            soundboardContainer.classList.toggle('show-names', showNames);
-            toggleNamesBtn.textContent = showNames ? '🔴 Hide Names' : '🔴 Show Names';
-            toggleNamesBtn.classList.toggle('active', showNames);
-            playSound(switchAudio);
-        });
-
         function buildSoundboard() {
             soundGrid.innerHTML = '';
             SOUNDS.forEach(sound => {
                 const card = document.createElement('div');
                 card.className = 'sound-card';
-                card.title = sound.name; // tooltip on hover
+                card.title = sound.name;
                 card.innerHTML = `
-                    <div class="sound-name">${sound.name}</div>
+                    <div class="sound-name" style="display:none;">${sound.name}</div>
                     <div class="sound-controls">
-                        <button class="sound-btn play-btn" data-id="${sound.id}">▶ Play</button>
-                        <button class="sound-btn stop-btn" data-id="${sound.id}">⏹ Stop</button>
+                        <button class="sound-btn play-btn" data-id="${sound.id}" title="${sound.name}">▶ Play</button>
+                        <button class="sound-btn stop-btn" data-id="${sound.id}" title="Stop ${sound.name}">⏹ Stop</button>
                         <div class="speed-group">
                             <span>🐢</span>
                             <input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${sound.id}" class="speed-slider">
@@ -4184,7 +4190,31 @@
                 soundGrid.appendChild(card);
             });
 
-            // Create audio instances
+            oldSoundGrid.innerHTML = '';
+            OLD_SOUNDS.forEach(sound => {
+                const card = document.createElement('div');
+                card.className = 'sound-card';
+                card.title = sound.name;
+                card.innerHTML = `
+                    <div class="sound-name" style="display:none;">${sound.name}</div>
+                    <div class="sound-controls">
+                        <button class="sound-btn play-btn" data-id="${sound.id}" title="${sound.name}">▶ Play</button>
+                        <button class="sound-btn stop-btn" data-id="${sound.id}" title="Stop ${sound.name}">⏹ Stop</button>
+                        <div class="speed-group">
+                            <span>🐢</span>
+                            <input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${sound.id}" class="speed-slider">
+                            <span class="speed-val" id="speedVal-${sound.id}">1.00x</span>
+                            <span>🐇</span>
+                        </div>
+                        <div class="loop-group">
+                            <label>🔄 Loop</label>
+                            <input type="checkbox" data-id="${sound.id}" class="loop-check">
+                        </div>
+                    </div>
+                `;
+                oldSoundGrid.appendChild(card);
+            });
+
             SOUNDS.forEach(sound => {
                 const audio = new Audio(sound.file);
                 audio.preload = 'auto';
@@ -4192,11 +4222,17 @@
                 audioInstances[sound.id] = audio;
             });
 
-            // Event listeners for play
+            OLD_SOUNDS.forEach(sound => {
+                const audio = new Audio(sound.file);
+                audio.preload = 'auto';
+                audio.loop = false;
+                oldAudioInstances[sound.id] = audio;
+            });
+
             document.querySelectorAll('.play-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = btn.dataset.id;
-                    const audio = audioInstances[id];
+                    const audio = audioInstances[id] || oldAudioInstances[id];
                     if (audio) {
                         audio.currentTime = 0;
                         audio.play().catch(() => {});
@@ -4204,11 +4240,10 @@
                 });
             });
 
-            // Stop
             document.querySelectorAll('.stop-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const id = btn.dataset.id;
-                    const audio = audioInstances[id];
+                    const audio = audioInstances[id] || oldAudioInstances[id];
                     if (audio) {
                         audio.pause();
                         audio.currentTime = 0;
@@ -4216,23 +4251,21 @@
                 });
             });
 
-            // Loop
             document.querySelectorAll('.loop-check').forEach(chk => {
                 chk.addEventListener('change', () => {
                     const id = chk.dataset.id;
-                    const audio = audioInstances[id];
+                    const audio = audioInstances[id] || oldAudioInstances[id];
                     if (audio) {
                         audio.loop = chk.checked;
                     }
                 });
             });
 
-            // Speed
             document.querySelectorAll('.speed-slider').forEach(slider => {
                 const update = () => {
                     const id = slider.dataset.id;
                     const val = parseFloat(slider.value);
-                    const audio = audioInstances[id];
+                    const audio = audioInstances[id] || oldAudioInstances[id];
                     if (audio) {
                         audio.playbackRate = val;
                     }
@@ -4243,10 +4276,14 @@
                 update();
             });
 
-            // Stop All
             stopAllBtn.addEventListener('click', () => {
                 for (const id in audioInstances) {
                     const audio = audioInstances[id];
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+                for (const id in oldAudioInstances) {
+                    const audio = oldAudioInstances[id];
                     audio.pause();
                     audio.currentTime = 0;
                 }
@@ -4272,13 +4309,11 @@
                 this.textContent = '2 mode';
                 showToast('📋', 1000);
             }
-            // Ensure games tab is active when toggling
             if (!nintendoMode && document.querySelector('.tab-btn[data-tab="games"]').classList.contains('active')) {
                 grid.style.display = 'flex';
             }
         });
 
-        // ─── Carousel Navigation ───
         carouselPrev.addEventListener('click', () => navigateCarousel(-1));
         carouselNext.addEventListener('click', () => navigateCarousel(1));
 
@@ -4308,15 +4343,11 @@
         document.body.style.backgroundImage = 'var(--bg)';
         nintendoCarousel.style.display = 'none';
         grid.style.display = 'flex';
-        // Start with games tab active
         switchTab('games');
 
-        console.log('🚀 SigmaTown4Life – All games loaded. Lag Killer upgraded with custom settings.');
-        console.log('✅ Added: Sherk Dash (Platformer) & SofloWheelieLife (Driving)');
-        console.log('✅ Added: Basket Random (Sports)');
-        console.log('✅ Added: Soundboard with 5 sounds, speed, loop, stop all, show/hide names');
-        console.log('✅ Lag Killer: Ultra mode, particle loop properly paused, animations disabled.');
-        console.log('✅ Tooltips on hover show game name.');
+        console.log('🚀 SigmaTown4Life – All games loaded. Lag Killer upgraded.');
+        console.log('✅ Added 20+ new sounds, mute click toggle, and classic typing/pencil sounds.');
+        console.log('✅ Tooltips on hover for all sounds & games.');
     </script>
 </body>
 </html>
