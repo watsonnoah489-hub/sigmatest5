@@ -577,7 +577,7 @@
             transform: scale(1.01);
         }
         .search-row input::placeholder {
-            color: transparent;
+            color: rgba(255, 255, 255, 0.45);
         }
         .search-row .clear-btn {
             border-radius: 0 30px 30px 0;
@@ -908,6 +908,9 @@
             box-shadow: 0 0 30px var(--glow);
             transform: translateY(-4px);
         }
+        .sound-card.hidden-by-search {
+            display: none !important;
+        }
         .sound-card .sound-name {
             display: none;
         }
@@ -985,6 +988,23 @@
             margin-bottom: 15px;
             color: #94a3b8;
             letter-spacing: 1px;
+        }
+        #oldSoundsContainer.hidden-by-search {
+            display: none !important;
+        }
+
+        /* Empty search result message */
+        .soundboard-empty-msg {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 16px;
+            color: #94a3b8;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+        .soundboard-empty-msg.show {
+            display: block;
         }
 
         /* ────── PANIC MODAL ────── */
@@ -1983,6 +2003,7 @@
                 <input type="checkbox" id="lagUltra" />
             </div>
             <div class="actions">
+                <button class="btn" id="lagLowEndMode" style="background:#ef4444;">📱 Low End Mode</button>
                 <button class="btn" id="lagSettingsClose">Close</button>
             </div>
         </div>
@@ -2091,6 +2112,18 @@
                     <button class="mute-btn" id="muteBtn">🔊 Click Sounds</button>
                     <button class="stop-all-btn" id="stopAllBtn">⏹ STOP ALL</button>
                 </div>
+
+                <!-- SOUND SEARCH (NEW) -->
+                <div class="search-row" id="soundsSearch">
+                    <input type="text" id="soundSearchInput" placeholder="🔍 Search sounds...">
+                    <button class="clear-btn" id="soundSearchClear">✕</button>
+                </div>
+
+                <!-- Empty search result message -->
+                <div class="soundboard-empty-msg" id="soundboardEmptyMsg">
+                    🔊 No sounds found matching your search.
+                </div>
+
                 <!-- Main sounds -->
                 <div class="sound-grid" id="soundGrid"></div>
                 <!-- Old sounds (typing, pencil) -->
@@ -2286,6 +2319,7 @@
             if (target) playSound(clickAudio);
         }, true);
         document.getElementById('searchClear').addEventListener('click', function() { playSound(clickAudio); });
+        document.getElementById('soundSearchClear').addEventListener('click', function() { playSound(clickAudio); });
 
         // Mute button
         const muteBtn = document.getElementById('muteBtn');
@@ -2713,7 +2747,7 @@
             { id: 'fnaf1', name: 'Five Nights at Freddy\'s', file: 'clFNAF (6).html',
                 img: 'https://tse3.mm.bing.net/th/id/OIP.XW_OsPwLtSFaQrOSHEr5eAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnaf2', name: 'Five Nights at Freddy\'s 2', file: 'clFNAF2 (2).html',
-                img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2f%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2fnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
+                img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2fnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
             { id: 'fnaf3', name: 'Five Nights at Freddy\'s 3', file: 'clFNAF3 (2).html',
                 img: 'https://tse2.mm.bing.net/th/id/OIP._CWgr-vY9AA8jLa7jCUgUgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html',
@@ -3110,7 +3144,7 @@
             return { ...g, categories: getCategories(g.id, g.name) };
         });
 
-        // ─── SOUND DATA (expanded with all new sounds) ───
+        // ─── SOUND DATA (expanded with all new sounds + 2 newest) ───
         const SOUNDS = [
             { id: 'tacobell', name: 'Taco Bell Bong', file: 'taco-bell-bong-sfx (1).mp3' },
             { id: 'fartreverb', name: 'Fart with Reverb', file: 'fart-with-reverb.mp3' },
@@ -3138,7 +3172,7 @@
             { id: 'miseryxlife', name: 'Misery x Life Goes x Verity', file: 'misery-x-life-goes-x-verity.mp3' },
             { id: 'veritydisstrack', name: 'Verity Diss Track Chorus', file: 'verity-disstrack-chorus.mp3' },
             { id: 'lowqualityjob', name: 'Low Quality - I Was Looking for a Job', file: 'low-quality-i-was-looking-for-a-job.mp3' },
-            // ─── 14 NEW SOUNDS (all with .mp3) ───
+            // ─── 14 PREVIOUSLY ADDED SOUNDS ───
             { id: 'goofy-ahh', name: 'Goofy Ahh Quandale Dingle Song', file: 'goofy-ahh-uncle-productions-1.mp3' },
             { id: 'homeless', name: 'My Home is Kinda Homeless', file: 'please-speed-i-need-this_cOYk2rt.mp3' },
             { id: 'italian-brainrot', name: 'Italian Brainrot Ringtone', file: 'italian-brainrot-ringtone.mp3' },
@@ -3152,7 +3186,10 @@
             { id: 'tung-scary', name: 'Tung Tung Tung Shaury (Scary)', file: 'tung-tung-tung-sahur-scary.mp3' },
             { id: 'tung-original', name: 'Tung Tung Tung Shaury (Original)', file: 'tung-tung-tung-tung-tung-tung-sahur.mp3' },
             { id: 'driving-car', name: 'Driving in My Car', file: 'driving-in-my-car-asgore.mp3' },
-            { id: 'diddy-blud', name: 'What is This Diddy Blud Doing', file: 'diddy-blud.mp3' }
+            { id: 'diddy-blud', name: 'What is This Diddy Blud Doing', file: 'diddy-blud.mp3' },
+            // ─── 2 NEWEST SOUNDS ───
+            { id: 'netflix-tikis', name: 'Watching Netflix and Tiki Takis', file: 'watching-netflix-and-tiki-takis-made-with-Voicemod.mp3' },
+            { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-sing-made-with-Voicemod.mp3' }
         ];
 
         // ─── OLD SOUNDS (typing, pencil) ───
@@ -3166,6 +3203,7 @@
         // ──────────────────────────────────────────────────────────────
         let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
         let searchQuery = '';
+        let soundSearchQuery = ''; // NEW: sound search query
         let selectedCategories = [];
         let themeState = 'default';
         let lagKiller = false;
@@ -3203,6 +3241,10 @@
         const grid = document.getElementById('cyclesGrid');
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
+        const soundSearchInput = document.getElementById('soundSearchInput'); // NEW
+        const soundSearchClear = document.getElementById('soundSearchClear'); // NEW
+        const soundboardEmptyMsg = document.getElementById('soundboardEmptyMsg'); // NEW
+        const oldSoundsContainer = document.getElementById('oldSoundsContainer'); // NEW
         const categoryFilter = document.getElementById('categoryFilter');
         const colorPicker = document.getElementById('colorPicker');
         const wallpaperSelect = document.getElementById('wallpaperSelect');
@@ -3331,6 +3373,7 @@
         const lagUltra = document.getElementById('lagUltra');
         const lagSettingsOverlay = document.getElementById('lagSettingsOverlay');
         const lagSettingsClose = document.getElementById('lagSettingsClose');
+        const lagLowEndMode = document.getElementById('lagLowEndMode');
 
         function updateSettingsUI() {
             lagMaster.checked = lagKiller;
@@ -3374,6 +3417,21 @@
                 applySettingsFromUI();
                 lagSettingsOverlay.classList.remove('open');
             }
+        });
+
+        // Low End Mode: disable everything, enable ultra
+        lagLowEndMode.addEventListener('click', () => {
+            lagMaster.checked = true;
+            lagParticles.checked = false;
+            lagGlow.checked = false;
+            lagGrid.checked = false;
+            lagMeteor.checked = false;
+            lagBubble.checked = false;
+            lagRain.checked = false;
+            lagAnim.checked = false;
+            lagUltra.checked = true;
+            applySettingsFromUI();
+            showToast('📱 Low End Mode activated – all effects disabled', 2000);
         });
 
         [lagMaster, lagParticles, lagGlow, lagGrid, lagMeteor, lagBubble, lagRain, lagAnim, lagUltra].forEach(el => {
@@ -3850,7 +3908,7 @@
             launchGame(g.id);
         }
 
-        // ─── Search ───
+        // ─── Search (games) ───
         let searchTimeout;
         searchInput.addEventListener('input', () => {
             clearTimeout(searchTimeout);
@@ -3861,6 +3919,64 @@
             searchQuery = '';
             renderGrid();
             searchInput.focus(); });
+
+        // ─── Search (sounds) – NEW ───
+        let soundSearchTimeout;
+        soundSearchInput.addEventListener('input', () => {
+            clearTimeout(soundSearchTimeout);
+            soundSearchTimeout = setTimeout(() => {
+                soundSearchQuery = soundSearchInput.value.toLowerCase().trim();
+                filterSoundboard();
+            }, 150);
+        });
+        soundSearchClear.addEventListener('click', () => {
+            soundSearchInput.value = '';
+            soundSearchQuery = '';
+            filterSoundboard();
+            soundSearchInput.focus();
+        });
+
+        // Filter the soundboard based on soundSearchQuery
+        function filterSoundboard() {
+            const q = soundSearchQuery;
+            let visibleMain = 0;
+            let visibleOld = 0;
+
+            // Filter main sounds
+            const mainCards = soundGrid.querySelectorAll('.sound-card');
+            mainCards.forEach(card => {
+                const name = (card.dataset.soundName || '').toLowerCase();
+                const match = q === '' || name.includes(q);
+                card.classList.toggle('hidden-by-search', !match);
+                if (match) visibleMain++;
+            });
+
+            // Filter old sounds
+            const oldCards = oldSoundGrid.querySelectorAll('.sound-card');
+            oldCards.forEach(card => {
+                const name = (card.dataset.soundName || '').toLowerCase();
+                const match = q === '' || name.includes(q);
+                card.classList.toggle('hidden-by-search', !match);
+                if (match) visibleOld++;
+            });
+
+            // Hide the "Educational Sounds" section if none match
+            if (visibleOld === 0) {
+                oldSoundsContainer.classList.add('hidden-by-search');
+            } else {
+                oldSoundsContainer.classList.remove('hidden-by-search');
+            }
+
+            // Show "no results" message if nothing matched at all
+            if (visibleMain === 0 && visibleOld === 0) {
+                soundboardEmptyMsg.classList.add('show');
+            } else {
+                soundboardEmptyMsg.classList.remove('show');
+            }
+
+            // Toggle clear button
+            soundSearchClear.classList.toggle('show', q.length > 0);
+        }
 
         categoryFilter.addEventListener('change', () => {
             const opts = categoryFilter.options;
@@ -4183,6 +4299,7 @@
                 const card = document.createElement('div');
                 card.className = 'sound-card';
                 card.title = sound.name;
+                card.dataset.soundName = sound.name; // for search filtering
                 card.innerHTML = `
                     <div class="sound-name" style="display:none;">${sound.name}</div>
                     <div class="sound-controls">
@@ -4208,6 +4325,7 @@
                 const card = document.createElement('div');
                 card.className = 'sound-card';
                 card.title = sound.name;
+                card.dataset.soundName = sound.name; // for search filtering
                 card.innerHTML = `
                     <div class="sound-name" style="display:none;">${sound.name}</div>
                     <div class="sound-controls">
@@ -4302,6 +4420,9 @@
                 }
                 showToast('⏹ All sounds stopped', 1500);
             });
+
+            // Initial filter state (in case user typed before build)
+            filterSoundboard();
         }
 
         buildSoundboard();
@@ -4348,6 +4469,8 @@
 
         // ─── INIT ───
         loadLagSettings();
+        applyLagKiller();
+        updateSettingsUI();
         applyCloak(0);
         updateCursor('#3b82f6');
         renderGrid();
@@ -4359,8 +4482,8 @@
         switchTab('games');
 
         console.log('🚀 SigmaTown4Life – All games loaded. Lag Killer upgraded.');
-        console.log('✅ Added 20+ new sounds, mute click toggle, and classic typing/pencil sounds.');
-        console.log('✅ Tooltips on hover for all sounds & games.');
+        console.log('✅ Soundboard search bar added – type to filter sounds live!');
+        console.log('✅ Low End Mode added for Chromebooks.');
     </script>
 </body>
 </html>
