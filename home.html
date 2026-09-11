@@ -230,14 +230,32 @@
         .shorts-fs-btn:active { transform: scale(0.92); }
         .shorts-frame:fullscreen .shorts-fs-btn { top: 20px; right: 20px; }
 
-        .shorts-hint {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 12px;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            user-select: none;
+        /* ────── DRAG & DROP WALLPAPER ────── */
+        #dropOverlay {
+            position: fixed; inset: 0; z-index: 9998;
+            background: rgba(10, 14, 26, 0.92);
+            backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center;
+            pointer-events: none;
         }
+        #dropOverlay.show { display: flex; }
+        #dropOverlay .drop-box {
+            border: 4px dashed var(--primary);
+            border-radius: 30px;
+            padding: 60px 80px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 0 60px var(--glow), inset 0 0 60px rgba(59,130,246,0.15);
+            animation: dropPulse 1.4s ease-in-out infinite;
+            background: rgba(0,0,0,0.4);
+        }
+        @keyframes dropPulse {
+            0%,100% { transform: scale(1); border-color: var(--primary); }
+            50% { transform: scale(1.03); border-color: #a855f7; }
+        }
+        #dropOverlay .drop-icon { font-size: 80px; margin-bottom: 12px; filter: drop-shadow(0 0 20px var(--glow)); }
+        #dropOverlay .drop-title { font-size: 28px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+        #dropOverlay .drop-sub { font-size: 15px; opacity: 0.75; letter-spacing: 1px; }
 
         #panicOverlay, #creditsOverlay, #lagSettingsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         #panicOverlay.open, #creditsOverlay.open, #lagSettingsOverlay.open { display: flex; }
@@ -351,6 +369,15 @@
     <audio id="clickSound" src="clicksoundeffect.mp3" preload="auto"></audio>
     <audio id="switchClick" src="switchclick.mp3" preload="auto"></audio>
     <div id="toast"></div>
+
+    <!-- DRAG & DROP OVERLAY -->
+    <div id="dropOverlay">
+        <div class="drop-box">
+            <div class="drop-icon">🖼️</div>
+            <div class="drop-title">DROP IMAGE TO SET WALLPAPER</div>
+            <div class="drop-sub">Release anywhere on the page</div>
+        </div>
+    </div>
 
     <div id="panicOverlay">
         <div id="panicModal">
@@ -523,7 +550,7 @@
 
             <div id="shortsContainer">
                 <div class="shorts-wrapper">
-                    <button class="shorts-nav" id="shortsUp" title="Random short">▲</button>
+                    <button class="shorts-nav" id="shortsUp" title="Previous short">▲</button>
                     <div class="shorts-frame" id="shortsFrame">
                         <video id="shortsVideo" autoplay loop playsinline controls preload="metadata"></video>
                         <button class="shorts-fs-btn" id="shortsFullscreen" title="Fullscreen">⛶</button>
@@ -532,8 +559,7 @@
                             <div>Video not found — trying another…</div>
                         </div>
                     </div>
-                    <button class="shorts-nav" id="shortsDown" title="Random short">▼</button>
-                    <div class="shorts-hint">🖱️ scroll wheel or click ▲▼ to change short</div>
+                    <button class="shorts-nav" id="shortsDown" title="Next short">▼</button>
                 </div>
             </div>
         </div>
@@ -672,10 +698,63 @@
             document.documentElement.style.setProperty('--sigma-cursor', `url('data:image/svg+xml;utf8,${enc}') 20 24, auto`);
         }
 
+        // ═══════════ DRAG & DROP WALLPAPER ═══════════
+        (function initDragDrop() {
+            const overlay = document.getElementById('dropOverlay');
+            let dragDepth = 0;
+
+            function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+            ['dragenter','dragover','dragleave','drop'].forEach(evt => {
+                document.addEventListener(evt, preventDefaults, false);
+                window.addEventListener(evt, preventDefaults, false);
+            });
+
+            document.addEventListener('dragenter', (e) => {
+                dragDepth++;
+                if (dragDepth > 0) overlay.classList.add('show');
+            });
+
+            document.addEventListener('dragleave', (e) => {
+                dragDepth--;
+                if (dragDepth <= 0) { dragDepth = 0; overlay.classList.remove('show'); }
+            });
+
+            document.addEventListener('dragover', (e) => { if (dragDepth > 0) overlay.classList.add('show'); });
+
+            document.addEventListener('drop', (e) => {
+                dragDepth = 0;
+                overlay.classList.remove('show');
+                const dt = e.dataTransfer;
+                if (!dt) return;
+                let file = null;
+                if (dt.files && dt.files.length) file = dt.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        document.documentElement.style.setProperty('--bg', `url('${ev.target.result}')`);
+                        document.body.style.backgroundImage = `var(--bg)`;
+                        showToast('🖼️ Wallpaper set from dropped file!', 2000);
+                    };
+                    reader.readAsDataURL(file);
+                    return;
+                }
+                // Fallback: URL drop
+                const url = dt.getData('text/uri-list') || dt.getData('text/plain');
+                if (url && /\.(png|jpe?g|gif|webp|bmp|svg|avif)/i.test(url)) {
+                    document.documentElement.style.setProperty('--bg', `url('${url.trim()}')`);
+                    document.body.style.backgroundImage = `var(--bg)`;
+                    showToast('🖼️ Wallpaper set from dropped URL!', 2000);
+                } else {
+                    showToast('⚠️ Drop an image file to set wallpaper.', 2200);
+                }
+            }, false);
+        })();
+
         // ═══════════ CATEGORIES ═══════════
         function getCategories(id, name) {
             const l = id.toLowerCase(); const cats = [];
-            const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','ducklife1','ducklife2','ducklife3','ducklife4','ducklife5','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby'];
+            const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','ducklife1','ducklife2','ducklife3','ducklife4','ducklife5','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby','escapeschoolduel'];
             if (plat.includes(id)) cats.push('Platformer');
             if (l.includes('fnaf')||l.includes('fnac')||l.includes('fnaw')||l==='fnafshooter'||l==='fnaf3remastered'||l==='fnafworld') cats.push('FNAF','Horror');
             if (l.startsWith('ducklife')) cats.push('Duck Life');
@@ -684,7 +763,7 @@
             if (l.includes('subway')||l.includes('subwaysurfer')) cats.push('Subway Surfers','Runner');
             if (l.includes('mortalkombat')||l==='mariocombat'||l==='stickmankombat') cats.push('Mortal Kombat');
             if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad') cats.push('Runner');
-            if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift') cats.push('Horror');
+            if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') cats.push('Horror');
             if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { cats.push('Zombie'); if (l!=='hobovszombies') cats.push('Horror'); }
             if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') cats.push('Sports');
             if (l==='blockblast') cats.push('Puzzle','Relaxing');
@@ -693,7 +772,7 @@
             if (l==='thereisnofile') cats.push('Puzzle','Relaxing');
             if (l.includes('clicker')||l==='capybara'||l==='omeganugget'||l==='obbyjumperclicker'||l==='speedperclick'||l==='capybaraclicker'||l==='10morebullets'||l==='10bullets'||l==='cookieclicker'||l==='fruitninja'||l==='dogeminer'||l==='burgerclicker') { cats.push('Clicker'); if (l==='omeganugget') cats.push('Brainrot'); }
             if (l.includes('brainrot')||l.includes('skibidi')||l==='tripletobby'||l==='caseoh'||l==='tcubed') cats.push('Brainrot');
-            if (l.includes('obby')||l==='obbyjumperclicker'||l==='speedperclick'||l==='tripletobby'||l==='redball4'||l==='supermario63'||l==='supermario64'||l==='obbycart'||l==='blockcraftparkour'||l==='obby99willlose'||l==='obbyfriends'||l==='snowboardobby') cats.push('Obby');
+            if (l.includes('obby')||l==='obbyjumperclicker'||l==='speedperclick'||l==='tripletobby'||l==='redball4'||l==='supermario63'||l==='supermario64'||l==='obbycart'||l==='blockcraftparkour'||l==='obby99willlose'||l==='obbyfriends'||l==='snowboardobby'||l==='escapeschoolduel') cats.push('Obby');
             if (l.includes('stickman')) cats.push('Stickman');
             if (l==='bloxorz'||l==='2048'||l==='99balls'||l==='candycrush'||l==='cuttherope'||l==='oneshotlegacy'||l==='riddleschool1'||l==='riddleschool2'||l==='riddleschool3'||l==='riddleschool4'||l==='riddleschool5'||l==='blackjack'||l==='chessclassic'||l==='magictiles3'||l==='sortthecourt'||l==='uno'||l==='wordleunlimited'||l==='thereisnofile'||l==='minecaves'||l==='impossiblequiz') cats.push('Puzzle');
             if (l==='minecaves') cats.push('Relaxing','Minecraft');
@@ -705,6 +784,8 @@
             if (l==='blockcraftparkour') cats.push('Minecraft');
             if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152') cats.push('Minecraft');
             if (l==='minecraftpe') cats.push('Minecraft');
+            if (l==='noobminer') cats.push('Minecraft');
+            if (l==='minecart') cats.push('Minecraft');
             const isP = cats.includes('Puzzle');
             if (isP && !['cuttherope','oneshotlegacy','minecaves','impossiblequiz'].includes(id)) cats.push('Relaxing');
             if (l==='growagarden'||l==='elasticface'||l==='slowroads'||l==='thereisnofile'||l==='minecaves') cats.push('Relaxing');
@@ -717,11 +798,11 @@
             if (l==='ragdollhit') cats.push('Stickman');
             if (l==='snowbattle') cats.push('Other');
             if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d') cats.push('Driving');
-            if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria') cats.push("Papa's Restaurants");
-            if (l.startsWith('riddleschool')) { cats.push('Riddle School'); if (!cats.includes('Puzzle')) cats.push('Puzzle'); if (!cats.includes('Relaxing')) cats.push('Relaxing'); }
+            if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria') cats.push("Papa's Restaurants");
+            if (l.startsWith('riddleschool')||l==='riddletransfer'||l==='riddletransfer2') { cats.push('Riddle School'); if (!cats.includes('Puzzle')) cats.push('Puzzle'); if (!cats.includes('Relaxing')) cats.push('Relaxing'); }
             if (l==='stickmandestruction') cats.push('Stickman');
             if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { cats.push('Shooter'); cats.push('Time Shooter Series'); }
-            const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2'];
+            const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle'];
             const isUnc = unc.includes(id); if (isUnc) cats.push('Uncategorized');
             const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
             if (other.includes(id) && cats.length === 0) cats.push('Other');
@@ -946,7 +1027,17 @@
             { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'], img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
             { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' },
             { id: 'trafficjam3d', name: 'Traffic Jam 3D', file: 'cltrafficjam3d.html', categories: ['Driving'], img: 'https://tse1.mm.bing.net/th/id/OIP.bDnWpqkbMUupJfK8XqLBgQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'snowboardobby', name: 'Snowboard Obby 3D', file: 'clsnowboardobby (2).html', categories: ['Obby', 'Platformer'], img: 'https://static.playgama.com/p-img/ph/obby-snowboard-parkour/big_preview/3949afaa00fb49d2975a78118722b3c5?width=1200' }
+            { id: 'snowboardobby', name: 'Snowboard Obby 3D', file: 'clsnowboardobby (2).html', categories: ['Obby', 'Platformer'], img: 'https://static.playgama.com/p-img/ph/obby-snowboard-parkour/big_preview/3949afaa00fb49d2975a78118722b3c5?width=1200' },
+            { id: 'minecart', name: 'Minecart', file: 'clminecart.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtcbqu-2ebce1f1-f71d-4741-a241-e4d2deec794a.png/v1/fill/w_976,h_661,q_80,strp/minecart_logo_by_timebandit010101_dmtcbqu-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjYxIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRjYnF1LTJlYmNlMWYxLWY3MWQtNDc0MS1hMjQxLWU0ZDJkZWVjNzk0YS5wbmciLCJ3aWR0aCI6Ijw9OTc2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.1TtYnxKWdH4fAtKZoXYQGWAciCWUJerOTSxu728S4cQ' },
+            { id: 'mrracer', name: 'Mr Racer', file: 'clmrracer.html', categories: ['Driving'], img: 'https://play-lh.googleusercontent.com/bfyos0Zb0SB6EubLJCZBRJe-iW-0fg1fcRkLtvFcAp6iQ3_fGdNGHUU0l_X7W9_QDBo' },
+            { id: 'riddletransfer', name: 'Riddle Transfer', file: 'Riddle Transfer (1).html', categories: ['Riddle School', 'Puzzle', 'Relaxing'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/292.png' },
+            { id: 'riddletransfer2', name: 'Riddle Transfer 2', file: 'Riddle Transfer 2.html', categories: ['Riddle School', 'Puzzle', 'Relaxing'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/293.png' },
+            { id: 'escapeschoolduel', name: 'Escape School Duel', file: 'clescapeschoolduel.html', categories: ['Obby', 'Platformer'], img: 'https://tse1.mm.bing.net/th/id/OIP.sQ3msEuV87Dk0QPkCg_hywHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'papascheeseria', name: "Papa's Cheeseria", file: 'Papa\'s Cheeseria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/220.png' },
+            { id: 'papashotdoggeria', name: "Papa's Hot Doggeria", file: 'Papa\'s Hot Doggeria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/224.png' },
+            { id: 'slendytubbies2d', name: 'Slendytubbies 2D', file: 'Slendytubbies 2D.html', categories: ['Horror'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/807.png' },
+            { id: 'tosstheturtle', name: 'Toss the Turtle', file: 'Toss The Turtle (1).html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/110.png' },
+            { id: 'noobminer', name: 'Noob Miner', file: 'clnoobminer.html', categories: ['Minecraft'], img: 'https://tse3.mm.bing.net/th/id/OIP.bROxewI8cAUo0or6ZWwGqwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
         ];
 
         const GAME_DATA = GAME_DATA_RAW.map(g => {
@@ -955,7 +1046,6 @@
             return { ...g, categories: getCategories(g.id, g.name) };
         });
 
-        // ═══════════ SKINS ═══════════
         const SKINS = [
             { id: 'mumbo', name: 'Mumbo Jumbo', file: 'Mumbo-Jumbo-Actions-amp-Stuff-style-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/mumbo-jumbo-actions-stuff-19203653-minecraft-skin.jpg' },
             { id: 'hacker', name: 'Hacker', file: 'Hacker-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/1533/unnamed59268212_minecraft_skin-9268212.jpg' },
@@ -966,15 +1056,15 @@
             { id: 'camman18', name: 'Camman 18', file: 'Yooooooooooo-its-caman-18-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/steve-planetminecraft-com-20137110-minecraft-skin.jpg' }
         ];
 
-        // ═══════════ SHORTS — emoji/problem files removed ═══════════
+        // ═══════════ SHORTS — includes videoplayback (51) ═══════════
         const SHORTS = [
-            { file: 'And then he clicked post #funny #skit #sports - Matt Beav 2 (1080p).mp4' }
+            { file: 'videoplayback (47).mp4' },
+            { file: 'videoplayback (48).mp4' },
+            { file: 'videoplayback (49).mp4' },
+            { file: 'videoplayback (50).mp4' },
+            { file: 'videoplayback (51).mp4' }
         ];
-        for (let i = 28; i <= 46; i++) {
-            SHORTS.push({ file: 'videoplayback (' + i + ').mp4' });
-        }
 
-        // ═══════════ SOUNDS ═══════════
         const SOUNDS = [
             { id: 'tacobell', name: 'Taco Bell Bong', file: 'taco-bell-bong-sfx (1).mp3' },
             { id: 'fartreverb', name: 'Fart with Reverb', file: 'fart-with-reverb.mp3' },
@@ -1024,7 +1114,6 @@
             { id: 'pencil', name: '✏️ Writing', file: 'https://bigsoundbank.com/UPLOAD/mp3/0221.mp3' }
         ];
 
-        // ═══════════ STATE ═══════════
         let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
         let searchQuery = '', soundSearchQuery = '', selectedCategories = [];
         let themeState = 'default', lagKiller = false;
@@ -1097,7 +1186,6 @@
         const gamesFilter = document.getElementById('gamesFilter');
         const soundboardContainer = document.getElementById('soundboardContainer');
 
-        // ═══════════ SHAPE TOGGLE ═══════════
         const SHAPES = ['', 'shape-square', 'shape-rounded', 'shape-hexagon', 'shape-diamond'];
         const SHAPE_LABELS = ['⬤ CIRCLE', '⬛ SQUARE', '▢ ROUNDED', '⬡ HEXAGON', '◆ DIAMOND'];
         const SHAPE_NAMES = ['Circle', 'Square', 'Rounded', 'Hexagon', 'Diamond'];
@@ -1113,7 +1201,6 @@
             showToast('Shape: ' + SHAPE_NAMES[shapeIndex], 1500);
         });
 
-        // ═══════════ TABS ═══════════
         function switchTab(tab) {
             currentTab = tab;
             gamesPage.style.display = 'none';
@@ -1134,7 +1221,7 @@
                 if (nintendoMode) { nintendoCarousel.style.display = 'block'; grid.style.display = 'none'; }
                 else { grid.style.display = 'flex'; }
             } else if (tab === 'sounds') { soundboardContainer.style.display = 'block'; }
-            else if (tab === 'other') { otherContainer.style.display = 'block'; }
+            else if (tab === 'other') { otherContainer.style.display = 'block'; renderOtherGrid(); }
             else if (tab === 'skins') { skinsContainer.style.display = 'block'; }
             else if (tab === 'shorts') {
                 shortsContainer.style.display = 'block';
@@ -1144,7 +1231,6 @@
         }
         tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
-        // ═══════════ SHORTS PLAYER ═══════════
         function hideShortsError() { shortsError.classList.remove('show'); }
         function showShortsError() { shortsError.classList.add('show'); }
 
@@ -1166,64 +1252,34 @@
                 showToast('⚠️ No working shorts available', 2500);
                 return;
             }
-            let newIdx;
-            if (direction === 0) {
-                let attempts = 0;
-                newIdx = currentShortIndex;
-                while (attempts < total * 2) {
-                    newIdx = Math.floor(Math.random() * total);
-                    if (SHORTS.length === 1 || (newIdx !== currentShortIndex && !brokenShorts.has(SHORTS[newIdx].file))) break;
-                    attempts++;
-                }
-            } else {
-                newIdx = (currentShortIndex + direction) % total;
-                if (newIdx < 0) newIdx = total - 1;
-                let attempts = 0;
-                while (brokenShorts.has(SHORTS[newIdx].file) && attempts < total) {
-                    newIdx = (newIdx + direction + total) % total;
-                    attempts++;
-                }
-            }
+            const step = (direction === 0 ? 1 : direction);
+            let newIdx = currentShortIndex;
+            let attempts = 0;
+            do {
+                newIdx = (newIdx + step + total) % total;
+                attempts++;
+                if (attempts > total) break;
+            } while (brokenShorts.has(SHORTS[newIdx].file));
             playShortAt(newIdx);
         }
 
-        function playRandomShort() { advanceToWorkingShort(0); }
+        function playRandomShort() { advanceToWorkingShort(1); }
         function nextShort() { advanceToWorkingShort(1); }
         function prevShort() { advanceToWorkingShort(-1); }
 
         shortsVideo.addEventListener('error', () => {
             const cur = SHORTS[currentShortIndex];
             if (!cur) return;
-            const curFile = cur.file;
-            if (curFile.includes("'")) {
-                const alt = curFile.replace(/'/g, '\u2019');
-                if (alt !== curFile && !brokenShorts.has(alt)) {
-                    cur.file = alt;
-                    shortsVideo.src = alt; shortsVideo.load();
-                    try { shortsVideo.play().catch(()=>{}); } catch(_) {}
-                    return;
-                }
-            }
-            if (curFile.includes('\u2019')) {
-                const alt = curFile.replace(/\u2019/g, "'");
-                if (alt !== curFile && !brokenShorts.has(alt)) {
-                    cur.file = alt;
-                    shortsVideo.src = alt; shortsVideo.load();
-                    try { shortsVideo.play().catch(()=>{}); } catch(_) {}
-                    return;
-                }
-            }
-            brokenShorts.add(curFile);
-            console.warn('Short not found, skipping:', curFile);
+            brokenShorts.add(cur.file);
+            console.warn('Short not found, skipping:', cur.file);
             showShortsError();
             setTimeout(() => { advanceToWorkingShort(1); }, 900);
         });
         shortsVideo.addEventListener('loadeddata', () => { hideShortsError(); });
 
-        shortsUp.addEventListener('click', () => playRandomShort());
-        shortsDown.addEventListener('click', () => playRandomShort());
+        shortsUp.addEventListener('click', () => prevShort());
+        shortsDown.addEventListener('click', () => nextShort());
 
-        // ═══════════ MOUSE SCROLL WHEEL on shorts ═══════════
         function handleShortsWheel(e) {
             if (currentTab !== 'shorts') return;
             e.preventDefault();
@@ -1238,7 +1294,6 @@
         shortsContainer.addEventListener('wheel', handleShortsWheel, { passive: false });
         shortsVideo.addEventListener('wheel', handleShortsWheel, { passive: false });
 
-        // ═══════════ FULLSCREEN BUTTON ═══════════
         shortsFullscreen.addEventListener('click', (e) => {
             e.stopPropagation();
             const el = shortsFrame;
@@ -1256,7 +1311,6 @@
             shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶';
         });
 
-        // ═══════════ LAG KILLER ═══════════
         function loadLagSettings() { const s = localStorage.getItem('lagSettings'); if (s) { try { Object.assign(lagSettings, JSON.parse(s)); } catch(e){} } }
         function saveLagSettings() { localStorage.setItem('lagSettings', JSON.stringify(lagSettings)); }
         function applyLagKiller() {
@@ -1330,7 +1384,6 @@
             saveFavs(); renderGrid(); if (currentTab === 'other') renderOtherGrid();
         }
 
-        // ═══════════ RENDERING ═══════════
         function isOtherGame(g) { return g.categories.includes('Other'); }
         function getFilteredGames() {
             return GAME_DATA.filter(g => {
@@ -1483,7 +1536,6 @@
             if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playClick(); }
         }
 
-        // ═══════════ GAME INJECTOR ═══════════
         function openGameInNewTab(id, file, name) {
             let win = window.open(file, '_blank');
             if (!win) {
@@ -1794,7 +1846,6 @@
             }
         });
 
-        // ═══════════ INIT ═══════════
         loadLagSettings(); applyLagKiller(); updateSettingsUI(); applyShape();
         applyCloak(0); updateCursor('#3b82f6');
         renderGrid(); renderOtherGrid(); renderSkins();
@@ -1803,8 +1854,9 @@
         document.body.style.backgroundImage = 'var(--bg)';
         switchTab('games');
         console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-        console.log('✅ Shorts: removed 3 emoji/problem files. ' + SHORTS.length + ' total shorts.');
-        console.log('✅ Fullscreen button + mouse scroll wheel active on Page 5.');
+        console.log('✅ Shorts search bar removed.');
+        console.log('✅ Drag & drop wallpaper enabled.');
+        console.log('✅ Added videoplayback (51).mp4 to shorts.');
     </script>
 </body>
 </html>
