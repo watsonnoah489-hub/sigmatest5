@@ -19,7 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: var(--sigma-cursor) !important; }
         input, textarea, select { cursor: text !important; }
         input[type="color"] { cursor: pointer !important; }
-        button, .btn, .cycle-btn, .star-fav, .ctrl-btn, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn { cursor: var(--sigma-cursor) !important; }
+        button, .btn, .cycle-btn, .star-fav, .ctrl-btn, .panic-item .del, .add-btn, .close-btn, .credits-close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn { cursor: var(--sigma-cursor) !important; }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
@@ -33,7 +33,6 @@
         body.light .header, body.light .controls, body.light .soundboard { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
 
-        /* ────── LAG KILLER ────── */
         body.lag-killer * { animation-play-state: paused !important; transition-duration: 0s !important; transition-delay: 0s !important; }
         body.lag-killer .pulse-ring { display: none !important; }
         body.lag-killer .cycle-btn::before { animation-play-state: paused !important; }
@@ -50,14 +49,16 @@
         body.lag-killer.lag-no-anim * { animation-play-state: paused !important; transition-duration: 0s !important; }
         body.ultra-lag * { cursor: auto !important; }
         body.ultra-lag #glowTrail, body.ultra-lag .particle-canvas { display: none !important; }
+        body.lag-killer .cycle-wrapper, body.lag-no-anim .cycle-wrapper, body.ultra-lag .cycle-wrapper {
+            animation: none !important; opacity: 1 !important; transform: none !important;
+        }
 
-        /* ────── BACKGROUND ANIMATIONS ────── */
         .glow-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orbFloat 14s ease-in-out infinite alternate; will-change: transform; }
         .glow-orb.o1 { width: 400px; height: 400px; background: rgba(59, 130, 246, 0.12); top: -100px; left: -100px; }
         .glow-orb.o2 { width: 500px; height: 500px; background: rgba(168, 85, 247, 0.10); bottom: -150px; right: -150px; animation-delay: 5s; }
         .glow-orb.o3 { width: 300px; height: 300px; background: rgba(236, 72, 153, 0.08); top: 40%; left: 60%; animation-delay: 10s; }
         @keyframes orbFloat { 0%{transform:translate(0,0) scale(1);} 33%{transform:translate(50px,-70px) scale(1.15);} 66%{transform:translate(-40px,60px) scale(0.9);} 100%{transform:translate(30px,-30px) scale(1.05);} }
-        .grid-scan { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridScan 10s linear infinite; will-change: transform; }
+        .grid-scan { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridScan 10s linear infinite; }
         @keyframes gridScan { 0%{transform:translateY(0);} 100%{transform:translateY(60px);} }
         .meteor { position: fixed; width: 2px; height: 70px; background: linear-gradient(to bottom, transparent, var(--primary)); border-radius: 2px; animation: meteorFall 7s linear infinite; pointer-events: none; z-index: 1; opacity: 0; filter: blur(1px); }
         .meteor.m1{left:10%;animation-delay:0s;} .meteor.m2{left:30%;animation-delay:2.5s;} .meteor.m3{left:55%;animation-delay:4.5s;} .meteor.m4{left:80%;animation-delay:1.5s;} .meteor.m5{left:92%;animation-delay:3.8s;}
@@ -70,20 +71,17 @@
 
         .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
 
-        /* ────── HEADER ────── */
         .header { text-align: center; padding: 14px 20px; margin-bottom: 20px; background: rgba(0,0,0,0.6); backdrop-filter: blur(12px); border-radius: 60px; border: 2px solid var(--primary); box-shadow: 0 0 40px var(--glow); max-width: 700px; margin-left: auto; margin-right: auto; animation: headerGlow 3s ease-in-out infinite; }
         .header h1 { font-size: 32px; font-weight: 900; letter-spacing: 4px; background: linear-gradient(135deg, var(--header-base) 20%, var(--primary) 50%, var(--header-base) 80%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer 4s linear infinite; }
         @keyframes shimmer { 0%{background-position:-200% 0;} 100%{background-position:200% 0;} }
         @keyframes headerGlow { 0%,100%{box-shadow:0 0 30px var(--glow);} 50%{box-shadow:0 0 70px var(--glow),0 0 120px var(--glow);} }
 
-        /* ────── CONTROLS ────── */
         .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); padding: 14px 22px; border-radius: 50px; border: 1px solid var(--primary); margin-bottom: 20px; box-shadow: 0 0 20px var(--glow); animation: headerGlow 4s ease-in-out infinite; }
         .controls input[type="color"] { width: 38px; height: 38px; border: none; border-radius: 50%; background: transparent; padding: 2px; }
         .controls .bg-input { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .controls .bg-input input { background: rgba(0,0,0,0.6); border: 1px solid var(--primary); border-radius: 30px; padding: 6px 14px; color: #fff; width: 160px; outline: none; font-size: 13px; }
         .controls .bg-input input::placeholder { color: transparent; }
 
-        /* ────── BUTTONS ────── */
         .btn { padding: 8px 18px; border: none; border-radius: 30px; font-weight: 600; background: var(--primary); color: #fff; transition: all 0.25s; box-shadow: 0 0 12px var(--glow); border: 1px solid rgba(255,255,255,0.15); font-size: 14px; white-space: nowrap; position: relative; overflow: hidden; }
         .btn:hover { transform: scale(1.05); filter: brightness(1.25); box-shadow: 0 0 35px var(--glow); }
         .btn-rainbow { background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3); background-size: 300% 300%; animation: rainbowShift 2s ease infinite, btnGlow 2s ease-in-out infinite; }
@@ -93,13 +91,11 @@
         .btn-panic .badge { position: absolute; top: -6px; right: -6px; background: #facc15; color: #000; border-radius: 50%; font-size: 11px; font-weight: 700; padding: 2px 8px; min-width: 20px; text-align: center; border: 1px solid #000; }
         @keyframes panicPulse { 0%,100%{box-shadow:0 0 10px rgba(220,38,38,0.4);} 50%{box-shadow:0 0 35px rgba(220,38,38,0.8),0 0 60px rgba(220,38,38,0.4);} }
 
-        /* ────── TABS ────── */
-        .tab-bar { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab-btn { padding: 10px 26px; border: 2px solid var(--border); border-radius: 40px; background: var(--card-bg); color: var(--text); font-size: 17px; font-weight: 600; transition: all 0.3s; cursor: pointer; backdrop-filter: blur(8px); }
+        .tab-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { padding: 10px 22px; border: 2px solid var(--border); border-radius: 40px; background: var(--card-bg); color: var(--text); font-size: 16px; font-weight: 600; transition: all 0.3s; cursor: pointer; backdrop-filter: blur(8px); }
         .tab-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; box-shadow: 0 0 30px var(--glow); }
         .tab-btn:hover { transform: scale(1.05); }
 
-        /* ────── SEARCH ────── */
         .search-row { display: flex; justify-content: center; margin: 10px 0 16px; gap: 0; }
         .search-row input { width: 60%; max-width: 500px; padding: 12px 24px; border-radius: 30px 0 0 30px; border: 2px solid var(--primary); background: rgba(0,0,0,0.7); color: #fff; font-size: 15px; outline: none; backdrop-filter: blur(8px); transition: all 0.3s; box-shadow: 0 0 20px var(--glow); }
         .search-row input:focus { border-color: #a855f7; box-shadow: 0 0 50px var(--glow); transform: scale(1.01); }
@@ -108,19 +104,16 @@
         .search-row .clear-btn:hover { background: #a855f7; border-color: #a855f7; }
         .search-row .clear-btn.show { display: block; }
 
-        /* ────── FILTER ────── */
         .filter-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
         .filter-row select { background: rgba(0,0,0,0.7); border: 2px solid var(--primary); border-radius: 30px; padding: 8px 20px; color: #fff; font-size: 14px; outline: none; backdrop-filter: blur(8px); box-shadow: 0 0 15px var(--glow); min-width: 180px; max-height: 160px; overflow-y: auto; }
         .filter-row select option { background: #1a1a2e; padding: 4px 10px; }
         .filter-row select option:checked { background: var(--primary); }
         .filter-row .hint { font-size: 12px; opacity: 0.6; align-self: center; }
 
-        /* ────── CYCLES GRID ────── */
         .cycles-grid { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; margin: 20px 0 30px; padding: 10px 0; }
         .cycle-wrapper { display: flex; flex-direction: column; align-items: center; gap: 4px; animation: fadeInUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-        /* ────── CYCLE BUTTON ────── */
         .cycle-btn { width: 150px; height: 150px; border-radius: 50%; background: #1e293b; border: 4px solid #334155; display: flex; align-items: center; justify-content: center; transition: transform 0.3s, box-shadow 0.4s, border-color 0.3s, border-radius 0.3s, clip-path 0.3s; position: relative; box-shadow: 0 0 25px rgba(59,130,246,0.10); overflow: hidden; will-change: transform, box-shadow; transform: translateZ(0); }
         .cycle-btn:hover { transform: scale(1.08) rotate(1.5deg); border-color: var(--primary) !important; box-shadow: 0 0 60px var(--glow), 0 0 100px var(--glow); }
         .cycle-btn::before { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid transparent; background: conic-gradient(from 0deg, transparent, var(--primary), transparent, var(--primary), transparent); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; animation: spinRing 6s linear infinite; opacity: 0; transition: opacity 0.4s; pointer-events: none; }
@@ -139,25 +132,21 @@
         @keyframes floatBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
         @keyframes spinGlow { 0%{transform:rotate(0deg);filter:drop-shadow(0 0 5px gold);} 50%{filter:drop-shadow(0 0 25px gold);} 100%{transform:rotate(360deg);filter:drop-shadow(0 0 5px gold);} }
 
-        /* ────── SHAPES ────── */
         body.shape-square .cycle-btn { border-radius: 18px; }
         body.shape-square .cycle-btn .overlay { border-radius: 14px; }
         body.shape-square .cycle-btn::before { display: none; }
         body.shape-square .pulse-ring { display: none; }
         body.shape-square .cycle-btn.random { border-radius: 18px; }
-
         body.shape-rounded .cycle-btn { border-radius: 45px; }
         body.shape-rounded .cycle-btn .overlay { border-radius: 41px; }
         body.shape-rounded .cycle-btn::before { display: none; }
         body.shape-rounded .pulse-ring { display: none; }
         body.shape-rounded .cycle-btn.random { border-radius: 45px; }
-
         body.shape-hexagon .cycle-btn { border-radius: 0; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); border: none; }
         body.shape-hexagon .cycle-btn .overlay { border-radius: 0; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
         body.shape-hexagon .cycle-btn::before { display: none; }
         body.shape-hexagon .pulse-ring { display: none; }
         body.shape-hexagon .cycle-btn.random { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); border: none; }
-
         body.shape-diamond .cycle-btn { border-radius: 0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); border: none; }
         body.shape-diamond .cycle-btn .overlay { border-radius: 0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); }
         body.shape-diamond .cycle-btn::before { display: none; }
@@ -169,14 +158,12 @@
         @keyframes starPulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);text-shadow:0 0 50px var(--glow),0 0 80px var(--glow);} }
         .star-fav:hover { transform: scale(1.3) rotate(15deg); }
 
-        .page-title { text-align: center; font-size: 24px; font-weight: 700; letter-spacing: 2px; margin: 20px 0 10px; color: var(--text); text-shadow: 0 0 20px var(--glow); }
-        .page-subtitle { text-align: center; font-size: 14px; color: #94a3b8; margin-bottom: 20px; }
-
-        /* ────── SOUNDBOARD ────── */
         #soundboardContainer { display: none; margin-top: 20px; }
         .soundboard-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .stop-all-btn { padding: 10px 24px; background: #dc2626; border: none; border-radius: 40px; color: #fff; font-size: 18px; font-weight: 700; box-shadow: 0 0 30px rgba(220,38,38,0.6); transition: 0.3s; cursor: pointer; }
         .stop-all-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(220,38,38,0.9); }
+        .play-all-btn { padding: 10px 24px; background: #22c55e; border: none; border-radius: 40px; color: #fff; font-size: 18px; font-weight: 700; box-shadow: 0 0 30px rgba(34,197,94,0.6); transition: 0.3s; cursor: pointer; }
+        .play-all-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(34,197,94,0.9); }
         .mute-btn { padding: 10px 24px; background: #6b7280; border: none; border-radius: 40px; color: #fff; font-size: 18px; font-weight: 700; transition: 0.3s; cursor: pointer; }
         .mute-btn.active { background: #dc2626; box-shadow: 0 0 30px rgba(220,38,38,0.6); }
         .mute-btn:hover { transform: scale(1.05); }
@@ -201,7 +188,59 @@
         .soundboard-empty-msg { display: none; text-align: center; padding: 40px 20px; font-size: 16px; color: #94a3b8; font-style: italic; letter-spacing: 1px; }
         .soundboard-empty-msg.show { display: block; }
 
-        /* ────── MODALS ────── */
+        /* ────── PAGE 5: SHORTS ────── */
+        #shortsContainer { display: none; }
+        .shorts-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px 0; }
+        .shorts-nav { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #a855f7); border: 3px solid var(--primary); color: #fff; font-size: 36px; font-weight: 900; cursor: pointer; box-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow); transition: 0.25s; display: flex; align-items: center; justify-content: center; user-select: none; }
+        .shorts-nav:hover { transform: scale(1.12); box-shadow: 0 0 60px var(--glow), 0 0 120px var(--glow); }
+        .shorts-nav:active { transform: scale(0.95); }
+        .shorts-frame { position: relative; width: 340px; max-width: 90vw; aspect-ratio: 9 / 16; background: #000; border: 4px solid var(--primary); border-radius: 24px; overflow: hidden; box-shadow: 0 0 50px var(--glow), 0 0 100px var(--glow); transition: border-color 0.3s; }
+        .shorts-frame video { width: 100%; height: 100%; object-fit: contain; background: #000; display: block; }
+        .shorts-frame:fullscreen { width: 100vw; height: 100vh; max-width: none; aspect-ratio: auto; border-radius: 0; border: none; }
+        .shorts-frame:fullscreen video { object-fit: contain; }
+        .shorts-error { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.85); color: #f87171; font-size: 14px; text-align: center; padding: 20px; }
+        .shorts-error.show { display: flex; }
+        .shorts-error .icon { font-size: 40px; }
+
+        /* Fullscreen button overlaid on the frame */
+        .shorts-fs-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(0,0,0,0.65);
+            border: 2px solid var(--primary);
+            color: #fff;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            transition: 0.2s;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 0 15px var(--glow);
+        }
+        .shorts-fs-btn:hover {
+            background: rgba(59,130,246,0.5);
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--glow);
+        }
+        .shorts-fs-btn:active { transform: scale(0.92); }
+        .shorts-frame:fullscreen .shorts-fs-btn { top: 20px; right: 20px; }
+
+        /* Scroll hint at bottom */
+        .shorts-hint {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            user-select: none;
+        }
+
         #panicOverlay, #creditsOverlay, #lagSettingsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
         #panicOverlay.open, #creditsOverlay.open, #lagSettingsOverlay.open { display: flex; }
         #panicModal, #creditsBox, #lagSettingsModal { background: rgba(13,17,23,0.97); border: 2px solid var(--primary); border-radius: 28px; padding: 28px 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 60px var(--glow); color: #fff; }
@@ -247,14 +286,9 @@
         #lagSettingsModal .ultra-toggle { display: flex; align-items: center; gap: 12px; background: rgba(220,38,38,0.15); padding: 10px 14px; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(220,38,38,0.3); }
         #lagSettingsModal .ultra-toggle label { font-weight: 700; font-size: 16px; color: #f87171; }
 
-        /* ────── TOAST ────── */
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: #facc15; padding: 12px 28px; border-radius: 40px; font-size: 15px; border: 1px solid #facc15; z-index: 9999; opacity: 0; transition: opacity 0.4s; pointer-events: none; backdrop-filter: blur(8px); font-weight: 500; white-space: nowrap; }
         #toast.show { opacity: 1; }
 
-        /* ────── GAME OVERLAY (hidden - opens in new tab) ────── */
-        #gameOverlay { display: none !important; }
-
-        /* ────── NINTENDO CAROUSEL ────── */
         body.nintendo-mode .cycles-grid { display: none !important; }
         body.nintendo-mode #nintendoCarousel { display: block !important; }
         #nintendoCarousel { display: none; background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 20px; padding: 20px 10px; margin: 20px 0; border: 4px solid var(--primary); box-shadow: 0 0 30px var(--glow); }
@@ -268,7 +302,6 @@
         #nintendoCarousel .carousel-indicators span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); transition: 0.2s; cursor: pointer; }
         #nintendoCarousel .carousel-indicators span.active { background: var(--primary); box-shadow: 0 0 10px var(--glow); }
 
-        /* ────── RESPONSIVE ────── */
         @media (max-width: 768px) {
             .cycle-btn { width: 120px; height: 120px; }
             .cycle-btn.random .dice { font-size: 60px; }
@@ -280,7 +313,8 @@
             #nintendoCarousel .carousel-item { flex: 0 0 90px; height: 90px; }
             #nintendoCarousel .carousel-arrow { width: 40px; height: 40px; font-size: 24px; }
             .sound-card { min-width: 180px; }
-            .tab-btn { padding: 8px 18px; font-size: 15px; }
+            .tab-btn { padding: 8px 14px; font-size: 13px; }
+            .shorts-nav { width: 64px; height: 64px; font-size: 28px; }
         }
         @media (max-width: 540px) {
             .cycle-btn { width: 100px; height: 100px; }
@@ -293,7 +327,9 @@
             #nintendoCarousel .carousel-item { flex: 0 0 70px; height: 70px; }
             #nintendoCarousel .carousel-arrow { width: 30px; height: 30px; font-size: 18px; }
             .sound-card { min-width: 160px; }
-            .tab-btn { padding: 7px 14px; font-size: 13px; }
+            .tab-btn { padding: 7px 12px; font-size: 12px; }
+            .shorts-nav { width: 56px; height: 56px; font-size: 24px; }
+            .shorts-frame { width: 90vw; }
         }
 
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; }
@@ -408,6 +444,7 @@
                 <button class="tab-btn" data-tab="sounds">📄 Page 2</button>
                 <button class="tab-btn" data-tab="other">📄 Page 3</button>
                 <button class="tab-btn" data-tab="skins">📄 Page 4</button>
+                <button class="tab-btn" data-tab="shorts">📄 Page 5</button>
             </div>
 
             <div id="gamesPage">
@@ -463,6 +500,7 @@
             <div id="soundboardContainer">
                 <div class="soundboard-header">
                     <button class="mute-btn" id="muteBtn">🔊 Click Sounds</button>
+                    <button class="play-all-btn" id="playAllBtn">▶▶ PLAY ALL</button>
                     <button class="stop-all-btn" id="stopAllBtn">⏹ STOP ALL</button>
                 </div>
                 <div class="search-row" id="soundsSearch">
@@ -477,14 +515,29 @@
                 </div>
             </div>
 
-            <!-- PAGE 3: OTHER GAMES (no title text) -->
             <div id="otherContainer" style="display:none;">
                 <div class="cycles-grid" id="otherGrid"></div>
             </div>
 
-            <!-- PAGE 4: SKINS (no text labels) -->
             <div id="skinsContainer" style="display:none;">
                 <div class="cycles-grid" id="skinsGrid"></div>
+            </div>
+
+            <!-- PAGE 5: SHORTS with fullscreen button + scroll wheel -->
+            <div id="shortsContainer">
+                <div class="shorts-wrapper">
+                    <button class="shorts-nav" id="shortsUp" title="Random short">▲</button>
+                    <div class="shorts-frame" id="shortsFrame">
+                        <video id="shortsVideo" autoplay loop playsinline controls preload="metadata"></video>
+                        <button class="shorts-fs-btn" id="shortsFullscreen" title="Fullscreen">⛶</button>
+                        <div class="shorts-error" id="shortsError">
+                            <div class="icon">⚠️</div>
+                            <div>Video not found — trying another…</div>
+                        </div>
+                    </div>
+                    <button class="shorts-nav" id="shortsDown" title="Random short">▼</button>
+                    <div class="shorts-hint">🖱️ scroll wheel or click ▲▼ to change short</div>
+                </div>
             </div>
         </div>
     </div>
@@ -520,24 +573,28 @@
             setTimeout(() => { window.fetch = oF; window.XMLHttpRequest = oX; document.write = oW; window.open = oO; document.createElement = oCE; obs.disconnect(); }, 10000);
         })();
 
-        // ═══════════ SOUNDS ═══════════
+        // ═══════════ STATE ═══════════
+        let nintendoMode = false;
+        let clickMuted = false;
+
         const clickAudio = document.getElementById('clickSound');
         const switchAudio = document.getElementById('switchClick');
-        let clickMuted = false;
         function playSound(a) { if (clickMuted || !a) return; try { a.currentTime = 0; a.play().catch(()=>{}); } catch(_) {} }
+        function playClick() { if (nintendoMode) playSound(switchAudio); else playSound(clickAudio); }
+
         document.addEventListener('click', function(e) {
-            const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn');
-            if (t) playSound(clickAudio);
+            const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn');
+            if (t) playClick();
         }, true);
-        document.getElementById('searchClear').addEventListener('click', () => playSound(clickAudio));
-        document.getElementById('soundSearchClear').addEventListener('click', () => playSound(clickAudio));
+        document.getElementById('searchClear').addEventListener('click', playClick);
+        document.getElementById('soundSearchClear').addEventListener('click', playClick);
 
         const muteBtn = document.getElementById('muteBtn');
         muteBtn.addEventListener('click', function() {
             clickMuted = !clickMuted;
             this.classList.toggle('active', clickMuted);
             this.textContent = clickMuted ? '🔇 Click Sounds' : '🔊 Click Sounds';
-            playSound(switchAudio);
+            playClick();
             showToast(clickMuted ? '🔇 Click sounds muted' : '🔊 Click sounds unmuted', 1500);
         });
 
@@ -611,7 +668,6 @@
             }
         })();
 
-        // ═══════════ CURSOR ═══════════
         function updateCursor(hex) {
             const clean = hex.replace('#', '');
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="48" viewBox="0 0 40 48"><text y="41" font-size="38" font-family="Arial, sans-serif" fill="%23${clean}">∑</text></svg>`;
@@ -619,7 +675,7 @@
             document.documentElement.style.setProperty('--sigma-cursor', `url('data:image/svg+xml;utf8,${enc}') 20 24, auto`);
         }
 
-        // ═══════════ GAME CATEGORIES ═══════════
+        // ═══════════ CATEGORIES ═══════════
         function getCategories(id, name) {
             const l = id.toLowerCase(); const cats = [];
             const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','ducklife1','ducklife2','ducklife3','ducklife4','ducklife5','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby'];
@@ -892,7 +948,6 @@
             { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fit/w_624,h_472,q_70,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
             { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'], img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
             { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' },
-            // NEW GAMES
             { id: 'trafficjam3d', name: 'Traffic Jam 3D', file: 'cltrafficjam3d.html', categories: ['Driving'], img: 'https://tse1.mm.bing.net/th/id/OIP.bDnWpqkbMUupJfK8XqLBgQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'snowboardobby', name: 'Snowboard Obby 3D', file: 'clsnowboardobby (2).html', categories: ['Obby', 'Platformer'], img: 'https://static.playgama.com/p-img/ph/obby-snowboard-parkour/big_preview/3949afaa00fb49d2975a78118722b3c5?width=1200' }
         ];
@@ -906,8 +961,24 @@
         // ═══════════ SKINS ═══════════
         const SKINS = [
             { id: 'mumbo', name: 'Mumbo Jumbo', file: 'Mumbo-Jumbo-Actions-amp-Stuff-style-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/mumbo-jumbo-actions-stuff-19203653-minecraft-skin.jpg' },
-            { id: 'hacker', name: 'Hacker', file: 'Hacker-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/1533/unnamed59268212_minecraft_skin-9268212.jpg' }
+            { id: 'hacker', name: 'Hacker', file: 'Hacker-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/1533/unnamed59268212_minecraft_skin-9268212.jpg' },
+            { id: 'clockoverlord', name: 'Clock The Obsidian Overlord', file: 'Clock-The-obsidian-overlord-on-planetminecraft-com (1).png', img: 'https://static.planetminecraft.com/files/resource_media/preview/skin-test-14349275-minecraft-skin.jpg' },
+            { id: 'fbi', name: 'FBI Agent', file: 'FBI-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/abzorka-fbi-19652872-minecraft-skin.jpg' },
+            { id: 'biggie', name: 'Biggie Smalls', file: 'The-Notorious-B-I-G-Biggie-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/1924/download95-1560476431_minecraft_skin-12219889.jpg' },
+            { id: 'jackblack', name: 'Jack Black Minecraft Movie', file: 'I-am-Steve-Jack-Black-on-planetminecraft-com (1).png', img: 'https://static.planetminecraft.com/files/resource_media/preview/i-am-steve-jack-black-18160999-minecraft-skin.jpg' },
+            { id: 'camman18', name: 'Camman 18', file: 'Yooooooooooo-its-caman-18-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/steve-planetminecraft-com-20137110-minecraft-skin.jpg' }
         ];
+
+        // ═══════════ SHORTS — clean filenames, no emojis ═══════════
+        const SHORTS = [
+            { file: 'And then he clicked post #funny #skit #sports - Matt Beav 2 (1080p).mp4' },
+            { file: "Netherlands ate it's President - Map Lad (720p).mp4" },
+            { file: 'POV You finally show up to work on time… #satire - Idksterling FN (1080p).mp4' },
+            { file: "When people say being a content creator isn't blue collar  #satire - Idksterling FN (576p).mp4" }
+        ];
+        for (let i = 28; i <= 46; i++) {
+            SHORTS.push({ file: 'videoplayback (' + i + ').mp4' });
+        }
 
         // ═══════════ SOUNDS ═══════════
         const SOUNDS = [
@@ -965,9 +1036,12 @@
         let themeState = 'default', lagKiller = false;
         let lagSettings = { particles: true, glow: true, grid: true, meteor: true, bubble: true, rain: true, anim: true, ultra: false };
         let rainActive = false, rainbowMode = false, rainbowInterval = null;
-        let nintendoMode = false, selectedIndex = 0, carouselGames = [];
+        let selectedIndex = 0, carouselGames = [];
         let currentTab = 'games', shapeIndex = parseInt(localStorage.getItem('btnShape') || '0') || 0;
         let audioInstances = {}, oldAudioInstances = {};
+        let currentShortIndex = -1;
+        let brokenShorts = new Set();
+        let lastScrollTime = 0;  // throttle wheel navigation
 
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
@@ -984,6 +1058,7 @@
         const skinsGrid = document.getElementById('skinsGrid');
         const otherContainer = document.getElementById('otherContainer');
         const skinsContainer = document.getElementById('skinsContainer');
+        const shortsContainer = document.getElementById('shortsContainer');
         const gamesPage = document.getElementById('gamesPage');
         const searchInput = document.getElementById('searchInput');
         const searchClear = document.getElementById('searchClear');
@@ -1015,7 +1090,14 @@
         const soundGrid = document.getElementById('soundGrid');
         const oldSoundGrid = document.getElementById('oldSoundGrid');
         const stopAllBtn = document.getElementById('stopAllBtn');
+        const playAllBtn = document.getElementById('playAllBtn');
         const shapeToggle = document.getElementById('shapeToggle');
+        const shortsUp = document.getElementById('shortsUp');
+        const shortsDown = document.getElementById('shortsDown');
+        const shortsVideo = document.getElementById('shortsVideo');
+        const shortsError = document.getElementById('shortsError');
+        const shortsFrame = document.getElementById('shortsFrame');
+        const shortsFullscreen = document.getElementById('shortsFullscreen');
         const tabBtns = document.querySelectorAll('.tab-btn');
         const gamesSearch = document.getElementById('gamesSearch');
         const gamesFilter = document.getElementById('gamesFilter');
@@ -1046,6 +1128,8 @@
             soundboardContainer.style.display = 'none';
             otherContainer.style.display = 'none';
             skinsContainer.style.display = 'none';
+            shortsContainer.style.display = 'none';
+            try { shortsVideo.pause(); } catch(_) {}
             tabBtns.forEach(b => b.classList.remove('active'));
             const ab = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
             if (ab) ab.classList.add('active');
@@ -1058,8 +1142,136 @@
             } else if (tab === 'sounds') { soundboardContainer.style.display = 'block'; }
             else if (tab === 'other') { otherContainer.style.display = 'block'; }
             else if (tab === 'skins') { skinsContainer.style.display = 'block'; }
+            else if (tab === 'shorts') {
+                shortsContainer.style.display = 'block';
+                if (currentShortIndex < 0) playRandomShort();
+                else { try { shortsVideo.play().catch(()=>{}); } catch(_) {} }
+            }
         }
         tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
+
+        // ═══════════ SHORTS PLAYER ═══════════
+        function hideShortsError() { shortsError.classList.remove('show'); }
+        function showShortsError() { shortsError.classList.add('show'); }
+
+        function playShortAt(idx) {
+            if (!SHORTS.length) return;
+            currentShortIndex = idx;
+            const short = SHORTS[idx];
+            hideShortsError();
+            shortsVideo.src = short.file;
+            shortsVideo.load();
+            try { shortsVideo.play().catch(()=>{}); } catch(_) {}
+        }
+
+        function advanceToWorkingShort(direction) {
+            if (!SHORTS.length) return;
+            const total = SHORTS.length;
+            if (brokenShorts.size >= total) {
+                showShortsError();
+                showToast('⚠️ No working shorts available', 2500);
+                return;
+            }
+            let newIdx;
+            if (direction === 0) {
+                let attempts = 0;
+                newIdx = currentShortIndex;
+                while (attempts < total * 2) {
+                    newIdx = Math.floor(Math.random() * total);
+                    if (SHORTS.length === 1 || (newIdx !== currentShortIndex && !brokenShorts.has(SHORTS[newIdx].file))) break;
+                    attempts++;
+                }
+            } else {
+                newIdx = (currentShortIndex + direction) % total;
+                if (newIdx < 0) newIdx = total - 1;
+                let attempts = 0;
+                while (brokenShorts.has(SHORTS[newIdx].file) && attempts < total) {
+                    newIdx = (newIdx + direction + total) % total;
+                    attempts++;
+                }
+            }
+            playShortAt(newIdx);
+        }
+
+        function playRandomShort() { advanceToWorkingShort(0); }
+        function nextShort() { advanceToWorkingShort(1); }
+        function prevShort() { advanceToWorkingShort(-1); }
+
+        shortsVideo.addEventListener('error', () => {
+            const cur = SHORTS[currentShortIndex];
+            if (!cur) return;
+            const curFile = cur.file;
+            // Try apostrophe swap
+            if (curFile.includes("'")) {
+                const alt = curFile.replace(/'/g, '\u2019');
+                if (alt !== curFile && !brokenShorts.has(alt)) {
+                    cur.file = alt;
+                    shortsVideo.src = alt; shortsVideo.load();
+                    try { shortsVideo.play().catch(()=>{}); } catch(_) {}
+                    return;
+                }
+            }
+            if (curFile.includes('\u2019')) {
+                const alt = curFile.replace(/\u2019/g, "'");
+                if (alt !== curFile && !brokenShorts.has(alt)) {
+                    cur.file = alt;
+                    shortsVideo.src = alt; shortsVideo.load();
+                    try { shortsVideo.play().catch(()=>{}); } catch(_) {}
+                    return;
+                }
+            }
+            brokenShorts.add(curFile);
+            console.warn('Short not found, skipping:', curFile);
+            showShortsError();
+            setTimeout(() => { advanceToWorkingShort(1); }, 900);
+        });
+        shortsVideo.addEventListener('loadeddata', () => { hideShortsError(); });
+
+        shortsUp.addEventListener('click', () => playRandomShort());
+        shortsDown.addEventListener('click', () => playRandomShort());
+
+        // ═══════════ MOUSE SCROLL WHEEL on shorts ═══════════
+        function handleShortsWheel(e) {
+            // Only when on shorts tab
+            if (currentTab !== 'shorts') return;
+            e.preventDefault();
+            const now = Date.now();
+            if (now - lastScrollTime < 600) return;  // throttle 600ms
+            lastScrollTime = now;
+            if (e.deltaY > 0) {
+                // scroll down → next short (sequential)
+                nextShort();
+            } else if (e.deltaY < 0) {
+                // scroll up → previous short (sequential)
+                prevShort();
+            }
+            playClick();
+        }
+
+        // Attach to the shorts frame + wrapper + the whole shorts container
+        shortsFrame.addEventListener('wheel', handleShortsWheel, { passive: false });
+        shortsContainer.addEventListener('wheel', handleShortsWheel, { passive: false });
+        shortsVideo.addEventListener('wheel', handleShortsWheel, { passive: false });
+
+        // ═══════════ FULLSCREEN BUTTON ═══════════
+        shortsFullscreen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const el = shortsFrame;
+            if (!document.fullscreenElement) {
+                if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+                else if (el.msRequestFullscreen) el.msRequestFullscreen();
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                else if (document.msExitFullscreen) document.msExitFullscreen();
+            }
+        });
+
+        // Update the icon based on fullscreen state
+        document.addEventListener('fullscreenchange', () => {
+            shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶';
+        });
 
         // ═══════════ LAG KILLER ═══════════
         function loadLagSettings() { const s = localStorage.getItem('lagSettings'); if (s) { try { Object.assign(lagSettings, JSON.parse(s)); } catch(e){} } }
@@ -1085,6 +1297,14 @@
             else { lagKillerBtn.style.background = '#f59e0b'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡'; }
             if (rainActive && lagKiller && !lagSettings.rain) document.body.classList.add('lag-no-rain');
             else if (rainActive) document.body.classList.remove('lag-no-rain');
+            setTimeout(() => {
+                try {
+                    if (currentTab === 'games') renderGrid();
+                    else if (currentTab === 'sounds') buildSoundboard();
+                    else if (currentTab === 'other') renderOtherGrid();
+                    else if (currentTab === 'skins') renderSkins();
+                } catch(e) {}
+            }, 0);
             saveLagSettings();
         }
         const lagMaster = document.getElementById('lagMaster'), lagParticles = document.getElementById('lagParticles');
@@ -1228,7 +1448,6 @@
             skinsGrid.appendChild(frag);
         }
         function downloadSkin(skin) {
-            playSound(switchAudio);
             try {
                 const a = document.createElement('a');
                 a.href = skin.file; a.download = skin.file; a.rel = 'noopener';
@@ -1255,8 +1474,8 @@
                 img.alt = g.name; img.title = g.name;
                 div.appendChild(img);
                 div.addEventListener('click', () => {
-                    if (i !== selectedIndex) { selectedIndex = i; renderCarousel(); playSound(switchAudio); }
-                    else { launchGame(g.id); playSound(switchAudio); }
+                    if (i !== selectedIndex) { selectedIndex = i; renderCarousel(); playClick(); }
+                    else { launchGame(g.id); playClick(); }
                 });
                 carouselItems.appendChild(div);
             }
@@ -1265,7 +1484,7 @@
             for (let i = 0; i < total; i += step) {
                 const dot = document.createElement('span');
                 dot.className = (i === selectedIndex ? 'active' : ''); dot.dataset.index = i;
-                dot.addEventListener('click', () => { selectedIndex = i; renderCarousel(); playSound(switchAudio); });
+                dot.addEventListener('click', () => { selectedIndex = i; renderCarousel(); playClick(); });
                 carouselIndicators.appendChild(dot);
             }
             const dots = carouselIndicators.querySelectorAll('span');
@@ -1278,7 +1497,7 @@
             let ni = selectedIndex + d;
             if (ni < 0) ni = games.length - 1;
             if (ni >= games.length) ni = 0;
-            if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playSound(switchAudio); }
+            if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playClick(); }
         }
 
         // ═══════════ GAME INJECTOR ═══════════
@@ -1564,6 +1783,12 @@
                 for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; a.pause(); a.currentTime = 0; }
                 showToast('⏹ All sounds stopped', 1500);
             });
+            playAllBtn.addEventListener('click', () => {
+                let count = 0;
+                for (const id in audioInstances) { const a = audioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); count++; } catch(_) {} }
+                for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); count++; } catch(_) {} }
+                showToast('▶▶ Playing ' + count + ' sounds at once!', 2000);
+            });
             filterSoundboard();
         }
         buildSoundboard();
@@ -1571,8 +1796,8 @@
         nintendoToggle.addEventListener('click', function() {
             nintendoMode = !nintendoMode;
             document.body.classList.toggle('nintendo-mode', nintendoMode);
-            if (nintendoMode) { if (currentTab === 'games') { renderCarousel(); grid.style.display = 'none'; nintendoCarousel.style.display = 'block'; } this.textContent = 'N mode'; showToast('🕹️', 1000); }
-            else { if (currentTab === 'games') { grid.style.display = 'flex'; nintendoCarousel.style.display = 'none'; } this.textContent = '2 mode'; showToast('📋', 1000); }
+            if (nintendoMode) { if (currentTab === 'games') { renderCarousel(); grid.style.display = 'none'; nintendoCarousel.style.display = 'block'; } this.textContent = 'N mode'; showToast('🕹️ N Mode ON (switchclick)', 1500); }
+            else { if (currentTab === 'games') { grid.style.display = 'flex'; nintendoCarousel.style.display = 'none'; } this.textContent = '2 mode'; showToast('📋 N Mode OFF (clicksoundeffect)', 1500); }
         });
         carouselPrev.addEventListener('click', () => navigateCarousel(-1));
         carouselNext.addEventListener('click', () => navigateCarousel(1));
@@ -1582,7 +1807,7 @@
             if (e.key === 'ArrowRight') { e.preventDefault(); navigateCarousel(1); }
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault(); const g = getFilteredGames();
-                if (g.length && g[selectedIndex]) { launchGame(g[selectedIndex].id); playSound(switchAudio); }
+                if (g.length && g[selectedIndex]) { launchGame(g[selectedIndex].id); playClick(); }
             }
         });
 
@@ -1594,8 +1819,8 @@
         document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
         document.body.style.backgroundImage = 'var(--bg)';
         switchTab('games');
-        console.log('🚀 SigmaTown4Life – 4 pages: Games, Sounds, Other Games, Skins.');
-        console.log('✅ Shape toggle added. Traffic Jam 3D & Snowboard Obby 3D added. Shrek Hotel removed.');
+        console.log('🚀 SigmaTown4Life – 5 pages loaded.');
+        console.log('✅ Shorts: clean filenames (no emojis), fullscreen button, mouse scroll wheel support.');
     </script>
 </body>
 </html>
