@@ -202,7 +202,6 @@
         .shorts-error.show { display: flex; }
         .shorts-error .icon { font-size: 40px; }
 
-        /* Fullscreen button overlaid on the frame */
         .shorts-fs-btn {
             position: absolute;
             top: 12px;
@@ -231,7 +230,6 @@
         .shorts-fs-btn:active { transform: scale(0.92); }
         .shorts-frame:fullscreen .shorts-fs-btn { top: 20px; right: 20px; }
 
-        /* Scroll hint at bottom */
         .shorts-hint {
             text-align: center;
             color: #94a3b8;
@@ -523,7 +521,6 @@
                 <div class="cycles-grid" id="skinsGrid"></div>
             </div>
 
-            <!-- PAGE 5: SHORTS with fullscreen button + scroll wheel -->
             <div id="shortsContainer">
                 <div class="shorts-wrapper">
                     <button class="shorts-nav" id="shortsUp" title="Random short">▲</button>
@@ -969,11 +966,9 @@
             { id: 'camman18', name: 'Camman 18', file: 'Yooooooooooo-its-caman-18-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/steve-planetminecraft-com-20137110-minecraft-skin.jpg' }
         ];
 
-        // ═══════════ SHORTS — clean filenames, no emojis ═══════════
+        // ═══════════ SHORTS — emoji/problem files removed ═══════════
         const SHORTS = [
-            { file: 'And then he clicked post #funny #skit #sports - Matt Beav 2 (1080p).mp4' },
-            { file: 'POV You finally show up to work on time… #satire - Idksterling FN (1080p).mp4' },
-            { file: "When people say being a content creator isn't blue collar  #satire - Idksterling FN (576p).mp4" }
+            { file: 'And then he clicked post #funny #skit #sports - Matt Beav 2 (1080p).mp4' }
         ];
         for (let i = 28; i <= 46; i++) {
             SHORTS.push({ file: 'videoplayback (' + i + ').mp4' });
@@ -1040,7 +1035,7 @@
         let audioInstances = {}, oldAudioInstances = {};
         let currentShortIndex = -1;
         let brokenShorts = new Set();
-        let lastScrollTime = 0;  // throttle wheel navigation
+        let lastScrollTime = 0;
 
         const cloakList = [
             { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
@@ -1200,7 +1195,6 @@
             const cur = SHORTS[currentShortIndex];
             if (!cur) return;
             const curFile = cur.file;
-            // Try apostrophe swap
             if (curFile.includes("'")) {
                 const alt = curFile.replace(/'/g, '\u2019');
                 if (alt !== curFile && !brokenShorts.has(alt)) {
@@ -1231,23 +1225,15 @@
 
         // ═══════════ MOUSE SCROLL WHEEL on shorts ═══════════
         function handleShortsWheel(e) {
-            // Only when on shorts tab
             if (currentTab !== 'shorts') return;
             e.preventDefault();
             const now = Date.now();
-            if (now - lastScrollTime < 600) return;  // throttle 600ms
+            if (now - lastScrollTime < 600) return;
             lastScrollTime = now;
-            if (e.deltaY > 0) {
-                // scroll down → next short (sequential)
-                nextShort();
-            } else if (e.deltaY < 0) {
-                // scroll up → previous short (sequential)
-                prevShort();
-            }
+            if (e.deltaY > 0) nextShort();
+            else if (e.deltaY < 0) prevShort();
             playClick();
         }
-
-        // Attach to the shorts frame + wrapper + the whole shorts container
         shortsFrame.addEventListener('wheel', handleShortsWheel, { passive: false });
         shortsContainer.addEventListener('wheel', handleShortsWheel, { passive: false });
         shortsVideo.addEventListener('wheel', handleShortsWheel, { passive: false });
@@ -1266,8 +1252,6 @@
                 else if (document.msExitFullscreen) document.msExitFullscreen();
             }
         });
-
-        // Update the icon based on fullscreen state
         document.addEventListener('fullscreenchange', () => {
             shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶';
         });
@@ -1819,7 +1803,8 @@
         document.body.style.backgroundImage = 'var(--bg)';
         switchTab('games');
         console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-        console.log('✅ Shorts: clean filenames (no emojis), fullscreen button, mouse scroll wheel support.');
+        console.log('✅ Shorts: removed 3 emoji/problem files. ' + SHORTS.length + ' total shorts.');
+        console.log('✅ Fullscreen button + mouse scroll wheel active on Page 5.');
     </script>
 </body>
 </html>
