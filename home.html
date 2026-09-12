@@ -567,9 +567,18 @@
     </div>
 
     <script>
-        // ═══════════ AD BLOCKER (10s only) ═══════════
+        // ═══════════ AD BLOCKER (10s only) — expanded Google + Microsoft + Bing + MSN ═══════════
         (function adBlocker() {
-            const adDomains = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','google.com/ads','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','linkedin.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com'];
+            const adDomains = [
+                // ── Google Ads & Analytics ──
+                'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','google.com/recaptcha/api2/aframe','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','firebase.google.com/analytics','google-analytics.l.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
+                // ── Microsoft / Bing / MSN Ads ──
+                'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
+                // ── Other common ad networks ──
+                'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
+                // ── Microsoft CDN ad-serving endpoints ──
+                'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
+            ];
             const oF = window.fetch;
             window.fetch = function(i, init) { const url = typeof i === 'string' ? i : i.url; if (adDomains.some(d => url.includes(d))) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
             const oX = window.XMLHttpRequest;
@@ -763,7 +772,7 @@
             if (l.startsWith('hobo')||l.includes('hobo')) cats.push('Hobo');
             if (l.includes('subway')||l.includes('subwaysurfer')) cats.push('Subway Surfers','Runner');
             if (l.includes('mortalkombat')||l==='mariocombat'||l==='stickmankombat') cats.push('Mortal Kombat');
-            if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad') cats.push('Runner');
+            if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad'||l==='coolcarsrun3d') cats.push('Runner');
             if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') cats.push('Horror');
             if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { cats.push('Zombie'); if (l!=='hobovszombies') cats.push('Horror'); }
             if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') cats.push('Sports');
@@ -806,6 +815,7 @@
             if (l==='stickmandestruction') cats.push('Stickman');
             if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { cats.push('Shooter'); cats.push('Time Shooter Series'); }
             if (l==='vex1'||l==='vex2') cats.push('Vex','Platformer');
+            if (l==='buildnowgg') cats.push('Shooter');
             const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
             const isUnc = unc.includes(id); if (isUnc) cats.push('Uncategorized');
             const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
@@ -818,6 +828,8 @@
 
         const GAME_DATA_RAW = [
             { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
+            { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '2048', name: '2048', file: 'cl2048 (1).html', img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
             { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1064,7 +1076,6 @@
             { id: 'camman18', name: 'Camman 18', file: 'Yooooooooooo-its-caman-18-on-planetminecraft-com.png', img: 'https://static.planetminecraft.com/files/resource_media/preview/steve-planetminecraft-com-20137110-minecraft-skin.jpg' }
         ];
 
-        // ═══════════ SHORTS — includes videoplayback (51) ═══════════
         const SHORTS = [
             { file: 'videoplayback (47).mp4' },
             { file: 'videoplayback (48).mp4' },
@@ -1877,6 +1888,9 @@
         console.log("✅ t³ (T cubed) now in Baldi's Basics + Brainrot.");
         console.log('✅ Added Vex 1 & Vex 2 (Vex + Platformer).');
         console.log('✅ Added sounds: lobtemy, haland.');
+        console.log('✅ Expanded ad blocker: added Google Ads, Google Analytics, Microsoft/Bing ads, MSN ads, and CDN endpoints.');
+        console.log('✅ Added BuildNow GG (Shooter).');
+        console.log('✅ Added Cool Cars Run 3D (Runner + Driving).');
     </script>
 </body>
 </html>
