@@ -567,11 +567,13 @@
     </div>
 
     <script>
-        // ═══════════ AD BLOCKER (10s) — SafeFrame + Google Ads + specific conversion URL + Image/src/setAttribute intercepts ═══════════
+        // ═══════════ AD BLOCKER (10s) — SafeFrame + Google Ads + specific conversion URL + Image/src/setAttribute intercepts + Sidebar-Ad script killer ═══════════
         (function adBlocker() {
             const adDomains = [
                 // ── Google Ads & Analytics ──
                 'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','google.com/recaptcha/api2/aframe','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','firebase.google.com/analytics','google-analytics.l.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
+                // ── SPECIFIC GA PROPERTY + SPECIFIC OFFENDER ──
+                'G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads',
                 // ── SAFEFRAME CONTAINER ──
                 'safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle',
                 // ── SPECIFIC CONVERSION TRACKING PATTERNS ──
@@ -585,23 +587,39 @@
                 // ── Microsoft CDN endpoints ──
                 'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
             ];
+
+            // ── Inline script signatures ──
             const scriptSignatures = [
-                'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html'
+                'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html',
+                // Obfuscated sidebar-ad injector (the script you pasted)
+                'UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y',
+                // Extra obfuscated-script indicators seen in that file
+                'ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF'
             ];
+
+            // ── Sidebar-ad element IDs/classes to nuke on every page ──
+            const sidebarSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
+
             const googleRewardsHosts = ['rewards.google.com','opinionrewards.google.com','surveys.google.com','googleopinionrewards.com','consumer-surveys.google.com','google-consumer-surveys.com','rewards.googleusercontent.com'];
             const onGoogleRewards = googleRewardsHosts.some(h => location.hostname === h || location.hostname.endsWith('.' + h) || location.href.includes(h));
             const onSafeFrame = location.hostname === 'tpc.googlesyndication.com'
                              || location.hostname === 'pagead2.googlesyndication.com'
                              || location.hostname === 'googleads.g.doubleclick.net'
-                             || /\.safeframe\.googlesyndication\.com$/.test(location.hostname)
+                             || /\.safeframe\.googlesyndication.com$/.test(location.hostname)
                              || /\.2mdn\.net$/.test(location.hostname);
             const isAd = (u) => typeof u === 'string' && adDomains.some(d => u.includes(d));
+            const isAdScript = (txt) => typeof txt === 'string' && scriptSignatures.some(s => txt.includes(s));
+
+            // ── Global: remove sidebar-ad containers immediately ──
+            const killSidebarAds = () => { sidebarSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => { el.remove(); }); } catch(_) {} }); };
+            killSidebarAds();
+            const sidebarInterval = setInterval(killSidebarAds, 250);
 
             if (onSafeFrame) {
                 try {
                     document.querySelectorAll('script').forEach(s => {
                         const txt = s.textContent || '';
-                        if (scriptSignatures.some(sig => txt.includes(sig))) { s.remove(); console.log('🚫 Removed SafeFrame inline script'); }
+                        if (isAdScript(txt)) { s.remove(); console.log('🚫 Removed SafeFrame inline script'); }
                     });
                     const _open = document.open.bind(document);
                     document.open = function(...args) {
@@ -610,12 +628,12 @@
                     };
                     const _write = document.write.bind(document);
                     document.write = function(html) {
-                        if (typeof html === 'string' && scriptSignatures.some(sig => html.includes(sig))) { console.log('🚫 Blocked document.write with SafeFrame content'); return; }
+                        if (isAdScript(html)) { console.log('🚫 Blocked document.write with SafeFrame content'); return; }
                         return _write(html);
                     };
                     const _writeln = document.writeln.bind(document);
                     document.writeln = function(html) {
-                        if (typeof html === 'string' && scriptSignatures.some(sig => html.includes(sig))) { console.log('🚫 Blocked document.writeln with SafeFrame content'); return; }
+                        if (isAdScript(html)) { console.log('🚫 Blocked document.writeln with SafeFrame content'); return; }
                         return _writeln(html);
                     };
                 } catch(_) {}
@@ -635,7 +653,7 @@
             };
             const oW = document.write;
             document.write = function(h) {
-                if (typeof h === 'string' && (adDomains.some(d => h.includes(d)) || scriptSignatures.some(s => h.includes(s)))) { console.log('🚫 Blocked document.write (ad content)'); return; }
+                if (typeof h === 'string' && (adDomains.some(d => h.includes(d)) || isAdScript(h))) { console.log('🚫 Blocked document.write (ad content)'); return; }
                 oW.call(document, h);
             };
             const oO = window.open;
@@ -688,11 +706,15 @@
                 if (n.nodeType === 1) {
                     if (n.dataset && n.dataset.stOverlay === 'true') return;
                     if (n.closest && n.closest('[data-st-overlay="true"]')) return;
+
+                    // Kill sidebar-ad containers
+                    if (n.id && /^sidebarad/i.test(n.id)) { console.log('🚫 Removed sidebar ad element #' + n.id); n.remove(); return; }
+                    if (n.classList && (n.classList.contains('sidebar-frame') || n.classList.contains('sidebar-close'))) { n.remove(); return; }
                     if (n.tagName === 'SCRIPT') {
                         const txt = n.textContent || '';
-                        if (scriptSignatures.some(sig => txt.includes(sig))) { console.log('🚫 Removed inline ad <script>'); n.remove(); return; }
+                        if (isAdScript(txt)) { console.log('🚫 Removed inline ad <script>'); n.remove(); return; }
                         const src = n.getAttribute('src') || '';
-                        if (isAd(src)) { n.remove(); return; }
+                        if (isAd(src)) { console.log('🚫 Removed ad <script src>:', src); n.remove(); return; }
                     }
                     if (n.tagName === 'IFRAME') {
                         const src = n.getAttribute('src') || '';
@@ -723,7 +745,7 @@
                 window.addEventListener('load', killAds);
                 console.log('🚫 Aggressive ad block active for Google Rewards domain');
             }
-            setTimeout(() => { window.fetch = oF; window.XMLHttpRequest = oX; document.write = oW; window.open = oO; document.createElement = oCE; obs.disconnect(); }, 10000);
+            setTimeout(() => { window.fetch = oF; window.XMLHttpRequest = oX; document.write = oW; window.open = oO; document.createElement = oCE; obs.disconnect(); clearInterval(sidebarInterval); }, 10000);
         })();
 
         // ═══════════ STATE ═══════════
@@ -2002,7 +2024,7 @@
         console.log('✅ Added GOOGLE REWARDS ad domains + aggressive mode.');
         console.log('✅ Blocks Google conversion URL: googleads.g.doubleclick.net/pagead/viewthroughconversion/1037333982/');
         console.log('✅ Added SafeFrame Container blocking (scriptSignatures + onSafeFrame neutralization).');
-        console.log('✅ Kills the SafeFrame bootstrap script you pasted + document.open/write/writeln overrides.');
+        console.log('✅ NEW: Blocks obfuscated sidebar-ad script + #sidebarad1/#sidebarad2 + GA ID G-L7856P3VNT + u-cvlassrom-y repo.');
     </script>
 </body>
 </html>
