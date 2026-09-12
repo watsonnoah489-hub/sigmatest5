@@ -350,6 +350,51 @@
 
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; }
         body.rain-active #matrixCanvas { opacity: 0.6; }
+
+        /* ═══════════ ANTI-AD OVERLAY (ΣigmaTown Shield) ═══════════ */
+        .sigma-ad-cover {
+            position: absolute !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important;
+            color: #3b82f6 !important;
+            font-family: 'Segoe UI', system-ui, sans-serif !important;
+            font-weight: 900 !important;
+            letter-spacing: 2px !important;
+            text-shadow: 0 0 20px rgba(59,130,246,0.8) !important;
+            border: 2px dashed rgba(59,130,246,0.6) !important;
+            border-radius: 10px !important;
+            box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important;
+            z-index: 2147483600 !important;
+            animation: sigmaGlow 3s ease-in-out infinite !important;
+            overflow: hidden !important;
+            pointer-events: none !important;
+            min-width: 60px !important;
+            min-height: 40px !important;
+        }
+        .sigma-ad-cover::before {
+            content: 'Σ' !important;
+            position: absolute !important;
+            font-size: 90px !important;
+            opacity: 0.18 !important;
+            color: #3b82f6 !important;
+            pointer-events: none !important;
+            line-height: 1 !important;
+        }
+        .sigma-ad-cover::after {
+            content: attr(data-label) !important;
+            position: relative !important;
+            z-index: 1 !important;
+            font-size: 12px !important;
+            padding: 0 10px !important;
+            text-align: center !important;
+            line-height: 1.2 !important;
+        }
+        @keyframes sigmaGlow {
+            0%, 100% { box-shadow: 0 0 25px rgba(59,130,246,0.4), inset 0 0 25px rgba(59,130,246,0.15); }
+            50% { box-shadow: 0 0 55px rgba(59,130,246,0.75), inset 0 0 55px rgba(59,130,246,0.25); }
+        }
     </style>
 </head>
 <body>
@@ -370,7 +415,6 @@
     <audio id="switchClick" src="switchclick.mp3" preload="auto"></audio>
     <div id="toast"></div>
 
-    <!-- DRAG & DROP OVERLAY -->
     <div id="dropOverlay">
         <div class="drop-box">
             <div class="drop-icon">🖼️</div>
@@ -567,39 +611,35 @@
     </div>
 
     <script>
-        // ═══════════ FULL-LOCKDOWN AD BLOCKER — no timeout, self-defending, all vectors covered ═══════════
+        // ═══════════ FULL-LOCKDOWN AD BLOCKER + Σ COVER OVERLAY ═══════════
         (function adBlocker() {
             const adDomains = [
-                // ── Google Ads & Analytics ──
                 'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','google.com/recaptcha/api2/aframe','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','firebase.google.com/analytics','google-analytics.l.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
-                // ── SPECIFIC GA PROPERTY + SPECIFIC OFFENDERS ──
                 'G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads',
-                // ── 1P-USER-LIST / VTC SPECIFIC ──
                 '1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1',
-                // ── SPECIFIC CONVERSION TRACKING PATTERNS ──
                 'viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script',
-                // ── SAFEFRAME CONTAINER ──
                 'safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle',
-                // ── GOOGLE REWARDS ──
                 'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
-                // ── Microsoft / Bing / MSN ──
                 'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
-                // ── Other ad networks ──
                 'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
-                // ── Microsoft CDN ──
                 'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
             ];
-
             const scriptSignatures = [
                 'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html',
-                // Obfuscated sidebar-ad injector
                 'UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y',
                 'ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF',
-                // 1p-user-list / vtc markers
                 '1p-user-list','is_vtc','viewthroughconversion'
             ];
-
             const sidebarSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
+            const adElementSelectors = [
+                'iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]',
+                'iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]',
+                'iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]',
+                'iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]',
+                'ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id^="google_ads_iframe"]',
+                '[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]',
+                '[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'
+            ];
             const googleRewardsHosts = ['rewards.google.com','opinionrewards.google.com','surveys.google.com','googleopinionrewards.com','consumer-surveys.google.com','google-consumer-surveys.com','rewards.googleusercontent.com'];
             const onGoogleRewards = googleRewardsHosts.some(h => location.hostname === h || location.hostname.endsWith('.' + h) || location.href.includes(h));
             const onSafeFrame = location.hostname === 'tpc.googlesyndication.com'
@@ -612,19 +652,101 @@
             const isAdScript = (txt) => typeof txt === 'string' && scriptSignatures.some(s => txt.includes(s));
 
             // ═══════════════════════════════════════════════════
-            //  1) KILL SIDEBAR-AD ELEMENTS (runs forever)
+            //  Σ — Cover any ad element with the SigmaTown shield
+            // ═══════════════════════════════════════════════════
+            function coverAd(el, label) {
+                if (!el || !el.parentNode) return;
+                if (el.dataset && el.dataset.sigmaCovered === 'true') return;
+                if (el.classList && el.classList.contains('sigma-ad-cover')) return;
+                try {
+                    const rect = el.getBoundingClientRect();
+                    // If element has no layout size, fall back to attribute sizes / defaults
+                    const w = rect.width  || el.offsetWidth  || parseInt(el.getAttribute('width'))  || 300;
+                    const h = rect.height || el.offsetHeight || parseInt(el.getAttribute('height')) || 250;
+
+                    // Make sure the parent can anchor the cover
+                    const parent = el.parentNode;
+                    try {
+                        const pStyle = getComputedStyle(parent);
+                        if (pStyle.position === 'static') parent.style.position = 'relative';
+                    } catch(_) {}
+
+                    const cover = document.createElement('div');
+                    cover.className = 'sigma-ad-cover';
+                    cover.dataset.sigmaCovered = 'true';
+                    cover.setAttribute('data-label', label || 'ΣigmaTown4Life • Ad Blocked');
+
+                    // Position the cover exactly on top of where the ad was
+                    if (rect && (rect.top !== 0 || rect.left !== 0) && parent === document.body) {
+                        // body-level ad — use fixed positioning matching viewport coords
+                        cover.style.position = 'fixed';
+                        cover.style.left   = rect.left + 'px';
+                        cover.style.top    = rect.top  + 'px';
+                        cover.style.width  = w + 'px';
+                        cover.style.height = h + 'px';
+                    } else if (el.id === 'sidebarad1' || el.id === 'sidebarad2') {
+                        // Sidebar ad — pin to the side of the viewport
+                        cover.style.position = 'fixed';
+                        cover.style.width  = w + 'px';
+                        cover.style.height = h + 'px';
+                        cover.style.top = '50%';
+                        cover.style.transform = 'translateY(-50%)';
+                        cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0';
+                    } else {
+                        // Inline ad — anchor inside its parent at its original offset
+                        cover.style.position = 'absolute';
+                        cover.style.left = (el.offsetLeft || 0) + 'px';
+                        cover.style.top  = (el.offsetTop  || 0) + 'px';
+                        cover.style.width  = w + 'px';
+                        cover.style.height = h + 'px';
+                    }
+
+                    parent.insertBefore(cover, el);
+                    el.remove();
+                    console.log('%cΣ Covered ad slot (' + Math.round(w) + 'x' + Math.round(h) + ')', 'color:#3b82f6;font-weight:bold;');
+
+                    // Track movement in case parent re-layouts
+                    if (cover.style.position === 'fixed' && cover.style.transform !== 'translateY(-50%)') {
+                        let frames = 0;
+                        const follow = () => {
+                            if (frames++ > 40 || !cover.parentNode) return;
+                            const r2 = el.isConnected ? el.getBoundingClientRect() : null;
+                            if (r2) { cover.style.left = r2.left + 'px'; cover.style.top = r2.top + 'px'; }
+                            requestAnimationFrame(follow);
+                        };
+                        requestAnimationFrame(follow);
+                    }
+                } catch(_) {}
+            }
+
+            // ═══════════════════════════════════════════════════
+            //  1) KILL SIDEBAR-AD ELEMENTS (runs forever) → cover them
             // ═══════════════════════════════════════════════════
             const killSidebarAds = () => {
                 sidebarSelectors.forEach(sel => {
-                    try { document.querySelectorAll(sel).forEach(el => el.remove()); } catch(_) {}
+                    try { document.querySelectorAll(sel).forEach(el => coverAd(el, 'ΣigmaTown • Sidebar Ad Blocked')); } catch(_) {}
                 });
             };
             killSidebarAds();
             setInterval(killSidebarAds, 250);
 
             // ═══════════════════════════════════════════════════
-            //  2) SAFEFRAME CONTAINER NEUTRALIZATION
+            //  1b) COVER ANY KNOWN AD IFRAMES / SLOTS
             // ═══════════════════════════════════════════════════
+            const killAdElements = () => {
+                adElementSelectors.forEach(sel => {
+                    try {
+                        document.querySelectorAll(sel).forEach(el => {
+                            // If it's a script/link skip; else cover
+                            if (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'META') return;
+                            coverAd(el, 'ΣigmaTown • Ad Blocked');
+                        });
+                    } catch(_) {}
+                });
+            };
+            killAdElements();
+            setInterval(killAdElements, 400);
+
             if (onSafeFrame) {
                 try {
                     document.querySelectorAll('script').forEach(s => {
@@ -649,9 +771,6 @@
                 } catch(_) {}
             }
 
-            // ═══════════════════════════════════════════════════
-            //  3) HOOK NETWORK APIs (never restored)
-            // ═══════════════════════════════════════════════════
             const oF = window.fetch;
             window.fetch = function(i, init) {
                 const url = typeof i === 'string' ? i : i.url;
@@ -672,9 +791,6 @@
             const oO = window.open;
             window.open = function(u,n,s,r) { if (isAd(u)) return null; return oO.call(this,u,n,s,r); };
 
-            // ═══════════════════════════════════════════════════
-            //  4) HOOK navigator.sendBeacon (CRITICAL — Google uses this a LOT)
-            // ═══════════════════════════════════════════════════
             if (navigator.sendBeacon) {
                 const oBeacon = navigator.sendBeacon.bind(navigator);
                 navigator.sendBeacon = function(url, data) {
@@ -683,9 +799,6 @@
                 };
             }
 
-            // ═══════════════════════════════════════════════════
-            //  5) HOOK WebSocket + EventSource
-            // ═══════════════════════════════════════════════════
             const oWS = window.WebSocket;
             window.WebSocket = function(url, protocols) {
                 if (isAd(url)) { console.log('🚫 Blocked WebSocket:', url); throw new Error('blocked'); }
@@ -701,9 +814,6 @@
                 window.EventSource.prototype = oES.prototype;
             }
 
-            // ═══════════════════════════════════════════════════
-            //  6) HOOK Image() — kills 1px tracking pixels
-            // ═══════════════════════════════════════════════════
             const oImg = window.Image;
             window.Image = function(w, h) {
                 const img = new oImg(w, h);
@@ -722,9 +832,6 @@
             window.Image.prototype = oImg.prototype;
             try { window.google_image_requests = []; } catch(_) {}
 
-            // ═══════════════════════════════════════════════════
-            //  7) HOOK createElement / setAttribute / .src / .href
-            // ═══════════════════════════════════════════════════
             const oCE = document.createElement;
             document.createElement = function(t) {
                 const el = oCE.call(document, t);
@@ -749,9 +856,6 @@
                 } catch(_) {}
             });
 
-            // ═══════════════════════════════════════════════════
-            //  8) HOOK ServiceWorker registration
-            // ═══════════════════════════════════════════════════
             if (navigator.serviceWorker && navigator.serviceWorker.register) {
                 const oReg = navigator.serviceWorker.register.bind(navigator.serviceWorker);
                 navigator.serviceWorker.register = function(url, opts) {
@@ -760,16 +864,15 @@
                 };
             }
 
-            // ═══════════════════════════════════════════════════
-            //  9) HOOK <link rel=preconnect|dns-prefetch> via MutationObserver
-            // ═══════════════════════════════════════════════════
             const obs = new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => {
                 if (n.nodeType === 1) {
                     if (n.dataset && n.dataset.stOverlay === 'true') return;
                     if (n.closest && n.closest('[data-st-overlay="true"]')) return;
+                    if (n.classList && n.classList.contains('sigma-ad-cover')) return;
 
-                    if (n.id && /^sidebarad/i.test(n.id)) { n.remove(); return; }
-                    if (n.classList && (n.classList.contains('sidebar-frame') || n.classList.contains('sidebar-close'))) { n.remove(); return; }
+                    if (n.id && /^sidebarad/i.test(n.id)) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
+                    if (n.classList && n.classList.contains('sidebar-frame')) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
+                    if (n.classList && n.classList.contains('sidebar-close')) { n.remove(); return; }
 
                     if (n.tagName === 'LINK') {
                         const rel = (n.getAttribute('rel') || '').toLowerCase();
@@ -784,13 +887,13 @@
                     }
                     if (n.tagName === 'IFRAME') {
                         const src = n.getAttribute('src') || '';
-                        if (isAd(src)) { n.remove(); return; }
+                        if (isAd(src)) { coverAd(n, 'ΣigmaTown • Iframe Ad Blocked'); return; }
                     }
                     const src = n.getAttribute && (n.getAttribute('src') || n.getAttribute('href'));
-                    if (src && isAd(src)) { n.remove(); return; }
+                    if (src && isAd(src)) { coverAd(n, 'ΣigmaTown • Ad Blocked'); return; }
                     const attrs = n.attributes || []; let flagged = false;
                     for (let a of attrs) { const v = a.value; if (v && (v.includes('ad') || v.includes('ads') || v.includes('banner') || v.includes('popup') || v.includes('sponsor') || v.includes('promotion'))) { flagged = true; break; } }
-                    if (flagged || adDomains.some(d => n.innerHTML && n.innerHTML.includes(d))) n.remove();
+                    if (flagged || adDomains.some(d => n.innerHTML && n.innerHTML.includes(d))) { coverAd(n, 'ΣigmaTown • Ad Blocked'); }
                 }
             })));
             obs.observe(document.documentElement, { childList: true, subtree: true });
@@ -800,8 +903,8 @@
                     document.querySelectorAll('iframe, ins, .ads, .ad, .advert, [id*="ad-"], [id*="ads"], [class*="ad-"], [class*="ads-"], [aria-label*="ad"], [aria-label*="Ad"], [data-ad], [data-ad-slot], [data-ad-client]').forEach(el => {
                         try {
                             const src = el.src || '';
-                            if (el.tagName === 'IFRAME' && (src.includes('googlesyndication') || src.includes('doubleclick') || src.includes('googleadservices') || src.includes('2mdn') || src.includes('adservice') || src.includes('bing') || src.includes('msn'))) el.remove();
-                            else if (el.tagName === 'INS' && el.className && (el.className.includes('adsbygoogle'))) el.remove();
+                            if (el.tagName === 'IFRAME' && (src.includes('googlesyndication') || src.includes('doubleclick') || src.includes('googleadservices') || src.includes('2mdn') || src.includes('adservice') || src.includes('bing') || src.includes('msn'))) coverAd(el, 'ΣigmaTown • Ad Blocked');
+                            else if (el.tagName === 'INS' && el.className && (el.className.includes('adsbygoogle'))) coverAd(el, 'ΣigmaTown • Ad Blocked');
                         } catch(e) {}
                     });
                 };
@@ -809,22 +912,16 @@
                 setInterval(killAds, 500);
             }
 
-            // ═══════════════════════════════════════════════════
-            //  10) SELF-DEFENSE — re-apply hooks if anything tries to restore them
-            // ═══════════════════════════════════════════════════
             setInterval(() => {
                 try {
-                    if (window.fetch !== window.fetch.__adHooked) {
-                        // Someone tried to restore fetch — re-hook it
-                        if (!window.fetch.__adHooked) {
-                            const curFetch = window.fetch;
-                            window.fetch = function(i, init) {
-                                const url = typeof i === 'string' ? i : i.url;
-                                if (isAd(url)) return Promise.reject(new Error('blocked'));
-                                return curFetch.call(this, i, init);
-                            };
-                            window.fetch.__adHooked = true;
-                        }
+                    if (!window.fetch.__adHooked) {
+                        const curFetch = window.fetch;
+                        window.fetch = function(i, init) {
+                            const url = typeof i === 'string' ? i : i.url;
+                            if (isAd(url)) return Promise.reject(new Error('blocked'));
+                            return curFetch.call(this, i, init);
+                        };
+                        window.fetch.__adHooked = true;
                     }
                 } catch(_) {}
                 try {
@@ -839,9 +936,8 @@
                 } catch(_) {}
             }, 1000);
 
-            console.log('%c🛡️ FULL LOCKDOWN AD BLOCKER ACTIVE — no timeout, permanent.', 'background:#dc2626;color:#fff;padding:4px 8px;border-radius:4px;font-weight:bold;');
-            console.log('✅ Blocks 1p-user-list, viewthroughconversion, is_vtc, SafeFrame, GA G-L7856P3VNT, u-cvlassrom-y, sidebarad1/2');
-            console.log('✅ Hooks: fetch, XHR, document.write, window.open, Image, createElement, setAttribute, .src, .href, sendBeacon, WebSocket, EventSource, ServiceWorker, <link rel=preconnect>');
+            console.log('%c🛡️ FULL LOCKDOWN AD BLOCKER ACTIVE — permanent + Σ cover overlay.', 'background:#dc2626;color:#fff;padding:4px 8px;border-radius:4px;font-weight:bold;');
+            console.log('✅ Any ad slot gets covered with a ΣigmaTown4Life shield at its exact position.');
         })();
 
         // ═══════════ STATE ═══════════
@@ -2102,6 +2198,7 @@
         switchTab('games');
         console.log('🚀 SigmaTown4Life – 5 pages loaded.');
         console.log('🛡️ FULL LOCKDOWN AD BLOCKER — permanent, self-defending, all vectors covered.');
+        console.log('Σ Any ad that appears (center, sidebar, inline) gets replaced with a SigmaTown shield at its exact position.');
     </script>
 </body>
 </html>
