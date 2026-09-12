@@ -506,6 +506,7 @@
                         <option value="Papa's Restaurants">🍔 Papa's Restaurants</option>
                         <option value="Riddle School">🧩 Riddle School</option>
                         <option value="Time Shooter Series">⏱️ Time Shooter Series</option>
+                        <option value="Vex">🕹️ Vex</option>
                         <option value="Uncategorized">📦 Uncategorized</option>
                         <option value="Other">📦 Other</option>
                     </select>
@@ -739,7 +740,6 @@
                     reader.readAsDataURL(file);
                     return;
                 }
-                // Fallback: URL drop
                 const url = dt.getData('text/uri-list') || dt.getData('text/plain');
                 if (url && /\.(png|jpe?g|gif|webp|bmp|svg|avif)/i.test(url)) {
                     document.documentElement.style.setProperty('--bg', `url('${url.trim()}')`);
@@ -757,6 +757,7 @@
             const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','ducklife1','ducklife2','ducklife3','ducklife4','ducklife5','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby','escapeschoolduel'];
             if (plat.includes(id)) cats.push('Platformer');
             if (l.includes('fnaf')||l.includes('fnac')||l.includes('fnaw')||l==='fnafshooter'||l==='fnaf3remastered'||l==='fnafworld') cats.push('FNAF','Horror');
+            if (l === 'fnafshooter') cats.push('Shooter');
             if (l.startsWith('ducklife')) cats.push('Duck Life');
             if (l.startsWith('motox3m')||l==='motox3mpoolparty') cats.push('Moto X3M');
             if (l.startsWith('hobo')||l.includes('hobo')) cats.push('Hobo');
@@ -770,7 +771,7 @@
             if (l==='stickmanduel') cats.push('Stickman');
             if (l==='huggywuggypixel') cats.push('Horror');
             if (l==='thereisnofile') cats.push('Puzzle','Relaxing');
-            if (l.includes('clicker')||l==='capybara'||l==='omeganugget'||l==='obbyjumperclicker'||l==='speedperclick'||l==='capybaraclicker'||l==='10morebullets'||l==='10bullets'||l==='cookieclicker'||l==='fruitninja'||l==='dogeminer'||l==='burgerclicker') { cats.push('Clicker'); if (l==='omeganugget') cats.push('Brainrot'); }
+            if (l.includes('clicker')||l==='capybara'||l==='omeganugget'||l==='obbyjumperclicker'||l==='speedperclick'||l==='capybaraclicker'||l==='cookieclicker'||l==='fruitninja'||l==='dogeminer'||l==='burgerclicker') { cats.push('Clicker'); if (l==='omeganugget') cats.push('Brainrot'); }
             if (l.includes('brainrot')||l.includes('skibidi')||l==='tripletobby'||l==='caseoh'||l==='tcubed') cats.push('Brainrot');
             if (l.includes('obby')||l==='obbyjumperclicker'||l==='speedperclick'||l==='tripletobby'||l==='redball4'||l==='supermario63'||l==='supermario64'||l==='obbycart'||l==='blockcraftparkour'||l==='obby99willlose'||l==='obbyfriends'||l==='snowboardobby'||l==='escapeschoolduel') cats.push('Obby');
             if (l.includes('stickman')) cats.push('Stickman');
@@ -782,7 +783,7 @@
             if (l==='minecraftshooter') cats.push('Shooter','Minecraft');
             if (l==='punchthetrump') cats.push('Other');
             if (l==='blockcraftparkour') cats.push('Minecraft');
-            if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152') cats.push('Minecraft');
+            if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152'||l==='eaglercraftv122') cats.push('Minecraft');
             if (l==='minecraftpe') cats.push('Minecraft');
             if (l==='noobminer') cats.push('Minecraft');
             if (l==='minecart') cats.push('Minecraft');
@@ -799,11 +800,13 @@
             if (l==='ragdollhit') cats.push('Stickman');
             if (l==='snowbattle') cats.push('Other');
             if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d') cats.push('Driving');
+            if (l==='motox3mpoolparty') cats.push('Driving');
             if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria') cats.push("Papa's Restaurants");
             if (l.startsWith('riddleschool')||l==='riddletransfer'||l==='riddletransfer2') { cats.push('Riddle School'); if (!cats.includes('Puzzle')) cats.push('Puzzle'); if (!cats.includes('Relaxing')) cats.push('Relaxing'); }
             if (l==='stickmandestruction') cats.push('Stickman');
             if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { cats.push('Shooter'); cats.push('Time Shooter Series'); }
-            const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle'];
+            if (l==='vex1'||l==='vex2') cats.push('Vex','Platformer');
+            const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
             const isUnc = unc.includes(id); if (isUnc) cats.push('Uncategorized');
             const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
             if (other.includes(id) && cats.length === 0) cats.push('Other');
@@ -818,8 +821,11 @@
             { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: '2048', name: '2048', file: 'cl2048 (1).html', img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
             { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'eaglercrafttuff', name: 'Eaglercraft Tuff Client', file: 'cltuffclient.html', img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
+            { id: 'eaglercrafttuff', name: 'Eaglercraft v12 Tuff Client', file: 'cltuffclient.html', img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
             { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html', img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtjjjb-181fd024-97a2-48b4-a9ed-9d10d39b41a4.png/v1/fill/w_1273,h_627,q_70,strp/eaglercraft_v12_2_by_timebandit010101_dmtjjjb-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjMxIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRqampiLTE4MWZkMDI0LTk3YTItNDhiNC1hOWVkLTlkMTBkMzliNDFhNC5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.sdt18vQYXjjJtIHnOMdTTgua8J4HVtYJTao3fZqeAZg' },
+            { id: 'vex1', name: 'Vex 1', file: 'Vex 1.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/45.png' },
+            { id: 'vex2', name: 'Vex 2', file: 'Vex 2.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/46.png' },
             { id: 'paperminecraftv11', name: 'Paper Minecraft v11', file: 'just learn.html', categories: ['Minecraft'], img: 'https://cdn2.scratch.mit.edu/get_image/project/10128407_480x360.png' },
             { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Platformer'], img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html', categories: ['Platformer'], img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -835,7 +841,7 @@
             { id: 'baldi', name: "Baldi's Basics", file: 'clbaldisbasics (1).html', categories: ["Baldi's Basics", 'Horror'], img: 'https://th.bing.com/th/id/OIP.uSj87WtfdlcYP9rPpLGY_QHaHa?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'basketballstars', name: 'Basketball Stars', file: 'clbasketballstars.html', img: 'https://tse4.mm.bing.net/th/id/OIP.ZbCOXEfOBdRdeXiv_tXtWAHaEL?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'bloxorz', name: 'Bloxorz', file: 'clbloxorz (1).html', img: 'https://tse4.mm.bing.net/th/id/OIP.-0sNVbmWwzm_jytveGb-UwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
-            { id: 'caseoh', name: "CaseOh's Basics", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html', categories: ["Baldi's Basics"], img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'caseoh', name: "CaseOh's Basics in Eating and Fast Food", file: 'CaseOh\'s Basics in Eating and Fast Food (1) (5).html', categories: ["Baldi's Basics", 'Brainrot'], img: 'https://tse4.mm.bing.net/th/id/OIP.KwS0f8ePLAuOwkJf5IeE3gHaCZ?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'capybara', name: 'Capybara Clicker', file: 'clcapybaraclicker (1).html', img: 'https://tse4.mm.bing.net/th/id/OIP.idOWS5nM7q9oM0UTX8Oq4wHaFs?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stealbrainrot', name: 'Steal Brainrot Duel', file: 'clsabduel (3).html', img: 'https://tse2.mm.bing.net/th/id/OIP.2yA-WXC93KP_5stoqqwL_QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'ducklife1', name: 'Duck Life 1', file: 'clducklife.html', img: 'https://th.bing.com/th/id/OIP.Ir-pGZltqIUiESlhekP6qgHaEK?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -871,8 +877,8 @@
             { id: 'subwayberlin', name: 'Subway Surfers Berlin', file: 'clsubwaysurfersberlin (1).html', img: 'https://subwaysurfersenligne.fr/wp-content/uploads/2026/03/subway-surfers-berlin-150x150.webp' },
             { id: 'templerun2', name: 'Temple Run 2', file: 'cltemplerun2.html', img: 'https://tse3.mm.bing.net/th/id/OIP.TVn1IXCX8i0dTWY7mTuU0wHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'zombierush', name: 'Zombie Rush', file: 'clzombierush (2).html', img: 'https://minigamesville.com/wp-content/uploads/2025/08/Zombie_Rush.png' },
-            { id: '10bullets', name: '10 Bullets', file: 'cl10bullets.html', img: 'https://ifhsunblockedgames.weebly.com/uploads/8/0/5/6/80568440/published/10-bullets.jpg?1487090717' },
-            { id: '10morebullets', name: '10 More Bullets', file: 'cl10morebullets.html', img: 'https://images.sftcdn.net/images/t_app-icon-m/p/a06f9d53-fbfa-497f-8f48-a0eb241c1674/4237817374/10-more-bullets-logo' },
+            { id: '10bullets', name: '10 Bullets', file: 'cl10bullets.html', categories: ['Uncategorized'], img: 'https://ifhsunblockedgames.weebly.com/uploads/8/0/5/6/80568440/published/10-bullets.jpg?1487090717' },
+            { id: '10morebullets', name: '10 More Bullets', file: 'cl10morebullets.html', categories: ['Uncategorized'], img: 'https://images.sftcdn.net/images/t_app-icon-m/p/a06f9d53-fbfa-497f-8f48-a0eb241c1674/4237817374/10-more-bullets-logo' },
             { id: 'learntofly1', name: 'Learn to Fly 1', file: 'cllearntofly.html', img: 'https://image.spreadshirtmedia.com/image-server/v1/compositions/T210A1PA4301PT17X29Y20D11330543W27177H19067/views/1,width=550,height=550,appearanceId=1,backgroundColor=FFFFFF,noPt=true/learn-to-fly-mens-t-shirt.jpg' },
             { id: 'learntofly2', name: 'Learn to Fly 2', file: 'cllearntofly2.html', img: 'https://snow-rider.io/data/image/game/learn-to-fly-2.png' },
             { id: 'fnaw', name: "Five Nights at Winston's", file: 'clfnaw.html', img: 'https://tse1.mm.bing.net/th/id/OIP.ZrTDcd7wjSZuTr1TS3gz8wHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -908,7 +914,7 @@
             { id: 'soccerrandom', name: 'Soccer Random', file: 'Soccer Random.html', img: 'https://tse1.mm.bing.net/th/id/OIP.2BAbi8rOVtnz2ugldhhlnAHaHu?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'sortthecourt', name: 'Sort the Court', file: 'Sort the Court.html', img: 'https://merge-fellas.io/thumb/sort-the-court.webp' },
             { id: 'volleyrandom', name: 'Volley Random', file: 'Volley Random.html', img: 'https://www.coolmathgameskids.com/wp-content/uploads/2021/02/volley-random.jpeg' },
-            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html', categories: ["Baldi's Basics"], img: 'https://tse3.mm.bing.net/th/id/OIP.6vYkelfYmDvlz9h1v7GpCQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+            { id: 'tcubed', name: 't³ (T cubed)', file: 't³ (T cubed) (2).html', categories: ["Baldi's Basics", 'Brainrot'], img: 'https://tse3.mm.bing.net/th/id/OIP.6vYkelfYmDvlz9h1v7GpCQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'stickmankombat', name: 'Stickman Kombat 2D', file: 'Stickman Kombat 2D.html', img: 'https://tse2.mm.bing.net/th/id/OIP.L5HOhBR-3DmyWevhzOsIoAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'makeasuperboat', name: 'Make a SuperBoat', file: 'Make a SuperBoat.html', img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1019,7 +1025,7 @@
             { id: 'timeshooter1', name: 'Time Shooter 1', file: 'Time Shooter 1.html', img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/199.png' },
             { id: 'timeshooter2', name: 'Time Shooter 2', file: 'Time Shooter 2.html', img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/200.png' },
             { id: 'timeshooter3', name: 'Time Shooter 3', file: 'Time Shooter 3.html', img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/201.png' },
-            { id: 'motox3mpoolparty', name: 'Moto X3M Pool Party', file: 'Moto X3M Pool Party.html', img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/124.png' },
+            { id: 'motox3mpoolparty', name: 'Moto X3M Pool Party', file: 'Moto X3M Pool Party.html', categories: ['Moto X3M', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/124.png' },
             { id: 'impossiblequiz', name: 'The Impossible Quiz', file: 'The Impossible Quiz (1).html', img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/507.png' },
             { id: 'paperio2', name: 'Paper.io 2', file: 'paperio2.htm', categories: ['Uncategorized'], img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
             { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
@@ -1109,7 +1115,9 @@
             { id: 'driving-car', name: 'Driving in My Car', file: 'driving-in-my-car-asgore.mp3' },
             { id: 'diddy-blud', name: 'What is This Diddy Blud Doing', file: 'diddy-blud.mp3' },
             { id: 'netflix-tikis', name: 'Watching Netflix and Tiki Takis', file: 'watching-netflix-and-tiki-takis-made-with-Voicemod.mp3' },
-            { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-sing-made-with-Voicemod.mp3' }
+            { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-sing-made-with-Voicemod.mp3' },
+            { id: 'lobtemy', name: 'Lobotomy', file: 'lobotomy-sound-effect.mp3' },
+            { id: 'haland', name: 'Haaland Haaland', file: 'haaland-haaland.mp3' }
         ];
         const OLD_SOUNDS = [
             { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
@@ -1860,6 +1868,15 @@
         console.log('✅ Drag & drop wallpaper enabled.');
         console.log('✅ Added videoplayback (51).mp4 to shorts.');
         console.log('✅ Added Paper Minecraft v11 (just learn.html).');
+        console.log('✅ FNAF Shooter now categorized under Shooter.');
+        console.log('✅ Renamed Eaglercraft Tuff Client → Eaglercraft v12 Tuff Client.');
+        console.log('✅ Eaglercraft v12.2 now points to Minecraft 1.12.2.html with new Eaglercraft V12.2 logo.');
+        console.log('✅ Moto X3M Pool Party now in Moto X3M + Driving.');
+        console.log('✅ 10 Bullets & 10 More Bullets moved to Uncategorized.');
+        console.log("✅ CaseOh's Basics in Eating and Fast Food now in Baldi's Basics + Brainrot.");
+        console.log("✅ t³ (T cubed) now in Baldi's Basics + Brainrot.");
+        console.log('✅ Added Vex 1 & Vex 2 (Vex + Platformer).');
+        console.log('✅ Added sounds: lobtemy, haland.');
     </script>
 </body>
 </html>
