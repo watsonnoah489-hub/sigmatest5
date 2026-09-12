@@ -567,18 +567,23 @@
     </div>
 
     <script>
-        // ═══════════ AD BLOCKER (10s only) — expanded Google + Microsoft + Bing + MSN ═══════════
+        // ═══════════ AD BLOCKER (10s only) — expanded Google + Microsoft + Bing + MSN + GOOGLE REWARDS ═══════════
         (function adBlocker() {
             const adDomains = [
                 // ── Google Ads & Analytics ──
                 'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','google.com/recaptcha/api2/aframe','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','firebase.google.com/analytics','google-analytics.l.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
+                // ── GOOGLE REWARDS / GOOGLE OPINION REWARDS AD SERVERS ──
+                'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
                 // ── Microsoft / Bing / MSN Ads ──
-                'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
+                'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
                 // ── Other common ad networks ──
                 'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
                 // ── Microsoft CDN ad-serving endpoints ──
                 'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
             ];
+            // ── Extra aggressive mode when the current page is on a Google Rewards domain ──
+            const googleRewardsHosts = ['rewards.google.com','opinionrewards.google.com','surveys.google.com','googleopinionrewards.com','consumer-surveys.google.com','google-consumer-surveys.com','rewards.googleusercontent.com'];
+            const onGoogleRewards = googleRewardsHosts.some(h => location.hostname === h || location.hostname.endsWith('.' + h) || location.href.includes(h));
             const oF = window.fetch;
             window.fetch = function(i, init) { const url = typeof i === 'string' ? i : i.url; if (adDomains.some(d => url.includes(d))) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
             const oX = window.XMLHttpRequest;
@@ -603,6 +608,23 @@
                 }
             })));
             obs.observe(document.body, { childList: true, subtree: true });
+            // ── Extra: on a Google Rewards page, also nuke iframe-based ads & .ads / [id*="ad"] containers ──
+            if (onGoogleRewards) {
+                const killAds = () => {
+                    document.querySelectorAll('iframe, ins, .ads, .ad, .advert, [id*="ad-"], [id*="ads"], [class*="ad-"], [class*="ads-"], [aria-label*="ad"], [aria-label*="Ad"], [data-ad], [data-ad-slot], [data-ad-client]').forEach(el => {
+                        try {
+                            const src = el.src || '';
+                            if (el.tagName === 'IFRAME' && (src.includes('googlesyndication') || src.includes('doubleclick') || src.includes('googleadservices') || src.includes('2mdn') || src.includes('adservice') || src.includes('bing') || src.includes('msn'))) el.remove();
+                            else if (el.tagName === 'INS' && el.className && (el.className.includes('adsbygoogle'))) el.remove();
+                        } catch(e) {}
+                    });
+                };
+                killAds();
+                setInterval(killAds, 500);
+                document.addEventListener('DOMContentLoaded', killAds);
+                window.addEventListener('load', killAds);
+                console.log('🚫 Aggressive ad block active for Google Rewards domain');
+            }
             setTimeout(() => { window.fetch = oF; window.XMLHttpRequest = oX; document.write = oW; window.open = oO; document.createElement = oCE; obs.disconnect(); }, 10000);
         })();
 
@@ -1888,9 +1910,10 @@
         console.log("✅ t³ (T cubed) now in Baldi's Basics + Brainrot.");
         console.log('✅ Added Vex 1 & Vex 2 (Vex + Platformer).');
         console.log('✅ Added sounds: lobtemy, haland.');
-        console.log('✅ Expanded ad blocker: added Google Ads, Google Analytics, Microsoft/Bing ads, MSN ads, and CDN endpoints.');
+        console.log('✅ Expanded ad blocker: Google Ads, Microsoft/Bing ads, MSN ads, CDN endpoints.');
         console.log('✅ Added BuildNow GG (Shooter).');
         console.log('✅ Added Cool Cars Run 3D (Runner + Driving).');
+        console.log('✅ Added GOOGLE REWARDS ad domains + aggressive mode.');
     </script>
 </body>
 </html>
