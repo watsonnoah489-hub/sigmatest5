@@ -567,11 +567,13 @@
     </div>
 
     <script>
-        // ═══════════ AD BLOCKER (10s only) — expanded Google + Microsoft + Bing + MSN + GOOGLE REWARDS ═══════════
+        // ═══════════ AD BLOCKER (10s only) — Google Ads + specific conversion URL + Image/src/setAttribute intercepts ═══════════
         (function adBlocker() {
             const adDomains = [
                 // ── Google Ads & Analytics ──
                 'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','google.com/recaptcha/api2/aframe','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','firebase.google.com/analytics','google-analytics.l.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
+                // ── SPECIFIC CONVERSION TRACKING PATTERNS ──
+                'viewthroughconversion','googleads.g.doubleclick.net/pagead/viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script',
                 // ── GOOGLE REWARDS / GOOGLE OPINION REWARDS AD SERVERS ──
                 'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
                 // ── Microsoft / Bing / MSN Ads ──
@@ -581,34 +583,89 @@
                 // ── Microsoft CDN ad-serving endpoints ──
                 'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
             ];
-            // ── Extra aggressive mode when the current page is on a Google Rewards domain ──
             const googleRewardsHosts = ['rewards.google.com','opinionrewards.google.com','surveys.google.com','googleopinionrewards.com','consumer-surveys.google.com','google-consumer-surveys.com','rewards.googleusercontent.com'];
             const onGoogleRewards = googleRewardsHosts.some(h => location.hostname === h || location.hostname.endsWith('.' + h) || location.href.includes(h));
+            const isAd = (u) => typeof u === 'string' && adDomains.some(d => u.includes(d));
+
             const oF = window.fetch;
-            window.fetch = function(i, init) { const url = typeof i === 'string' ? i : i.url; if (adDomains.some(d => url.includes(d))) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
+            window.fetch = function(i, init) {
+                const url = typeof i === 'string' ? i : i.url;
+                if (isAd(url)) { console.log('🚫 Blocked fetch:', url); return Promise.reject(new Error('blocked')); }
+                return oF.call(this, i, init);
+            };
             const oX = window.XMLHttpRequest;
-            window.XMLHttpRequest = function() { const xhr = new oX(); const o = xhr.open; xhr.open = function(m,u,a,us,p){ if (adDomains.some(d=>u.includes(d))) { this.abort=()=>{}; this.send=()=>{}; return; } o.call(this,m,u,a,us,p); }; return xhr; };
+            window.XMLHttpRequest = function() {
+                const xhr = new oX(); const o = xhr.open;
+                xhr.open = function(m,u,a,us,p){
+                    if (isAd(u)) { console.log('🚫 Blocked XHR:', u); this.abort=()=>{}; this.send=()=>{}; return; }
+                    o.call(this,m,u,a,us,p);
+                };
+                return xhr;
+            };
             const oW = document.write;
             document.write = function(h) { if (typeof h === 'string' && adDomains.some(d => h.includes(d))) return; oW.call(document, h); };
             const oO = window.open;
-            window.open = function(u,n,s,r) { if (adDomains.some(d => u.includes(d))) return null; return oO.call(this,u,n,s,r); };
+            window.open = function(u,n,s,r) { if (isAd(u)) { console.log('🚫 Blocked popup:', u); return null; } return oO.call(this,u,n,s,r); };
+
+            // ── Block <img> beacons (Google conversion pixels use Image() / <img src="...">) ──
+            const oImg = window.Image;
+            window.Image = function(w, h) {
+                const img = new oImg(w, h);
+                try {
+                    const desc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
+                    if (desc && desc.set) {
+                        Object.defineProperty(img, 'src', {
+                            set(v) { if (isAd(v)) { console.log('🚫 Blocked Image beacon:', v); return; } return desc.set.call(this, v); },
+                            get() { return this.getAttribute('src'); },
+                            configurable: true
+                        });
+                    }
+                } catch(_) {}
+                return img;
+            };
+            window.Image.prototype = oImg.prototype;
+
             const oCE = document.createElement;
             document.createElement = function(t) {
                 const el = oCE.call(document, t);
-                if (t === 'script') { const oSA = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && adDomains.some(d => v.includes(d))) return; oSA.call(this,n,v); }; }
+                if (t === 'script') { const oSA = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && isAd(v)) { console.log('🚫 Blocked script:', v); return; } oSA.call(this,n,v); }; }
                 return el;
             };
+
+            // ── Intercept setAttribute globally ──
+            const oSetAttr = Element.prototype.setAttribute;
+            Element.prototype.setAttribute = function(name, value) {
+                if ((name === 'src' || name === 'href') && isAd(value)) { console.log('🚫 Blocked setAttribute(' + name + '):', value); return; }
+                return oSetAttr.call(this, name, value);
+            };
+
+            // ── Intercept .src / .href property setters globally ──
+            ['src','href'].forEach(prop => {
+                try {
+                    const desc = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop);
+                    if (!desc || !desc.set) return;
+                    Object.defineProperty(HTMLElement.prototype, prop, {
+                        set(v) { if (isAd(v)) { console.log('🚫 Blocked .' + prop + ' =:', v); return; } return desc.set.call(this, v); },
+                        get: desc.get,
+                        configurable: true,
+                        enumerable: desc.enumerable
+                    });
+                } catch(_) {}
+            });
+
             const obs = new MutationObserver(muts => muts.forEach(m => m.addedNodes.forEach(n => {
                 if (n.nodeType === 1) {
                     if (n.dataset && n.dataset.stOverlay === 'true') return;
                     if (n.closest && n.closest('[data-st-overlay="true"]')) return;
-                    const attrs = n.attributes || []; let isAd = false;
-                    for (let a of attrs) { const v = a.value; if (v && (v.includes('ad') || v.includes('ads') || v.includes('banner') || v.includes('popup') || v.includes('sponsor') || v.includes('promotion'))) { isAd = true; break; } }
-                    if (isAd || adDomains.some(d => n.innerHTML && n.innerHTML.includes(d))) n.remove();
+                    const src = n.getAttribute && (n.getAttribute('src') || n.getAttribute('href'));
+                    if (src && isAd(src)) { n.remove(); return; }
+                    const attrs = n.attributes || []; let flagged = false;
+                    for (let a of attrs) { const v = a.value; if (v && (v.includes('ad') || v.includes('ads') || v.includes('banner') || v.includes('popup') || v.includes('sponsor') || v.includes('promotion'))) { flagged = true; break; } }
+                    if (flagged || adDomains.some(d => n.innerHTML && n.innerHTML.includes(d))) n.remove();
                 }
             })));
             obs.observe(document.body, { childList: true, subtree: true });
-            // ── Extra: on a Google Rewards page, also nuke iframe-based ads & .ads / [id*="ad"] containers ──
+
             if (onGoogleRewards) {
                 const killAds = () => {
                     document.querySelectorAll('iframe, ins, .ads, .ad, .advert, [id*="ad-"], [id*="ads"], [class*="ad-"], [class*="ads-"], [aria-label*="ad"], [aria-label*="Ad"], [data-ad], [data-ad-slot], [data-ad-client]').forEach(el => {
@@ -734,26 +791,14 @@
         (function initDragDrop() {
             const overlay = document.getElementById('dropOverlay');
             let dragDepth = 0;
-
             function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
-
             ['dragenter','dragover','dragleave','drop'].forEach(evt => {
                 document.addEventListener(evt, preventDefaults, false);
                 window.addEventListener(evt, preventDefaults, false);
             });
-
-            document.addEventListener('dragenter', (e) => {
-                dragDepth++;
-                if (dragDepth > 0) overlay.classList.add('show');
-            });
-
-            document.addEventListener('dragleave', (e) => {
-                dragDepth--;
-                if (dragDepth <= 0) { dragDepth = 0; overlay.classList.remove('show'); }
-            });
-
+            document.addEventListener('dragenter', (e) => { dragDepth++; if (dragDepth > 0) overlay.classList.add('show'); });
+            document.addEventListener('dragleave', (e) => { dragDepth--; if (dragDepth <= 0) { dragDepth = 0; overlay.classList.remove('show'); } });
             document.addEventListener('dragover', (e) => { if (dragDepth > 0) overlay.classList.add('show'); });
-
             document.addEventListener('drop', (e) => {
                 dragDepth = 0;
                 overlay.classList.remove('show');
@@ -1914,6 +1959,8 @@
         console.log('✅ Added BuildNow GG (Shooter).');
         console.log('✅ Added Cool Cars Run 3D (Runner + Driving).');
         console.log('✅ Added GOOGLE REWARDS ad domains + aggressive mode.');
+        console.log('✅ Blocks Google conversion URL: googleads.g.doubleclick.net/pagead/viewthroughconversion/1037333982/');
+        console.log('✅ Intercepts fetch / XHR / Image() / setAttribute / .src / .href to kill conversion beacons.');
     </script>
 </body>
 </html>
