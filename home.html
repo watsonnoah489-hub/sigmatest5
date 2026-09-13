@@ -264,10 +264,10 @@
         #stFallback button { padding: 10px 24px; border-radius: 30px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
         #stFallback .retry { background: #3b82f6; color: #fff; }
         #stFallback .newtab { background: #22c55e; color: #fff; }
-        .sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; }
-        .sigma-ad-cover::before { content: 'Σ' !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; }
-        .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }
-        .sigma-ad-cover.fading { opacity: 0 !important; }
+        .sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; }
+        .sigma-cover::before { content: 'Σ' !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; }
+        .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }
+        .sigma-cover.fading { opacity: 0 !important; }
         @media (max-width: 768px) {
             .cycle-btn { width: 120px; height: 120px; }
             .cycle-btn.random .dice { font-size: 60px; }
@@ -470,281 +470,156 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════
-    //  AGGRESSIVE AD BLOCKER — Σigma cover auto-removes after 20s
+    //  Σigma shield — covers slots with a Σ logo (auto-removes after 20s)
     // ═══════════════════════════════════════════════════════════════
-    function sigmaAdBlocker() {
-        const adDomains = [
-            'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
-            'G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads',
-            '1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1',
-            'viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script',
-            'safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle',
-            'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
-            'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
-            'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
-            'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
-        ];
-        const scriptSignatures = [
-            'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html',
-            'UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y',
-            'ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF',
-            '1p-user-list','is_vtc','viewthroughconversion'
-        ];
-        const sidebarSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
-        const adElementSelectors = [
-            'iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]',
-            'iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]',
-            'iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]',
-            'iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]',
-            'ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]',
-            '[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'
-        ];
-        const isAd = u => typeof u === 'string' && adDomains.some(d => u.includes(d));
-        const isAdScript = t => typeof t === 'string' && scriptSignatures.some(s => t.includes(s));
-
-        // ═══ SIGMA COVER: covers the ad slot, then fades out after 20s ═══
+    function sigmaShield() {
+        const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'];
+        const sigs = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion'];
+        const sideSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
+        const slotSelectors = ['iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]','iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]','iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]','iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]','ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'];
+        const isTarget = u => typeof u === 'string' && targets.some(d => u.includes(d));
+        const isTargetScript = t => typeof t === 'string' && sigs.some(s => t.includes(s));
         const COVER_LIFETIME_MS = 20000;
         const COVER_FADE_MS = 500;
 
-        function coverAd(el, label) {
+        function sigmaCover(el, label) {
             if (!el || !el.parentNode) return;
             if (el.dataset && el.dataset.sigmaCovered === 'true') return;
-            if (el.classList && el.classList.contains('sigma-ad-cover')) return;
+            if (el.classList && el.classList.contains('sigma-cover')) return;
             try {
                 const rect = el.getBoundingClientRect();
                 const w = rect.width || el.offsetWidth || parseInt(el.getAttribute && el.getAttribute('width')) || 300;
                 const h = rect.height || el.offsetHeight || parseInt(el.getAttribute && el.getAttribute('height')) || 250;
                 const parent = el.parentNode;
                 try { const ps = getComputedStyle(parent); if (ps.position === 'static') parent.style.position = 'relative'; } catch(_) {}
-
                 const cover = document.createElement('div');
-                cover.className = 'sigma-ad-cover';
+                cover.className = 'sigma-cover';
                 cover.dataset.sigmaCovered = 'true';
-                cover.setAttribute('data-label', label || 'ΣigmaTown • Ad Blocked');
-
-                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') {
-                    cover.style.position = 'fixed';
-                    cover.style.width = w + 'px';
-                    cover.style.height = h + 'px';
-                    cover.style.top = '50%';
-                    cover.style.transform = 'translateY(-50%)';
-                    cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0';
-                } else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) {
-                    cover.style.position = 'fixed';
-                    cover.style.left = rect.left + 'px';
-                    cover.style.top = rect.top + 'px';
-                    cover.style.width = w + 'px';
-                    cover.style.height = h + 'px';
-                } else {
-                    cover.style.position = 'absolute';
-                    cover.style.left = (el.offsetLeft || 0) + 'px';
-                    cover.style.top = (el.offsetTop || 0) + 'px';
-                    cover.style.width = w + 'px';
-                    cover.style.height = h + 'px';
-                }
-
+                cover.setAttribute('data-label', label || 'ΣigmaTown');
+                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') { cover.style.position = 'fixed'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; cover.style.top = '50%'; cover.style.transform = 'translateY(-50%)'; cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0'; }
+                else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) { cover.style.position = 'fixed'; cover.style.left = rect.left + 'px'; cover.style.top = rect.top + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
+                else { cover.style.position = 'absolute'; cover.style.left = (el.offsetLeft || 0) + 'px'; cover.style.top = (el.offsetTop || 0) + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
                 parent.insertBefore(cover, el);
                 el.remove();
-
-                // ═══ AUTO-REMOVE THE ΣIGMA COVER AFTER 20 SECONDS ═══
-                setTimeout(() => {
-                    try {
-                        cover.classList.add('fading');
-                        setTimeout(() => {
-                            try { if (cover && cover.parentNode) cover.remove(); } catch(_) {}
-                        }, COVER_FADE_MS);
-                    } catch(_) {}
-                }, COVER_LIFETIME_MS);
+                setTimeout(() => { try { cover.classList.add('fading'); setTimeout(() => { try { if (cover && cover.parentNode) cover.remove(); } catch(_) {} }, COVER_FADE_MS); } catch(_) {} }, COVER_LIFETIME_MS);
             } catch(_) {}
         }
-
-        const killAds = () => {
-            adElementSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el)); } catch(_) {} });
-            sidebarSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el, 'ΣigmaTown • Sidebar Ad Blocked')); } catch(_) {} });
-        };
-        killAds();
-        setInterval(killAds, 300);
-
+        const sweep = () => { slotSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => sigmaCover(el)); } catch(_) {} }); sideSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => sigmaCover(el, 'ΣigmaTown')); } catch(_) {} }); };
+        sweep(); setInterval(sweep, 300);
         const oF = window.fetch;
-        window.fetch = function(i, init) { const url = typeof i === 'string' ? i : (i && i.url); if (isAd(url)) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
+        window.fetch = function(i, init) { const url = typeof i === 'string' ? i : (i && i.url); if (isTarget(url)) return Promise.reject(new Error('sigma')); return oF.call(this, i, init); };
         const oX = window.XMLHttpRequest;
-        window.XMLHttpRequest = function() { const x = new oX(); const o = x.open; x.open = function(m,u){ if (isAd(u)) { this.abort=()=>{}; this.send=()=>{}; return; } o.apply(this, arguments); }; return x; };
+        window.XMLHttpRequest = function() { const x = new oX(); const o = x.open; x.open = function(m,u){ if (isTarget(u)) { this.abort=()=>{}; this.send=()=>{}; return; } o.apply(this, arguments); }; return x; };
         const oW = document.write;
-        document.write = function(h) { if (typeof h === 'string' && (adDomains.some(d => h.includes(d)) || isAdScript(h))) return; return oW.apply(this, arguments); };
+        document.write = function(h) { if (typeof h === 'string' && (targets.some(d => h.includes(d)) || isTargetScript(h))) return; return oW.apply(this, arguments); };
         const oO = window.open;
-        window.open = function(u) { if (isAd(u)) return null; return oO.apply(this, arguments); };
-        if (navigator.sendBeacon) { const ob = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d) { if (isAd(u)) return false; return ob(u,d); }; }
+        window.open = function(u) { if (isTarget(u)) return null; return oO.apply(this, arguments); };
+        if (navigator.sendBeacon) { const ob = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d) { if (isTarget(u)) return false; return ob(u,d); }; }
         const oWS = window.WebSocket;
-        window.WebSocket = function(u, p) { if (isAd(u)) throw new Error('blocked'); return new oWS(u, p); };
+        window.WebSocket = function(u, p) { if (isTarget(u)) throw new Error('sigma'); return new oWS(u, p); };
         window.WebSocket.prototype = oWS.prototype;
         const oImg = window.Image;
-        window.Image = function(w, h) { const img = new oImg(w, h); try { const d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src'); if (d && d.set) Object.defineProperty(img, 'src', { set(v){ if (isAd(v)) return; return d.set.call(this,v); }, get(){ return this.getAttribute('src'); }, configurable: true }); } catch(_) {} return img; };
+        window.Image = function(w, h) { const img = new oImg(w, h); try { const d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src'); if (d && d.set) Object.defineProperty(img, 'src', { set(v){ if (isTarget(v)) return; return d.set.call(this,v); }, get(){ return this.getAttribute('src'); }, configurable: true }); } catch(_) {} return img; };
         window.Image.prototype = oImg.prototype;
         try { window.google_image_requests = []; } catch(_) {}
         const oCE = document.createElement;
-        document.createElement = function(t) { const el = oCE.call(document, t); if (t === 'script') { const s = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && isAd(v)) return; return s.apply(this, arguments); }; } return el; };
+        document.createElement = function(t) { const el = oCE.call(document, t); if (t === 'script') { const s = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && isTarget(v)) return; return s.apply(this, arguments); }; } return el; };
         const oSA = Element.prototype.setAttribute;
-        Element.prototype.setAttribute = function(n, v) { if ((n === 'src' || n === 'href') && isAd(v)) return; return oSA.call(this, n, v); };
-        ['src','href'].forEach(prop => { try { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop); if (!d || !d.set) return; Object.defineProperty(HTMLElement.prototype, prop, { set(v){ if (isAd(v)) return; return d.set.call(this,v); }, get: d.get, configurable: true, enumerable: d.enumerable }); } catch(_) {} });
-
+        Element.prototype.setAttribute = function(n, v) { if ((n === 'src' || n === 'href') && isTarget(v)) return; return oSA.call(this, n, v); };
+        ['src','href'].forEach(prop => { try { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop); if (!d || !d.set) return; Object.defineProperty(HTMLElement.prototype, prop, { set(v){ if (isTarget(v)) return; return d.set.call(this,v); }, get: d.get, configurable: true, enumerable: d.enumerable }); } catch(_) {} });
         const obs = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
             if (n.nodeType !== 1) return;
             if (n.dataset && n.dataset.stOverlay === 'true') return;
             if (n.closest && n.closest('[data-st-overlay="true"]')) return;
-            if (n.classList && n.classList.contains('sigma-ad-cover')) return;
-            if (n.id && /^sidebarad/i.test(n.id)) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
-            if (n.classList && n.classList.contains('sidebar-frame')) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
+            if (n.classList && n.classList.contains('sigma-cover')) return;
+            if (n.id && /^sidebarad/i.test(n.id)) { sigmaCover(n, 'ΣigmaTown'); return; }
+            if (n.classList && n.classList.contains('sidebar-frame')) { sigmaCover(n, 'ΣigmaTown'); return; }
             if (n.classList && n.classList.contains('sidebar-close')) { n.remove(); return; }
-            if (n.tagName === 'SCRIPT') { const txt = n.textContent || ''; if (isAdScript(txt)) { n.remove(); return; } const s = n.getAttribute('src') || ''; if (isAd(s)) { n.remove(); return; } }
-            if (n.tagName === 'IFRAME') { const s = n.getAttribute('src') || ''; if (isAd(s)) { coverAd(n, 'ΣigmaTown • Iframe Ad Blocked'); return; } }
-            if (n.tagName === 'LINK') { const r = (n.getAttribute('rel') || '').toLowerCase(); const h = n.getAttribute('href') || ''; if ((r === 'preconnect' || r === 'dns-prefetch') && isAd(h)) { n.remove(); return; } }
+            if (n.tagName === 'SCRIPT') { const txt = n.textContent || ''; if (isTargetScript(txt)) { n.remove(); return; } const s = n.getAttribute('src') || ''; if (isTarget(s)) { n.remove(); return; } }
+            if (n.tagName === 'IFRAME') { const s = n.getAttribute('src') || ''; if (isTarget(s)) { sigmaCover(n, 'ΣigmaTown'); return; } }
+            if (n.tagName === 'LINK') { const r = (n.getAttribute('rel') || '').toLowerCase(); const h = n.getAttribute('href') || ''; if ((r === 'preconnect' || r === 'dns-prefetch') && isTarget(h)) { n.remove(); return; } }
             const s = n.getAttribute && (n.getAttribute('src') || n.getAttribute('href'));
-            if (s && isAd(s)) { coverAd(n); return; }
+            if (s && isTarget(s)) { sigmaCover(n); return; }
             const attrs = n.attributes || [];
-            for (let a of attrs) { const v = a.value; if (v && (v.includes('adsbygoogle') || v.includes('google_ads') || v.includes('ad-slot') || v.includes('banner-ad'))) { coverAd(n); return; } }
+            for (let a of attrs) { const v = a.value; if (v && (v.includes('adsbygoogle') || v.includes('google_ads') || v.includes('ad-slot') || v.includes('banner-ad'))) { sigmaCover(n); return; } }
         })));
         try { obs.observe(document.documentElement, { childList: true, subtree: true }); } catch(_) {}
-
         setInterval(() => {
-            try { if (!window.fetch.__sigHook) { const cur = window.fetch; window.fetch = function(i,init){ const u = typeof i==='string'?i:(i&&i.url); if (isAd(u)) return Promise.reject(new Error('blocked')); return cur.call(this,i,init); }; window.fetch.__sigHook = true; } } catch(_) {}
-            try { if (navigator.sendBeacon && !navigator.sendBeacon.__sigHook) { const cur = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d){ if (isAd(u)) return false; return cur(u,d); }; navigator.sendBeacon.__sigHook = true; } } catch(_) {}
-            try { if (!document.write.__sigHook) { const cur = document.write.bind(document); document.write = function(h){ if (typeof h==='string' && (adDomains.some(d=>h.includes(d)) || isAdScript(h))) return; return cur(h); }; document.write.__sigHook = true; } } catch(_) {}
+            try { if (!window.fetch.__sigHook) { const cur = window.fetch; window.fetch = function(i,init){ const u = typeof i==='string'?i:(i&&i.url); if (isTarget(u)) return Promise.reject(new Error('sigma')); return cur.call(this,i,init); }; window.fetch.__sigHook = true; } } catch(_) {}
+            try { if (navigator.sendBeacon && !navigator.sendBeacon.__sigHook) { const cur = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d){ if (isTarget(u)) return false; return cur(u,d); }; navigator.sendBeacon.__sigHook = true; } } catch(_) {}
+            try { if (!document.write.__sigHook) { const cur = document.write.bind(document); document.write = function(h){ if (typeof h==='string' && (targets.some(d=>h.includes(d)) || isTargetScript(h))) return; return cur(h); }; document.write.__sigHook = true; } } catch(_) {}
         }, 1000);
-
-        console.log('%cΣigma Ad Blocker ACTIVE — Σigma cover auto-removes after 20s.', 'background:#dc2626;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
+        console.log('%cΣigma shield active.', 'background:#3b82f6;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
     }
-    sigmaAdBlocker();
-    const SIGMA_BLOCKER_SRC = '(' + sigmaAdBlocker.toString() + ')();';
-    const SIGMA_COVER_CSS = '.sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-ad-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-ad-cover.fading { opacity: 0 !important; }';
+    sigmaShield();
+    const SIGMA_SRC = '(' + sigmaShield.toString() + ')();';
+    const SIGMA_CSS = '.sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-cover.fading { opacity: 0 !important; }';
 
     // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
     let lagKillerForcedByLowEnd = false;
+    function buildHackCss() { const lo = HACK.lowEnd; let css = ''; if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}'; if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}'; if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}'; return css; }
 
-    function buildHackCss() {
-        const lo = HACK.lowEnd;
-        let css = '';
-        if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}';
-        if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}';
-        if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}';
-        return css;
-    }
-
-    const gameOverlay   = document.getElementById('gameOverlay');
-    const gameFrame     = document.getElementById('gameOverlayFrame');
-    const gameLoader    = document.getElementById('gameOverlayLoader');
-    const gameNameEl    = document.getElementById('gameOverlayName');
-    const stFallback    = document.getElementById('stFallback');
-    const stCtrlBar     = document.getElementById('stCtrlBar');
-    const stLowEndBar   = document.getElementById('stLowEndBar');
-    const stRestoreBar  = document.getElementById('stRestoreBar');
-    let currentGameFile = '';
-    let fallbackTimer   = null;
-    let loadFired       = false;
-    let injectIntervals = [];
-
+    const gameOverlay = document.getElementById('gameOverlay');
+    const gameFrame = document.getElementById('gameOverlayFrame');
+    const gameLoader = document.getElementById('gameOverlayLoader');
+    const gameNameEl = document.getElementById('gameOverlayName');
+    const stFallback = document.getElementById('stFallback');
+    const stCtrlBar = document.getElementById('stCtrlBar');
+    const stLowEndBar = document.getElementById('stLowEndBar');
+    const stRestoreBar = document.getElementById('stRestoreBar');
+    let currentGameFile = '', fallbackTimer = null, loadFired = false, injectIntervals = [];
     function stopAllInjections() { injectIntervals.forEach(id => clearInterval(id)); injectIntervals = []; if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; } }
-
     function injectIntoIframe() {
         try {
-            const doc = gameFrame.contentDocument;
-            if (!doc || !doc.documentElement) return false;
-            if (!doc.getElementById('sigmaAdBlockerStyle')) {
-                const st = doc.createElement('style');
-                st.id = 'sigmaAdBlockerStyle';
-                st.textContent = SIGMA_COVER_CSS;
-                (doc.head || doc.documentElement).appendChild(st);
-            }
-            if (!doc.getElementById('sigmaAdBlockerScript')) {
-                const sc = doc.createElement('script');
-                sc.id = 'sigmaAdBlockerScript';
-                sc.textContent = SIGMA_BLOCKER_SRC;
-                (doc.head || doc.documentElement).appendChild(sc);
-            }
-            const hackCss = buildHackCss();
-            let hackStyle = doc.getElementById('sigmaHackStyle');
-            if (hackCss) {
-                if (!hackStyle) { hackStyle = doc.createElement('style'); hackStyle.id = 'sigmaHackStyle'; (doc.head || doc.documentElement).appendChild(hackStyle); }
-                hackStyle.textContent = hackCss;
-            } else if (hackStyle) { hackStyle.remove(); }
+            const doc = gameFrame.contentDocument; if (!doc || !doc.documentElement) return false;
+            if (!doc.getElementById('sigmaShieldStyle')) { const st = doc.createElement('style'); st.id = 'sigmaShieldStyle'; st.textContent = SIGMA_CSS; (doc.head || doc.documentElement).appendChild(st); }
+            if (!doc.getElementById('sigmaShieldScript')) { const sc = doc.createElement('script'); sc.id = 'sigmaShieldScript'; sc.textContent = SIGMA_SRC; (doc.head || doc.documentElement).appendChild(sc); }
+            const hackCss = buildHackCss(); let hackStyle = doc.getElementById('sigmaHackStyle');
+            if (hackCss) { if (!hackStyle) { hackStyle = doc.createElement('style'); hackStyle.id = 'sigmaHackStyle'; (doc.head || doc.documentElement).appendChild(hackStyle); } hackStyle.textContent = hackCss; }
+            else if (hackStyle) { hackStyle.remove(); }
             return true;
         } catch(e) { return false; }
     }
-
-    function resetBars() {
-        [stCtrlBar, stLowEndBar].forEach(bar => {
-            bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; bar.style.transform = '';
-            bar.dataset.scale = '1'; bar.style.display = '';
-            bar.querySelectorAll('[data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; });
-        });
-        stRestoreBar.classList.remove('show');
-    }
-
+    function resetBars() { [stCtrlBar, stLowEndBar].forEach(bar => { bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; bar.style.transform = ''; bar.dataset.scale = '1'; bar.style.display = ''; bar.querySelectorAll('[data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; }); }); stRestoreBar.classList.remove('show'); }
     function resetHackState() {
         const hadLowEnd = HACK.lowEnd;
-        HACK.lowEnd = false;
-        HACK.logos = false;
-        HACK.anim = false;
-        HACK.cursor = false;
+        HACK.lowEnd = false; HACK.logos = false; HACK.anim = false; HACK.cursor = false;
         document.body.classList.remove('hack-no-logos', 'hack-no-anim', 'hack-no-cursor');
         const lb = document.getElementById('leLowEnd'); if (lb) lb.classList.remove('active');
         const lg = document.getElementById('leLogos'); if (lg) lg.classList.remove('active');
         const la = document.getElementById('leAnim'); if (la) la.classList.remove('active');
         const lc = document.getElementById('leCursor'); if (lc) lc.classList.remove('active');
-        if (lagKillerForcedByLowEnd) {
-            lagKiller = false;
-            lagKillerForcedByLowEnd = false;
-            applyLagKiller();
-        } else if (hadLowEnd && lagKiller) {
-            lagKiller = false;
-            applyLagKiller();
-        }
+        if (lagKillerForcedByLowEnd) { lagKiller = false; lagKillerForcedByLowEnd = false; applyLagKiller(); }
+        else if (hadLowEnd && lagKiller) { lagKiller = false; applyLagKiller(); }
     }
-
     function closeGame() {
         stopAllInjections();
-        gameOverlay.classList.remove('show');
-        stFallback.classList.remove('show');
-        gameLoader.classList.remove('hidden');
+        gameOverlay.classList.remove('show'); stFallback.classList.remove('show'); gameLoader.classList.remove('hidden');
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         document.body.style.overflow = '';
         if (document.fullscreenElement) { try { document.exitFullscreen().catch(()=>{}); } catch(_) {} }
-        resetBars();
-        resetHackState();
+        resetBars(); resetHackState();
     }
-
     function openGameInIframe(file, name) {
-        currentGameFile = file;
-        gameNameEl.textContent = name || file;
-        gameOverlay.classList.add('show');
-        stFallback.classList.remove('show');
-        gameLoader.classList.remove('hidden');
+        currentGameFile = file; gameNameEl.textContent = name || file;
+        gameOverlay.classList.add('show'); stFallback.classList.remove('show'); gameLoader.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        loadFired = false;
-        stopAllInjections();
-        resetBars();
-        resetHackState();
+        loadFired = false; stopAllInjections(); resetBars(); resetHackState();
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         setTimeout(() => { try { gameFrame.src = file; } catch(_) {} }, 50);
         fallbackTimer = setTimeout(() => { if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); } }, 4500);
-        const iv1 = setInterval(injectIntoIframe, 60);
-        const iv2 = setInterval(injectIntoIframe, 300);
-        const iv3 = setInterval(injectIntoIframe, 1500);
+        const iv1 = setInterval(injectIntoIframe, 60); const iv2 = setInterval(injectIntoIframe, 300); const iv3 = setInterval(injectIntoIframe, 1500);
         injectIntervals = [iv1, iv2, iv3];
         setTimeout(() => { clearInterval(iv1); clearInterval(iv2); }, 25000);
     }
-
     gameFrame.addEventListener('load', () => {
-        loadFired = true;
-        if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
+        loadFired = true; if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
         try { injectIntoIframe(); } catch(_) {}
         setTimeout(() => { gameLoader.classList.add('hidden'); stFallback.classList.remove('show'); }, 250);
         [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
-
-    document.getElementById('stFS').addEventListener('click', () => {
-        try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {}
-    });
+    document.getElementById('stFS').addEventListener('click', () => { try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {} });
     document.getElementById('stPtr').addEventListener('click', () => {
         try { const doc = gameFrame.contentDocument; if (!doc) return; const el = doc.body || doc.documentElement;
             if (doc.pointerLockElement) { doc.exitPointerLock(); document.getElementById('stPtr').innerHTML = '🖱️ Lock'; }
@@ -756,99 +631,54 @@
     document.getElementById('stFallbackRetry').addEventListener('click', () => { if (currentGameFile) openGameInIframe(currentGameFile, gameNameEl.textContent); });
     document.getElementById('stFallbackNewTab').addEventListener('click', () => { if (currentGameFile) window.open(currentGameFile, '_blank'); });
 
-    const leLowEndBtn  = document.getElementById('leLowEnd');
-    const leLogosBtn   = document.getElementById('leLogos');
-    const leAnimBtn    = document.getElementById('leAnim');
-    const leCursorBtn  = document.getElementById('leCursor');
-    const leRemoveAll  = document.getElementById('leRemoveAll');
-
+    const leLowEndBtn = document.getElementById('leLowEnd');
+    const leLogosBtn = document.getElementById('leLogos');
+    const leAnimBtn = document.getElementById('leAnim');
+    const leCursorBtn = document.getElementById('leCursor');
+    const leRemoveAll = document.getElementById('leRemoveAll');
     function applyHack() {
-        const b = document.body;
-        const lo = HACK.lowEnd;
+        const b = document.body; const lo = HACK.lowEnd;
         b.classList.toggle('hack-no-logos', HACK.logos || lo);
         b.classList.toggle('hack-no-anim', HACK.anim || lo);
         b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
-        if (lo) {
-            if (!lagKiller) { lagKillerForcedByLowEnd = true; lagKiller = true; }
-            applyLagKiller();
-        } else {
-            if (lagKillerForcedByLowEnd) {
-                lagKillerForcedByLowEnd = false;
-                lagKiller = false;
-                applyLagKiller();
-            }
-        }
+        if (lo) { if (!lagKiller) { lagKillerForcedByLowEnd = true; lagKiller = true; } applyLagKiller(); }
+        else { if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; lagKiller = false; applyLagKiller(); } }
         leLowEndBtn.classList.toggle('active', HACK.lowEnd);
         leLogosBtn.classList.toggle('active', HACK.logos || lo);
         leAnimBtn.classList.toggle('active', HACK.anim || lo);
         leCursorBtn.classList.toggle('active', HACK.cursor || lo);
         injectIntoIframe();
     }
-
-    function toggleHackSub(key) {
-        if (HACK.lowEnd) { HACK.lowEnd = false; HACK.logos = true; HACK.anim = true; HACK.cursor = true; }
-        HACK[key] = !HACK[key];
-        applyHack();
-    }
-
+    function toggleHackSub(key) { if (HACK.lowEnd) { HACK.lowEnd = false; HACK.logos = true; HACK.anim = true; HACK.cursor = true; } HACK[key] = !HACK[key]; applyHack(); }
     leLowEndBtn.addEventListener('click', () => { HACK.lowEnd = !HACK.lowEnd; applyHack(); showToast(HACK.lowEnd ? '📱 Low End Device ON' : '📱 Low End Device OFF', 2000); });
     leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(HACK.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
     leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(HACK.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
     leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(HACK.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
-
-    function removeAllBars() {
-        stCtrlBar.style.display = 'none';
-        stLowEndBar.style.display = 'none';
-        stRestoreBar.classList.add('show');
-        showToast('🧹 All bars removed — press Σ to restore', 2500);
-    }
+    function removeAllBars() { stCtrlBar.style.display = 'none'; stLowEndBar.style.display = 'none'; stRestoreBar.classList.add('show'); showToast('🧹 All bars removed — press Σ to restore', 2500); }
     leRemoveAll.addEventListener('click', removeAllBars);
-    stRestoreBar.addEventListener('click', () => {
-        stCtrlBar.style.display = 'flex';
-        stLowEndBar.style.display = 'flex';
-        stRestoreBar.classList.remove('show');
-        document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; });
-        showToast('✅ SigmaTown bars & buttons restored', 1600);
-    });
-
-    function makeButtonRemovable(btn) {
-        btn.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); btn.style.display = 'none'; btn.dataset.removed = 'true'; showToast('🗑️ Button removed — press Σ to restore', 1600); });
-    }
+    stRestoreBar.addEventListener('click', () => { stCtrlBar.style.display = 'flex'; stLowEndBar.style.display = 'flex'; stRestoreBar.classList.remove('show'); document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; }); showToast('✅ SigmaTown bars & buttons restored', 1600); });
+    function makeButtonRemovable(btn) { btn.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); btn.style.display = 'none'; btn.dataset.removed = 'true'; showToast('🗑️ Button removed — press Σ to restore', 1600); }); }
     document.querySelectorAll('#stCtrlBar button, #stLowEndBar button').forEach(makeButtonRemovable);
-
     function makeBarInteractive(bar, dragHandle, resizeHandle) {
         let dragging = false, dsx = 0, dsy = 0, dox = 0, doy = 0;
         dragHandle.addEventListener('mousedown', e => {
-            if (e.button !== 0) return;
-            e.preventDefault(); e.stopPropagation();
+            if (e.button !== 0) return; e.preventDefault(); e.stopPropagation();
             const r = bar.getBoundingClientRect();
             bar.style.left = r.left + 'px'; bar.style.top = r.top + 'px'; bar.style.right = 'auto'; bar.style.bottom = 'auto';
             dragging = true; dsx = e.clientX; dsy = e.clientY; dox = r.left; doy = r.top;
             dragHandle.style.cursor = 'grabbing'; document.body.style.userSelect = 'none';
         });
-        document.addEventListener('mousemove', e => {
-            if (!dragging) return;
-            const nx = Math.max(0, Math.min(window.innerWidth - 40, dox + e.clientX - dsx));
-            const ny = Math.max(0, Math.min(window.innerHeight - 20, doy + e.clientY - dsy));
-            bar.style.left = nx + 'px'; bar.style.top = ny + 'px';
-        });
+        document.addEventListener('mousemove', e => { if (!dragging) return; const nx = Math.max(0, Math.min(window.innerWidth - 40, dox + e.clientX - dsx)); const ny = Math.max(0, Math.min(window.innerHeight - 20, doy + e.clientY - dsy)); bar.style.left = nx + 'px'; bar.style.top = ny + 'px'; });
         document.addEventListener('mouseup', () => { if (dragging) { dragging = false; dragHandle.style.cursor = 'move'; document.body.style.userSelect = ''; } });
         let resizing = false, rsx = 0, rStartScale = 1;
         resizeHandle.addEventListener('mousedown', e => {
-            if (e.button !== 0) return;
-            e.preventDefault(); e.stopPropagation();
+            if (e.button !== 0) return; e.preventDefault(); e.stopPropagation();
             const r = bar.getBoundingClientRect();
             bar.style.left = r.left + 'px'; bar.style.top = r.top + 'px'; bar.style.right = 'auto'; bar.style.bottom = 'auto';
             resizing = true; rsx = e.clientX; rStartScale = parseFloat(bar.dataset.scale || '1');
             document.body.style.userSelect = 'none';
         });
-        document.addEventListener('mousemove', e => {
-            if (!resizing) return;
-            const delta = (e.clientX - rsx) / 260;
-            let s = Math.min(1.5, Math.max(0.4, rStartScale + delta));
-            bar.dataset.scale = s.toFixed(3);
-            bar.style.transform = 'scale(' + s + ')';
-        });
+        document.addEventListener('mousemove', e => { if (!resizing) return; const delta = (e.clientX - rsx) / 260; let s = Math.min(1.5, Math.max(0.4, rStartScale + delta)); bar.dataset.scale = s.toFixed(3); bar.style.transform = 'scale(' + s + ')'; });
         document.addEventListener('mouseup', () => { if (resizing) { resizing = false; document.body.style.userSelect = ''; } });
     }
     makeBarInteractive(stCtrlBar, document.getElementById('stDragCtrl'), document.getElementById('stResizeCtrl'));
@@ -896,41 +726,10 @@
         startP();
     })();
 
-    (function() {
-        const t = document.getElementById('glowTrail');
-        let lx = 0, ly = 0, raf = null;
-        document.addEventListener('mousemove', e => {
-            if (raf) cancelAnimationFrame(raf);
-            raf = requestAnimationFrame(() => {
-                t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px';
-                const dx = e.clientX-lx, dy = e.clientY-ly, sp = Math.sqrt(dx*dx+dy*dy);
-                const sz = Math.min(80, 40 + sp*0.4);
-                t.style.width = sz + 'px'; t.style.height = sz + 'px';
-                const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-                t.style.background = `radial-gradient(circle, ${p}44, transparent 70%)`;
-                lx = e.clientX; ly = e.clientY; raf = null;
-            });
-        });
-    })();
-
+    (function() { const t = document.getElementById('glowTrail'); let lx = 0, ly = 0, raf = null; document.addEventListener('mousemove', e => { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { t.style.left = e.clientX + 'px'; t.style.top = e.clientY + 'px'; const dx = e.clientX-lx, dy = e.clientY-ly, sp = Math.sqrt(dx*dx+dy*dy); const sz = Math.min(80, 40 + sp*0.4); t.style.width = sz + 'px'; t.style.height = sz + 'px'; const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(); t.style.background = `radial-gradient(circle, ${p}44, transparent 70%)`; lx = e.clientX; ly = e.clientY; raf = null; }); }); })();
     (function() { for (let i = 0; i < 10; i++) { const b = document.createElement('div'); b.className = 'bubble'; const s = 10+Math.random()*35; b.style.width = s+'px'; b.style.height = s+'px'; b.style.left = Math.random()*100+'%'; b.style.animationDuration = 14+Math.random()*16+'s'; b.style.animationDelay = Math.random()*20+'s'; b.style.opacity = 0.15+Math.random()*0.25; document.body.appendChild(b); } })();
-
     function updateCursor(hex) { const c = hex.replace('#',''); const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="48" viewBox="0 0 40 48"><text y="41" font-size="38" font-family="Arial" fill="%23${c}">∑</text></svg>`; document.documentElement.style.setProperty('--sigma-cursor', `url('data:image/svg+xml;utf8,${encodeURIComponent(svg)}') 20 24, auto`); }
-
-    (function() {
-        const ov = document.getElementById('dropOverlay'); let d = 0;
-        ['dragenter','dragover','dragleave','drop'].forEach(e => { document.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); }, false); });
-        document.addEventListener('dragenter', () => { d++; if (d > 0) ov.classList.add('show'); });
-        document.addEventListener('dragleave', () => { d--; if (d <= 0) { d = 0; ov.classList.remove('show'); } });
-        document.addEventListener('dragover', () => { if (d > 0) ov.classList.add('show'); });
-        document.addEventListener('drop', e => {
-            d = 0; ov.classList.remove('show');
-            const dt = e.dataTransfer; if (!dt) return;
-            let f = null; if (dt.files && dt.files.length) f = dt.files[0];
-            if (f && f.type.startsWith('image/')) { const r = new FileReader(); r.onload = ev => { document.documentElement.style.setProperty('--bg', `url('${ev.target.result}')`); document.body.style.backgroundImage = 'var(--bg)'; showToast('🖼️ Wallpaper set!', 2000); }; r.readAsDataURL(f); return; }
-            const u = dt.getData('text/uri-list') || dt.getData('text/plain'); if (u && /\.(png|jpe?g|gif|webp|bmp|svg|avif)/i.test(u)) { document.documentElement.style.setProperty('--bg', `url('${u.trim()}')`); document.body.style.backgroundImage = 'var(--bg)'; showToast('🖼️ Wallpaper set!', 2000); }
-        }, false);
-    })();
+    (function() { const ov = document.getElementById('dropOverlay'); let d = 0; ['dragenter','dragover','dragleave','drop'].forEach(e => { document.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); }, false); }); document.addEventListener('dragenter', () => { d++; if (d > 0) ov.classList.add('show'); }); document.addEventListener('dragleave', () => { d--; if (d <= 0) { d = 0; ov.classList.remove('show'); } }); document.addEventListener('dragover', () => { if (d > 0) ov.classList.add('show'); }); document.addEventListener('drop', e => { d = 0; ov.classList.remove('show'); const dt = e.dataTransfer; if (!dt) return; let f = null; if (dt.files && dt.files.length) f = dt.files[0]; if (f && f.type.startsWith('image/')) { const r = new FileReader(); r.onload = ev => { document.documentElement.style.setProperty('--bg', `url('${ev.target.result}')`); document.body.style.backgroundImage = 'var(--bg)'; showToast('🖼️ Wallpaper set!', 2000); }; r.readAsDataURL(f); return; } const u = dt.getData('text/uri-list') || dt.getData('text/plain'); if (u && /\.(png|jpe?g|gif|webp|bmp|svg|avif)/i.test(u)) { document.documentElement.style.setProperty('--bg', `url('${u.trim()}')`); document.body.style.backgroundImage = 'var(--bg)'; showToast('🖼️ Wallpaper set!', 2000); } }, false); })();
 
     function getCategories(id, name) {
         const l = id.toLowerCase(), c = [];
@@ -944,7 +743,7 @@
         if (l.includes('subway')||l.includes('subwaysurfer')) c.push('Subway Surfers','Runner');
         if (l.includes('mortalkombat')||l==='mariocombat'||l==='stickmankombat') c.push('Mortal Kombat');
         if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad'||l==='coolcarsrun3d') c.push('Runner');
-        if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift') c.push('Horror');
+        if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') c.push('Horror');
         if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { c.push('Zombie'); if (l!=='hobovszombies') c.push('Horror'); }
         if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') c.push('Sports');
         if (l==='blockblast') c.push('Puzzle','Relaxing');
@@ -960,7 +759,7 @@
         if (l==='elytraflight') c.push('Minecraft','Platformer');
         if (l==='crazymotorcycle') c.push('Minecraft','Platformer','Obby');
         if (l==='minecraftshooter') c.push('Shooter','Minecraft');
-        if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152'||l==='eaglercraftv122') c.push('Minecraft');
+        if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152'||l==='eaglercraftv122'||l==='eaglercraftmodern') c.push('Minecraft');
         if (l==='minecraftpe') c.push('Minecraft');
         if (l==='noobminer') c.push('Minecraft');
         if (l==='minecart') c.push('Minecraft');
@@ -977,11 +776,12 @@
         if (l==='ragdollhit') c.push('Stickman');
         if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d') c.push('Driving');
         if (l==='motox3mpoolparty') c.push('Driving');
-        if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria') c.push("Papa's Restaurants");
+        if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria'||l==='papastacomia') c.push("Papa's Restaurants");
         if (l.startsWith('riddleschool')||l==='riddletransfer'||l==='riddletransfer2') { c.push('Riddle School'); if (!c.includes('Puzzle')) c.push('Puzzle'); if (!c.includes('Relaxing')) c.push('Relaxing'); }
         if (l==='stickmandestruction') c.push('Stickman');
         if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { c.push('Shooter'); c.push('Time Shooter Series'); }
-        if (l==='vex1'||l==='vex2') c.push('Vex','Platformer');
+        if (l==='vex1'||l==='vex2'||l==='vex3'||l==='vex3xmas'||l==='vex4'||l==='vex5'||l==='vex6'||l==='vex7'||l==='vex8'||l==='vexchallenges'||l==='vexmotox3m'||l==='vexmotox3m2') c.push('Vex','Platformer');
+        if (l==='vexmotox3m'||l==='vexmotox3m2') c.push('Moto X3M','Driving');
         if (l==='buildnowgg') c.push('Shooter');
         const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
@@ -992,7 +792,7 @@
             if (!c.includes('Uncategorized')) c.push('Uncategorized');
         }
         const fc = [...new Set(c)];
-        if (fc.length === 0) { if (!unc.includes(id)) return ['Other']; return ['Uncategorized']; }
+        if (fc.length === 0) { return other.includes(id) ? ['Other'] : ['Uncategorized']; }
         return [...new Set(fc)];
     }
 
@@ -1005,9 +805,20 @@
         { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'eaglercrafttuff', name: 'Eaglercraft v12 Tuff Client', file: 'cltuffclient.html', img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
         { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html', img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtjjjb-181fd024-97a2-48b4-a9ed-9d10d39b41a4.png/v1/fill/w_1273,h_627,q_70,strp/eaglercraft_v12_2_by_timebandit010101_dmtjjjb-pre.jpg' },
+        { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://i.ytimg.com/vi/KbtSmvUdXWE/hqdefault.jpg' },
+        { id: 'eaglercraftmodern', name: 'Eaglercraft v12.2 Modern Client', file: 'clmodernclientv2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmti3bc-c89fa069-6e74-4e46-9463-c82afd417149.png/v1/fill/w_829,h_406,q_80,strp/modern_cilent_eaglercraft_logo_by_timebandit010101_dmti3bc-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDA2IiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRpM2JjLWM4OWZhMDY5LTZlNzQtNGU0Ni05NDYzLWM4MmFmZDQxNzE0OS5wbmciLCJ3aWR0aCI6Ijw9ODI5In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.TWSX1rzmc4CPcR8Y96T5otd_JlZywIBUTmEoir_y6cw' },
         { id: 'vex1', name: 'Vex 1', file: 'Vex 1.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/45.png' },
         { id: 'vex2', name: 'Vex 2', file: 'Vex 2.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/46.png' },
+        { id: 'vex3', name: 'Vex 3', file: 'Vex 3 (1).html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/47.png' },
+        { id: 'vex3xmas', name: 'Vex 3 Xmas', file: 'Vex 3 XMAS.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/48.png' },
+        { id: 'vex4', name: 'Vex 4', file: 'Vex 4.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/49.png' },
+        { id: 'vex5', name: 'Vex 5', file: 'Vex 5.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/50.png' },
+        { id: 'vex6', name: 'Vex 6', file: 'Vex 6.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/51.png' },
+        { id: 'vex7', name: 'Vex 7', file: 'Vex 7.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/52.png' },
+        { id: 'vex8', name: 'Vex 8', file: 'Vex 8.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/53.png' },
+        { id: 'vexchallenges', name: 'Vex Challenges', file: 'Vex Challenges.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/54.png' },
+        { id: 'vexmotox3m',  name: 'Vex X Moto X3M',   file: 'Vex X3M.html',   categories: ['Platformer', 'Moto X3M', 'Vex', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/55.png' },
+        { id: 'vexmotox3m2', name: 'Vex X Moto X3M 2', file: 'Vex X3M 2.html', categories: ['Platformer', 'Moto X3M', 'Vex', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/56.png' },
         { id: 'paperminecraftv11', name: 'Paper Minecraft v11', file: 'just learn.html', categories: ['Minecraft'], img: 'https://cdn2.scratch.mit.edu/get_image/project/10128407_480x360.png' },
         { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Platformer'], img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html', categories: ['Platformer'], img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1016,6 +827,7 @@
         { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html', categories: ['Platformer'], img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html', categories: ['Platformer'], img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
         { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html', img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+        { id: 'slendytubbies2d', name: 'Slendytubbies 2D', file: 'Slendytubbies 2D (1).html', categories: ['Horror'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/807.png' },
         { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html', img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html', img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobison.html', img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgMw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
@@ -1037,7 +849,7 @@
         { id: 'fnaf1', name: "Five Nights at Freddy's", file: 'clFNAF (6).html', img: 'https://tse3.mm.bing.net/th/id/OIP.XW_OsPwLtSFaQrOSHEr5eAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'fnaf2', name: "Five Nights at Freddy's 2", file: 'clFNAF2 (2).html', img: 'https://th.bing.com/th/id/R.4d9f2f7bf251ecbae8a68c6620b55f3c?rik=yuzf%2fiZqYMIL5g&riu=http%3a%2forig01.deviantart.net%2ffeb2%2ff%2f2014%2f335%2fe%2ff%2fnaf_2_logo_by_misterops_by_miisterops-d88e672.jpg&ehk=Uu3mWLxjePVTF1G0eyL6mpCwT938U9O7NOZqxZvQ9TM%3d&risl=&pid=ImgRaw&r=0' },
         { id: 'fnaf3', name: "Five Nights at Freddy's 3", file: 'clFNAF3 (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP._CWgr-vY9AA8jLa7jCUgUgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html', img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d2c12b40-9112-445e-8e5a-0dfc849c24d9/dacsb1r-b043e8bf-8b22-40c7-a387-412a8a82df83.png/v1/fill/w_512,h_512,q_80,strp/fnaf_3_logo_with_phantom_freddy_by_dahooplerzman_dacsb1r-fullview.jpg' },
+        { id: 'fnaf3remastered', name: 'FNAF 3 Remastered (Fan-made)', file: 'clfnaf3remastered (4).html', img: 'https://static.playhop.com/images/c1ba8_6300668_03ef4/7277e0085/2a0000019267d4c8_cd962a8/c2d431762f826cd6e0e6_d4a2a7/pjpg350x209' },
         { id: 'fnaf4', name: "Five Nights at Freddy's 4", file: 'clFNAF4 (3).html', img: 'https://tse3.mm.bing.net/th/id/OIP.CISvqc5iJY4QE50zYcZX3gHaHd?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'fnac1', name: "Five Nights at Candy's 1", file: 'clfnac1.html', img: 'https://images.igdb.com/igdb/image/upload/t_cover_big_2x/co73kc.jpg' },
         { id: 'fnac2', name: "Five Nights at Candy's 2", file: 'Five Nights at Candy\'s 2 (1).html', img: 'https://th.bing.com/th/id/R.114e09c46d686f71808b79545652c6d4?rik=EMCOlAkTF9S2xQ&pid=ImgRaw&r=0' },
@@ -1213,18 +1025,19 @@
         { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
         { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'], img: 'https://coolbrnd.com/game-images/basketball-legends.png' },
         { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer'], img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
-        { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fit/w_624,h_472,q_70,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-375w-2x.jpg' },
+        { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fill/w_624,h_472,q_75,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
         { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'], img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
         { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' },
         { id: 'trafficjam3d', name: 'Traffic Jam 3D', file: 'cltrafficjam3d.html', categories: ['Driving'], img: 'https://tse1.mm.bing.net/th/id/OIP.bDnWpqkbMUupJfK8XqLBgQHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'snowboardobby', name: 'Snowboard Obby 3D', file: 'clsnowboardobby (2).html', categories: ['Obby', 'Platformer'], img: 'https://static.playgama.com/p-img/ph/obby-snowboard-parkour/big_preview/3949afaa00fb49d2975a78118722b3c5?width=1200' },
-        { id: 'minecart', name: 'Minecart', file: 'clminecart.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtcbqu-2ebce1f1-f71d-4741-a241-e4d2deec794a.png/v1/fill/w_976,h_661,q_80,strp/minecart_logo_by_timebandit010101_dmtcbqu-fullview.jpg' },
+        { id: 'minecart', name: 'Minecart', file: 'clminecart.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtcbqu-2ebce1f1-f71d-4741-a241-e4d2deec794a.png/v1/fill/w_976,h_661,q_80,strp/minecart_logo_by_timebandit010101_dmtcbqu-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjYxIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRjYnF1LTJlYmNlMWYxLWY3MWQtNDc0MS1hMjQxLWU0ZDJkZWVjNzk0YS5wbmciLCJ3aWR0aCI6Ijw9OTc2In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.1TtYnxKWdH4fAtKZoXYQGWAciCWUJerOTSxu728S4cQ' },
         { id: 'mrracer', name: 'Mr Racer', file: 'clmrracer.html', categories: ['Driving'], img: 'https://play-lh.googleusercontent.com/bfyos0Zb0SB6EubLJCZBRJe-iW-0fg1fcRkLtvFcAp6iQ3_fGdNGHUU0l_X7W9_QDBo' },
         { id: 'riddletransfer', name: 'Riddle Transfer', file: 'Riddle Transfer (1).html', categories: ['Riddle School', 'Puzzle', 'Relaxing'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/292.png' },
         { id: 'riddletransfer2', name: 'Riddle Transfer 2', file: 'Riddle Transfer 2.html', categories: ['Riddle School', 'Puzzle', 'Relaxing'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/293.png' },
         { id: 'escapeschoolduel', name: 'Escape School Duel', file: 'clescapeschoolduel.html', categories: ['Obby', 'Platformer'], img: 'https://tse1.mm.bing.net/th/id/OIP.sQ3msEuV87Dk0QPkCg_hywHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'papascheeseria', name: "Papa's Cheeseria", file: 'Papa\'s Cheeseria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/220.png' },
         { id: 'papashotdoggeria', name: "Papa's Hot Doggeria", file: 'Papa\'s Hot Doggeria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/224.png' },
+        { id: 'papastacomia', name: "Papa's Taco Mia", file: 'Papa\'s Taco Mia.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/230.png' },
         { id: 'tosstheturtle', name: 'Toss the Turtle', file: 'Toss The Turtle (1).html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/110.png' },
         { id: 'noobminer', name: 'Noob Miner', file: 'clnoobminer.html', categories: ['Minecraft'], img: 'https://tse3.mm.bing.net/th/id/OIP.bROxewI8cAUo0or6ZWwGqwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
     ];
@@ -1407,11 +1220,21 @@
     function toggleFav(id) { if (id === 'randompicker') return; const i = favorites.indexOf(id); i > -1 ? favorites.splice(i, 1) : favorites.push(id); saveFavs(); renderGrid(); if (currentTab === 'other') renderOtherGrid(); }
 
     function isOtherGame(g) { return g.categories.includes('Other'); }
+
+    function matchesCategories(g) {
+        if (selectedCategories.length === 0) return true;
+        const onlyAll = selectedCategories.length === 1 && selectedCategories[0] === 'all';
+        if (onlyAll) return true;
+        const specific = selectedCategories.filter(c => c !== 'all');
+        if (specific.length === 0) return true;
+        return g.categories.some(c => specific.includes(c));
+    }
+
     function getFilteredGames() {
-        return GAME_DATA.filter(g => { if (g.id === 'randompicker') return false; if (isOtherGame(g)) return false; const ms = g.name.toLowerCase().includes(searchQuery.toLowerCase()); let mc = false; if (selectedCategories.length === 0 || selectedCategories.includes('all')) mc = true; else mc = g.categories.some(c => selectedCategories.includes(c)); return ms && mc; }).sort((a, b) => { const fa = favorites.includes(a.id), fb = favorites.includes(b.id); if (fa && !fb) return -1; if (!fa && fb) return 1; return a.name.localeCompare(b.name); });
+        return GAME_DATA.filter(g => { if (g.id === 'randompicker') return false; if (isOtherGame(g)) return false; const ms = g.name.toLowerCase().includes(searchQuery.toLowerCase()); return ms && matchesCategories(g); }).sort((a, b) => { const fa = favorites.includes(a.id), fb = favorites.includes(b.id); if (fa && !fb) return -1; if (!fa && fb) return 1; return a.name.localeCompare(b.name); });
     }
     function renderGrid() {
-        const filtered = GAME_DATA.filter(g => { if (g.id === 'randompicker') return true; if (isOtherGame(g)) return false; const ms = g.name.toLowerCase().includes(searchQuery.toLowerCase()); let mc = false; if (selectedCategories.length === 0 || selectedCategories.includes('all')) mc = true; else mc = g.categories.some(c => selectedCategories.includes(c)); return ms && mc; });
+        const filtered = GAME_DATA.filter(g => { if (g.id === 'randompicker') return true; if (isOtherGame(g)) return false; const ms = g.name.toLowerCase().includes(searchQuery.toLowerCase()); return ms && matchesCategories(g); });
         const sorted = filtered.sort((a, b) => { if (a.id === 'randompicker') return -1; if (b.id === 'randompicker') return 1; const fa = favorites.includes(a.id), fb = favorites.includes(b.id); if (fa && !fb) return -1; if (!fa && fb) return 1; return a.name.localeCompare(b.name); });
         grid.innerHTML = ''; const frag = document.createDocumentFragment();
         sorted.forEach((g, i) => {
@@ -1606,11 +1429,10 @@
     renderGrid(); renderOtherGrid(); renderSkins();
     document.documentElement.style.setProperty('--primary', '#3b82f6');
     document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
+    document.body.style.backgroundStyle = '';
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
     console.log('🚀 SigmaTown4Life loaded.');
-    console.log('🛡️ Aggressive ad blocker restored — Σigma cover auto-removes after 20s.');
-    console.log('🔄 Hack state resets when game closes. Uncategorized games on Page 1.');
     </script>
 </body>
 </html>
