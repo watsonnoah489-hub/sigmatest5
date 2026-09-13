@@ -466,96 +466,17 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════
-    //  Lightweight domain-based ad blocker (network layer only)
-    //  — Hooks: fetch, XHR, sendBeacon, WebSocket, Image.src,
-    //    setAttribute(src/href), src/href property setters, window.open
-    //  — Does NOT: scan DOM, remove elements, replace/cover elements,
-    //    neutralize SafeFrame, kill sidebars, or inject into iframes.
+    //  Ad domain list — kept for reference only, NOT actively enforced.
+    //  (No fetch/XHR/Image/sendBeacon/WebSocket/createElement hooks,
+    //   no MutationObserver, no SafeFrame neutralization, no iframe injection.)
     // ═══════════════════════════════════════════════════════════════
-    (function adBlocker() {
-        const adDomains = [
-            'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','static.doubleclick.net','adclick.g.doubleclick.net',
-            '1p-user-list','is_vtc=1','&is_vtc','vtc=1',
-            'viewthroughconversion','/pagead/viewthroughconversion/',
-            'safeframe.googlesyndication.com','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js',
-            'rewards.google.com','opinionrewards.google.com','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','google-surveys.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','googlesyndicatedcontent.com','googleadsserving.com',
-            'ads.microsoft.com','bat.bing.com','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bat.bing.net','c.bing.com','c.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','syndication.msn.com','c.msn.com','otf.msn.com','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
-            'cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','applovin.com','ironsrc.com','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','adsrvr.org','adnxs.com','adform.net','adition.com',
-            'msecnd.net/ads','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
-        ];
-        const isAd = (u) => typeof u === 'string' && u.length > 0 && adDomains.some(d => u.includes(d));
-
-        // 1) fetch
-        const oF = window.fetch;
-        window.fetch = function(i, init) {
-            const url = typeof i === 'string' ? i : (i && i.url);
-            if (isAd(url)) return Promise.reject(new Error('blocked by Σigma'));
-            return oF.call(this, i, init);
-        };
-
-        // 2) XMLHttpRequest
-        const oX = window.XMLHttpRequest;
-        window.XMLHttpRequest = function() {
-            const x = new oX();
-            const o = x.open;
-            x.open = function(m, u) { if (isAd(u)) { this.abort = () => {}; this.send = () => {}; return; } o.apply(this, arguments); };
-            return x;
-        };
-
-        // 3) navigator.sendBeacon
-        if (navigator.sendBeacon) {
-            const ob = navigator.sendBeacon.bind(navigator);
-            navigator.sendBeacon = function(u, d) { if (isAd(u)) return false; return ob(u, d); };
-        }
-
-        // 4) WebSocket
-        const oWS = window.WebSocket;
-        window.WebSocket = function(u, p) { if (isAd(u)) throw new Error('blocked by Σigma'); return new oWS(u, p); };
-        window.WebSocket.prototype = oWS.prototype;
-
-        // 5) Image() — kills tracking pixels
-        const oImg = window.Image;
-        window.Image = function(w, h) {
-            const img = new oImg(w, h);
-            try {
-                const d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src');
-                if (d && d.set) Object.defineProperty(img, 'src', {
-                    set(v) { if (isAd(v)) return; return d.set.call(this, v); },
-                    get() { return this.getAttribute('src'); },
-                    configurable: true
-                });
-            } catch(_) {}
-            return img;
-        };
-        window.Image.prototype = oImg.prototype;
-
-        // 6) window.open
-        const oO = window.open;
-        window.open = function(u) { if (isAd(u)) return null; return oO.apply(this, arguments); };
-
-        // 7) Element.setAttribute for src/href
-        const oSA = Element.prototype.setAttribute;
-        Element.prototype.setAttribute = function(n, v) {
-            if ((n === 'src' || n === 'href') && isAd(v)) return;
-            return oSA.call(this, n, v);
-        };
-
-        // 8) src/href property setters on HTMLElement
-        ['src','href'].forEach(prop => {
-            try {
-                const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop);
-                if (!d || !d.set) return;
-                Object.defineProperty(HTMLElement.prototype, prop, {
-                    set(v) { if (isAd(v)) return; return d.set.call(this, v); },
-                    get: d.get,
-                    configurable: true,
-                    enumerable: d.enumerable
-                });
-            } catch(_) {}
-        });
-
-        console.log('%cΣigma Ad Blocker active — network-level only (no DOM interference).', 'background:#dc2626;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
-    })();
+    const AD_DOMAINS = [
+        'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','static.doubleclick.net','adclick.g.doubleclick.net','1p-user-list','is_vtc','viewthroughconversion','safeframe.googlesyndication.com','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','rewards.google.com','opinionrewards.google.com','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','google-surveys.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bat.bing.net','c.bing.com','c.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','syndication.msn.com','c.msn.com','otf.msn.com','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','applovin.com','ironsrc.com','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','adsrvr.org','adnxs.com','adform.net','adition.com','msecnd.net/ads','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
+    ];
+    const AD_SCRIPT_SIGNATURES = [
+        'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','adsbygoogle','goog#html','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','1p-user-list','is_vtc','viewthroughconversion'
+    ];
+    console.log('%cΣigma Ad Blocker DISABLED — domain list retained for reference only.', 'background:#6b7280;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
 
     // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
@@ -1499,7 +1420,7 @@
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
     console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-    console.log('🛡️ Network-level ad blocker active (domains only, no DOM interference).');
+    console.log('📄 Games open in iframe with SIGMATOWN controls (no ad blocker interference).');
     </script>
 </body>
 </html>
