@@ -17,8 +17,6 @@
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
         body.light .header, body.light .controls { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
-
-        /* ═══════════ LAG KILLER (one-click, removes all features) ═══════════ */
         body.lag-killer * { animation-play-state: paused !important; transition-duration: 0s !important; transition-delay: 0s !important; }
         body.lag-killer .pulse-ring { display: none !important; }
         body.lag-killer .cycle-btn::before { animation-play-state: paused !important; }
@@ -37,14 +35,11 @@
         body.lag-no-cursor input, body.lag-no-cursor textarea { cursor: text !important; }
         body.ultra-lag *, body.ultra-lag *::before, body.ultra-lag *::after { cursor: auto !important; }
         body.ultra-lag #glowTrail, body.ultra-lag .particle-canvas { display: none !important; }
-
-        /* ═══════════ IN-GAME HACK / LOW END (applies to parent page too) ═══════════ */
         body.hack-no-logos .cycle-btn .overlay { display: none !important; }
         body.hack-no-anim *, body.hack-no-anim *::before, body.hack-no-anim *::after { animation: none !important; transition: none !important; }
         body.hack-no-anim .cycle-wrapper { opacity: 1 !important; transform: none !important; }
         body.hack-no-cursor *, body.hack-no-cursor *::before, body.hack-no-cursor *::after { cursor: auto !important; }
         body.hack-no-cursor input, body.hack-no-cursor textarea { cursor: text !important; }
-
         .glow-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orbFloat 14s ease-in-out infinite alternate; }
         .glow-orb.o1 { width: 400px; height: 400px; background: rgba(59,130,246,0.12); top: -100px; left: -100px; }
         .glow-orb.o2 { width: 500px; height: 500px; background: rgba(168,85,247,0.10); bottom: -150px; right: -150px; animation-delay: 5s; }
@@ -227,8 +222,6 @@
         #nintendoCarousel .carousel-indicators span.active { background: var(--primary); box-shadow: 0 0 10px var(--glow); }
         #matrixCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.5s; mix-blend-mode: screen; }
         body.rain-active #matrixCanvas { opacity: 0.6; }
-
-        /* ═══════════ IFRAME OVERLAY (games open here) ═══════════ */
         #gameOverlay { position: fixed; inset: 0; z-index: 2147483610; background: #000; display: none; }
         #gameOverlay.show { display: block !important; }
         #gameOverlayFrame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; background: #000; display: block; }
@@ -238,8 +231,6 @@
         @keyframes goSpin { to { transform: rotate(360deg); } }
         #gameOverlayLoader .label { font-weight: 800; letter-spacing: 3px; font-size: 14px; text-shadow: 0 0 15px rgba(59,130,246,0.9); }
         #gameOverlayLoader .gameName { font-weight: 600; letter-spacing: 1px; font-size: 16px; color: #cbd5e1; }
-
-        /* ═══ SIGMATOWN CONTROL BAR ═══ */
         #stCtrlBar { position: absolute; bottom: 24px; right: 24px; display: flex; gap: 10px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 10px 16px 10px 8px; border-radius: 16px; border: 2px solid #3b82f6; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; transform-origin: top left; touch-action: none; }
         #stCtrlBar .st-btn { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; color: #fff; background: rgba(30,41,59,0.9); transition: 0.25s; display: flex; align-items: center; gap: 6px; user-select: none; }
         #stCtrlBar .st-btn:hover { background: #3b82f6; transform: scale(1.05); }
@@ -249,8 +240,6 @@
         @keyframes stPulseG { 0%{box-shadow:0 0 10px rgba(255,107,0,0.3);} 50%{box-shadow:0 0 40px rgba(255,215,0,0.9);} 100%{box-shadow:0 0 10px rgba(255,107,0,0.3);} }
         #stCtrlBar .st-close { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 4px 12px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 700; }
         #stCtrlBar .st-close:hover { background: rgba(239,68,68,0.4); color: #fff; }
-
-        /* ═══ LOW END / GAMESHACK BAR ═══ */
         #stLowEndBar { position: absolute; bottom: 24px; left: 24px; display: flex; gap: 8px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 9px 14px 9px 6px; border-radius: 16px; border: 2px solid #f59e0b; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(245,158,11,0.35); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; max-width: calc(100% - 340px); transform-origin: top left; touch-action: none; }
         #stLowEndBar .le-badge { background: linear-gradient(135deg,#f59e0b,#ef4444); color: #fff; font-weight: 900; font-size: 12px; letter-spacing: 1px; padding: 5px 14px; border-radius: 30px; border: 2px solid #fde68a; user-select: none; animation: stPulseO 1.6s ease-in-out infinite; }
         @keyframes stPulseO { 0%{box-shadow:0 0 10px rgba(245,158,11,0.3);} 50%{box-shadow:0 0 35px rgba(245,158,11,0.9);} 100%{box-shadow:0 0 10px rgba(245,158,11,0.3);} }
@@ -259,18 +248,13 @@
         #stLowEndBar .le-btn.active { background: #22c55e; border-color: #86efac; }
         #stLowEndBar .le-btn.danger { background: rgba(239,68,68,0.85); border-color: rgba(255,255,255,0.25); }
         #stLowEndBar .le-btn.danger:hover { background: #dc2626; }
-
-        /* ═══ DRAG HANDLES + RESIZE HANDLES ═══ */
         .st-drag { cursor: move !important; padding: 4px 5px; color: #94a3b8; font-size: 17px; user-select: none; line-height: 1; letter-spacing: -5px; font-weight: 700; }
         .st-drag:hover { color: #3b82f6; }
         .st-resize { position: absolute; bottom: 1px; right: 1px; width: 16px; height: 16px; cursor: nwse-resize !important; border-right: 2px solid rgba(255,255,255,0.45); border-bottom: 2px solid rgba(255,255,255,0.45); border-bottom-right-radius: 12px; }
         .st-resize:hover { border-color: #3b82f6; }
-
-        /* ═══ RESTORE BUTTON (after "remove all bars") ═══ */
         #stRestoreBar { position: absolute; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(15,23,42,0.92); border: 2px solid #3b82f6; color: #3b82f6; font-size: 24px; font-weight: 900; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483610; box-shadow: 0 0 25px rgba(59,130,246,0.6); font-family: 'Segoe UI', system-ui, sans-serif; }
         #stRestoreBar.show { display: flex; }
         #stRestoreBar:hover { background: #3b82f6; color: #fff; transform: scale(1.08); }
-
         #stFallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #f87171; font-family: 'Segoe UI', sans-serif; z-index: 3; background: #0a0e1a; text-align: center; padding: 20px; }
         #stFallback.show { display: flex !important; }
         #stFallback .icon { font-size: 60px; }
@@ -310,7 +294,6 @@
             #stCtrlBar { bottom: 10px; right: 10px; padding: 6px 10px; }
             #stLowEndBar { bottom: 76px; }
         }
-        /* Σ ad cover shield (used inside game iframes) */
         .sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; }
         .sigma-ad-cover::before { content: 'Σ' !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; }
         .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }
@@ -336,7 +319,6 @@
 
     <div id="dropOverlay"><div class="drop-box"><div class="drop-icon">🖼️</div><div class="drop-title">DROP IMAGE TO SET WALLPAPER</div><div class="drop-sub">Release anywhere on the page</div></div></div>
 
-    <!-- ═══════════ GAME IFRAME OVERLAY ═══════════ -->
     <div id="gameOverlay">
         <div id="gameOverlayLoader">
             <div class="spinner"></div>
@@ -353,8 +335,6 @@
             </div>
         </div>
         <iframe id="gameOverlayFrame" allow="fullscreen; autoplay; pointer-lock; clipboard-write; encrypted-media; picture-in-picture; gamepad; gyroscope; accelerometer" allowfullscreen></iframe>
-
-        <!-- ═══ SIGMATOWN CONTROL BAR ═══ -->
         <div id="stCtrlBar" data-st-overlay="true">
             <span class="st-drag" id="stDragCtrl" title="Drag to move this bar">⣿</span>
             <button class="st-btn fs" id="stFS">⛶ Fullscreen</button>
@@ -363,8 +343,6 @@
             <button class="st-close" id="stClose">✕ Close</button>
             <span class="st-resize" id="stResizeCtrl" title="Drag to resize this bar"></span>
         </div>
-
-        <!-- ═══ LOW END / GAMESHACK BAR ═══ -->
         <div id="stLowEndBar" data-st-overlay="true">
             <span class="st-drag" id="stDragLE" title="Drag to move this bar">⣿</span>
             <span class="le-badge">Σ LOW END</span>
@@ -375,8 +353,6 @@
             <button class="le-btn danger" id="leRemoveAll">🧹 REMOVE ALL BARS</button>
             <span class="st-resize" id="stResizeLE" title="Drag to resize this bar"></span>
         </div>
-
-        <!-- ═══ RESTORE (shown after remove all bars) ═══ -->
         <button id="stRestoreBar" data-st-overlay="true" title="Restore SigmaTown bars & buttons">Σ</button>
     </div>
 
@@ -492,39 +468,13 @@
     </div></div>
 
     <script>
-    // ═══════════════════════════════════════════════════════════════
-    //  ΣIGMA AD BLOCKER
-    // ═══════════════════════════════════════════════════════════════
     function sigmaAdBlocker() {
-        const adDomains = [
-            'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
-            'G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads',
-            '1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1',
-            'viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script',
-            'safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle',
-            'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
-            'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
-            'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
-            'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
-        ];
-        const scriptSignatures = [
-            'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html',
-            'UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y',
-            'ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF',
-            '1p-user-list','is_vtc','viewthroughconversion'
-        ];
+        const adDomains = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'];
+        const scriptSignatures = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion'];
         const sidebarSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
-        const adElementSelectors = [
-            'iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]',
-            'iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]',
-            'iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]',
-            'iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]',
-            'ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]',
-            '[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'
-        ];
+        const adElementSelectors = ['iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]','iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]','iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]','iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]','ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'];
         const isAd = u => typeof u === 'string' && adDomains.some(d => u.includes(d));
         const isAdScript = t => typeof t === 'string' && scriptSignatures.some(s => t.includes(s));
-
         function coverAd(el, label) {
             if (!el || !el.parentNode) return;
             if (el.dataset && el.dataset.sigmaCovered === 'true') return;
@@ -539,33 +489,19 @@
                 cover.className = 'sigma-ad-cover';
                 cover.dataset.sigmaCovered = 'true';
                 cover.setAttribute('data-label', label || 'ΣigmaTown • Ad Blocked');
-                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') {
-                    cover.style.position = 'fixed';
-                    cover.style.width = w + 'px'; cover.style.height = h + 'px';
-                    cover.style.top = '50%'; cover.style.transform = 'translateY(-50%)';
-                    cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0';
-                } else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) {
-                    cover.style.position = 'fixed';
-                    cover.style.left = rect.left + 'px'; cover.style.top = rect.top + 'px';
-                    cover.style.width = w + 'px'; cover.style.height = h + 'px';
-                } else {
-                    cover.style.position = 'absolute';
-                    cover.style.left = (el.offsetLeft || 0) + 'px';
-                    cover.style.top = (el.offsetTop || 0) + 'px';
-                    cover.style.width = w + 'px'; cover.style.height = h + 'px';
-                }
+                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') { cover.style.position = 'fixed'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; cover.style.top = '50%'; cover.style.transform = 'translateY(-50%)'; cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0'; }
+                else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) { cover.style.position = 'fixed'; cover.style.left = rect.left + 'px'; cover.style.top = rect.top + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
+                else { cover.style.position = 'absolute'; cover.style.left = (el.offsetLeft || 0) + 'px'; cover.style.top = (el.offsetTop || 0) + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
                 parent.insertBefore(cover, el);
                 el.remove();
             } catch(_) {}
         }
-
         const killAds = () => {
             adElementSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el)); } catch(_) {} });
             sidebarSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el, 'ΣigmaTown • Sidebar Ad Blocked')); } catch(_) {} });
         };
         killAds();
         setInterval(killAds, 300);
-
         const oF = window.fetch;
         window.fetch = function(i, init) { const url = typeof i === 'string' ? i : (i && i.url); if (isAd(url)) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
         const oX = window.XMLHttpRequest;
@@ -587,7 +523,6 @@
         const oSA = Element.prototype.setAttribute;
         Element.prototype.setAttribute = function(n, v) { if ((n === 'src' || n === 'href') && isAd(v)) return; return oSA.call(this, n, v); };
         ['src','href'].forEach(prop => { try { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop); if (!d || !d.set) return; Object.defineProperty(HTMLElement.prototype, prop, { set(v){ if (isAd(v)) return; return d.set.call(this,v); }, get: d.get, configurable: true, enumerable: d.enumerable }); } catch(_) {} });
-
         const obs = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
             if (n.nodeType !== 1) return;
             if (n.dataset && n.dataset.stOverlay === 'true') return;
@@ -605,20 +540,17 @@
             for (let a of attrs) { const v = a.value; if (v && (v.includes('adsbygoogle') || v.includes('google_ads') || v.includes('ad-slot') || v.includes('banner-ad'))) { coverAd(n); return; } }
         })));
         try { obs.observe(document.documentElement, { childList: true, subtree: true }); } catch(_) {}
-
         setInterval(() => {
             try { if (!window.fetch.__sigHook) { const cur = window.fetch; window.fetch = function(i,init){ const u = typeof i==='string'?i:(i&&i.url); if (isAd(u)) return Promise.reject(new Error('blocked')); return cur.call(this,i,init); }; window.fetch.__sigHook = true; } } catch(_) {}
             try { if (navigator.sendBeacon && !navigator.sendBeacon.__sigHook) { const cur = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d){ if (isAd(u)) return false; return cur(u,d); }; navigator.sendBeacon.__sigHook = true; } } catch(_) {}
             try { if (!document.write.__sigHook) { const cur = document.write.bind(document); document.write = function(h){ if (typeof h==='string' && (adDomains.some(d=>h.includes(d)) || isAdScript(h))) return; return cur(h); }; document.write.__sigHook = true; } } catch(_) {}
         }, 1000);
-
         console.log('%cΣigma Ad Blocker active.', 'background:#dc2626;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
     }
     sigmaAdBlocker();
     const SIGMA_BLOCKER_SRC = '(' + sigmaAdBlocker.toString() + ')();';
     const SIGMA_COVER_CSS = '.sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; } .sigma-ad-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }';
 
-    // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
 
     function buildHackCss() {
@@ -630,7 +562,6 @@
         return css;
     }
 
-    // ═══════════ IFRAME GAME OVERLAY ═══════════
     const gameOverlay   = document.getElementById('gameOverlay');
     const gameFrame     = document.getElementById('gameOverlayFrame');
     const gameLoader    = document.getElementById('gameOverlayLoader');
@@ -665,33 +596,18 @@
             const hackCss = buildHackCss();
             let hackStyle = doc.getElementById('sigmaHackStyle');
             if (hackCss) {
-                if (!hackStyle) {
-                    hackStyle = doc.createElement('style');
-                    hackStyle.id = 'sigmaHackStyle';
-                    (doc.head || doc.documentElement).appendChild(hackStyle);
-                }
+                if (!hackStyle) { hackStyle = doc.createElement('style'); hackStyle.id = 'sigmaHackStyle'; (doc.head || doc.documentElement).appendChild(hackStyle); }
                 hackStyle.textContent = hackCss;
-            } else if (hackStyle) {
-                hackStyle.remove();
-            }
+            } else if (hackStyle) { hackStyle.remove(); }
             return true;
         } catch(e) { return false; }
     }
 
-    // ═══════════ RESET BARS TO DEFAULTS ═══════════
     function resetBars() {
         [stCtrlBar, stLowEndBar].forEach(bar => {
-            bar.style.left = '';
-            bar.style.top = '';
-            bar.style.right = '';
-            bar.style.bottom = '';
-            bar.style.transform = '';
-            bar.dataset.scale = '1';
-            bar.style.display = '';
-            bar.querySelectorAll('[data-removed="true"]').forEach(b => {
-                b.style.display = '';
-                b.dataset.removed = '';
-            });
+            bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; bar.style.transform = '';
+            bar.dataset.scale = '1'; bar.style.display = '';
+            bar.querySelectorAll('[data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; });
         });
         stRestoreBar.classList.remove('show');
     }
@@ -717,17 +633,9 @@
         loadFired = false;
         stopAllInjections();
         resetBars();
-
         try { gameFrame.src = 'about:blank'; } catch(_) {}
-
-        setTimeout(() => {
-            try { gameFrame.src = file; } catch(_) {}
-        }, 50);
-
-        fallbackTimer = setTimeout(() => {
-            if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); }
-        }, 4500);
-
+        setTimeout(() => { try { gameFrame.src = file; } catch(_) {} }, 50);
+        fallbackTimer = setTimeout(() => { if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); } }, 4500);
         const iv1 = setInterval(injectIntoIframe, 60);
         const iv2 = setInterval(injectIntoIframe, 300);
         const iv3 = setInterval(injectIntoIframe, 1500);
@@ -743,30 +651,20 @@
         [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
 
-    // SIGMATOWN control bar buttons
     document.getElementById('stFS').addEventListener('click', () => {
-        try {
-            if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); }
-            else { document.exitFullscreen().catch(()=>{}); }
-        } catch(_) {}
+        try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {}
     });
     document.getElementById('stPtr').addEventListener('click', () => {
-        try {
-            const doc = gameFrame.contentDocument;
-            if (!doc) return;
-            const el = doc.body || doc.documentElement;
+        try { const doc = gameFrame.contentDocument; if (!doc) return; const el = doc.body || doc.documentElement;
             if (doc.pointerLockElement) { doc.exitPointerLock(); document.getElementById('stPtr').innerHTML = '🖱️ Lock'; }
             else { el.requestPointerLock && el.requestPointerLock(); document.getElementById('stPtr').innerHTML = '🔓 Unlock'; }
         } catch(_) { showToast('⚠️ Cannot lock pointer here', 2000); }
     });
     document.getElementById('stClose').addEventListener('click', closeGame);
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame();
-    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame(); });
     document.getElementById('stFallbackRetry').addEventListener('click', () => { if (currentGameFile) openGameInIframe(currentGameFile, gameNameEl.textContent); });
     document.getElementById('stFallbackNewTab').addEventListener('click', () => { if (currentGameFile) window.open(currentGameFile, '_blank'); });
 
-    // ═══════════ LOW END / GAMESHACK BAR ═══════════
     const leLowEndBtn  = document.getElementById('leLowEnd');
     const leLogosBtn   = document.getElementById('leLogos');
     const leAnimBtn    = document.getElementById('leAnim');
@@ -779,34 +677,21 @@
         b.classList.toggle('hack-no-logos', HACK.logos || lo);
         b.classList.toggle('hack-no-anim', HACK.anim || lo);
         b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
-
-        if (lo) {
-            lagKiller = true;
-            applyLagKiller();
-        }
-
+        if (lo) { lagKiller = true; applyLagKiller(); }
         leLowEndBtn.classList.toggle('active', HACK.lowEnd);
         leLogosBtn.classList.toggle('active', HACK.logos || lo);
         leAnimBtn.classList.toggle('active', HACK.anim || lo);
         leCursorBtn.classList.toggle('active', HACK.cursor || lo);
-
         injectIntoIframe();
     }
 
     function toggleHackSub(key) {
-        if (HACK.lowEnd) {
-            HACK.lowEnd = false;
-            HACK.logos = true; HACK.anim = true; HACK.cursor = true;
-        }
+        if (HACK.lowEnd) { HACK.lowEnd = false; HACK.logos = true; HACK.anim = true; HACK.cursor = true; }
         HACK[key] = !HACK[key];
         applyHack();
     }
 
-    leLowEndBtn.addEventListener('click', () => {
-        HACK.lowEnd = !HACK.lowEnd;
-        applyHack();
-        showToast(HACK.lowEnd ? '📱 Low End Device ON (all features removed)' : '📱 Low End Device OFF', 2000);
-    });
+    leLowEndBtn.addEventListener('click', () => { HACK.lowEnd = !HACK.lowEnd; applyHack(); showToast(HACK.lowEnd ? '📱 Low End Device ON (all features removed)' : '📱 Low End Device OFF', 2000); });
     leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(HACK.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
     leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(HACK.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
     leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(HACK.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
@@ -818,74 +703,43 @@
         showToast('🧹 All bars removed — press Σ to restore', 2500);
     }
     leRemoveAll.addEventListener('click', removeAllBars);
-
     stRestoreBar.addEventListener('click', () => {
         stCtrlBar.style.display = 'flex';
         stLowEndBar.style.display = 'flex';
         stRestoreBar.classList.remove('show');
-        document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => {
-            b.style.display = '';
-            b.dataset.removed = '';
-        });
+        document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; });
         showToast('✅ SigmaTown bars & buttons restored', 1600);
     });
 
-    // ═══════════ REMOVE INDIVIDUAL BUTTONS (right-click) ═══════════
     function makeButtonRemovable(btn) {
-        btn.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            e.stopPropagation();
-            btn.style.display = 'none';
-            btn.dataset.removed = 'true';
-            showToast('🗑️ Button removed — press Σ to restore', 1600);
-        });
+        btn.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); btn.style.display = 'none'; btn.dataset.removed = 'true'; showToast('🗑️ Button removed — press Σ to restore', 1600); });
     }
     document.querySelectorAll('#stCtrlBar button, #stLowEndBar button').forEach(makeButtonRemovable);
 
-    // ═══════════ DRAG & RESIZE FOR BOTH BARS ═══════════
     function makeBarInteractive(bar, dragHandle, resizeHandle) {
-        // ── DRAG ──
         let dragging = false, dsx = 0, dsy = 0, dox = 0, doy = 0;
         dragHandle.addEventListener('mousedown', e => {
             if (e.button !== 0) return;
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault(); e.stopPropagation();
             const r = bar.getBoundingClientRect();
-            bar.style.left = r.left + 'px';
-            bar.style.top = r.top + 'px';
-            bar.style.right = 'auto';
-            bar.style.bottom = 'auto';
-            dragging = true;
-            dsx = e.clientX; dsy = e.clientY;
-            dox = r.left; doy = r.top;
-            dragHandle.style.cursor = 'grabbing';
-            document.body.style.userSelect = 'none';
+            bar.style.left = r.left + 'px'; bar.style.top = r.top + 'px'; bar.style.right = 'auto'; bar.style.bottom = 'auto';
+            dragging = true; dsx = e.clientX; dsy = e.clientY; dox = r.left; doy = r.top;
+            dragHandle.style.cursor = 'grabbing'; document.body.style.userSelect = 'none';
         });
         document.addEventListener('mousemove', e => {
             if (!dragging) return;
             const nx = Math.max(0, Math.min(window.innerWidth - 40, dox + e.clientX - dsx));
             const ny = Math.max(0, Math.min(window.innerHeight - 20, doy + e.clientY - dsy));
-            bar.style.left = nx + 'px';
-            bar.style.top = ny + 'px';
+            bar.style.left = nx + 'px'; bar.style.top = ny + 'px';
         });
-        document.addEventListener('mouseup', () => {
-            if (dragging) { dragging = false; dragHandle.style.cursor = 'move'; document.body.style.userSelect = ''; }
-        });
-
-        // ── RESIZE (scale) ──
+        document.addEventListener('mouseup', () => { if (dragging) { dragging = false; dragHandle.style.cursor = 'move'; document.body.style.userSelect = ''; } });
         let resizing = false, rsx = 0, rStartScale = 1;
         resizeHandle.addEventListener('mousedown', e => {
             if (e.button !== 0) return;
-            e.preventDefault();
-            e.stopPropagation();
+            e.preventDefault(); e.stopPropagation();
             const r = bar.getBoundingClientRect();
-            bar.style.left = r.left + 'px';
-            bar.style.top = r.top + 'px';
-            bar.style.right = 'auto';
-            bar.style.bottom = 'auto';
-            resizing = true;
-            rsx = e.clientX;
-            rStartScale = parseFloat(bar.dataset.scale || '1');
+            bar.style.left = r.left + 'px'; bar.style.top = r.top + 'px'; bar.style.right = 'auto'; bar.style.bottom = 'auto';
+            resizing = true; rsx = e.clientX; rStartScale = parseFloat(bar.dataset.scale || '1');
             document.body.style.userSelect = 'none';
         });
         document.addEventListener('mousemove', e => {
@@ -895,26 +749,20 @@
             bar.dataset.scale = s.toFixed(3);
             bar.style.transform = 'scale(' + s + ')';
         });
-        document.addEventListener('mouseup', () => {
-            if (resizing) { resizing = false; document.body.style.userSelect = ''; }
-        });
+        document.addEventListener('mouseup', () => { if (resizing) { resizing = false; document.body.style.userSelect = ''; } });
     }
+    makeBarInteractive(stCtrlBar, document.getElementById('stDragCtrl'), document.getElementById('stResizeCtrl'));
+    makeBarInteractive(stLowEndBar, document.getElementById('stDragLE'), document.getElementById('stResizeLE'));
 
-    makeBarInteractive(stCtrlBar,   document.getElementById('stDragCtrl'), document.getElementById('stResizeCtrl'));
-    makeBarInteractive(stLowEndBar, document.getElementById('stDragLE'),   document.getElementById('stResizeLE'));
-
-    // ═══════════ STATE ═══════════
     let nintendoMode = false, clickMuted = false;
     const clickAudio = document.getElementById('clickSound');
     const switchAudio = document.getElementById('switchClick');
     function playSound(a) { if (clickMuted || !a) return; try { a.currentTime = 0; a.play().catch(()=>{}); } catch(_) {} }
     function playClick() { if (nintendoMode) playSound(switchAudio); else playSound(clickAudio); }
     document.addEventListener('click', e => { const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn, .st-btn, .st-close, .le-btn'); if (t) playClick(); }, true);
-
     const muteBtn = document.getElementById('muteBtn');
     muteBtn.addEventListener('click', function() { clickMuted = !clickMuted; this.classList.toggle('active', clickMuted); this.textContent = clickMuted ? '🔇 Click Sounds' : '🔊 Click Sounds'; playClick(); showToast(clickMuted ? '🔇 Muted' : '🔊 Unmuted', 1500); });
 
-    // ═══════════ PARTICLES ═══════════
     let particleRunning = true, particleAnimId = null;
     (function initParticles() {
         const c = document.getElementById('particleCanvas'), ctx = c.getContext('2d');
@@ -948,7 +796,6 @@
         startP();
     })();
 
-    // Glow trail
     (function() {
         const t = document.getElementById('glowTrail');
         let lx = 0, ly = 0, raf = null;
@@ -966,12 +813,10 @@
         });
     })();
 
-    // Bubbles
     (function() { for (let i = 0; i < 10; i++) { const b = document.createElement('div'); b.className = 'bubble'; const s = 10+Math.random()*35; b.style.width = s+'px'; b.style.height = s+'px'; b.style.left = Math.random()*100+'%'; b.style.animationDuration = 14+Math.random()*16+'s'; b.style.animationDelay = Math.random()*20+'s'; b.style.opacity = 0.15+Math.random()*0.25; document.body.appendChild(b); } })();
 
     function updateCursor(hex) { const c = hex.replace('#',''); const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="48" viewBox="0 0 40 48"><text y="41" font-size="38" font-family="Arial" fill="%23${c}">∑</text></svg>`; document.documentElement.style.setProperty('--sigma-cursor', `url('data:image/svg+xml;utf8,${encodeURIComponent(svg)}') 20 24, auto`); }
 
-    // Drag & drop wallpaper
     (function() {
         const ov = document.getElementById('dropOverlay'); let d = 0;
         ['dragenter','dragover','dragleave','drop'].forEach(e => { document.addEventListener(e, ev => { ev.preventDefault(); ev.stopPropagation(); }, false); });
@@ -987,7 +832,6 @@
         }, false);
     })();
 
-    // ═══════════ CATEGORIES ═══════════
     function getCategories(id, name) {
         const l = id.toLowerCase(), c = [];
         const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby','escapeschoolduel'];
@@ -1000,7 +844,7 @@
         if (l.includes('subway')||l.includes('subwaysurfer')) c.push('Subway Surfers','Runner');
         if (l.includes('mortalkombat')||l==='mariocombat'||l==='stickmankombat') c.push('Mortal Kombat');
         if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad'||l==='coolcarsrun3d') c.push('Runner');
-        if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') c.push('Horror');
+        if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift') c.push('Horror');
         if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { c.push('Zombie'); if (l!=='hobovszombies') c.push('Horror'); }
         if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') c.push('Sports');
         if (l==='blockblast') c.push('Puzzle','Relaxing');
@@ -1028,7 +872,6 @@
         if (l==='baldi'||l==='caseoh'||l==='tcubed') c.push("Baldi's Basics");
         if (l==='crazychicken'||l==='crazykitty'||l==='crazycattle') c.push('Crazy 3D Farm Games');
         if (l==='learntofly1'||l==='learntofly2'||l==='learntofly3'||l==='learntoflyidle') c.push('Learn to Fly');
-        // ── PAGE 3 ONLY: bug reports / suggestions / removal / credits ──
         if (l==='bugreports'||l==='gamesuggestions'||l==='credits'||l==='removalrequest') c.push('Other');
         if (l==='bowmasters') c.push('Shooter','Stickman');
         if (l==='ragdollhit') c.push('Stickman');
@@ -1040,10 +883,7 @@
         if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { c.push('Shooter'); c.push('Time Shooter Series'); }
         if (l==='vex1'||l==='vex2') c.push('Vex','Platformer');
         if (l==='buildnowgg') c.push('Shooter');
-
-        // ══ UNCATEGORIZED (stay on PAGE 1) ══
         const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
-
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
         if (other.includes(id) && c.length === 0) c.push('Other');
         const fc = [...new Set(c)];
@@ -1051,19 +891,18 @@
         return [...new Set(fc)];
     }
 
-    // FULL GAME LIST
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
+        { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
+        { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
         { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: '2048', name: '2048', file: 'cl2048 (1).html', img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
         { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'eaglercrafttuff', name: 'Eaglercraft v12 Tuff Client', file: 'cltuffclient.html', img: 'https://i.ytimg.com/vi/VFJONKcH02g/maxresdefault.jpg' },
         { id: 'eaglercraft152', name: '⚡ Eaglercraft v1.5.2', file: 'cleaglercraft152 (2).html', img: 'https://tse1.mm.bing.net/th/id/OIP.08kThyQOiKjx0YA6X_2MLAHaE5?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtjjjb-181fd024-97a2-48b4-a9ed-9d10d39b41a4.png/v1/fill/w_1273,h_627,q_70,strp/eaglercraft_v12_2_by_timebandit010101_dmtjjjb-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjMxIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRqampiLTE4MWZkMDI0LTk3YTItNDhiNC1hOWVkLTlkMTBkMzliNDFhNC5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.sdt18vQYXjjJtIHnOMdTTgua8J4HVtYJTao3fZqeAZg' },
+        { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmtjjjb-181fd024-97a2-48b4-a9ed-9d10d39b41a4.png/v1/fill/w_1273,h_627,q_70,strp/eaglercraft_v12_2_by_timebandit010101_dmtjjjb-pre.jpg' },
         { id: 'vex1', name: 'Vex 1', file: 'Vex 1.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/45.png' },
         { id: 'vex2', name: 'Vex 2', file: 'Vex 2.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/46.png' },
-        { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
         { id: 'paperminecraftv11', name: 'Paper Minecraft v11', file: 'just learn.html', categories: ['Minecraft'], img: 'https://cdn2.scratch.mit.edu/get_image/project/10128407_480x360.png' },
         { id: 'doodlejump', name: 'Doodle Jump', file: 'Doodle Jump.html', categories: ['Platformer'], img: 'https://tse4.mm.bing.net/th/id/OIP.rVcDUUJvaSMcmVqrlyXEtwHaFb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'gdlite', name: 'Geometry Dash Lite', file: 'clgdlite.html', categories: ['Platformer'], img: 'https://tse2.mm.bing.net/th/id/OIP.g4IK-a9E6HEsB_JVMNwrvAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1281,7 +1120,6 @@
         { id: 'escapeschoolduel', name: 'Escape School Duel', file: 'clescapeschoolduel.html', categories: ['Obby', 'Platformer'], img: 'https://tse1.mm.bing.net/th/id/OIP.sQ3msEuV87Dk0QPkCg_hywHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'papascheeseria', name: "Papa's Cheeseria", file: 'Papa\'s Cheeseria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/220.png' },
         { id: 'papashotdoggeria', name: "Papa's Hot Doggeria", file: 'Papa\'s Hot Doggeria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/224.png' },
-        { id: 'slendytubbies2d', name: 'Slendytubbies 2D', file: 'Slendytubbies 2D.html', categories: ['Horror'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/807.png' },
         { id: 'tosstheturtle', name: 'Toss the Turtle', file: 'Toss The Turtle (1).html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/110.png' },
         { id: 'noobminer', name: 'Noob Miner', file: 'clnoobminer.html', categories: ['Minecraft'], img: 'https://tse3.mm.bing.net/th/id/OIP.bROxewI8cAUo0or6ZWwGqwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
     ];
@@ -1348,7 +1186,7 @@
         { id: 'driving-car', name: 'Driving in My Car', file: 'driving-in-my-car-asgore.mp3' },
         { id: 'diddy-blud', name: 'What is This Diddy Blud Doing', file: 'diddy-blud.mp3' },
         { id: 'netflix-tikis', name: 'Watching Netflix and Tiki Takis', file: 'watching-netflix-and-tiki-takis-made-with-Voicemod.mp3' },
-        { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-sing-made-with-Voicemod.mp3' },
+        { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-tung-sing-made-with-Voicemod.mp3' },
         { id: 'lobtemy', name: 'Lobotomy', file: 'lobotomy-sound-effect.mp3' },
         { id: 'haland', name: 'Haaland Haaland', file: 'haaland-haaland.mp3' }
     ];
@@ -1360,6 +1198,7 @@
     let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
     let searchQuery = '', soundSearchQuery = '', selectedCategories = [];
     let themeState = 'default', lagKiller = false;
+    let lagSettings = { particles: true, glow: true, grid: true, meteor: true, bubble: true, rain: true, anim: true, logos: true, cursor: true, ultra: false };
     let rainActive = false, rainbowMode = false, rainbowInterval = null;
     let selectedIndex = 0;
     let currentTab = 'games', shapeIndex = parseInt(localStorage.getItem('btnShape') || '0') || 0;
@@ -1430,32 +1269,24 @@
     shortsFullscreen.addEventListener('click', e => { e.stopPropagation(); const el = shortsFrame; if (!document.fullscreenElement) { (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen).call(el); } else { (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document); } });
     document.addEventListener('fullscreenchange', () => { shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶'; });
 
-    // ═══════════ LAG KILLER — ONE-CLICK TOGGLE (removes ALL features) ═══════════
     function applyLagKiller() {
         const b = document.body;
         b.classList.toggle('lag-killer', lagKiller);
-        b.classList.toggle('lag-no-particles', lagKiller);
-        b.classList.toggle('lag-no-glow', lagKiller);
-        b.classList.toggle('lag-no-grid', lagKiller);
-        b.classList.toggle('lag-no-meteor', lagKiller);
-        b.classList.toggle('lag-no-bubble', lagKiller);
-        b.classList.toggle('lag-no-rain', lagKiller);
-        b.classList.toggle('lag-no-anim', lagKiller);
-        b.classList.toggle('lag-no-logos', lagKiller);
-        b.classList.toggle('lag-no-cursor', lagKiller);
-        b.classList.toggle('ultra-lag', lagKiller);
-
-        if (lagKiller) { if (window._particleStop) window._particleStop(); }
+        b.classList.toggle('lag-no-particles', lagKiller && lagSettings.particles);
+        b.classList.toggle('lag-no-glow', lagKiller && lagSettings.glow);
+        b.classList.toggle('lag-no-grid', lagKiller && lagSettings.grid);
+        b.classList.toggle('lag-no-meteor', lagKiller && lagSettings.meteor);
+        b.classList.toggle('lag-no-bubble', lagKiller && lagSettings.bubble);
+        b.classList.toggle('lag-no-rain', lagKiller && lagSettings.rain);
+        b.classList.toggle('lag-no-anim', lagKiller && lagSettings.anim);
+        b.classList.toggle('lag-no-logos', lagKiller && lagSettings.logos);
+        b.classList.toggle('lag-no-cursor', lagKiller && lagSettings.cursor);
+        b.classList.toggle('ultra-lag', lagKiller && lagSettings.ultra);
+        const killParticles = lagKiller && (lagSettings.particles || lagSettings.ultra);
+        if (killParticles) { if (window._particleStop) window._particleStop(); }
         else if (window._particleStart) { window._particleStart(); }
-
-        if (lagKiller) {
-            lagKillerBtn.style.background = '#22c55e';
-            lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON';
-        } else {
-            lagKillerBtn.style.background = '#f59e0b';
-            lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡';
-        }
-
+        if (lagKiller) { lagKillerBtn.style.background = '#22c55e'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON'; }
+        else { lagKillerBtn.style.background = '#f59e0b'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡'; }
         setTimeout(() => { try { if (currentTab === 'games') renderGrid(); else if (currentTab === 'sounds') buildSoundboard(); else if (currentTab === 'other') renderOtherGrid(); else if (currentTab === 'skins') renderSkins(); } catch(e) {} }, 0);
     }
 
@@ -1673,10 +1504,8 @@
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
     console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-    console.log('🛡️ Games open in iframe with Σigma ad blocker + SIGMATOWN controls injected.');
-    console.log('📱 In-game bars are draggable (⣿ handle) and resizable (corner).');
-    console.log('🖱️ Right-click any in-game button to remove it — press Σ to restore.');
-    console.log('Σ Esc or ✕ Close to exit a game. Fallback shown if a game can\'t load.');
+    console.log('🛡️ Games open in iframe with Σigma ad blocker + SIGMATOWN controls.');
+    console.log('📱 In-game bars draggable (⣿) + resizable (corner). Right-click buttons to remove.');
     </script>
 </body>
 </html>
