@@ -17,14 +17,34 @@
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
         body.light .header, body.light .controls { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
+
+        /* ═══════════ LAG KILLER (one-click, removes all features) ═══════════ */
         body.lag-killer * { animation-play-state: paused !important; transition-duration: 0s !important; transition-delay: 0s !important; }
         body.lag-killer .pulse-ring { display: none !important; }
         body.lag-killer .cycle-btn::before { animation-play-state: paused !important; }
         body.lag-killer .cycle-btn.random .dice { animation-play-state: paused !important; }
-        body.lag-killer .glow-orb, body.lag-killer .meteor, body.lag-killer .bubble, body.lag-killer #glowTrail, body.lag-killer .grid-scan { display: none !important; }
-        body.lag-killer .particle-canvas { display: none !important; }
-        body.ultra-lag * { cursor: auto !important; }
+        body.lag-killer .cycle-wrapper { opacity: 1 !important; transform: none !important; }
+        body.lag-no-particles .particle-canvas { display: none !important; }
+        body.lag-no-glow .glow-orb, body.lag-no-glow #glowTrail { display: none !important; }
+        body.lag-no-grid .grid-scan { display: none !important; }
+        body.lag-no-meteor .meteor { display: none !important; }
+        body.lag-no-bubble .bubble { display: none !important; }
+        body.lag-no-rain #matrixCanvas { display: none !important; }
+        body.lag-no-anim *, body.lag-no-anim *::before, body.lag-no-anim *::after { animation: none !important; transition: none !important; }
+        body.lag-no-anim .cycle-wrapper { opacity: 1 !important; transform: none !important; }
+        body.lag-no-logos .cycle-btn .overlay { display: none !important; }
+        body.lag-no-cursor *, body.lag-no-cursor *::before, body.lag-no-cursor *::after { cursor: auto !important; }
+        body.lag-no-cursor input, body.lag-no-cursor textarea { cursor: text !important; }
+        body.ultra-lag *, body.ultra-lag *::before, body.ultra-lag *::after { cursor: auto !important; }
         body.ultra-lag #glowTrail, body.ultra-lag .particle-canvas { display: none !important; }
+
+        /* ═══════════ IN-GAME HACK / LOW END (applies to parent page too) ═══════════ */
+        body.hack-no-logos .cycle-btn .overlay { display: none !important; }
+        body.hack-no-anim *, body.hack-no-anim *::before, body.hack-no-anim *::after { animation: none !important; transition: none !important; }
+        body.hack-no-anim .cycle-wrapper { opacity: 1 !important; transform: none !important; }
+        body.hack-no-cursor *, body.hack-no-cursor *::before, body.hack-no-cursor *::after { cursor: auto !important; }
+        body.hack-no-cursor input, body.hack-no-cursor textarea { cursor: text !important; }
+
         .glow-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orbFloat 14s ease-in-out infinite alternate; }
         .glow-orb.o1 { width: 400px; height: 400px; background: rgba(59,130,246,0.12); top: -100px; left: -100px; }
         .glow-orb.o2 { width: 500px; height: 500px; background: rgba(168,85,247,0.10); bottom: -150px; right: -150px; animation-delay: 5s; }
@@ -157,9 +177,9 @@
         #dropOverlay .drop-icon { font-size: 80px; margin-bottom: 12px; filter: drop-shadow(0 0 20px var(--glow)); }
         #dropOverlay .drop-title { font-size: 28px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
         #dropOverlay .drop-sub { font-size: 15px; opacity: 0.75; letter-spacing: 1px; }
-        #panicOverlay, #creditsOverlay, #lagSettingsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        #panicOverlay.open, #creditsOverlay.open, #lagSettingsOverlay.open { display: flex; }
-        #panicModal, #creditsBox, #lagSettingsModal { background: rgba(13,17,23,0.97); border: 2px solid var(--primary); border-radius: 28px; padding: 28px 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 60px var(--glow); color: #fff; }
+        #panicOverlay, #creditsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        #panicOverlay.open, #creditsOverlay.open { display: flex; }
+        #panicModal, #creditsBox { background: rgba(13,17,23,0.97); border: 2px solid var(--primary); border-radius: 28px; padding: 28px 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 60px var(--glow); color: #fff; }
         #panicModal h2 { font-size: 28px; display: flex; align-items: center; gap: 12px; margin-bottom: 4px; animation: glitch 3s infinite; }
         @keyframes glitch { 0%,100%{transform:translate(0);} 20%{transform:translate(-2px,2px);} 40%{transform:translate(2px,-2px);} 60%{transform:translate(-1px,-1px);} 80%{transform:translate(1px,1px);} }
         #panicModal .sub { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
@@ -192,15 +212,6 @@
         #creditsBox ul li { padding: 6px 0; border-bottom: 1px solid #2a2a3a; display: flex; align-items: center; gap: 10px; }
         #creditsBox ul li .role { color: #94a3b8; font-size: 14px; }
         #creditsBox .close-btn { display: block; margin: 18px auto 0; padding: 10px 32px; background: var(--primary); border: none; border-radius: 30px; color: #fff; font-size: 17px; font-weight: 700; }
-        #lagSettingsModal h2 { font-size: 24px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-        #lagSettingsModal .setting { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        #lagSettingsModal .setting label { cursor: pointer; font-size: 15px; }
-        #lagSettingsModal .setting input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
-        #lagSettingsModal .actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.08); }
-        #lagSettingsModal .master-toggle { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); padding: 10px 14px; border-radius: 10px; margin-bottom: 12px; }
-        #lagSettingsModal .master-toggle label { font-weight: 700; font-size: 16px; }
-        #lagSettingsModal .ultra-toggle { display: flex; align-items: center; gap: 12px; background: rgba(220,38,38,0.15); padding: 10px 14px; border-radius: 10px; margin-top: 8px; border: 1px solid rgba(220,38,38,0.3); }
-        #lagSettingsModal .ultra-toggle label { font-weight: 700; font-size: 16px; color: #f87171; }
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.9); color: #facc15; padding: 12px 28px; border-radius: 40px; font-size: 15px; border: 1px solid #facc15; z-index: 99999; opacity: 0; transition: opacity 0.4s; pointer-events: none; backdrop-filter: blur(8px); font-weight: 500; white-space: nowrap; }
         #toast.show { opacity: 1; }
         body.nintendo-mode .cycles-grid { display: none !important; }
@@ -221,23 +232,45 @@
         #gameOverlay { position: fixed; inset: 0; z-index: 2147483610; background: #000; display: none; }
         #gameOverlay.show { display: block !important; }
         #gameOverlayFrame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; background: #000; display: block; }
-        /* Loading spinner */
         #gameOverlayLoader { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #3b82f6; font-family: 'Segoe UI', sans-serif; z-index: 2; background: #0a0e1a; }
         #gameOverlayLoader.hidden { display: none !important; }
         #gameOverlayLoader .spinner { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top-color: #3b82f6; border-radius: 50%; animation: goSpin 1s linear infinite; box-shadow: 0 0 30px rgba(59,130,246,0.5); }
         @keyframes goSpin { to { transform: rotate(360deg); } }
         #gameOverlayLoader .label { font-weight: 800; letter-spacing: 3px; font-size: 14px; text-shadow: 0 0 15px rgba(59,130,246,0.9); }
         #gameOverlayLoader .gameName { font-weight: 600; letter-spacing: 1px; font-size: 16px; color: #cbd5e1; }
-        /* ST control bar (floating bottom-right, on top of iframe) */
-        #stCtrlBar { position: absolute; bottom: 24px; right: 24px; display: flex; gap: 10px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 10px 16px; border-radius: 16px; border: 2px solid #3b82f6; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        /* ═══ SIGMATOWN CONTROL BAR ═══ */
+        #stCtrlBar { position: absolute; bottom: 24px; right: 24px; display: flex; gap: 10px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 10px 16px 10px 8px; border-radius: 16px; border: 2px solid #3b82f6; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; transform-origin: top left; touch-action: none; }
         #stCtrlBar .st-btn { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; color: #fff; background: rgba(30,41,59,0.9); transition: 0.25s; display: flex; align-items: center; gap: 6px; user-select: none; }
         #stCtrlBar .st-btn:hover { background: #3b82f6; transform: scale(1.05); }
         #stCtrlBar .st-btn.fs { background: #2563eb; }
         #stCtrlBar .st-btn.ptr { background: #059669; }
-        #stCtrlBar .st-badge { background: linear-gradient(135deg,#ff6b00,#ff4500); color: #fff; font-weight: 900; font-size: 16px; padding: 4px 14px; border-radius: 30px; border: 2px solid #ffd700; animation: stPulseG 1.5s ease-in-out infinite; user-select: none; }
+        #stCtrlBar .st-badge { background: linear-gradient(135deg,#ff6b00,#ff4500); color: #fff; font-weight: 900; font-size: 13px; letter-spacing: 1px; padding: 5px 16px; border-radius: 30px; border: 2px solid #ffd700; animation: stPulseG 1.5s ease-in-out infinite; user-select: none; }
         @keyframes stPulseG { 0%{box-shadow:0 0 10px rgba(255,107,0,0.3);} 50%{box-shadow:0 0 40px rgba(255,215,0,0.9);} 100%{box-shadow:0 0 10px rgba(255,107,0,0.3);} }
         #stCtrlBar .st-close { background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 4px 12px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 700; }
         #stCtrlBar .st-close:hover { background: rgba(239,68,68,0.4); color: #fff; }
+
+        /* ═══ LOW END / GAMESHACK BAR ═══ */
+        #stLowEndBar { position: absolute; bottom: 24px; left: 24px; display: flex; gap: 8px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 9px 14px 9px 6px; border-radius: 16px; border: 2px solid #f59e0b; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(245,158,11,0.35); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; max-width: calc(100% - 340px); transform-origin: top left; touch-action: none; }
+        #stLowEndBar .le-badge { background: linear-gradient(135deg,#f59e0b,#ef4444); color: #fff; font-weight: 900; font-size: 12px; letter-spacing: 1px; padding: 5px 14px; border-radius: 30px; border: 2px solid #fde68a; user-select: none; animation: stPulseO 1.6s ease-in-out infinite; }
+        @keyframes stPulseO { 0%{box-shadow:0 0 10px rgba(245,158,11,0.3);} 50%{box-shadow:0 0 35px rgba(245,158,11,0.9);} 100%{box-shadow:0 0 10px rgba(245,158,11,0.3);} }
+        #stLowEndBar .le-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1px solid rgba(255,255,255,0.15); color: #fff; background: rgba(30,41,59,0.9); transition: 0.25s; user-select: none; }
+        #stLowEndBar .le-btn:hover { background: #f59e0b; transform: scale(1.05); }
+        #stLowEndBar .le-btn.active { background: #22c55e; border-color: #86efac; }
+        #stLowEndBar .le-btn.danger { background: rgba(239,68,68,0.85); border-color: rgba(255,255,255,0.25); }
+        #stLowEndBar .le-btn.danger:hover { background: #dc2626; }
+
+        /* ═══ DRAG HANDLES + RESIZE HANDLES ═══ */
+        .st-drag { cursor: move !important; padding: 4px 5px; color: #94a3b8; font-size: 17px; user-select: none; line-height: 1; letter-spacing: -5px; font-weight: 700; }
+        .st-drag:hover { color: #3b82f6; }
+        .st-resize { position: absolute; bottom: 1px; right: 1px; width: 16px; height: 16px; cursor: nwse-resize !important; border-right: 2px solid rgba(255,255,255,0.45); border-bottom: 2px solid rgba(255,255,255,0.45); border-bottom-right-radius: 12px; }
+        .st-resize:hover { border-color: #3b82f6; }
+
+        /* ═══ RESTORE BUTTON (after "remove all bars") ═══ */
+        #stRestoreBar { position: absolute; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(15,23,42,0.92); border: 2px solid #3b82f6; color: #3b82f6; font-size: 24px; font-weight: 900; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483610; box-shadow: 0 0 25px rgba(59,130,246,0.6); font-family: 'Segoe UI', system-ui, sans-serif; }
+        #stRestoreBar.show { display: flex; }
+        #stRestoreBar:hover { background: #3b82f6; color: #fff; transform: scale(1.08); }
+
         #stFallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #f87171; font-family: 'Segoe UI', sans-serif; z-index: 3; background: #0a0e1a; text-align: center; padding: 20px; }
         #stFallback.show { display: flex !important; }
         #stFallback .icon { font-size: 60px; }
@@ -258,6 +291,9 @@
             .sound-card { min-width: 180px; }
             .tab-btn { padding: 8px 14px; font-size: 13px; }
             .shorts-nav { width: 64px; height: 64px; font-size: 28px; }
+            #stLowEndBar { max-width: calc(100% - 20px); left: 10px; bottom: 78px; padding: 6px 8px; gap: 5px; }
+            #stLowEndBar .le-btn { font-size: 10px; padding: 5px 8px; }
+            #stCtrlBar { bottom: 10px; right: 10px; padding: 6px 10px; }
         }
         @media (max-width: 540px) {
             .cycle-btn { width: 100px; height: 100px; }
@@ -272,6 +308,7 @@
             .shorts-nav { width: 56px; height: 56px; font-size: 24px; }
             .shorts-frame { width: 90vw; }
             #stCtrlBar { bottom: 10px; right: 10px; padding: 6px 10px; }
+            #stLowEndBar { bottom: 76px; }
         }
         /* Σ ad cover shield (used inside game iframes) */
         .sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; }
@@ -316,12 +353,31 @@
             </div>
         </div>
         <iframe id="gameOverlayFrame" allow="fullscreen; autoplay; pointer-lock; clipboard-write; encrypted-media; picture-in-picture; gamepad; gyroscope; accelerometer" allowfullscreen></iframe>
+
+        <!-- ═══ SIGMATOWN CONTROL BAR ═══ -->
         <div id="stCtrlBar" data-st-overlay="true">
+            <span class="st-drag" id="stDragCtrl" title="Drag to move this bar">⣿</span>
             <button class="st-btn fs" id="stFS">⛶ Fullscreen</button>
-            <span class="st-badge">ΣT</span>
+            <span class="st-badge">SIGMATOWN</span>
             <button class="st-btn ptr" id="stPtr">🖱️ Lock</button>
             <button class="st-close" id="stClose">✕ Close</button>
+            <span class="st-resize" id="stResizeCtrl" title="Drag to resize this bar"></span>
         </div>
+
+        <!-- ═══ LOW END / GAMESHACK BAR ═══ -->
+        <div id="stLowEndBar" data-st-overlay="true">
+            <span class="st-drag" id="stDragLE" title="Drag to move this bar">⣿</span>
+            <span class="le-badge">Σ LOW END</span>
+            <button class="le-btn" id="leLowEnd">📱 LOW END DEVICE</button>
+            <button class="le-btn" id="leLogos">🚫 LOGOS</button>
+            <button class="le-btn" id="leAnim">🎞️ ANIMATIONS</button>
+            <button class="le-btn" id="leCursor">🖱️ CURSOR</button>
+            <button class="le-btn danger" id="leRemoveAll">🧹 REMOVE ALL BARS</button>
+            <span class="st-resize" id="stResizeLE" title="Drag to resize this bar"></span>
+        </div>
+
+        <!-- ═══ RESTORE (shown after remove all bars) ═══ -->
+        <button id="stRestoreBar" data-st-overlay="true" title="Restore SigmaTown bars & buttons">Σ</button>
     </div>
 
     <div id="panicOverlay"><div id="panicModal">
@@ -352,20 +408,6 @@
             <li>🙏 Everyone else who helped make this site possible!</li>
         </ul>
         <button class="close-btn" id="creditsCloseBtn">✕ Close</button>
-    </div></div>
-
-    <div id="lagSettingsOverlay"><div id="lagSettingsModal">
-        <h2>⚡ Lag Killer Settings</h2>
-        <div class="master-toggle"><label for="lagMaster">Master Toggle</label><input type="checkbox" id="lagMaster" /></div>
-        <div class="setting"><label for="lagParticles">Disable Particles</label><input type="checkbox" id="lagParticles" checked /></div>
-        <div class="setting"><label for="lagGlow">Disable Glow Orbs &amp; Trail</label><input type="checkbox" id="lagGlow" checked /></div>
-        <div class="setting"><label for="lagGrid">Disable Grid Scan</label><input type="checkbox" id="lagGrid" checked /></div>
-        <div class="setting"><label for="lagMeteor">Disable Meteors</label><input type="checkbox" id="lagMeteor" checked /></div>
-        <div class="setting"><label for="lagBubble">Disable Bubbles</label><input type="checkbox" id="lagBubble" checked /></div>
-        <div class="setting"><label for="lagRain">Disable Rain Effect</label><input type="checkbox" id="lagRain" checked /></div>
-        <div class="setting"><label for="lagAnim">Disable All Animations</label><input type="checkbox" id="lagAnim" checked /></div>
-        <div class="ultra-toggle"><label for="lagUltra">🔥 ULTRA LAG KILLER (disable everything)</label><input type="checkbox" id="lagUltra" /></div>
-        <div class="actions"><button class="btn" id="lagLowEndMode" style="background:#ef4444;">📱 Low End Mode</button><button class="btn" id="lagSettingsClose">Close</button></div>
     </div></div>
 
     <div id="menuScreen"><div class="container">
@@ -451,7 +493,7 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════
-    //  ΣIGMA AD BLOCKER (named so we can inject it into game iframes)
+    //  ΣIGMA AD BLOCKER
     // ═══════════════════════════════════════════════════════════════
     function sigmaAdBlocker() {
         const adDomains = [
@@ -572,9 +614,21 @@
 
         console.log('%cΣigma Ad Blocker active.', 'background:#dc2626;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
     }
-    sigmaAdBlocker(); // run in parent
+    sigmaAdBlocker();
     const SIGMA_BLOCKER_SRC = '(' + sigmaAdBlocker.toString() + ')();';
     const SIGMA_COVER_CSS = '.sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; } .sigma-ad-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }';
+
+    // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
+    const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
+
+    function buildHackCss() {
+        const lo = HACK.lowEnd;
+        let css = '';
+        if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}';
+        if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}';
+        if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}';
+        return css;
+    }
 
     // ═══════════ IFRAME GAME OVERLAY ═══════════
     const gameOverlay   = document.getElementById('gameOverlay');
@@ -583,6 +637,8 @@
     const gameNameEl    = document.getElementById('gameOverlayName');
     const stFallback    = document.getElementById('stFallback');
     const stCtrlBar     = document.getElementById('stCtrlBar');
+    const stLowEndBar   = document.getElementById('stLowEndBar');
+    const stRestoreBar  = document.getElementById('stRestoreBar');
     let currentGameFile = '';
     let fallbackTimer   = null;
     let loadFired       = false;
@@ -606,8 +662,38 @@
                 sc.textContent = SIGMA_BLOCKER_SRC;
                 (doc.head || doc.documentElement).appendChild(sc);
             }
+            const hackCss = buildHackCss();
+            let hackStyle = doc.getElementById('sigmaHackStyle');
+            if (hackCss) {
+                if (!hackStyle) {
+                    hackStyle = doc.createElement('style');
+                    hackStyle.id = 'sigmaHackStyle';
+                    (doc.head || doc.documentElement).appendChild(hackStyle);
+                }
+                hackStyle.textContent = hackCss;
+            } else if (hackStyle) {
+                hackStyle.remove();
+            }
             return true;
         } catch(e) { return false; }
+    }
+
+    // ═══════════ RESET BARS TO DEFAULTS ═══════════
+    function resetBars() {
+        [stCtrlBar, stLowEndBar].forEach(bar => {
+            bar.style.left = '';
+            bar.style.top = '';
+            bar.style.right = '';
+            bar.style.bottom = '';
+            bar.style.transform = '';
+            bar.dataset.scale = '1';
+            bar.style.display = '';
+            bar.querySelectorAll('[data-removed="true"]').forEach(b => {
+                b.style.display = '';
+                b.dataset.removed = '';
+            });
+        });
+        stRestoreBar.classList.remove('show');
     }
 
     function closeGame() {
@@ -618,6 +704,7 @@
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         document.body.style.overflow = '';
         if (document.fullscreenElement) { try { document.exitFullscreen().catch(()=>{}); } catch(_) {} }
+        resetBars();
     }
 
     function openGameInIframe(file, name) {
@@ -629,25 +716,22 @@
         document.body.style.overflow = 'hidden';
         loadFired = false;
         stopAllInjections();
+        resetBars();
 
-        // Clear first
         try { gameFrame.src = 'about:blank'; } catch(_) {}
 
         setTimeout(() => {
             try { gameFrame.src = file; } catch(_) {}
         }, 50);
 
-        // Fallback timer — if no load event in 4.5s, show error
         fallbackTimer = setTimeout(() => {
             if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); }
         }, 4500);
 
-        // Inject intervals — multiple, so document.write wipes get re-injected
         const iv1 = setInterval(injectIntoIframe, 60);
         const iv2 = setInterval(injectIntoIframe, 300);
         const iv3 = setInterval(injectIntoIframe, 1500);
         injectIntervals = [iv1, iv2, iv3];
-        // Stop aggressive intervals after 25s (keep the 1.5s one running)
         setTimeout(() => { clearInterval(iv1); clearInterval(iv2); }, 25000);
     }
 
@@ -659,7 +743,7 @@
         [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
 
-    // ST control bar buttons
+    // SIGMATOWN control bar buttons
     document.getElementById('stFS').addEventListener('click', () => {
         try {
             if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); }
@@ -682,13 +766,150 @@
     document.getElementById('stFallbackRetry').addEventListener('click', () => { if (currentGameFile) openGameInIframe(currentGameFile, gameNameEl.textContent); });
     document.getElementById('stFallbackNewTab').addEventListener('click', () => { if (currentGameFile) window.open(currentGameFile, '_blank'); });
 
+    // ═══════════ LOW END / GAMESHACK BAR ═══════════
+    const leLowEndBtn  = document.getElementById('leLowEnd');
+    const leLogosBtn   = document.getElementById('leLogos');
+    const leAnimBtn    = document.getElementById('leAnim');
+    const leCursorBtn  = document.getElementById('leCursor');
+    const leRemoveAll  = document.getElementById('leRemoveAll');
+
+    function applyHack() {
+        const b = document.body;
+        const lo = HACK.lowEnd;
+        b.classList.toggle('hack-no-logos', HACK.logos || lo);
+        b.classList.toggle('hack-no-anim', HACK.anim || lo);
+        b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
+
+        if (lo) {
+            lagKiller = true;
+            applyLagKiller();
+        }
+
+        leLowEndBtn.classList.toggle('active', HACK.lowEnd);
+        leLogosBtn.classList.toggle('active', HACK.logos || lo);
+        leAnimBtn.classList.toggle('active', HACK.anim || lo);
+        leCursorBtn.classList.toggle('active', HACK.cursor || lo);
+
+        injectIntoIframe();
+    }
+
+    function toggleHackSub(key) {
+        if (HACK.lowEnd) {
+            HACK.lowEnd = false;
+            HACK.logos = true; HACK.anim = true; HACK.cursor = true;
+        }
+        HACK[key] = !HACK[key];
+        applyHack();
+    }
+
+    leLowEndBtn.addEventListener('click', () => {
+        HACK.lowEnd = !HACK.lowEnd;
+        applyHack();
+        showToast(HACK.lowEnd ? '📱 Low End Device ON (all features removed)' : '📱 Low End Device OFF', 2000);
+    });
+    leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(HACK.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
+    leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(HACK.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
+    leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(HACK.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
+
+    function removeAllBars() {
+        stCtrlBar.style.display = 'none';
+        stLowEndBar.style.display = 'none';
+        stRestoreBar.classList.add('show');
+        showToast('🧹 All bars removed — press Σ to restore', 2500);
+    }
+    leRemoveAll.addEventListener('click', removeAllBars);
+
+    stRestoreBar.addEventListener('click', () => {
+        stCtrlBar.style.display = 'flex';
+        stLowEndBar.style.display = 'flex';
+        stRestoreBar.classList.remove('show');
+        document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => {
+            b.style.display = '';
+            b.dataset.removed = '';
+        });
+        showToast('✅ SigmaTown bars & buttons restored', 1600);
+    });
+
+    // ═══════════ REMOVE INDIVIDUAL BUTTONS (right-click) ═══════════
+    function makeButtonRemovable(btn) {
+        btn.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            btn.style.display = 'none';
+            btn.dataset.removed = 'true';
+            showToast('🗑️ Button removed — press Σ to restore', 1600);
+        });
+    }
+    document.querySelectorAll('#stCtrlBar button, #stLowEndBar button').forEach(makeButtonRemovable);
+
+    // ═══════════ DRAG & RESIZE FOR BOTH BARS ═══════════
+    function makeBarInteractive(bar, dragHandle, resizeHandle) {
+        // ── DRAG ──
+        let dragging = false, dsx = 0, dsy = 0, dox = 0, doy = 0;
+        dragHandle.addEventListener('mousedown', e => {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const r = bar.getBoundingClientRect();
+            bar.style.left = r.left + 'px';
+            bar.style.top = r.top + 'px';
+            bar.style.right = 'auto';
+            bar.style.bottom = 'auto';
+            dragging = true;
+            dsx = e.clientX; dsy = e.clientY;
+            dox = r.left; doy = r.top;
+            dragHandle.style.cursor = 'grabbing';
+            document.body.style.userSelect = 'none';
+        });
+        document.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            const nx = Math.max(0, Math.min(window.innerWidth - 40, dox + e.clientX - dsx));
+            const ny = Math.max(0, Math.min(window.innerHeight - 20, doy + e.clientY - dsy));
+            bar.style.left = nx + 'px';
+            bar.style.top = ny + 'px';
+        });
+        document.addEventListener('mouseup', () => {
+            if (dragging) { dragging = false; dragHandle.style.cursor = 'move'; document.body.style.userSelect = ''; }
+        });
+
+        // ── RESIZE (scale) ──
+        let resizing = false, rsx = 0, rStartScale = 1;
+        resizeHandle.addEventListener('mousedown', e => {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const r = bar.getBoundingClientRect();
+            bar.style.left = r.left + 'px';
+            bar.style.top = r.top + 'px';
+            bar.style.right = 'auto';
+            bar.style.bottom = 'auto';
+            resizing = true;
+            rsx = e.clientX;
+            rStartScale = parseFloat(bar.dataset.scale || '1');
+            document.body.style.userSelect = 'none';
+        });
+        document.addEventListener('mousemove', e => {
+            if (!resizing) return;
+            const delta = (e.clientX - rsx) / 260;
+            let s = Math.min(1.5, Math.max(0.4, rStartScale + delta));
+            bar.dataset.scale = s.toFixed(3);
+            bar.style.transform = 'scale(' + s + ')';
+        });
+        document.addEventListener('mouseup', () => {
+            if (resizing) { resizing = false; document.body.style.userSelect = ''; }
+        });
+    }
+
+    makeBarInteractive(stCtrlBar,   document.getElementById('stDragCtrl'), document.getElementById('stResizeCtrl'));
+    makeBarInteractive(stLowEndBar, document.getElementById('stDragLE'),   document.getElementById('stResizeLE'));
+
     // ═══════════ STATE ═══════════
     let nintendoMode = false, clickMuted = false;
     const clickAudio = document.getElementById('clickSound');
     const switchAudio = document.getElementById('switchClick');
     function playSound(a) { if (clickMuted || !a) return; try { a.currentTime = 0; a.play().catch(()=>{}); } catch(_) {} }
     function playClick() { if (nintendoMode) playSound(switchAudio); else playSound(clickAudio); }
-    document.addEventListener('click', e => { const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn, .st-btn, .st-close'); if (t) playClick(); }, true);
+    document.addEventListener('click', e => { const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn, .st-btn, .st-close, .le-btn'); if (t) playClick(); }, true);
 
     const muteBtn = document.getElementById('muteBtn');
     muteBtn.addEventListener('click', function() { clickMuted = !clickMuted; this.classList.toggle('active', clickMuted); this.textContent = clickMuted ? '🔇 Click Sounds' : '🔊 Click Sounds'; playClick(); showToast(clickMuted ? '🔇 Muted' : '🔊 Unmuted', 1500); });
@@ -703,7 +924,7 @@
         const count = Math.min(30, Math.floor(w * h / 40000));
         for (let i = 0; i < count; i++) particles.push({ x: Math.random()*w, y: Math.random()*h, r: 1+Math.random()*2, dx: (Math.random()-0.5)*0.4, dy: (Math.random()-0.5)*0.4, phase: Math.random()*Math.PI*2 });
         function draw() {
-            if (!particleRunning || document.body.classList.contains('lag-killer') || document.hidden) { if (particleAnimId) cancelAnimationFrame(particleAnimId); particleAnimId = null; return; }
+            if (!particleRunning || document.hidden) { if (particleAnimId) cancelAnimationFrame(particleAnimId); particleAnimId = null; return; }
             frame++; ctx.clearRect(0,0,w,h);
             const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
             let r=59,g=130,b=246;
@@ -766,7 +987,7 @@
         }, false);
     })();
 
-    // Categories function
+    // ═══════════ CATEGORIES ═══════════
     function getCategories(id, name) {
         const l = id.toLowerCase(), c = [];
         const plat = ['supermario64','supermario63','redball4','doodlejump','soniccd','clusterrush','slope','slope2player','deathrun3d','flappybird','crossyroad','snowrider3d','gorillatag','burritobison','bladeball','gdlite','tripletobby','obbyjumperclicker','speedperclick','obbycart','blockcraftparkour','obby99willlose','obbyfriends','rainbowobby','obbybike','hobo1','hobo2','hobo3','hobo4','hobo5','hobo6','hobo7','hobovszombies','mariocombat','stickmanhook','crazyplanelanding','crazymotorcycle','sherkdash','snowboardobby','escapeschoolduel'];
@@ -795,7 +1016,6 @@
         if (l==='elytraflight') c.push('Minecraft','Platformer');
         if (l==='crazymotorcycle') c.push('Minecraft','Platformer','Obby');
         if (l==='minecraftshooter') c.push('Shooter','Minecraft');
-        if (l==='punchthetrump') c.push('Other');
         if (l==='eaglercraft'||l==='eaglercrafttuff'||l==='eaglercraft152'||l==='eaglercraftv122') c.push('Minecraft');
         if (l==='minecraftpe') c.push('Minecraft');
         if (l==='noobminer') c.push('Minecraft');
@@ -808,10 +1028,10 @@
         if (l==='baldi'||l==='caseoh'||l==='tcubed') c.push("Baldi's Basics");
         if (l==='crazychicken'||l==='crazykitty'||l==='crazycattle') c.push('Crazy 3D Farm Games');
         if (l==='learntofly1'||l==='learntofly2'||l==='learntofly3'||l==='learntoflyidle') c.push('Learn to Fly');
-        if (l==='bugreports'||l==='gamesuggestions'||l==='pacman'||l==='credits'||l==='removalrequest') c.push('Other');
+        // ── PAGE 3 ONLY: bug reports / suggestions / removal / credits ──
+        if (l==='bugreports'||l==='gamesuggestions'||l==='credits'||l==='removalrequest') c.push('Other');
         if (l==='bowmasters') c.push('Shooter','Stickman');
         if (l==='ragdollhit') c.push('Stickman');
-        if (l==='snowbattle') c.push('Other');
         if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d') c.push('Driving');
         if (l==='motox3mpoolparty') c.push('Driving');
         if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria') c.push("Papa's Restaurants");
@@ -820,8 +1040,10 @@
         if (l==='timeshooter1'||l==='timeshooter2'||l==='timeshooter3') { c.push('Shooter'); c.push('Time Shooter Series'); }
         if (l==='vex1'||l==='vex2') c.push('Vex','Platformer');
         if (l==='buildnowgg') c.push('Shooter');
+
+        // ══ UNCATEGORIZED (stay on PAGE 1) ══
         const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
-        if (unc.includes(id)) c.push('Uncategorized');
+
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
         if (other.includes(id) && c.length === 0) c.push('Other');
         const fc = [...new Set(c)];
@@ -829,7 +1051,7 @@
         return [...new Set(fc)];
     }
 
-    // FULL GAME LIST — pasted from your previous file
+    // FULL GAME LIST
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
         { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1138,7 +1360,6 @@
     let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
     let searchQuery = '', soundSearchQuery = '', selectedCategories = [];
     let themeState = 'default', lagKiller = false;
-    let lagSettings = { particles: true, glow: true, grid: true, meteor: true, bubble: true, rain: true, anim: true, ultra: false };
     let rainActive = false, rainbowMode = false, rainbowInterval = null;
     let selectedIndex = 0;
     let currentTab = 'games', shapeIndex = parseInt(localStorage.getItem('btnShape') || '0') || 0;
@@ -1201,7 +1422,6 @@
     function nextShort() { advanceToWorkingShort(1); }
     function prevShort() { advanceToWorkingShort(-1); }
     shortsVideo.addEventListener('error', () => { const cur = SHORTS[currentShortIndex]; if (!cur) return; brokenShorts.add(cur.file); setTimeout(() => { advanceToWorkingShort(1); }, 900); });
-    shortsVideo.addEventListener('loadeddata', () => {});
     shortsUp.addEventListener('click', () => prevShort());
     shortsDown.addEventListener('click', () => nextShort());
     function handleShortsWheel(e) { if (currentTab !== 'shorts') return; e.preventDefault(); const now = Date.now(); if (now - lastScrollTime < 600) return; lastScrollTime = now; if (e.deltaY > 0) nextShort(); else if (e.deltaY < 0) prevShort(); playClick(); }
@@ -1210,46 +1430,41 @@
     shortsFullscreen.addEventListener('click', e => { e.stopPropagation(); const el = shortsFrame; if (!document.fullscreenElement) { (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen).call(el); } else { (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document); } });
     document.addEventListener('fullscreenchange', () => { shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶'; });
 
-    function loadLagSettings() { const s = localStorage.getItem('lagSettings'); if (s) { try { Object.assign(lagSettings, JSON.parse(s)); } catch(e){} } }
-    function saveLagSettings() { localStorage.setItem('lagSettings', JSON.stringify(lagSettings)); }
+    // ═══════════ LAG KILLER — ONE-CLICK TOGGLE (removes ALL features) ═══════════
     function applyLagKiller() {
         const b = document.body;
         b.classList.toggle('lag-killer', lagKiller);
-        b.classList.toggle('lag-no-particles', lagKiller && !lagSettings.particles);
-        b.classList.toggle('lag-no-glow', lagKiller && !lagSettings.glow);
-        b.classList.toggle('lag-no-grid', lagKiller && !lagSettings.grid);
-        b.classList.toggle('lag-no-meteor', lagKiller && !lagSettings.meteor);
-        b.classList.toggle('lag-no-bubble', lagKiller && !lagSettings.bubble);
-        b.classList.toggle('lag-no-rain', lagKiller && !lagSettings.rain);
-        b.classList.toggle('lag-no-anim', lagKiller && !lagSettings.anim);
-        b.classList.toggle('ultra-lag', lagKiller && lagSettings.ultra);
-        if (lagKiller && lagSettings.ultra) { if (window._particleStop) window._particleStop(); }
-        else { if (!lagKiller && window._particleStart) window._particleStart();
-            else if (lagKiller && !lagSettings.ultra && !lagSettings.particles) { if (window._particleStop) window._particleStop(); }
-            else if (!lagKiller && !lagSettings.particles) { if (window._particleStop) window._particleStop(); }
-            else if (!lagKiller && lagSettings.particles && window._particleStart) { window._particleStart(); }
+        b.classList.toggle('lag-no-particles', lagKiller);
+        b.classList.toggle('lag-no-glow', lagKiller);
+        b.classList.toggle('lag-no-grid', lagKiller);
+        b.classList.toggle('lag-no-meteor', lagKiller);
+        b.classList.toggle('lag-no-bubble', lagKiller);
+        b.classList.toggle('lag-no-rain', lagKiller);
+        b.classList.toggle('lag-no-anim', lagKiller);
+        b.classList.toggle('lag-no-logos', lagKiller);
+        b.classList.toggle('lag-no-cursor', lagKiller);
+        b.classList.toggle('ultra-lag', lagKiller);
+
+        if (lagKiller) { if (window._particleStop) window._particleStop(); }
+        else if (window._particleStart) { window._particleStart(); }
+
+        if (lagKiller) {
+            lagKillerBtn.style.background = '#22c55e';
+            lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON';
+        } else {
+            lagKillerBtn.style.background = '#f59e0b';
+            lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡';
         }
-        if (lagKiller) { lagKillerBtn.style.background = '#22c55e'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON'; }
-        else { lagKillerBtn.style.background = '#f59e0b'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡'; }
-        if (rainActive && lagKiller && !lagSettings.rain) document.body.classList.add('lag-no-rain');
-        else if (rainActive) document.body.classList.remove('lag-no-rain');
+
         setTimeout(() => { try { if (currentTab === 'games') renderGrid(); else if (currentTab === 'sounds') buildSoundboard(); else if (currentTab === 'other') renderOtherGrid(); else if (currentTab === 'skins') renderSkins(); } catch(e) {} }, 0);
-        saveLagSettings();
     }
-    const lagMaster = document.getElementById('lagMaster'), lagParticles = document.getElementById('lagParticles');
-    const lagGlow = document.getElementById('lagGlow'), lagGrid = document.getElementById('lagGrid');
-    const lagMeteor = document.getElementById('lagMeteor'), lagBubble = document.getElementById('lagBubble');
-    const lagRain = document.getElementById('lagRain'), lagAnim = document.getElementById('lagAnim');
-    const lagUltra = document.getElementById('lagUltra');
-    const lagSettingsOverlay = document.getElementById('lagSettingsOverlay');
-    const lagSettingsClose = document.getElementById('lagSettingsClose');
-    const lagLowEndMode = document.getElementById('lagLowEndMode');
-    function updateSettingsUI() { lagMaster.checked = lagKiller; lagParticles.checked = lagSettings.particles; lagGlow.checked = lagSettings.glow; lagGrid.checked = lagSettings.grid; lagMeteor.checked = lagSettings.meteor; lagBubble.checked = lagSettings.bubble; lagRain.checked = lagSettings.rain; lagAnim.checked = lagSettings.anim; lagUltra.checked = lagSettings.ultra; }
-    function applySettingsFromUI() { lagKiller = lagMaster.checked; lagSettings.particles = lagParticles.checked; lagSettings.glow = lagGlow.checked; lagSettings.grid = lagGrid.checked; lagSettings.meteor = lagMeteor.checked; lagSettings.bubble = lagBubble.checked; lagSettings.rain = lagRain.checked; lagSettings.anim = lagAnim.checked; lagSettings.ultra = lagUltra.checked; applyLagKiller(); showToast(lagKiller ? '⚡ Lag Killer ON' : '⚡ Lag Killer OFF'); }
-    lagKillerBtn.addEventListener('click', e => { e.stopPropagation(); updateSettingsUI(); lagSettingsOverlay.classList.add('open'); });
-    lagSettingsClose.addEventListener('click', () => { applySettingsFromUI(); lagSettingsOverlay.classList.remove('open'); });
-    lagSettingsOverlay.addEventListener('click', e => { if (e.target === lagSettingsOverlay) { applySettingsFromUI(); lagSettingsOverlay.classList.remove('open'); } });
-    lagLowEndMode.addEventListener('click', () => { lagMaster.checked = true; lagParticles.checked = false; lagGlow.checked = false; lagGrid.checked = false; lagMeteor.checked = false; lagBubble.checked = false; lagRain.checked = false; lagAnim.checked = false; lagUltra.checked = true; applySettingsFromUI(); showToast('📱 Low End Mode activated', 2000); });
+
+    lagKillerBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        lagKiller = !lagKiller;
+        applyLagKiller();
+        showToast(lagKiller ? '⚡ Lag Killer ON — all features removed' : '⚡ Lag Killer OFF', 2200);
+    });
 
     function showToast(msg, dur = 2500) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), dur); }
     function saveFavs() { localStorage.setItem('fav_cycles', JSON.stringify(favorites)); }
@@ -1370,7 +1585,7 @@
     let mw, mh, mdrops = [], mchars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'.split(''), rainFrame = null;
     function initRainMatrix() { mw = window.innerWidth; mh = window.innerHeight; matrixCanvas.width = mw; matrixCanvas.height = mh; mdrops = Array(Math.floor(mw / 20)).fill(0).map(() => Math.floor(Math.random() * -mh / 20)); }
     function drawRainMatrix() { if (!rainActive) return; const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(); let r = 59, g = 130, b = 246; if (p.startsWith('#')) { r = parseInt(p.slice(1,3),16)||59; g = parseInt(p.slice(3,5),16)||130; b = parseInt(p.slice(5,7),16)||246; } mctx.fillStyle = 'rgba(0,0,0,0.05)'; mctx.fillRect(0,0,mw,mh); mctx.font = "20px 'Courier New', monospace"; mctx.shadowColor = p; mctx.shadowBlur = 12; const dc = `rgba(${r},${g},${b},0.9)`; for (let i = 0; i < mdrops.length; i++) { mctx.fillStyle = dc; mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)], i*20, mdrops[i]*20); if (mdrops[i]*20 > mh && Math.random() > 0.975) mdrops[i] = 0; mdrops[i]++; } mctx.shadowBlur = 0; rainFrame = requestAnimationFrame(drawRainMatrix); }
-    function toggleRain() { rainActive = !rainActive; document.body.classList.toggle('rain-active', rainActive); if (rainActive) { initRainMatrix(); drawRainMatrix(); } else { if (rainFrame) cancelAnimationFrame(rainFrame); mctx.clearRect(0,0,mw,mh); } if (lagKiller && !lagSettings.rain) document.body.classList.add('lag-no-rain'); else document.body.classList.remove('lag-no-rain'); }
+    function toggleRain() { rainActive = !rainActive; document.body.classList.toggle('rain-active', rainActive); if (rainActive) { initRainMatrix(); drawRainMatrix(); } else { if (rainFrame) cancelAnimationFrame(rainFrame); mctx.clearRect(0,0,mw,mh); } }
     rainBtn.addEventListener('click', toggleRain);
     rainbowBtn.addEventListener('click', () => {
         rainbowMode = !rainbowMode;
@@ -1445,13 +1660,12 @@
     }
     buildSoundboard();
 
-    let nintendoModeLocal = false;
     nintendoToggle.addEventListener('click', function() { nintendoMode = !nintendoMode; document.body.classList.toggle('nintendo-mode', nintendoMode); if (nintendoMode) { if (currentTab === 'games') { renderCarousel(); grid.style.display = 'none'; nintendoCarousel.style.display = 'block'; } this.textContent = 'N mode'; showToast('🕹️ N Mode ON (switchclick)', 1500); } else { if (currentTab === 'games') { grid.style.display = 'flex'; nintendoCarousel.style.display = 'none'; } this.textContent = '2 mode'; showToast('📋 N Mode OFF (clicksoundeffect)', 1500); } });
     document.getElementById('carouselPrev').addEventListener('click', () => navigateCarousel(-1));
     document.getElementById('carouselNext').addEventListener('click', () => navigateCarousel(1));
     document.addEventListener('keydown', e => { if (!nintendoMode || currentTab !== 'games') return; if (e.key === 'ArrowLeft') { e.preventDefault(); navigateCarousel(-1); } if (e.key === 'ArrowRight') { e.preventDefault(); navigateCarousel(1); } if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const g = getFilteredGames(); if (g.length && g[selectedIndex]) { launchGame(g[selectedIndex].id); playClick(); } } });
 
-    loadLagSettings(); applyLagKiller(); updateSettingsUI(); applyShape();
+    applyLagKiller(); applyShape();
     applyCloak(0); updateCursor('#3b82f6');
     renderGrid(); renderOtherGrid(); renderSkins();
     document.documentElement.style.setProperty('--primary', '#3b82f6');
@@ -1459,7 +1673,9 @@
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
     console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-    console.log('🛡️ Games open in iframe with Σigma ad blocker + ST controls injected.');
+    console.log('🛡️ Games open in iframe with Σigma ad blocker + SIGMATOWN controls injected.');
+    console.log('📱 In-game bars are draggable (⣿ handle) and resizable (corner).');
+    console.log('🖱️ Right-click any in-game button to remove it — press Σ to restore.');
     console.log('Σ Esc or ✕ Close to exit a game. Fallback shown if a game can\'t load.');
     </script>
 </body>
