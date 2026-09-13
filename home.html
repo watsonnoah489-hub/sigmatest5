@@ -264,6 +264,10 @@
         #stFallback button { padding: 10px 24px; border-radius: 30px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
         #stFallback .retry { background: #3b82f6; color: #fff; }
         #stFallback .newtab { background: #22c55e; color: #fff; }
+        .sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; }
+        .sigma-ad-cover::before { content: 'Σ' !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; }
+        .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }
+        .sigma-ad-cover.fading { opacity: 0 !important; }
         @media (max-width: 768px) {
             .cycle-btn { width: 120px; height: 120px; }
             .cycle-btn.random .dice { font-size: 60px; }
@@ -466,20 +470,156 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════
-    //  Ad domain list — kept for reference only, NOT actively enforced.
-    //  (No fetch/XHR/Image/sendBeacon/WebSocket/createElement hooks,
-    //   no MutationObserver, no SafeFrame neutralization, no iframe injection.)
+    //  AGGRESSIVE AD BLOCKER — Σigma cover auto-removes after 20s
     // ═══════════════════════════════════════════════════════════════
-    const AD_DOMAINS = [
-        'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','static.doubleclick.net','adclick.g.doubleclick.net','1p-user-list','is_vtc','viewthroughconversion','safeframe.googlesyndication.com','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','rewards.google.com','opinionrewards.google.com','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','google-surveys.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bat.bing.net','c.bing.com','c.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','syndication.msn.com','c.msn.com','otf.msn.com','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','applovin.com','ironsrc.com','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','adsrvr.org','adnxs.com','adform.net','adition.com','msecnd.net/ads','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
-    ];
-    const AD_SCRIPT_SIGNATURES = [
-        'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','adsbygoogle','goog#html','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','1p-user-list','is_vtc','viewthroughconversion'
-    ];
-    console.log('%cΣigma Ad Blocker DISABLED — domain list retained for reference only.', 'background:#6b7280;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
+    function sigmaAdBlocker() {
+        const adDomains = [
+            'googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net',
+            'G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads',
+            '1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1',
+            'viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script',
+            'safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle',
+            'rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com',
+            'ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads',
+            'youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com',
+            'bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'
+        ];
+        const scriptSignatures = [
+            'safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html',
+            'UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y',
+            'ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF',
+            '1p-user-list','is_vtc','viewthroughconversion'
+        ];
+        const sidebarSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
+        const adElementSelectors = [
+            'iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]',
+            'iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]',
+            'iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]',
+            'iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]',
+            'ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]',
+            '[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'
+        ];
+        const isAd = u => typeof u === 'string' && adDomains.some(d => u.includes(d));
+        const isAdScript = t => typeof t === 'string' && scriptSignatures.some(s => t.includes(s));
+
+        // ═══ SIGMA COVER: covers the ad slot, then fades out after 20s ═══
+        const COVER_LIFETIME_MS = 20000;
+        const COVER_FADE_MS = 500;
+
+        function coverAd(el, label) {
+            if (!el || !el.parentNode) return;
+            if (el.dataset && el.dataset.sigmaCovered === 'true') return;
+            if (el.classList && el.classList.contains('sigma-ad-cover')) return;
+            try {
+                const rect = el.getBoundingClientRect();
+                const w = rect.width || el.offsetWidth || parseInt(el.getAttribute && el.getAttribute('width')) || 300;
+                const h = rect.height || el.offsetHeight || parseInt(el.getAttribute && el.getAttribute('height')) || 250;
+                const parent = el.parentNode;
+                try { const ps = getComputedStyle(parent); if (ps.position === 'static') parent.style.position = 'relative'; } catch(_) {}
+
+                const cover = document.createElement('div');
+                cover.className = 'sigma-ad-cover';
+                cover.dataset.sigmaCovered = 'true';
+                cover.setAttribute('data-label', label || 'ΣigmaTown • Ad Blocked');
+
+                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') {
+                    cover.style.position = 'fixed';
+                    cover.style.width = w + 'px';
+                    cover.style.height = h + 'px';
+                    cover.style.top = '50%';
+                    cover.style.transform = 'translateY(-50%)';
+                    cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0';
+                } else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) {
+                    cover.style.position = 'fixed';
+                    cover.style.left = rect.left + 'px';
+                    cover.style.top = rect.top + 'px';
+                    cover.style.width = w + 'px';
+                    cover.style.height = h + 'px';
+                } else {
+                    cover.style.position = 'absolute';
+                    cover.style.left = (el.offsetLeft || 0) + 'px';
+                    cover.style.top = (el.offsetTop || 0) + 'px';
+                    cover.style.width = w + 'px';
+                    cover.style.height = h + 'px';
+                }
+
+                parent.insertBefore(cover, el);
+                el.remove();
+
+                // ═══ AUTO-REMOVE THE ΣIGMA COVER AFTER 20 SECONDS ═══
+                setTimeout(() => {
+                    try {
+                        cover.classList.add('fading');
+                        setTimeout(() => {
+                            try { if (cover && cover.parentNode) cover.remove(); } catch(_) {}
+                        }, COVER_FADE_MS);
+                    } catch(_) {}
+                }, COVER_LIFETIME_MS);
+            } catch(_) {}
+        }
+
+        const killAds = () => {
+            adElementSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el)); } catch(_) {} });
+            sidebarSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => coverAd(el, 'ΣigmaTown • Sidebar Ad Blocked')); } catch(_) {} });
+        };
+        killAds();
+        setInterval(killAds, 300);
+
+        const oF = window.fetch;
+        window.fetch = function(i, init) { const url = typeof i === 'string' ? i : (i && i.url); if (isAd(url)) return Promise.reject(new Error('blocked')); return oF.call(this, i, init); };
+        const oX = window.XMLHttpRequest;
+        window.XMLHttpRequest = function() { const x = new oX(); const o = x.open; x.open = function(m,u){ if (isAd(u)) { this.abort=()=>{}; this.send=()=>{}; return; } o.apply(this, arguments); }; return x; };
+        const oW = document.write;
+        document.write = function(h) { if (typeof h === 'string' && (adDomains.some(d => h.includes(d)) || isAdScript(h))) return; return oW.apply(this, arguments); };
+        const oO = window.open;
+        window.open = function(u) { if (isAd(u)) return null; return oO.apply(this, arguments); };
+        if (navigator.sendBeacon) { const ob = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d) { if (isAd(u)) return false; return ob(u,d); }; }
+        const oWS = window.WebSocket;
+        window.WebSocket = function(u, p) { if (isAd(u)) throw new Error('blocked'); return new oWS(u, p); };
+        window.WebSocket.prototype = oWS.prototype;
+        const oImg = window.Image;
+        window.Image = function(w, h) { const img = new oImg(w, h); try { const d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src'); if (d && d.set) Object.defineProperty(img, 'src', { set(v){ if (isAd(v)) return; return d.set.call(this,v); }, get(){ return this.getAttribute('src'); }, configurable: true }); } catch(_) {} return img; };
+        window.Image.prototype = oImg.prototype;
+        try { window.google_image_requests = []; } catch(_) {}
+        const oCE = document.createElement;
+        document.createElement = function(t) { const el = oCE.call(document, t); if (t === 'script') { const s = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && isAd(v)) return; return s.apply(this, arguments); }; } return el; };
+        const oSA = Element.prototype.setAttribute;
+        Element.prototype.setAttribute = function(n, v) { if ((n === 'src' || n === 'href') && isAd(v)) return; return oSA.call(this, n, v); };
+        ['src','href'].forEach(prop => { try { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop); if (!d || !d.set) return; Object.defineProperty(HTMLElement.prototype, prop, { set(v){ if (isAd(v)) return; return d.set.call(this,v); }, get: d.get, configurable: true, enumerable: d.enumerable }); } catch(_) {} });
+
+        const obs = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+            if (n.nodeType !== 1) return;
+            if (n.dataset && n.dataset.stOverlay === 'true') return;
+            if (n.closest && n.closest('[data-st-overlay="true"]')) return;
+            if (n.classList && n.classList.contains('sigma-ad-cover')) return;
+            if (n.id && /^sidebarad/i.test(n.id)) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
+            if (n.classList && n.classList.contains('sidebar-frame')) { coverAd(n, 'ΣigmaTown • Sidebar Ad Blocked'); return; }
+            if (n.classList && n.classList.contains('sidebar-close')) { n.remove(); return; }
+            if (n.tagName === 'SCRIPT') { const txt = n.textContent || ''; if (isAdScript(txt)) { n.remove(); return; } const s = n.getAttribute('src') || ''; if (isAd(s)) { n.remove(); return; } }
+            if (n.tagName === 'IFRAME') { const s = n.getAttribute('src') || ''; if (isAd(s)) { coverAd(n, 'ΣigmaTown • Iframe Ad Blocked'); return; } }
+            if (n.tagName === 'LINK') { const r = (n.getAttribute('rel') || '').toLowerCase(); const h = n.getAttribute('href') || ''; if ((r === 'preconnect' || r === 'dns-prefetch') && isAd(h)) { n.remove(); return; } }
+            const s = n.getAttribute && (n.getAttribute('src') || n.getAttribute('href'));
+            if (s && isAd(s)) { coverAd(n); return; }
+            const attrs = n.attributes || [];
+            for (let a of attrs) { const v = a.value; if (v && (v.includes('adsbygoogle') || v.includes('google_ads') || v.includes('ad-slot') || v.includes('banner-ad'))) { coverAd(n); return; } }
+        })));
+        try { obs.observe(document.documentElement, { childList: true, subtree: true }); } catch(_) {}
+
+        setInterval(() => {
+            try { if (!window.fetch.__sigHook) { const cur = window.fetch; window.fetch = function(i,init){ const u = typeof i==='string'?i:(i&&i.url); if (isAd(u)) return Promise.reject(new Error('blocked')); return cur.call(this,i,init); }; window.fetch.__sigHook = true; } } catch(_) {}
+            try { if (navigator.sendBeacon && !navigator.sendBeacon.__sigHook) { const cur = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d){ if (isAd(u)) return false; return cur(u,d); }; navigator.sendBeacon.__sigHook = true; } } catch(_) {}
+            try { if (!document.write.__sigHook) { const cur = document.write.bind(document); document.write = function(h){ if (typeof h==='string' && (adDomains.some(d=>h.includes(d)) || isAdScript(h))) return; return cur(h); }; document.write.__sigHook = true; } } catch(_) {}
+        }, 1000);
+
+        console.log('%cΣigma Ad Blocker ACTIVE — Σigma cover auto-removes after 20s.', 'background:#dc2626;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
+    }
+    sigmaAdBlocker();
+    const SIGMA_BLOCKER_SRC = '(' + sigmaAdBlocker.toString() + ')();';
+    const SIGMA_COVER_CSS = '.sigma-ad-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-ad-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-ad-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-ad-cover.fading { opacity: 0 !important; }';
 
     // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
+    let lagKillerForcedByLowEnd = false;
 
     function buildHackCss() {
         const lo = HACK.lowEnd;
@@ -509,6 +649,18 @@
         try {
             const doc = gameFrame.contentDocument;
             if (!doc || !doc.documentElement) return false;
+            if (!doc.getElementById('sigmaAdBlockerStyle')) {
+                const st = doc.createElement('style');
+                st.id = 'sigmaAdBlockerStyle';
+                st.textContent = SIGMA_COVER_CSS;
+                (doc.head || doc.documentElement).appendChild(st);
+            }
+            if (!doc.getElementById('sigmaAdBlockerScript')) {
+                const sc = doc.createElement('script');
+                sc.id = 'sigmaAdBlockerScript';
+                sc.textContent = SIGMA_BLOCKER_SRC;
+                (doc.head || doc.documentElement).appendChild(sc);
+            }
             const hackCss = buildHackCss();
             let hackStyle = doc.getElementById('sigmaHackStyle');
             if (hackCss) {
@@ -528,6 +680,27 @@
         stRestoreBar.classList.remove('show');
     }
 
+    function resetHackState() {
+        const hadLowEnd = HACK.lowEnd;
+        HACK.lowEnd = false;
+        HACK.logos = false;
+        HACK.anim = false;
+        HACK.cursor = false;
+        document.body.classList.remove('hack-no-logos', 'hack-no-anim', 'hack-no-cursor');
+        const lb = document.getElementById('leLowEnd'); if (lb) lb.classList.remove('active');
+        const lg = document.getElementById('leLogos'); if (lg) lg.classList.remove('active');
+        const la = document.getElementById('leAnim'); if (la) la.classList.remove('active');
+        const lc = document.getElementById('leCursor'); if (lc) lc.classList.remove('active');
+        if (lagKillerForcedByLowEnd) {
+            lagKiller = false;
+            lagKillerForcedByLowEnd = false;
+            applyLagKiller();
+        } else if (hadLowEnd && lagKiller) {
+            lagKiller = false;
+            applyLagKiller();
+        }
+    }
+
     function closeGame() {
         stopAllInjections();
         gameOverlay.classList.remove('show');
@@ -537,6 +710,7 @@
         document.body.style.overflow = '';
         if (document.fullscreenElement) { try { document.exitFullscreen().catch(()=>{}); } catch(_) {} }
         resetBars();
+        resetHackState();
     }
 
     function openGameInIframe(file, name) {
@@ -549,6 +723,7 @@
         loadFired = false;
         stopAllInjections();
         resetBars();
+        resetHackState();
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         setTimeout(() => { try { gameFrame.src = file; } catch(_) {} }, 50);
         fallbackTimer = setTimeout(() => { if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); } }, 4500);
@@ -593,7 +768,16 @@
         b.classList.toggle('hack-no-logos', HACK.logos || lo);
         b.classList.toggle('hack-no-anim', HACK.anim || lo);
         b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
-        if (lo) { lagKiller = true; applyLagKiller(); }
+        if (lo) {
+            if (!lagKiller) { lagKillerForcedByLowEnd = true; lagKiller = true; }
+            applyLagKiller();
+        } else {
+            if (lagKillerForcedByLowEnd) {
+                lagKillerForcedByLowEnd = false;
+                lagKiller = false;
+                applyLagKiller();
+            }
+        }
         leLowEndBtn.classList.toggle('active', HACK.lowEnd);
         leLogosBtn.classList.toggle('active', HACK.logos || lo);
         leAnimBtn.classList.toggle('active', HACK.anim || lo);
@@ -607,7 +791,7 @@
         applyHack();
     }
 
-    leLowEndBtn.addEventListener('click', () => { HACK.lowEnd = !HACK.lowEnd; applyHack(); showToast(HACK.lowEnd ? '📱 Low End Device ON (all features removed)' : '📱 Low End Device OFF', 2000); });
+    leLowEndBtn.addEventListener('click', () => { HACK.lowEnd = !HACK.lowEnd; applyHack(); showToast(HACK.lowEnd ? '📱 Low End Device ON' : '📱 Low End Device OFF', 2000); });
     leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(HACK.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
     leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(HACK.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
     leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(HACK.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
@@ -802,6 +986,11 @@
         const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
         if (other.includes(id) && c.length === 0) c.push('Other');
+        if (unc.includes(id)) {
+            const oi = c.indexOf('Other');
+            if (oi > -1) c.splice(oi, 1);
+            if (!c.includes('Uncategorized')) c.push('Uncategorized');
+        }
         const fc = [...new Set(c)];
         if (fc.length === 0) { if (!unc.includes(id)) return ['Other']; return ['Uncategorized']; }
         return [...new Set(fc)];
@@ -1419,8 +1608,9 @@
     document.documentElement.style.setProperty('--glow', 'rgba(59,130,246,0.8)');
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
-    console.log('🚀 SigmaTown4Life – 5 pages loaded.');
-    console.log('📄 Games open in iframe with SIGMATOWN controls (no ad blocker interference).');
+    console.log('🚀 SigmaTown4Life loaded.');
+    console.log('🛡️ Aggressive ad blocker restored — Σigma cover auto-removes after 20s.');
+    console.log('🔄 Hack state resets when game closes. Uncategorized games on Page 1.');
     </script>
 </body>
 </html>
