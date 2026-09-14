@@ -255,15 +255,6 @@
         #stRestoreBar { position: absolute; bottom: 24px; right: 24px; width: 48px; height: 48px; border-radius: 50%; background: rgba(15,23,42,0.92); border: 2px solid #3b82f6; color: #3b82f6; font-size: 24px; font-weight: 900; display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 2147483610; box-shadow: 0 0 25px rgba(59,130,246,0.6); font-family: 'Segoe UI', system-ui, sans-serif; }
         #stRestoreBar.show { display: flex; }
         #stRestoreBar:hover { background: #3b82f6; color: #fff; transform: scale(1.08); }
-        #stFallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #f87171; font-family: 'Segoe UI', sans-serif; z-index: 3; background: #0a0e1a; text-align: center; padding: 20px; }
-        #stFallback.show { display: flex !important; }
-        #stFallback .icon { font-size: 60px; }
-        #stFallback .title { font-size: 22px; font-weight: 800; letter-spacing: 2px; }
-        #stFallback .sub { color: #94a3b8; font-size: 14px; }
-        #stFallback .actions { display: flex; gap: 12px; margin-top: 8px; }
-        #stFallback button { padding: 10px 24px; border-radius: 30px; border: none; font-weight: 700; cursor: pointer; font-size: 14px; }
-        #stFallback .retry { background: #3b82f6; color: #fff; }
-        #stFallback .newtab { background: #22c55e; color: #fff; }
         .sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg, #0a0e1a 0%, #1e293b 50%, #0a0e1a 100%) !important; color: #3b82f6 !important; font-family: 'Segoe UI', system-ui, sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4), inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; }
         .sigma-cover::before { content: 'Σ' !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; }
         .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; }
@@ -325,15 +316,6 @@
             <div class="spinner"></div>
             <div class="label">Σ LOADING GAME</div>
             <div class="gameName" id="gameOverlayName"></div>
-        </div>
-        <div id="stFallback">
-            <div class="icon">⚠️</div>
-            <div class="title">GAME FAILED TO LOAD</div>
-            <div class="sub">This game can't run inside an iframe. Open it in a new tab?</div>
-            <div class="actions">
-                <button class="retry" id="stFallbackRetry">↺ Retry</button>
-                <button class="newtab" id="stFallbackNewTab">↗ Open in New Tab</button>
-            </div>
         </div>
         <iframe id="gameOverlayFrame" allow="fullscreen; autoplay; pointer-lock; clipboard-write; encrypted-media; picture-in-picture; gamepad; gyroscope; accelerometer" allowfullscreen></iframe>
         <div id="stCtrlBar" data-st-overlay="true">
@@ -564,12 +546,11 @@
     const gameFrame = document.getElementById('gameOverlayFrame');
     const gameLoader = document.getElementById('gameOverlayLoader');
     const gameNameEl = document.getElementById('gameOverlayName');
-    const stFallback = document.getElementById('stFallback');
     const stCtrlBar = document.getElementById('stCtrlBar');
     const stLowEndBar = document.getElementById('stLowEndBar');
     const stRestoreBar = document.getElementById('stRestoreBar');
-    let currentGameFile = '', fallbackTimer = null, loadFired = false, injectIntervals = [];
-    function stopAllInjections() { injectIntervals.forEach(id => clearInterval(id)); injectIntervals = []; if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; } }
+    let injectIntervals = [];
+    function stopAllInjections() { injectIntervals.forEach(id => clearInterval(id)); injectIntervals = []; }
     function injectIntoIframe() {
         try {
             const doc = gameFrame.contentDocument; if (!doc || !doc.documentElement) return false;
@@ -595,28 +576,26 @@
     }
     function closeGame() {
         stopAllInjections();
-        gameOverlay.classList.remove('show'); stFallback.classList.remove('show'); gameLoader.classList.remove('hidden');
+        gameOverlay.classList.remove('show'); gameLoader.classList.remove('hidden');
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         document.body.style.overflow = '';
         if (document.fullscreenElement) { try { document.exitFullscreen().catch(()=>{}); } catch(_) {} }
         resetBars(); resetHackState();
     }
     function openGameInIframe(file, name) {
-        currentGameFile = file; gameNameEl.textContent = name || file;
-        gameOverlay.classList.add('show'); stFallback.classList.remove('show'); gameLoader.classList.remove('hidden');
+        gameNameEl.textContent = name || file;
+        gameOverlay.classList.add('show'); gameLoader.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        loadFired = false; stopAllInjections(); resetBars(); resetHackState();
+        stopAllInjections(); resetBars(); resetHackState();
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         setTimeout(() => { try { gameFrame.src = file; } catch(_) {} }, 50);
-        fallbackTimer = setTimeout(() => { if (!loadFired) { gameLoader.classList.add('hidden'); stFallback.classList.add('show'); } }, 4500);
         const iv1 = setInterval(injectIntoIframe, 60); const iv2 = setInterval(injectIntoIframe, 300); const iv3 = setInterval(injectIntoIframe, 1500);
         injectIntervals = [iv1, iv2, iv3];
         setTimeout(() => { clearInterval(iv1); clearInterval(iv2); }, 25000);
     }
     gameFrame.addEventListener('load', () => {
-        loadFired = true; if (fallbackTimer) { clearTimeout(fallbackTimer); fallbackTimer = null; }
         try { injectIntoIframe(); } catch(_) {}
-        setTimeout(() => { gameLoader.classList.add('hidden'); stFallback.classList.remove('show'); }, 250);
+        setTimeout(() => { gameLoader.classList.add('hidden'); }, 250);
         [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
     document.getElementById('stFS').addEventListener('click', () => { try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {} });
@@ -628,8 +607,6 @@
     });
     document.getElementById('stClose').addEventListener('click', closeGame);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame(); });
-    document.getElementById('stFallbackRetry').addEventListener('click', () => { if (currentGameFile) openGameInIframe(currentGameFile, gameNameEl.textContent); });
-    document.getElementById('stFallbackNewTab').addEventListener('click', () => { if (currentGameFile) window.open(currentGameFile, '_blank'); });
 
     const leLowEndBtn = document.getElementById('leLowEnd');
     const leLogosBtn = document.getElementById('leLogos');
@@ -783,7 +760,7 @@
         if (l==='vex1'||l==='vex2'||l==='vex3'||l==='vex3xmas'||l==='vex4'||l==='vex5'||l==='vex6'||l==='vex7'||l==='vex8'||l==='vexchallenges'||l==='vexmotox3m'||l==='vexmotox3m2') c.push('Vex','Platformer');
         if (l==='vexmotox3m'||l==='vexmotox3m2') c.push('Moto X3M','Driving');
         if (l==='buildnowgg') c.push('Shooter');
-        const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets'];
+        const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets','doom'];
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
         if (other.includes(id) && c.length === 0) c.push('Other');
         if (unc.includes(id)) {
@@ -798,6 +775,7 @@
 
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
+        { id: 'doom', name: 'DOOM', file: 'DOOM.html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/203.png' },
         { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
         { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
