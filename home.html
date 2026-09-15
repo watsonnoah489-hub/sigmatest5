@@ -751,7 +751,7 @@
         if (l==='bugreports'||l==='gamesuggestions'||l==='credits'||l==='removalrequest') c.push('Other');
         if (l==='bowmasters') c.push('Shooter','Stickman');
         if (l==='ragdollhit') c.push('Stickman');
-        if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d') c.push('Driving');
+        if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d'||l==='carrampvspolicechase') c.push('Driving');
         if (l==='motox3mpoolparty') c.push('Driving');
         if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria'||l==='papastacomia') c.push("Papa's Restaurants");
         if (l.startsWith('riddleschool')||l==='riddletransfer'||l==='riddletransfer2') { c.push('Riddle School'); if (!c.includes('Puzzle')) c.push('Puzzle'); if (!c.includes('Relaxing')) c.push('Relaxing'); }
@@ -776,6 +776,7 @@
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
         { id: 'doom', name: 'DOOM', file: 'DOOM.html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/203.png' },
+        { id: 'carrampvspolicechase', name: 'Car Ramp vs Police Chase', file: 'clcarrampvspolicechase.html', categories: ['Driving'], img: 'https://snowrider3d.com/data/image/game/ramp-car-vs-police-chase/ramp-car-vs-police-chase.png' },
         { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
         { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1084,7 +1085,22 @@
         { id: 'netflix-tikis', name: 'Watching Netflix and Tiki Takis', file: 'watching-netflix-and-tiki-takis-made-with-Voicemod.mp3' },
         { id: 'sad-tung', name: 'Sad Tung Tung Tung', file: 'tung-tung-tung-sing-made-with-Voicemod.mp3' },
         { id: 'lobtemy', name: 'Lobotomy', file: 'lobotomy-sound-effect.mp3' },
-        { id: 'haland', name: 'Haaland Haaland', file: 'haaland-haaland.mp3' }
+        { id: 'haland', name: 'Haaland Haaland', file: 'haaland-haaland.mp3' },
+        { id: 'getout', name: 'Get Out (Tuco)', file: 'get-out-tuco.mp3' },
+        { id: 'gokuyell', name: 'Goku Yelling', file: 'gokuyelling.mp3' },
+        { id: 'worldcupjump', name: 'World Cup Everybody Jump', file: 'ba1aaadcf577255b3b3fa254d6525d5f_9xIBRQQ.mp3' },
+        { id: 'netflixtikisphonk', name: 'Netflix and Tiki Takis Phonk', file: 'v12044gd0000dacg7tfog65tpt6obol0.mp3' },
+        { id: '67notfunny', name: '67 Is Not Funny Anymore', file: 'export_1789098974927.mp3' },
+        { id: 'tree', name: 'Are You Coming to the Tree', file: 'v14044g50000d7228cvog65gcq7cm6b0.mp3' },
+        { id: 'prowler', name: 'Prowler', file: 'prowler-sound-effect_6bXErot (1).mp3' },
+        { id: 'amongusrole', name: 'Among Us Role Reveal', file: 'among-us-role-reveal-sound-effect.mp3' },
+        { id: 'yophonelining', name: 'Yo Phone Lining', file: 'yo-phone-lining.mp3' },
+        { id: 'callforwarded', name: 'Your Call Has Been Forwarded', file: 'your-call-has-been-forwarded.mp3' },
+        { id: 'gutsblackpowder', name: 'Guts and Blackpowder Roscoff American Soldier Crashout', file: 'guts-and-blackpowder-made-with-Voicemod.mp3' },
+        { id: 'giggity', name: 'Giggity Giggity Goo (Family Guy Quagmire)', file: 'quagmire-_-family-guy-giggity-x4-made-with-Voicemod.mp3' },
+        { id: 'charliekirk', name: 'We Are Charlie Kirk', file: 'we-are-charlie-kirk-made-with-Voicemod.mp3' },
+        { id: 'charliekirkdeep', name: 'We Are Charlie Kirk (Deep Fried)', file: 'we-are-charlie-kirk-made-with-Voicemod (1).mp3' },
+        { id: 'charliekirkfast', name: 'Charlie Kriky (Loud + Fast)', file: 'charlie-kirk-loud-and-a-bit-fast-made-with-Voicemod.mp3' }
     ];
     const OLD_SOUNDS = [
         { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
