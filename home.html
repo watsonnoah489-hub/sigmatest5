@@ -225,12 +225,6 @@
         #gameOverlay { position: fixed; inset: 0; z-index: 2147483610; background: #000; display: none; }
         #gameOverlay.show { display: block !important; }
         #gameOverlayFrame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; background: #000; display: block; }
-        #gameOverlayLoader { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; color: #3b82f6; font-family: 'Segoe UI', sans-serif; z-index: 2; background: #0a0e1a; }
-        #gameOverlayLoader.hidden { display: none !important; }
-        #gameOverlayLoader .spinner { width: 60px; height: 60px; border: 4px solid rgba(59,130,246,0.2); border-top-color: #3b82f6; border-radius: 50%; animation: goSpin 1s linear infinite; box-shadow: 0 0 30px rgba(59,130,246,0.5); }
-        @keyframes goSpin { to { transform: rotate(360deg); } }
-        #gameOverlayLoader .label { font-weight: 800; letter-spacing: 3px; font-size: 14px; text-shadow: 0 0 15px rgba(59,130,246,0.9); }
-        #gameOverlayLoader .gameName { font-weight: 600; letter-spacing: 1px; font-size: 16px; color: #cbd5e1; }
         #stCtrlBar { position: absolute; bottom: 24px; right: 24px; display: flex; gap: 10px; background: rgba(15,23,42,0.92); backdrop-filter: blur(12px); padding: 10px 16px 10px 8px; border-radius: 16px; border: 2px solid #3b82f6; z-index: 2147483610; box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 30px rgba(59,130,246,0.3); align-items: center; flex-wrap: wrap; font-family: 'Segoe UI', system-ui, sans-serif; transform-origin: top left; touch-action: none; }
         #stCtrlBar .st-btn { padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; color: #fff; background: rgba(30,41,59,0.9); transition: 0.25s; display: flex; align-items: center; gap: 6px; user-select: none; }
         #stCtrlBar .st-btn:hover { background: #3b82f6; transform: scale(1.05); }
@@ -312,11 +306,6 @@
     <div id="dropOverlay"><div class="drop-box"><div class="drop-icon">🖼️</div><div class="drop-title">DROP IMAGE TO SET WALLPAPER</div><div class="drop-sub">Release anywhere on the page</div></div></div>
 
     <div id="gameOverlay">
-        <div id="gameOverlayLoader">
-            <div class="spinner"></div>
-            <div class="label">Σ LOADING GAME</div>
-            <div class="gameName" id="gameOverlayName"></div>
-        </div>
         <iframe id="gameOverlayFrame" allow="fullscreen; autoplay; pointer-lock; clipboard-write; encrypted-media; picture-in-picture; gamepad; gyroscope; accelerometer" allowfullscreen></iframe>
         <div id="stCtrlBar" data-st-overlay="true">
             <span class="st-drag" id="stDragCtrl" title="Drag to move this bar">⣿</span>
@@ -544,8 +533,6 @@
 
     const gameOverlay = document.getElementById('gameOverlay');
     const gameFrame = document.getElementById('gameOverlayFrame');
-    const gameLoader = document.getElementById('gameOverlayLoader');
-    const gameNameEl = document.getElementById('gameOverlayName');
     const stCtrlBar = document.getElementById('stCtrlBar');
     const stLowEndBar = document.getElementById('stLowEndBar');
     const stRestoreBar = document.getElementById('stRestoreBar');
@@ -576,15 +563,14 @@
     }
     function closeGame() {
         stopAllInjections();
-        gameOverlay.classList.remove('show'); gameLoader.classList.remove('hidden');
+        gameOverlay.classList.remove('show');
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         document.body.style.overflow = '';
         if (document.fullscreenElement) { try { document.exitFullscreen().catch(()=>{}); } catch(_) {} }
         resetBars(); resetHackState();
     }
     function openGameInIframe(file, name) {
-        gameNameEl.textContent = name || file;
-        gameOverlay.classList.add('show'); gameLoader.classList.remove('hidden');
+        gameOverlay.classList.add('show');
         document.body.style.overflow = 'hidden';
         stopAllInjections(); resetBars(); resetHackState();
         try { gameFrame.src = 'about:blank'; } catch(_) {}
@@ -595,7 +581,6 @@
     }
     gameFrame.addEventListener('load', () => {
         try { injectIntoIframe(); } catch(_) {}
-        setTimeout(() => { gameLoader.classList.add('hidden'); }, 250);
         [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
     document.getElementById('stFS').addEventListener('click', () => { try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {} });
