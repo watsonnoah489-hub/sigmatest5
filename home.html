@@ -17,29 +17,37 @@
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
         body.light .header, body.light .controls { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
-        body.lag-killer * { animation-play-state: paused !important; transition-duration: 0s !important; transition-delay: 0s !important; }
-        body.lag-killer .pulse-ring { display: none !important; }
-        body.lag-killer .cycle-btn::before { animation-play-state: paused !important; }
-        body.lag-killer .cycle-btn.random .dice { animation-play-state: paused !important; }
-        body.lag-killer .cycle-wrapper { opacity: 1 !important; transform: none !important; }
-        body.lag-no-particles .particle-canvas { display: none !important; }
-        body.lag-no-glow .glow-orb, body.lag-no-glow #glowTrail { display: none !important; }
-        body.lag-no-grid .grid-scan { display: none !important; }
-        body.lag-no-meteor .meteor { display: none !important; }
-        body.lag-no-bubble .bubble { display: none !important; }
-        body.lag-no-rain #matrixCanvas { display: none !important; }
-        body.lag-no-anim *, body.lag-no-anim *::before, body.lag-no-anim *::after { animation: none !important; transition: none !important; }
-        body.lag-no-anim .cycle-wrapper { opacity: 1 !important; transform: none !important; }
-        body.lag-no-logos .cycle-btn .overlay { display: none !important; }
-        body.lag-no-cursor *, body.lag-no-cursor *::before, body.lag-no-cursor *::after { cursor: auto !important; }
-        body.lag-no-cursor input, body.lag-no-cursor textarea { cursor: text !important; }
-        body.ultra-lag *, body.ultra-lag *::before, body.ultra-lag *::after { cursor: auto !important; }
-        body.ultra-lag #glowTrail, body.ultra-lag .particle-canvas { display: none !important; }
-        body.hack-no-logos .cycle-btn .overlay { display: none !important; }
-        body.hack-no-anim *, body.hack-no-anim *::before, body.hack-no-anim *::after { animation: none !important; transition: none !important; }
-        body.hack-no-anim .cycle-wrapper { opacity: 1 !important; transform: none !important; }
-        body.hack-no-cursor *, body.hack-no-cursor *::before, body.hack-no-cursor *::after { cursor: auto !important; }
-        body.hack-no-cursor input, body.hack-no-cursor textarea { cursor: text !important; }
+        /* ═══════ ULTRA LAG KILLER (5-tier) ═══════ */
+        body.lk-active *, body.lk-active *::before, body.lk-active *::after {
+            animation-duration: 0s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important;
+            transition-duration: 0s !important; transition-delay: 0s !important;
+            box-shadow: none !important; text-shadow: none !important;
+            filter: none !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+            mix-blend-mode: normal !important; will-change: auto !important;
+        }
+        body.lk-active .glow-orb, body.lk-active .meteor, body.lk-active .bubble,
+        body.lk-active .grid-scan, body.lk-active #glowTrail, body.lk-active #particleCanvas,
+        body.lk-active #matrixCanvas, body.lk-active .pulse-ring, body.lk-active .cycle-btn::before {
+            display: none !important;
+        }
+        body.lk-active .cycle-btn:hover, body.lk-active .btn:hover, body.lk-active .sound-card:hover,
+        body.lk-active .star-fav:hover, body.lk-active .tab-btn:hover, body.lk-active .shorts-nav:hover {
+            transform: none !important;
+        }
+        body.lk-active .header, body.lk-active .controls, body.lk-active .cycle-btn,
+        body.lk-active .tab-btn, body.lk-active .sound-card, body.lk-active .btn {
+            animation: none !important; box-shadow: none !important;
+        }
+        body.lk-active .header h1 { animation: none !important; background: var(--primary) !important; -webkit-background-clip: initial !important; background-clip: initial !important; -webkit-text-fill-color: var(--primary) !important; }
+        body.lk-med .cycle-btn { border-width: 2px !important; }
+        body.lk-med .star-fav { text-shadow: none !important; animation: none !important; }
+        body.lk-high .cycle-btn { width: 110px !important; height: 110px !important; border-width: 1px !important; }
+        body.lk-high .cycle-wrapper { animation: none !important; opacity: 1 !important; transform: none !important; }
+        body.lk-high img, body.lk-high .cycle-btn .overlay { image-rendering: pixelated !important; }
+        body.lk-ultra .cycle-btn { width: 90px !important; height: 90px !important; }
+        body.lk-ultra img, body.lk-ultra .cycle-btn .overlay { filter: contrast(0.85) saturate(0.6) !important; image-rendering: pixelated !important; }
+        body.lk-ultra .cycle-btn .overlay { opacity: 0.85 !important; }
+        body.lk-ultra .sound-card, body.lk-ultra .shorts-frame { border-width: 1px !important; }
         .glow-orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; animation: orbFloat 14s ease-in-out infinite alternate; }
         .glow-orb.o1 { width: 400px; height: 400px; background: rgba(59,130,246,0.12); top: -100px; left: -100px; }
         .glow-orb.o2 { width: 500px; height: 500px; background: rgba(168,85,247,0.10); bottom: -150px; right: -150px; animation-delay: 5s; }
@@ -441,7 +449,7 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════
-    //  Σigma shield — covers slots with a Σ logo (auto-removes after 20s)
+    //  Σigma shield
     // ═══════════════════════════════════════════════════════════════
     function sigmaShield() {
         const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'];
@@ -526,7 +534,6 @@
     const SIGMA_SRC = '(' + sigmaShield.toString() + ')();';
     const SIGMA_CSS = '.sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-cover.fading { opacity: 0 !important; }';
 
-    // ═══════════ IN-GAME GAMESHACK / LOW END STATE ═══════════
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
     let lagKillerForcedByLowEnd = false;
     function buildHackCss() { const lo = HACK.lowEnd; let css = ''; if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}'; if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}'; if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}'; return css; }
@@ -558,8 +565,8 @@
         const lg = document.getElementById('leLogos'); if (lg) lg.classList.remove('active');
         const la = document.getElementById('leAnim'); if (la) la.classList.remove('active');
         const lc = document.getElementById('leCursor'); if (lc) lc.classList.remove('active');
-        if (lagKillerForcedByLowEnd) { lagKiller = false; lagKillerForcedByLowEnd = false; applyLagKiller(); }
-        else if (hadLowEnd && lagKiller) { lagKiller = false; applyLagKiller(); }
+        if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; setLKMode(0); }
+        else if (hadLowEnd && LK.mode > 0) { setLKMode(0); }
     }
     function closeGame() {
         stopAllInjections();
@@ -593,6 +600,58 @@
     document.getElementById('stClose').addEventListener('click', closeGame);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame(); });
 
+    // ═══════════ LAG KILLER core ═══════════
+    const LK = {
+        mode: parseInt(localStorage.getItem('lkMode') || '0') || 0,
+        autoDetect: localStorage.getItem('lkAuto') === 'true',
+        fps: 60, framesAccum: 0, lastFrameTime: performance.now(),
+        lowFpsStreak: 0
+    };
+    const LK_NAMES  = ['⚡ LAG KILLER', '⚡ LOW', '⚡ MED', '⚡ HIGH', '⚡ ULTRA'];
+    const LK_COLORS = ['#f59e0b', '#84cc16', '#eab308', '#f97316', '#dc2626'];
+
+    function setLKMode(m) {
+        LK.mode = Math.max(0, Math.min(4, m));
+        const b = document.body;
+        b.classList.remove('lk-active', 'lk-med', 'lk-high', 'lk-ultra');
+        if (LK.mode >= 1) b.classList.add('lk-active');
+        if (LK.mode >= 2) b.classList.add('lk-med');
+        if (LK.mode >= 3) b.classList.add('lk-high');
+        if (LK.mode >= 4) b.classList.add('lk-ultra');
+        if (LK.mode >= 1) { if (window._particleStop) window._particleStop(); }
+        else { if (window._particleStart) window._particleStart(); }
+        if (LK.mode >= 3) { try { document.getAnimations().forEach(a => a.pause()); } catch(_) {} }
+        const lkb = document.getElementById('lagKillerBtn');
+        if (lkb) { lkb.style.background = LK_COLORS[LK.mode]; lkb.innerHTML = LK_NAMES[LK.mode]; }
+        try { localStorage.setItem('lkMode', String(LK.mode)); } catch(_) {}
+        try {
+            if (typeof renderGrid === 'function' && typeof currentTab !== 'undefined') {
+                if (currentTab === 'games') renderGrid();
+                else if (currentTab === 'other') renderOtherGrid();
+            }
+        } catch(_) {}
+    }
+    function lkTick() {
+        const now = performance.now();
+        LK.framesAccum++;
+        if (now - LK.lastFrameTime >= 1000) {
+            LK.fps = LK.framesAccum;
+            LK.framesAccum = 0;
+            LK.lastFrameTime = now;
+            if (LK.autoDetect && LK.fps < 30 && LK.mode < 4) {
+                LK.lowFpsStreak++;
+                if (LK.lowFpsStreak >= 3) {
+                    LK.lowFpsStreak = 0; setLKMode(LK.mode + 1);
+                    try { showToast('⚡ Auto-escalated: ' + LK_NAMES[LK.mode], 2000); } catch(_) {}
+                }
+            } else if (LK.fps >= 55) { LK.lowFpsStreak = 0; }
+        }
+        if (LK.mode >= 1) setTimeout(lkTick, 100);
+        else requestAnimationFrame(lkTick);
+    }
+    requestAnimationFrame(lkTick);
+
+    // ═══════════ Low End / Gameshack ═══════════
     const leLowEndBtn = document.getElementById('leLowEnd');
     const leLogosBtn = document.getElementById('leLogos');
     const leAnimBtn = document.getElementById('leAnim');
@@ -603,8 +662,8 @@
         b.classList.toggle('hack-no-logos', HACK.logos || lo);
         b.classList.toggle('hack-no-anim', HACK.anim || lo);
         b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
-        if (lo) { if (!lagKiller) { lagKillerForcedByLowEnd = true; lagKiller = true; } applyLagKiller(); }
-        else { if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; lagKiller = false; applyLagKiller(); } }
+        if (lo) { if (LK.mode === 0) { lagKillerForcedByLowEnd = true; setLKMode(4); } }
+        else { if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; setLKMode(0); } }
         leLowEndBtn.classList.toggle('active', HACK.lowEnd);
         leLogosBtn.classList.toggle('active', HACK.logos || lo);
         leAnimBtn.classList.toggle('active', HACK.anim || lo);
@@ -748,11 +807,7 @@
         const unc = ['konkr','summerrider','dta6','punchthetrump','evilglitch','bitplanes','blockysnakes','monkeymart','pacman','raft','ruffle','snowrider3d','snowbattle','solarsmash','paperio2','tosstheturtle','10bullets','10morebullets','doom','doom2'];
         const other = ['konkr','bitplanes','driftboss','drivemad','dta6','blockcraftparkour','polytrack','clarkingarena','carkingarena','smashkarts','silk','nautilus','blockysnakes','snowrider3d','evilglitch','eaglercraft','eaglercrafttuff','eaglercraft152','summerrider'];
         if (other.includes(id) && c.length === 0) c.push('Other');
-        if (unc.includes(id)) {
-            const oi = c.indexOf('Other');
-            if (oi > -1) c.splice(oi, 1);
-            if (!c.includes('Uncategorized')) c.push('Uncategorized');
-        }
+        if (unc.includes(id)) { const oi = c.indexOf('Other'); if (oi > -1) c.splice(oi, 1); if (!c.includes('Uncategorized')) c.push('Uncategorized'); }
         const fc = [...new Set(c)];
         if (fc.length === 0) { return other.includes(id) ? ['Other'] : ['Uncategorized']; }
         return [...new Set(fc)];
@@ -1095,8 +1150,7 @@
 
     let favorites = JSON.parse(localStorage.getItem('fav_cycles')) || [];
     let searchQuery = '', soundSearchQuery = '', selectedCategories = [];
-    let themeState = 'default', lagKiller = false;
-    let lagSettings = { particles: true, glow: true, grid: true, meteor: true, bubble: true, rain: true, anim: true, logos: true, cursor: true, ultra: false };
+    let themeState = 'default';
     let rainActive = false, rainbowMode = false, rainbowInterval = null;
     let selectedIndex = 0;
     let currentTab = 'games', shapeIndex = parseInt(localStorage.getItem('btnShape') || '0') || 0;
@@ -1167,48 +1221,12 @@
     shortsFullscreen.addEventListener('click', e => { e.stopPropagation(); const el = shortsFrame; if (!document.fullscreenElement) { (el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen).call(el); } else { (document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen).call(document); } });
     document.addEventListener('fullscreenchange', () => { shortsFullscreen.textContent = document.fullscreenElement ? '✕' : '⛶'; });
 
-    function applyLagKiller() {
-        const b = document.body;
-        b.classList.toggle('lag-killer', lagKiller);
-        b.classList.toggle('lag-no-particles', lagKiller && lagSettings.particles);
-        b.classList.toggle('lag-no-glow', lagKiller && lagSettings.glow);
-        b.classList.toggle('lag-no-grid', lagKiller && lagSettings.grid);
-        b.classList.toggle('lag-no-meteor', lagKiller && lagSettings.meteor);
-        b.classList.toggle('lag-no-bubble', lagKiller && lagSettings.bubble);
-        b.classList.toggle('lag-no-rain', lagKiller && lagSettings.rain);
-        b.classList.toggle('lag-no-anim', lagKiller && lagSettings.anim);
-        b.classList.toggle('lag-no-logos', lagKiller && lagSettings.logos);
-        b.classList.toggle('lag-no-cursor', lagKiller && lagSettings.cursor);
-        b.classList.toggle('ultra-lag', lagKiller && lagSettings.ultra);
-        const killParticles = lagKiller && (lagSettings.particles || lagSettings.ultra);
-        if (killParticles) { if (window._particleStop) window._particleStop(); }
-        else if (window._particleStart) { window._particleStart(); }
-        if (lagKiller) { lagKillerBtn.style.background = '#22c55e'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡ ON'; }
-        else { lagKillerBtn.style.background = '#f59e0b'; lagKillerBtn.innerHTML = '<img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"> ⚡'; }
-        setTimeout(() => { try { if (currentTab === 'games') renderGrid(); else if (currentTab === 'sounds') buildSoundboard(); else if (currentTab === 'other') renderOtherGrid(); else if (currentTab === 'skins') renderSkins(); } catch(e) {} }, 0);
-    }
-
-    lagKillerBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        lagKiller = !lagKiller;
-        applyLagKiller();
-        showToast(lagKiller ? '⚡ Lag Killer ON — all features removed' : '⚡ Lag Killer OFF', 2200);
-    });
-
     function showToast(msg, dur = 2500) { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => toast.classList.remove('show'), dur); }
     function saveFavs() { localStorage.setItem('fav_cycles', JSON.stringify(favorites)); }
     function toggleFav(id) { if (id === 'randompicker') return; const i = favorites.indexOf(id); i > -1 ? favorites.splice(i, 1) : favorites.push(id); saveFavs(); renderGrid(); if (currentTab === 'other') renderOtherGrid(); }
 
     function isOtherGame(g) { return g.categories.includes('Other'); }
-
-    function matchesCategories(g) {
-        if (selectedCategories.length === 0) return true;
-        const onlyAll = selectedCategories.length === 1 && selectedCategories[0] === 'all';
-        if (onlyAll) return true;
-        const specific = selectedCategories.filter(c => c !== 'all');
-        if (specific.length === 0) return true;
-        return g.categories.some(c => specific.includes(c));
-    }
+    function matchesCategories(g) { if (selectedCategories.length === 0) return true; const onlyAll = selectedCategories.length === 1 && selectedCategories[0] === 'all'; if (onlyAll) return true; const specific = selectedCategories.filter(c => c !== 'all'); if (specific.length === 0) return true; return g.categories.some(c => specific.includes(c)); }
 
     function getFilteredGames() {
         return GAME_DATA.filter(g => { if (g.id === 'randompicker') return false; if (isOtherGame(g)) return false; const ms = g.name.toLowerCase().includes(searchQuery.toLowerCase()); return ms && matchesCategories(g); }).sort((a, b) => { const fa = favorites.includes(a.id), fb = favorites.includes(b.id); if (fa && !fb) return -1; if (!fa && fb) return 1; return a.name.localeCompare(b.name); });
@@ -1323,14 +1341,14 @@
     const matrixCanvas = document.getElementById('matrixCanvas'), mctx = matrixCanvas.getContext('2d');
     let mw, mh, mdrops = [], mchars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&'.split(''), rainFrame = null;
     function initRainMatrix() { mw = window.innerWidth; mh = window.innerHeight; matrixCanvas.width = mw; matrixCanvas.height = mh; mdrops = Array(Math.floor(mw / 20)).fill(0).map(() => Math.floor(Math.random() * -mh / 20)); }
-    function drawRainMatrix() { if (!rainActive) return; const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(); let r = 59, g = 130, b = 246; if (p.startsWith('#')) { r = parseInt(p.slice(1,3),16)||59; g = parseInt(p.slice(3,5),16)||130; b = parseInt(p.slice(5,7),16)||246; } mctx.fillStyle = 'rgba(0,0,0,0.05)'; mctx.fillRect(0,0,mw,mh); mctx.font = "20px 'Courier New', monospace"; mctx.shadowColor = p; mctx.shadowBlur = 12; const dc = `rgba(${r},${g},${b},0.9)`; for (let i = 0; i < mdrops.length; i++) { mctx.fillStyle = dc; mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)], i*20, mdrops[i]*20); if (mdrops[i]*20 > mh && Math.random() > 0.975) mdrops[i] = 0; mdrops[i]++; } mctx.shadowBlur = 0; rainFrame = requestAnimationFrame(drawRainMatrix); }
+    function drawRainMatrix() { if (!rainActive) return; if (LK.mode >= 1) { rainFrame = requestAnimationFrame(drawRainMatrix); return; } const p = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(); let r = 59, g = 130, b = 246; if (p.startsWith('#')) { r = parseInt(p.slice(1,3),16)||59; g = parseInt(p.slice(3,5),16)||130; b = parseInt(p.slice(5,7),16)||246; } mctx.fillStyle = 'rgba(0,0,0,0.05)'; mctx.fillRect(0,0,mw,mh); mctx.font = "20px 'Courier New', monospace"; mctx.shadowColor = p; mctx.shadowBlur = 12; const dc = `rgba(${r},${g},${b},0.9)`; for (let i = 0; i < mdrops.length; i++) { mctx.fillStyle = dc; mctx.fillText(mchars[Math.floor(Math.random()*mchars.length)], i*20, mdrops[i]*20); if (mdrops[i]*20 > mh && Math.random() > 0.975) mdrops[i] = 0; mdrops[i]++; } mctx.shadowBlur = 0; rainFrame = requestAnimationFrame(drawRainMatrix); }
     function toggleRain() { rainActive = !rainActive; document.body.classList.toggle('rain-active', rainActive); if (rainActive) { initRainMatrix(); drawRainMatrix(); } else { if (rainFrame) cancelAnimationFrame(rainFrame); mctx.clearRect(0,0,mw,mh); } }
     rainBtn.addEventListener('click', toggleRain);
     rainbowBtn.addEventListener('click', () => {
         rainbowMode = !rainbowMode;
         if (rainbowMode) {
             let hue = Math.random() * 360;
-            rainbowInterval = setInterval(() => { hue = (hue + 7) % 360; const c = `hsl(${hue},100%,52%)`; document.documentElement.style.setProperty('--primary', c); document.documentElement.style.setProperty('--glow', `hsla(${hue},100%,52%,0.8)`); const hex = hslToHex(hue, 100, 52); updateCursor(hex); }, 100);
+            rainbowInterval = setInterval(() => { hue = (hue + 7) % 360; const c = `hsl(${hue},100%,52%)`; document.documentElement.style.setProperty('--primary', c); document.documentElement.style.setProperty('--glow', `hsla(${hue},100%,52%,0.8)`); const hex = hslToHex(hue, 100, 52); updateCursor(hex); }, LK.mode >= 1 ? 500 : 100);
             rainbowBtn.style.background = 'linear-gradient(135deg,#ff0000,#ff7f00,#ffff00,#00ff00,#0000ff,#4b0082,#9400d3)';
             rainbowBtn.textContent = '🌈 ON';
         } else {
@@ -1387,8 +1405,8 @@
         SOUNDS.forEach(s => { const c = document.createElement('div'); c.className = 'sound-card'; c.title = s.name; c.dataset.soundName = s.name; c.innerHTML = `<div class="sound-controls"><button class="sound-btn play-btn" data-id="${s.id}" title="${s.name}">▶ Play</button><button class="sound-btn stop-btn" data-id="${s.id}" title="Stop">⏹ Stop</button><div class="speed-group"><span>🐢</span><input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${s.id}" class="speed-slider"><span class="speed-val" id="speedVal-${s.id}">1.00x</span><span>🐇</span></div><div class="loop-group"><label>🔄 Loop</label><input type="checkbox" data-id="${s.id}" class="loop-check"></div></div>`; soundGrid.appendChild(c); });
         oldSoundGrid.innerHTML = '';
         OLD_SOUNDS.forEach(s => { const c = document.createElement('div'); c.className = 'sound-card'; c.title = s.name; c.dataset.soundName = s.name; c.innerHTML = `<div class="sound-controls"><button class="sound-btn play-btn" data-id="${s.id}" title="${s.name}">▶ Play</button><button class="sound-btn stop-btn" data-id="${s.id}" title="Stop">⏹ Stop</button><div class="speed-group"><span>🐢</span><input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${s.id}" class="speed-slider"><span class="speed-val" id="speedVal-${s.id}">1.00x</span><span>🐇</span></div><div class="loop-group"><label>🔄 Loop</label><input type="checkbox" data-id="${s.id}" class="loop-check"></div></div>`; oldSoundGrid.appendChild(c); });
-        SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'auto'; audioInstances[s.id] = a; });
-        OLD_SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'auto'; oldAudioInstances[s.id] = a; });
+        SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; audioInstances[s.id] = a; });
+        OLD_SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; oldAudioInstances[s.id] = a; });
         document.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.currentTime = 0; a.play().catch(()=>{}); } }));
         document.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.pause(); a.currentTime = 0; } }));
         document.querySelectorAll('.loop-check').forEach(c => c.addEventListener('change', () => { const id = c.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) a.loop = c.checked; }));
@@ -1404,7 +1422,7 @@
     document.getElementById('carouselNext').addEventListener('click', () => navigateCarousel(1));
     document.addEventListener('keydown', e => { if (!nintendoMode || currentTab !== 'games') return; if (e.key === 'ArrowLeft') { e.preventDefault(); navigateCarousel(-1); } if (e.key === 'ArrowRight') { e.preventDefault(); navigateCarousel(1); } if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const g = getFilteredGames(); if (g.length && g[selectedIndex]) { launchGame(g[selectedIndex].id); playClick(); } } });
 
-    applyLagKiller(); applyShape();
+    applyShape();
     applyCloak(0); updateCursor('#3b82f6');
     renderGrid(); renderOtherGrid(); renderSkins();
     document.documentElement.style.setProperty('--primary', '#3b82f6');
@@ -1412,6 +1430,31 @@
     document.body.style.backgroundStyle = '';
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
+
+    // ═══════════ LAG KILLER — safe init (after all consts declared) ═══════════
+    document.getElementById('lagKillerBtn').onclick = (e) => {
+        e.stopPropagation();
+        setLKMode((LK.mode + 1) % LK_NAMES.length);
+        showToast(LK_NAMES[LK.mode] + (LK.mode === 0 ? ' OFF' : ' ON'), 1800);
+    };
+    document.addEventListener('mousemove', e => {
+        if (LK.mode >= 1 && window._lkLastMove && (performance.now() - window._lkLastMove < 100)) {
+            e.stopImmediatePropagation();
+        }
+        window._lkLastMove = performance.now();
+    }, { capture: true });
+    if (!localStorage.getItem('lkInit')) {
+        const cpu = navigator.hardwareConcurrency || 4;
+        const mem = navigator.deviceMemory || 4;
+        if (cpu <= 2 || mem <= 2) {
+            LK.autoDetect = true; localStorage.setItem('lkAuto', 'true');
+            setLKMode(2);
+            setTimeout(() => showToast('⚠️ Low-end hardware — Lag Killer ON', 3000), 800);
+        }
+        localStorage.setItem('lkInit', 'true');
+    }
+    setLKMode(LK.mode);
+
     console.log('🚀 SigmaTown4Life loaded.');
     </script>
 </body>
