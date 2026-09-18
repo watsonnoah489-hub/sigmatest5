@@ -17,7 +17,6 @@
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
         body.light .header, body.light .controls { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
-        /* ═══════ ULTRA LAG KILLER (5-tier) ═══════ */
         body.lk-active *, body.lk-active *::before, body.lk-active *::after {
             animation-duration: 0s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important;
             transition-duration: 0s !important; transition-delay: 0s !important;
@@ -536,7 +535,33 @@
 
     const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
     let lagKillerForcedByLowEnd = false;
-    function buildHackCss() { const lo = HACK.lowEnd; let css = ''; if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}'; if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}'; if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}'; return css; }
+
+    // ═══════ Lag Killer state (declared early so buildHackCss can read it) ═══════
+    const LK = {
+        mode: parseInt(localStorage.getItem('lkMode') || '0') || 0,
+        autoDetect: localStorage.getItem('lkAuto') === 'true',
+        fps: 60, framesAccum: 0, lastFrameTime: performance.now(),
+        lowFpsStreak: 0
+    };
+    const LK_NAMES  = ['⚡ LAG KILLER', '⚡ LOW', '⚡ MED', '⚡ HIGH', '⚡ ULTRA'];
+    const LK_COLORS = ['#f59e0b', '#84cc16', '#eab308', '#f97316', '#dc2626'];
+
+    // buildHackCss now includes Lag-Killer-driven rules so they get injected into the iframe
+    function buildHackCss() {
+        const lo = HACK.lowEnd;
+        const lk = LK.mode;
+        let css = '';
+        const killAnim = lo || HACK.anim || lk >= 1;
+        const killCursor = lo || HACK.cursor || lk >= 1;
+        const killLogos = lo || HACK.logos;
+        if (killAnim) css += '*,*::before,*::after{animation:none!important;transition:none!important;box-shadow:none!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;mix-blend-mode:normal!important;will-change:auto!important;}';
+        if (killCursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}';
+        if (killLogos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}';
+        if (lk >= 2) css += 'img,canvas,video{image-rendering:pixelated!important;}';
+        if (lk >= 3) css += 'img,video{filter:contrast(0.9) saturate(0.85)!important;}';
+        if (lk >= 4) css += 'img,video{filter:contrast(0.8) saturate(0.6)!important;}';
+        return css;
+    }
 
     const gameOverlay = document.getElementById('gameOverlay');
     const gameFrame = document.getElementById('gameOverlayFrame');
@@ -557,16 +582,16 @@
         } catch(e) { return false; }
     }
     function resetBars() { [stCtrlBar, stLowEndBar].forEach(bar => { bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; bar.style.transform = ''; bar.dataset.scale = '1'; bar.style.display = ''; bar.querySelectorAll('[data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; }); }); stRestoreBar.classList.remove('show'); }
+
+    // ✅ CHANGED: only resets the Low End / Gameshack flags, NOT the Lag Killer tier
     function resetHackState() {
-        const hadLowEnd = HACK.lowEnd;
         HACK.lowEnd = false; HACK.logos = false; HACK.anim = false; HACK.cursor = false;
+        lagKillerForcedByLowEnd = false;
         document.body.classList.remove('hack-no-logos', 'hack-no-anim', 'hack-no-cursor');
         const lb = document.getElementById('leLowEnd'); if (lb) lb.classList.remove('active');
         const lg = document.getElementById('leLogos'); if (lg) lg.classList.remove('active');
         const la = document.getElementById('leAnim'); if (la) la.classList.remove('active');
         const lc = document.getElementById('leCursor'); if (lc) lc.classList.remove('active');
-        if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; setLKMode(0); }
-        else if (hadLowEnd && LK.mode > 0) { setLKMode(0); }
     }
     function closeGame() {
         stopAllInjections();
@@ -600,16 +625,6 @@
     document.getElementById('stClose').addEventListener('click', closeGame);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame(); });
 
-    // ═══════════ LAG KILLER core ═══════════
-    const LK = {
-        mode: parseInt(localStorage.getItem('lkMode') || '0') || 0,
-        autoDetect: localStorage.getItem('lkAuto') === 'true',
-        fps: 60, framesAccum: 0, lastFrameTime: performance.now(),
-        lowFpsStreak: 0
-    };
-    const LK_NAMES  = ['⚡ LAG KILLER', '⚡ LOW', '⚡ MED', '⚡ HIGH', '⚡ ULTRA'];
-    const LK_COLORS = ['#f59e0b', '#84cc16', '#eab308', '#f97316', '#dc2626'];
-
     function setLKMode(m) {
         LK.mode = Math.max(0, Math.min(4, m));
         const b = document.body;
@@ -630,6 +645,8 @@
                 else if (currentTab === 'other') renderOtherGrid();
             }
         } catch(_) {}
+        // ✅ NEW: push new rules into the game iframe live
+        try { injectIntoIframe(); } catch(_) {}
     }
     function lkTick() {
         const now = performance.now();
@@ -651,7 +668,6 @@
     }
     requestAnimationFrame(lkTick);
 
-    // ═══════════ Low End / Gameshack ═══════════
     const leLowEndBtn = document.getElementById('leLowEnd');
     const leLogosBtn = document.getElementById('leLogos');
     const leAnimBtn = document.getElementById('leAnim');
