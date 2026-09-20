@@ -165,6 +165,27 @@
         #oldSoundsContainer.hidden-by-search { display: none !important; }
         .soundboard-empty-msg { display: none; text-align: center; padding: 40px 20px; font-size: 16px; color: #94a3b8; font-style: italic; letter-spacing: 1px; }
         .soundboard-empty-msg.show { display: block; }
+        /* ═══════ PAGE 6 VIDEO SOUNDBOARD ═══════ */
+        #videoSoundboardContainer { display: none; margin-top: 20px; }
+        .video-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; padding: 10px 0; }
+        .video-card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 20px; padding: 14px; border: 1px solid var(--border); width: 320px; max-width: 92vw; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .video-card:hover { border-color: var(--primary); box-shadow: 0 0 30px var(--glow); transform: translateY(-4px); }
+        .video-card .video-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; cursor: pointer; }
+        .video-card .video-wrapper video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
+        .video-card .seek-group { display: flex; align-items: center; gap: 6px; width: 100%; margin-top: 8px; }
+        .video-card .seek-group input[type="range"].video-seek { flex: 1; accent-color: var(--primary); min-width: 0; width: 100%; }
+        .video-card .seek-time { font-family: monospace; font-size: 11px; min-width: 74px; text-align: center; background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 10px; color: #cbd5e1; }
+        .video-card .video-controls { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center; margin-top: 10px; }
+        .video-card .sound-btn { padding: 6px 14px; border: none; border-radius: 30px; font-weight: 600; font-size: 13px; transition: 0.2s; cursor: pointer; }
+        .video-card .play-btn { background: #dc2626; color: #fff; }
+        .video-card .play-btn:hover { background: #b91c1c; transform: scale(1.05); }
+        .video-card .stop-btn { background: #6b7280; color: #fff; }
+        .video-card .stop-btn:hover { background: #4b5563; transform: scale(1.05); }
+        .video-card .speed-group { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+        .video-card .speed-group input[type="range"] { width: 80px; accent-color: var(--primary); }
+        .video-card .speed-group .speed-val { min-width: 44px; text-align: center; font-family: monospace; background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 12px; }
+        .video-card .loop-group { display: flex; align-items: center; gap: 4px; font-size: 13px; }
+        .video-card .loop-group input[type="checkbox"] { accent-color: var(--primary); width: 16px; height: 16px; }
         #shortsContainer { display: none; }
         .shorts-wrapper { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 20px 0; }
         .shorts-nav { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), #a855f7); border: 3px solid var(--primary); color: #fff; font-size: 36px; font-weight: 900; cursor: pointer; box-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow); transition: 0.25s; display: flex; align-items: center; justify-content: center; user-select: none; }
@@ -382,11 +403,12 @@
             <button class="btn btn-panic" id="panicOpenBtn"><img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;"><span class="badge" id="panicBadge">0</span></button>
         </div>
         <div class="tab-bar">
-            <button class="tab-btn active" data-tab="games">📄 Page 1</button>
-            <button class="tab-btn" data-tab="sounds">📄 Page 2</button>
-            <button class="tab-btn" data-tab="other">📄 Page 3</button>
-            <button class="tab-btn" data-tab="skins">📄 Page 4</button>
-            <button class="tab-btn" data-tab="shorts">📄 Page 5</button>
+            <button class="tab-btn active" data-tab="games" title="Games">📄 Page 1</button>
+            <button class="tab-btn" data-tab="sounds" title="Sounds">📄 Page 2</button>
+            <button class="tab-btn" data-tab="other" title="Other">📄 Page 3</button>
+            <button class="tab-btn" data-tab="skins" title="Skins">📄 Page 4</button>
+            <button class="tab-btn" data-tab="shorts" title="Shorts">📄 Page 5</button>
+            <button class="tab-btn" data-tab="videos" title="Rizzey Songs">📄 Page 6</button>
         </div>
         <div id="gamesPage">
             <div class="search-row" id="gamesSearch"><input type="text" id="searchInput" placeholder=" "><button class="clear-btn" id="searchClear">✕</button></div>
@@ -445,6 +467,9 @@
             </div>
             <button class="shorts-nav" id="shortsDown" title="Next">▼</button>
         </div></div>
+        <div id="videoSoundboardContainer">
+            <div class="video-grid" id="videoGrid"></div>
+        </div>
     </div></div>
 
     <script>
@@ -452,10 +477,10 @@
     //  Σigma shield
     // ═══════════════════════════════════════════════════════════════
     function sigmaShield() {
-        const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com'];
-        const sigs = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion'];
-        const sideSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]'];
-        const slotSelectors = ['iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]','iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]','iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]','iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]','ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'];
+        const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com','cloudflareinsights.com','apis.google.com/js/client:platform.js','yandex.ru/games','yandex.com/games','yandex.net','yandex-games','yandex.cloud'];
+        const sigs = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion','dogeminerlanding','dogeBotDetected','YaGames','YandexGame','ysdk.adv','ysdk.getPayments','ysdk.getLeaderboards','ysdk.getPlayer'];
+        const sideSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]','#plsnopls','#whatwhatinthe','#dontblok','.l-ad__bottom','.l-ad__right','.l-ad__guardian','.l-social--sponsored','#temporaridplsignore'];
+        const slotSelectors = ['iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]','iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]','iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]','iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]','iframe[src*="yandex"]','ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'];
         const isTarget = u => typeof u === 'string' && targets.some(d => u.includes(d));
         const isTargetScript = t => typeof t === 'string' && sigs.some(s => t.includes(s));
         const COVER_LIFETIME_MS = 20000;
@@ -512,7 +537,8 @@
             if (n.closest && n.closest('[data-st-overlay="true"]')) return;
             if (n.classList && n.classList.contains('sigma-cover')) return;
             if (n.id && /^sidebarad/i.test(n.id)) { sigmaCover(n, 'ΣigmaTown'); return; }
-            if (n.classList && n.classList.contains('sidebar-frame')) { sigmaCover(n, 'ΣigmaTown'); return; }
+            if (n.id === 'plsnopls' || n.id === 'whatwhatinthe' || n.id === 'dontblok' || n.id === 'temporaridplsignore') { sigmaCover(n, 'ΣigmaTown'); return; }
+            if (n.classList && (n.classList.contains('sidebar-frame') || n.classList.contains('l-ad__bottom') || n.classList.contains('l-ad__right') || n.classList.contains('l-ad__guardian') || n.classList.contains('l-social--sponsored'))) { sigmaCover(n, 'ΣigmaTown'); return; }
             if (n.classList && n.classList.contains('sidebar-close')) { n.remove(); return; }
             if (n.tagName === 'SCRIPT') { const txt = n.textContent || ''; if (isTargetScript(txt)) { n.remove(); return; } const s = n.getAttribute('src') || ''; if (isTarget(s)) { n.remove(); return; } }
             if (n.tagName === 'IFRAME') { const s = n.getAttribute('src') || ''; if (isTarget(s)) { sigmaCover(n, 'ΣigmaTown'); return; } }
@@ -763,15 +789,15 @@
         if (l.startsWith('hobo')||l.includes('hobo')) c.push('Hobo');
         if (l.includes('subway')||l.includes('subwaysurfer')) c.push('Subway Surfers','Runner');
         if (l.includes('mortalkombat')||l==='mariocombat'||l==='stickmankombat') c.push('Mortal Kombat');
-        if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad'||l==='coolcarsrun3d') c.push('Runner');
+        if ((l.includes('run')&&l!=='deltarune')||l.includes('runner')||l.includes('templerun')||l==='run3'||l==='templerun2'||l==='slope'||l==='slope2player'||l==='googledino'||l==='makeasuperboat'||l==='flappybird'||l==='burritobison'||l==='redball4'||l==='slowroads'||l==='supermario63'||l==='supermario64'||l==='clusterrush'||l==='rooftoprun'||l==='crossyroad') c.push('Runner');
         if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') c.push('Horror');
         if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { c.push('Zombie'); if (l!=='hobovszombies') c.push('Horror'); }
         if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') c.push('Sports');
         if (l==='blockblast') c.push('Puzzle','Relaxing');
         if (l==='stickmanduel') c.push('Stickman');
         if (l==='thereisnofile') c.push('Puzzle','Relaxing');
-        if (l.includes('clicker')||l==='capybara'||l==='omeganugget'||l==='obbyjumperclicker'||l==='speedperclick'||l==='capybaraclicker'||l==='cookieclicker'||l==='fruitninja'||l==='dogeminer'||l==='burgerclicker') { c.push('Clicker'); if (l==='omeganugget') c.push('Brainrot'); }
-        if (l.includes('brainrot')||l.includes('skibidi')||l==='tripletobby'||l==='caseoh'||l==='tcubed') c.push('Brainrot');
+        if (l.includes('clicker')||l==='capybara'||l==='omeganugget'||l==='obbyjumperclicker'||l==='speedperclick'||l==='capybaraclicker'||l==='cookieclicker'||l==='fruitninja'||l==='dogeminer'||l==='dogeminer2'||l==='burgerclicker') { c.push('Clicker'); if (l==='omeganugget') c.push('Brainrot'); }
+        if (l.includes('brainrot')||l.includes('skibidi')||l==='tripletobby'||l==='caseoh'||l==='tcubed'||l==='sherkdash') c.push('Brainrot');
         if (l.includes('obby')||l==='obbyjumperclicker'||l==='speedperclick'||l==='tripletobby'||l==='redball4'||l==='supermario63'||l==='supermario64'||l==='obbycart'||l==='blockcraftparkour'||l==='obby99willlose'||l==='obbyfriends'||l==='snowboardobby'||l==='escapeschoolduel') c.push('Obby');
         if (l.includes('stickman')) c.push('Stickman');
         if (l==='bloxorz'||l==='2048'||l==='99balls'||l==='candycrush'||l==='cuttherope'||l==='oneshotlegacy'||l==='riddleschool1'||l==='riddleschool2'||l==='riddleschool3'||l==='riddleschool4'||l==='riddleschool5'||l==='blackjack'||l==='chessclassic'||l==='magictiles3'||l==='sortthecourt'||l==='uno'||l==='wordleunlimited'||l==='thereisnofile'||l==='minecaves'||l==='impossiblequiz') c.push('Puzzle');
@@ -795,7 +821,7 @@
         if (l==='bugreports'||l==='gamesuggestions'||l==='credits'||l==='removalrequest') c.push('Other');
         if (l==='bowmasters') c.push('Shooter','Stickman');
         if (l==='ragdollhit') c.push('Stickman');
-        if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d'||l==='carrampvspolicechase') c.push('Driving');
+        if (l==='tugofwar'||l==='trafficracer'||l==='crushcar3d'||l==='soflowheelielife'||l==='trafficjam3d'||l==='carrampvspolicechase'||l==='skyriders3d') c.push('Driving');
         if (l==='motox3mpoolparty') c.push('Driving');
         if (l==='papasbakeria'||l==='papasburgeria'||l==='papaspancakeria'||l==='papaspizeria'||l==='papasushiria'||l==='papascheeseria'||l==='papashotdoggeria'||l==='papastacomia') c.push("Papa's Restaurants");
         if (l.startsWith('riddleschool')||l==='riddletransfer'||l==='riddletransfer2') { c.push('Riddle School'); if (!c.includes('Puzzle')) c.push('Puzzle'); if (!c.includes('Relaxing')) c.push('Relaxing'); }
@@ -819,7 +845,6 @@
         { id: 'doom2', name: 'DOOM 2', file: 'Doom 2.html', categories: ['Uncategorized'], img: 'https://tse4.mm.bing.net/th/id/OIP.yDW7DePrScY2qs0ZD-ev-wHaEj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'carrampvspolicechase', name: 'Car Ramp vs Police Chase', file: 'clcarrampvspolicechase.html', categories: ['Driving'], img: 'https://snowrider3d.com/data/image/game/ramp-car-vs-police-chase/ramp-car-vs-police-chase.png' },
         { id: 'buildnowgg', name: 'BuildNow GG', file: 'BuildNow.gg (2).html', categories: ['Shooter'], img: 'https://tse2.mm.bing.net/th/id/OIP.GwSaovvX4oh5qa2ZV0u2RQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'coolcarsrun3d', name: 'Cool Cars Run 3D', file: 'Cool Cars Run 3D.html', categories: ['Runner', 'Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/382.png' },
         { id: 'scaryteacher', name: 'Scary Teacher 3D', file: 'clscaryteacher3d (2).html', img: 'https://tse1.explicit.bing.net/th/id/OIP.hmNDuY_GX9UweUutInAq2gHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: '2048', name: '2048', file: 'cl2048 (1).html', img: 'https://m.media-amazon.com/images/I/615JwjgUJoL.png' },
         { id: 'eaglercraft', name: 'Eaglercraft v1.8.8', file: 'clEaglercraftX188(u29) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.KF9E315_zwcqFDUfjrMJTgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1009,6 +1034,7 @@
         { id: 'learntoflyidle', name: 'Learn to Fly Idle', file: 'Learn to Fly Idle (2).html', categories: ['Learn to Fly'], img: 'https://tse4.mm.bing.net/th/id/OIP.YkAO9H2H34ReLPdFJwVTOgHaHb?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'snowrider3d', name: 'Snow Rider 3D', file: 'Snow Rider 3D (1).html', img: 'https://new66ez.github.io/img/snowrider3d/logo.png' },
         { id: 'dogeminer', name: 'Doge Miner', file: 'Doge Miner.html', categories: ['Clicker'], img: 'https://images.crazygames.com/games/doge-miner/cover-1593443166599.png?auto=format,compress&q=75&cs=strip&ch=DPR&w=1200&h=630&fit=crop' },
+        { id: 'dogeminer2', name: 'Doge Miner 2', file: 'cldogeminer2.html', categories: ['Clicker'], img: 'https://tse4.mm.bing.net/th/id/OIP.czJBxY0KabZ-dG4jOYES0QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'obby99willlose', name: 'Obby but u will 99% lose', file: 'clobby-99-will-lose (1).html', categories: ['Obby'], img: 'https://tse2.mm.bing.net/th/id/OIP.OnRcoSNjOVv9091H3a_BvAHaE7?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'obbyfriends', name: 'Obby with Friends', file: 'clobbyfriends.html', categories: ['Obby'], img: 'https://tse3.mm.bing.net/th/id/OIP.tQD_30Ccp6chx5IZ3v7l6QHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'bowmasters', name: 'Bowmasters', file: 'Bowmasters (5).html', categories: ['Shooter', 'Stickman'], img: 'https://th.bing.com/th/id/OIP.gfpfoNxHstuM7wB2aKmV2gHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1017,6 +1043,7 @@
         { id: 'tugofwar', name: 'Tug of War with Cars', file: 'Tug of War with Cars.html', categories: ['Driving'], img: 'https://tse1.mm.bing.net/th/id/OIP._PLeYUSR2Ei63JPG65442gHaEW?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'trafficracer', name: 'Traffic Racer', file: 'Traffic Racer.html', categories: ['Driving'], img: 'https://tse3.mm.bing.net/th/id/OIP.gS1Byi3mj6eY4AaaNN7COQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'crushcar3d', name: 'Crush Car 3D', file: 'Crush Cars 3D.html', categories: ['Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/383.png' },
+        { id: 'skyriders3d', name: 'Sky Riders 3D', file: 'clSkyRiders (1).html', categories: ['Driving'], img: 'https://tse2.mm.bing.net/th/id/OIP.RS8rP9Ax9ryBVuOiKNUQoAAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'minecaves', name: '⛏️ Minecaves', file: 'clminecaves.html', categories: ['Puzzle', 'Relaxing', 'Minecraft'], img: 'https://tse2.mm.bing.net/th/id/OIP.JUJphxOCizCYnKFLmQNS4wHaDa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'minecrafttowerdefense', name: '🏰 Minecraft Tower Defense', file: 'MINECRAFTTOWERDEFENSE.html', categories: ['Minecraft'], img: 'https://www.unblockedgamers.com/wp-content/uploads/2022/11/Minecraft-Tower-Defense-2.jpg' },
         { id: 'punchthetrump', name: '👊 Punch the Trump', file: 'clpunchthetrump (2).html', img: 'https://i.ytimg.com/vi/G5L1oDk1vnc/hqdefault.jpg' },
@@ -1045,7 +1072,7 @@
         { id: 'paperio2', name: 'Paper.io 2', file: 'paperio2.htm', categories: ['Uncategorized'], img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
         { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'], img: 'https://coolbrnd.com/game-images/basketball-legends.png' },
-        { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer'], img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
+        { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer', 'Brainrot'], img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
         { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fill/w_624,h_472,q_75,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
         { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'], img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
         { id: 'basketrandom', name: 'Basket Random', file: 'basket-random.html', categories: ['Sports'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/66.png' },
@@ -1083,6 +1110,17 @@
         { file: 'videoplayback (51).mp4' }
     ];
 
+    // ═══════════ PAGE 6 — VIDEO SOUNDBOARD ═══════════
+    const VIDEO_SOUNDS = [
+        { id: 'netflixtikisfull', name: 'Watching Netflix and Tiki Takis (Full Version)', file: 'videoplayback (52).MP4' },
+        { id: 'diddycalc', name: 'What Is This Diddy Blud Doing On The Calculator (Official Audio Visualiser)', file: 'What Is This Diddy Blud Doing On The Calculator - Official Audio Visualiser.MP4' },
+        { id: 'veritydisstrack', name: 'Verity Disstrack', file: 'Verity Disstrack.MP4' },
+        { id: 'kimjunggoon', name: 'Kim Jung Goon 金正控 - Hyperbaiter 【中文歌詞 ENG lyrics】', file: 'Kim Jung Goon 金正控- Hyperbaiter 【中文歌詞 ENG lyrics】.MP4' },
+        { id: 'wearecharliekirk', name: 'We Are Charlie Kirk', file: 'We Are Charlie Kirk.MP4' },
+        { id: 'charliekirkphonk', name: 'We Are Charlie Kirk (Aggressive Phonk Gaming Remix)', file: 'We Are Charlie Kirk Aggressive Phonk Remix.MP4' }
+    ];
+    const videoInstances = {};
+
     const SOUNDS = [
         { id: 'tacobell', name: 'Taco Bell Bong', file: 'taco-bell-bong-sfx (1).mp3' },
         { id: 'fartreverb', name: 'Fart with Reverb', file: 'fart-with-reverb.mp3' },
@@ -1108,7 +1146,7 @@
         { id: 'verity67', name: 'Verity - 67', file: 'verity-67.mp3' },
         { id: 'veritygreet', name: 'Verity Greeting', file: 'verity-greeting_yhorpTs.mp3' },
         { id: 'miseryxlife', name: 'Misery x Life Goes x Verity', file: 'misery-x-life-goes-x-verity.mp3' },
-        { id: 'veritydisstrack', name: 'Verity Diss Track Chorus', file: 'verity-disstrack-chorus.mp3' },
+        { id: 'veritydisstrackchorus', name: 'Verity Diss Track Chorus', file: 'verity-disstrack-chorus.mp3' },
         { id: 'lowqualityjob', name: 'Low Quality - I Was Looking for a Job', file: 'low-quality-i-was-looking-for-a-job.mp3' },
         { id: 'goofy-ahh', name: 'Goofy Ahh Quandale Dingle Song', file: 'goofy-ahh-uncle-productions-1.mp3' },
         { id: 'homeless', name: 'My Home is Kinda Homeless', file: 'please-speed-i-need-this_cOYk2rt.mp3' },
@@ -1142,7 +1180,16 @@
         { id: 'giggity', name: 'Giggity Giggity Goo (Family Guy Quagmire)', file: 'quagmire-_-family-guy-giggity-x4-made-with-Voicemod.mp3' },
         { id: 'charliekirk', name: 'We Are Charlie Kirk', file: 'we-are-charlie-kirk-made-with-Voicemod.mp3' },
         { id: 'charliekirkdeep', name: 'We Are Charlie Kirk (Deep Fried)', file: 'we-are-charlie-kirk-made-with-Voicemod (1).mp3' },
-        { id: 'charliekirkfast', name: 'Charlie Kriky (Loud + Fast)', file: 'charlie-kirk-loud-and-a-bit-fast-made-with-Voicemod.mp3' }
+        { id: 'charliekirkfast', name: 'Charlie Kriky (Loud + Fast)', file: 'charlie-kirk-loud-and-a-bit-fast-made-with-Voicemod.mp3' },
+        { id: 'indianmusic', name: 'Indian Music (Bass Boosted)', file: 'indian-music-the-best.mp3' },
+        { id: 'indianfart', name: 'Indian Music Fart', file: 'indian-music-fart.mp3' },
+        { id: 'sussy', name: 'The Sussy Music Man (Among Us)', file: 'the-sussy-music-man.mp3' },
+        { id: 'kimjonggoon', name: 'Kim Jong Un the Master of Goon', file: 'kim-jong-un-the-master-of-goon.mp3' },
+        { id: '67phonk', name: '67 Kid Meme Phonk', file: '67-kid-meme-phonk.mp3' },
+        { id: 'tikitikiphonk', name: 'Aura Tiki Tiki Phonk', file: 'aura-tiki-tiki.mp3' },
+        { id: 'discordleave', name: 'Discord Leave', file: 'discord-leave-noise.MP3' },
+        { id: 'discordcall', name: 'Discord Calling (Bass Boosted)', file: 'bass-boost-discord-call.MP3' },
+        { id: 'shimmyshimmy', name: 'Shimmy Shimmy Ay', file: 'schimy-schimy-ay-schimy-ay-schimy-ay.MP3' }
     ];
     const OLD_SOUNDS = [
         { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
@@ -1170,6 +1217,7 @@
 
     const grid = document.getElementById('cyclesGrid'), otherGrid = document.getElementById('otherGrid'), skinsGrid = document.getElementById('skinsGrid');
     const otherContainer = document.getElementById('otherContainer'), skinsContainer = document.getElementById('skinsContainer'), shortsContainer = document.getElementById('shortsContainer');
+    const videoSoundboardContainer = document.getElementById('videoSoundboardContainer');
     const gamesPage = document.getElementById('gamesPage'), searchInput = document.getElementById('searchInput'), searchClear = document.getElementById('searchClear');
     const soundSearchInput = document.getElementById('soundSearchInput'), soundSearchClear = document.getElementById('soundSearchClear');
     const soundboardEmptyMsg = document.getElementById('soundboardEmptyMsg'), oldSoundsContainer = document.getElementById('oldSoundsContainer');
@@ -1197,7 +1245,9 @@
         currentTab = tab;
         gamesPage.style.display = 'none'; grid.style.display = 'none'; nintendoCarousel.style.display = 'none';
         soundboardContainer.style.display = 'none'; otherContainer.style.display = 'none'; skinsContainer.style.display = 'none'; shortsContainer.style.display = 'none';
+        videoSoundboardContainer.style.display = 'none';
         try { shortsVideo.pause(); } catch(_) {}
+        if (tab !== 'videos') { for (const id in videoInstances) { const v = videoInstances[id]; if (v) { try { v.pause(); } catch(_) {} } } }
         tabBtns.forEach(b => b.classList.remove('active'));
         const ab = document.querySelector(`.tab-btn[data-tab="${tab}"]`); if (ab) ab.classList.add('active');
         if (tab === 'games') { gamesPage.style.display = 'block'; gamesSearch.style.display = 'flex'; gamesFilter.style.display = 'flex'; if (nintendoMode) { nintendoCarousel.style.display = 'block'; grid.style.display = 'none'; } else { grid.style.display = 'flex'; } }
@@ -1205,6 +1255,7 @@
         else if (tab === 'other') { otherContainer.style.display = 'block'; renderOtherGrid(); }
         else if (tab === 'skins') skinsContainer.style.display = 'block';
         else if (tab === 'shorts') { shortsContainer.style.display = 'block'; if (currentShortIndex < 0) playRandomShort(); else { try { shortsVideo.play().catch(()=>{}); } catch(_) {} } }
+        else if (tab === 'videos') { videoSoundboardContainer.style.display = 'block'; }
     }
     tabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
 
@@ -1315,6 +1366,132 @@
     }
     function navigateCarousel(d) { if (!nintendoMode) return; const games = getFilteredGames(); if (games.length === 0) return; let ni = selectedIndex + d; if (ni < 0) ni = games.length - 1; if (ni >= games.length) ni = 0; if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playClick(); } }
 
+    // ═══════════ PAGE 6 — video soundboard build ═══════════
+    function formatTime(sec) {
+        if (!isFinite(sec) || sec < 0) return '0:00';
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function buildVideoSoundboard() {
+        const vg = document.getElementById('videoGrid');
+        vg.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        VIDEO_SOUNDS.forEach(v => {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.dataset.videoName = (v.name || '').toLowerCase();
+
+            const wrap = document.createElement('div');
+            wrap.className = 'video-wrapper';
+
+            const vid = document.createElement('video');
+            vid.preload = 'metadata';
+            vid.playsInline = true;
+            vid.setAttribute('playsinline', '');
+            vid.setAttribute('webkit-playsinline', '');
+            vid.src = v.file;
+            wrap.appendChild(vid);
+
+            const seekGroup = document.createElement('div');
+            seekGroup.className = 'seek-group';
+            seekGroup.innerHTML = `
+                <span class="seek-time" id="vcur-${v.id}">0:00</span>
+                <input type="range" class="video-seek" data-vid="${v.id}" min="0" max="100" step="0.1" value="0">
+                <span class="seek-time" id="vdur-${v.id}">0:00</span>
+            `;
+
+            const controls = document.createElement('div');
+            controls.className = 'video-controls';
+            controls.innerHTML = `
+                <button class="sound-btn play-btn" data-vid="${v.id}" title="${v.name}">▶ Play</button>
+                <button class="sound-btn stop-btn" data-vid="${v.id}" title="Stop">⏹ Stop</button>
+                <div class="speed-group"><span>🐢</span><input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-vid="${v.id}" class="video-speed-slider"><span class="speed-val" id="vspeedVal-${v.id}">1.00x</span><span>🐇</span></div>
+                <div class="loop-group"><label>🔄 Loop</label><input type="checkbox" data-vid="${v.id}" class="video-loop-check"></div>
+            `;
+
+            card.appendChild(wrap); card.appendChild(seekGroup); card.appendChild(controls);
+            videoInstances[v.id] = vid;
+            frag.appendChild(card);
+        });
+        vg.appendChild(frag);
+
+        vg.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', e => {
+            e.stopPropagation();
+            const id = b.dataset.vid; const v = videoInstances[id];
+            if (v) { try { v.play().catch(()=>{}); } catch(_) {} }
+        }));
+        vg.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', e => {
+            e.stopPropagation();
+            const id = b.dataset.vid; const v = videoInstances[id];
+            if (v) { try { v.pause(); v.currentTime = 0; } catch(_) {} }
+        }));
+        vg.querySelectorAll('.video-loop-check').forEach(c => c.addEventListener('change', () => {
+            const id = c.dataset.vid; const v = videoInstances[id];
+            if (v) v.loop = c.checked;
+        }));
+        vg.querySelectorAll('.video-speed-slider').forEach(sl => {
+            const upd = () => {
+                const id = sl.dataset.vid; const val = parseFloat(sl.value); const v = videoInstances[id];
+                if (v) { try { v.playbackRate = val; } catch(_) {} }
+                const sp = document.getElementById('vspeedVal-' + id); if (sp) sp.textContent = val.toFixed(2) + 'x';
+            };
+            sl.addEventListener('input', upd); upd();
+        });
+        vg.querySelectorAll('.video-seek').forEach(sk => {
+            const id = sk.dataset.vid;
+            const v = videoInstances[id];
+            const curEl = document.getElementById('vcur-' + id);
+            const durEl = document.getElementById('vdur-' + id);
+            if (!v) return;
+            let seeking = false;
+            const updateSlider = () => {
+                if (seeking) return;
+                if (!isFinite(v.duration) || v.duration === 0) return;
+                sk.value = (v.currentTime / v.duration) * 100;
+                if (curEl) curEl.textContent = formatTime(v.currentTime);
+            };
+            const updateDur = () => {
+                if (durEl) durEl.textContent = formatTime(v.duration);
+                sk.value = (v.currentTime / v.duration) * 100 || 0;
+            };
+            v.addEventListener('loadedmetadata', updateDur);
+            v.addEventListener('durationchange', updateDur);
+            v.addEventListener('timeupdate', updateSlider);
+            v.addEventListener('ended', () => { sk.value = 100; });
+            const beginSeek = () => { seeking = true; };
+            const endSeek = () => {
+                if (!isFinite(v.duration) || v.duration === 0) { seeking = false; return; }
+                const newTime = (parseFloat(sk.value) / 100) * v.duration;
+                try { v.currentTime = newTime; } catch(_) {}
+                if (curEl) curEl.textContent = formatTime(newTime);
+                seeking = false;
+            };
+            sk.addEventListener('pointerdown', beginSeek);
+            sk.addEventListener('touchstart', beginSeek, { passive: true });
+            sk.addEventListener('mousedown', beginSeek);
+            sk.addEventListener('pointerup', endSeek);
+            sk.addEventListener('touchend', endSeek);
+            sk.addEventListener('mouseup', endSeek);
+            sk.addEventListener('input', () => {
+                if (curEl && isFinite(v.duration)) {
+                    const t = (parseFloat(sk.value) / 100) * v.duration;
+                    curEl.textContent = formatTime(t);
+                }
+            });
+            sk.addEventListener('change', () => {
+                if (!isFinite(v.duration) || v.duration === 0) return;
+                const newTime = (parseFloat(sk.value) / 100) * v.duration;
+                try { v.currentTime = newTime; } catch(_) {}
+            });
+        });
+        vg.querySelectorAll('.video-wrapper').forEach(w => w.addEventListener('click', () => {
+            const vid = w.querySelector('video'); if (!vid) return;
+            try { if (vid.paused) { vid.play().catch(()=>{}); } else { vid.pause(); } } catch(_) {}
+        }));
+    }
+
     function launchGame(id) {
         const game = GAME_DATA.find(g => g.id === id);
         if (!game) { showToast('Game not found.', 2000); return; }
@@ -1408,8 +1585,8 @@
         OLD_SOUNDS.forEach(s => { const c = document.createElement('div'); c.className = 'sound-card'; c.title = s.name; c.dataset.soundName = s.name; c.innerHTML = `<div class="sound-controls"><button class="sound-btn play-btn" data-id="${s.id}" title="${s.name}">▶ Play</button><button class="sound-btn stop-btn" data-id="${s.id}" title="Stop">⏹ Stop</button><div class="speed-group"><span>🐢</span><input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${s.id}" class="speed-slider"><span class="speed-val" id="speedVal-${s.id}">1.00x</span><span>🐇</span></div><div class="loop-group"><label>🔄 Loop</label><input type="checkbox" data-id="${s.id}" class="loop-check"></div></div>`; oldSoundGrid.appendChild(c); });
         SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; audioInstances[s.id] = a; });
         OLD_SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; oldAudioInstances[s.id] = a; });
-        document.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.currentTime = 0; a.play().catch(()=>{}); } }));
-        document.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.pause(); a.currentTime = 0; } }));
+        document.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; if (!id) return; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.currentTime = 0; a.play().catch(()=>{}); } }));
+        document.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; if (!id) return; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.pause(); a.currentTime = 0; } }));
         document.querySelectorAll('.loop-check').forEach(c => c.addEventListener('change', () => { const id = c.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) a.loop = c.checked; }));
         document.querySelectorAll('.speed-slider').forEach(sl => { const u = () => { const id = sl.dataset.id; const v = parseFloat(sl.value); const a = audioInstances[id] || oldAudioInstances[id]; if (a) a.playbackRate = v; const sp = document.getElementById('speedVal-' + id); if (sp) sp.textContent = v.toFixed(2) + 'x'; }; sl.addEventListener('input', u); u(); });
         stopAllBtn.addEventListener('click', () => { for (const id in audioInstances) { const a = audioInstances[id]; a.pause(); a.currentTime = 0; } for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; a.pause(); a.currentTime = 0; } showToast('⏹ All sounds stopped', 1500); });
@@ -1417,6 +1594,7 @@
         filterSoundboard();
     }
     buildSoundboard();
+    buildVideoSoundboard();
 
     nintendoToggle.addEventListener('click', function() { nintendoMode = !nintendoMode; document.body.classList.toggle('nintendo-mode', nintendoMode); if (nintendoMode) { if (currentTab === 'games') { renderCarousel(); grid.style.display = 'none'; nintendoCarousel.style.display = 'block'; } this.textContent = 'N mode'; showToast('🕹️ N Mode ON (switchclick)', 1500); } else { if (currentTab === 'games') { grid.style.display = 'flex'; nintendoCarousel.style.display = 'none'; } this.textContent = '2 mode'; showToast('📋 N Mode OFF (clicksoundeffect)', 1500); } });
     document.getElementById('carouselPrev').addEventListener('click', () => navigateCarousel(-1));
