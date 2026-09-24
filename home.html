@@ -17,7 +17,6 @@
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
         body.light .header, body.light .controls { background: var(--card-bg); }
         body.light .cycle-btn { background: #e8ecf0; }
-        /* ═══════ ULTRA LAG KILLER (5-tier) ═══════ */
         body.lk-active *, body.lk-active *::before, body.lk-active *::after {
             animation-duration: 0s !important; animation-delay: 0s !important; animation-iteration-count: 1 !important;
             transition-duration: 0s !important; transition-delay: 0s !important;
@@ -165,7 +164,6 @@
         #oldSoundsContainer.hidden-by-search { display: none !important; }
         .soundboard-empty-msg { display: none; text-align: center; padding: 40px 20px; font-size: 16px; color: #94a3b8; font-style: italic; letter-spacing: 1px; }
         .soundboard-empty-msg.show { display: block; }
-        /* ═══════ PAGE 6 MUSIC SOUNDBOARD ═══════ */
         #musicContainer { display: none; margin-top: 20px; }
         .video-grid { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; padding: 10px 0; }
         .video-card { background: var(--card-bg); backdrop-filter: blur(8px); border-radius: 20px; padding: 14px; border: 1px solid var(--border); width: 320px; max-width: 92vw; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
@@ -487,9 +485,6 @@
     </div></div>
 
     <script>
-    // ═══════════════════════════════════════════════════════════════
-    //  Σigma shield
-    // ═══════════════════════════════════════════════════════════════
     function sigmaShield() {
         const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com','cloudflareinsights.com','apis.google.com/js/client:platform.js','yandex.ru/games','yandex.com/games','yandex.net','yandex-games','yandex.cloud'];
         const sigs = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion','dogeminerlanding','dogeBotDetected','YaGames','YandexGame','ysdk.adv','ysdk.getPayments','ysdk.getLeaderboards','ysdk.getPlayer'];
@@ -574,7 +569,6 @@
     const SIGMA_SRC = '(' + sigmaShield.toString() + ')();';
     const SIGMA_CSS = '.sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-cover.fading { opacity: 0 !important; }';
 
-    // Injected script for panic keys inside iframes
     const PANIC_IFRAME_SRC = '(' + (function() {
         if (window.__sigmaPanicInstalled) return;
         window.__sigmaPanicInstalled = true;
@@ -651,8 +645,6 @@
     document.getElementById('stClose').addEventListener('click', closeGame);
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && gameOverlay.classList.contains('show') && !document.fullscreenElement) closeGame(); });
 
-    // ═══════════ LAG KILLER core ═══════════
-    // NOTE: Lag Killer is 100% manual — it only activates when the user clicks the button.
     const LK = {
         mode: parseInt(localStorage.getItem('lkMode') || '0') || 0,
         fps: 60, framesAccum: 0, lastFrameTime: performance.now()
@@ -694,7 +686,6 @@
     }
     requestAnimationFrame(lkTick);
 
-    // ═══════════ Low End / Gameshack ═══════════
     const leLowEndBtn = document.getElementById('leLowEnd');
     const leLogosBtn = document.getElementById('leLogos');
     const leAnimBtn = document.getElementById('leAnim');
@@ -858,12 +849,10 @@
 
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
-        /* ═══════ NEW GAMES ADDED ═══════ */
         { id: 'topspeedracing3d', name: 'Top Speed Racing 3D', file: 'cltopspeedracing3d.html', categories: ['Driving'], img: 'https://yupgames.io/_next/image?url=https:%2F%2Fs3.growsolutions.tech%2Fyupgames%2Fgames%2Fimages%2F1770794204041-Top%20Speed%20Racing%203D.png&w=1080&q=75' },
         { id: 'tungtungbasics', name: 'Tung Tung Basics', file: 'cltungtungbasics.html', categories: ['Brainrot', "Baldi's Basics"], img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'funnymadracing', name: 'Funny Mad Racing', file: 'clfunnymadracing.html', categories: ['Driving', 'Puzzle'], img: 'https://files.gamezhero.com/game/fb3/a2a/fb3a2a0cec84b24b/images/240/funnymadracing.jpg' },
         { id: 'counterstrike2', name: 'Counter Strike 2', file: 'clks2teams.html', categories: ['Shooter'], img: 'https://assets-prd.ignimgs.com/2023/03/22/keyart-wide-1-1679503853654-1679505306655.jpeg' },
-        /* ═══════ EXISTING GAMES ═══════ */
         { id: 'doom', name: 'DOOM', file: 'DOOM.html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/203.png' },
         { id: 'doom2', name: 'DOOM 2', file: 'Doom 2.html', categories: ['Uncategorized'], img: 'https://tse4.mm.bing.net/th/id/OIP.yDW7DePrScY2qs0ZD-ev-wHaEj?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'carrampvspolicechase', name: 'Car Ramp vs Police Chase', file: 'clcarrampvspolicechase.html', categories: ['Driving'], img: 'https://snowrider3d.com/data/image/game/ramp-car-vs-police-chase/ramp-car-vs-police-chase.png' },
@@ -1149,6 +1138,20 @@
         { id: 'childrensstory', name: "Children's Story", file: "Children's Story.mp4", category: 'Rap' },
         { id: 'badboyz', name: 'Shyne - Bad Boyz (Feat. Barrington Levy)', file: 'Shyne - Bad Boyz (Feat. Barrington Levy).mp4', category: 'Rap' },
         { id: 'cantcme', name: "2Pac - Can't C Me", file: "2Pac - Can't C Me.mp4", category: 'Rap' },
+        { id: 'whoshotya', name: 'The Notorious B.I.G. - Who Shot Ya', file: 'The Notorious B.I.G. - Who Shot Ya (Official Audio).mp4', category: 'Rap' },
+        { id: 'niggasbleed', name: 'The Notorious B.I.G. - Niggas Bleed', file: 'The Notorious B.I.G. - Niggas Bleed (Official Audio).mp4', category: 'Rap' },
+        { id: 'momoneymoproblems', name: 'The Notorious B.I.G. - Mo Money Mo Problems (feat. Puff Daddy)', file: 'The Notorious B.I.G. - Mo Money Mo Problems (feat. Puff Daddy) (Official Audio).mp4', category: 'Rap' },
+        { id: 'hypnotize', name: 'The Notorious B.I.G. - Hypnotize', file: 'The Notorious B.I.G. - Hypnotize (Official Audio).mp4', category: 'Rap' },
+        { id: 'deadwrong', name: 'Dead Wrong (feat. Eminem) [2007 Remaster]', file: 'Dead Wrong (feat. Eminem) [2007 Remaster].mp4', category: 'Rap' },
+        { id: 'takeover', name: 'Takeover', file: 'Takeover.mp4', category: 'Rap' },
+        { id: 'nystateofmind', name: 'Nas - N.Y. State of Mind', file: 'Nas - N.Y. State of Mind (Official Audio).mp4', category: 'Rap' },
+        { id: 'ether', name: 'Ether', file: 'Ether.mp4', category: 'Rap' },
+        { id: 'nasislike', name: 'Nas - Nas Is Like', file: 'Nas - Nas Is Like.mp4', category: 'Rap' },
+        { id: 'survivalfittest', name: 'Mobb Deep - Survival of the Fittest', file: 'Mobb Deep - Survival of the Fittest (Official Audio).mp4', category: 'Rap' },
+        { id: 'ginandjuice', name: 'Gin and Juice', file: 'Gin and Juice.mp4', category: 'Rap' },
+        { id: 'methodman', name: 'Method Man', file: 'Method Man (Official Audio).mp4', category: 'Rap' },
+        { id: 'fuckcompton', name: 'Tim Dog - Fuck Compton', file: 'Tim Dog - Fuck Compton.mp4', category: 'Rap' },
+        { id: 'proteckyourneck', name: 'Protect Ya Neck', file: 'Protect Ya Neck (Official Audio).mp4', category: 'Rap' },
         // ═══ MEME SONGS ═══
         { id: 'netflixtikisfull', name: 'Watching Netflix and Tiki Takis (Full Version)', file: 'videoplayback (52).mp4', category: 'Meme' },
         { id: 'diddycalc', name: 'What Is This Diddy Blud Doing On The Calculator (Official Audio Visualiser)', file: 'What Is This Diddy Blud Doing On The Calculator - Official Audio Visualiser.mp4', category: 'Meme' },
@@ -1158,7 +1161,10 @@
         { id: 'charliekirkphonk', name: 'We Are Charlie Kirk (Aggressive Phonk Gaming Remix)', file: 'We Are Charlie Kirk Aggressive Phonk Remix.mp4', category: 'Meme' },
         { id: 'gutsblackpowderphonk', name: 'Guts and Blackpowder Phonk', file: 'videoplayback (53).mp4', category: 'Meme' },
         { id: 'funkyehhphonk', name: 'Funky Ehh Phonk', file: 'FUNKY EHH PHONK.mp4', category: 'Meme' },
-        { id: 'gobbleglitch', name: 'Gobble Glitch - Backwoodz88', file: 'Gobble Glitch - Backwoodz88.mp4', category: 'Meme' }
+        { id: 'gobbleglitch', name: 'Gobble Glitch - Backwoodz88', file: 'Gobble Glitch - Backwoodz88.mp4', category: 'Meme' },
+        { id: 'freepdiddy', name: 'Free P Diddy! We Built This City Parody ~ Rucka Rucka Ali', file: 'Free P Diddy! We Built This City Parody ~ Rucka Rucka Ali.mp4', category: 'Meme' },
+        { id: 'benjaminnetanyahu', name: 'I Love You Benjamin Netanyahu Meme Song', file: 'Israel I Love You Benjamin Netanyahu Meme Song.mp4', category: 'Meme' },
+        { id: 'havanagila_tung', name: 'Hava Nagila Tung Tung Tung Sahur Remix (FULL VERSION)', file: '(FULL VERSION) Hava Nagila Tung Tung Tung Sahur Remix.mp4', category: 'Meme' }
     ];
     const musicInstances = {};
 
@@ -1231,7 +1237,6 @@
         { id: 'discordleave', name: 'Discord Leave', file: 'discord-leave-noise.mp3' },
         { id: 'discordcall', name: 'Discord Calling (Bass Boosted)', file: 'bass-boost-discord-call.mp3' },
         { id: 'shimmyshimmy', name: 'Shimmy Shimmy Ay', file: 'schimy-schimy-ay-schimy-ay-schimy-ay.mp3' },
-        /* ═══ NEW SOUNDS ═══ */
         { id: 'fredbeyer', name: 'Fred Beyer Screaming', file: 'screaming-in-the-store.mp3' },
         { id: 'pringlesmorty', name: 'Pringles Morty Edit', file: 'pringles-morty-funk-edit.mp3' },
         { id: 'rocketleague', name: 'Rocket League Meme', file: 'rocket-league-meme.mp3' },
@@ -1251,9 +1256,8 @@
     let audioInstances = {}, oldAudioInstances = {};
     let currentShortIndex = -1, brokenShorts = new Set(), lastScrollTime = 0;
 
-    // ═══════════ SPEED FLIP state ═══════════
     let speedFlipOn = false;
-    let speedFlipPhase = 0; // 0 = 0.5x, 1 = 2x
+    let speedFlipPhase = 0;
     let speedFlipInterval = null;
     const SPEED_FLIP_FAST = 2.0;
     const SPEED_FLIP_SLOW = 0.5;
@@ -1297,17 +1301,13 @@
     function applyShape() { SHAPES.forEach(s => { if (s) document.body.classList.remove(s); }); if (SHAPES[shapeIndex]) document.body.classList.add(SHAPES[shapeIndex]); shapeToggle.textContent = SHAPE_LABELS[shapeIndex]; }
     shapeToggle.addEventListener('click', () => { shapeIndex = (shapeIndex + 1) % SHAPES.length; localStorage.setItem('btnShape', String(shapeIndex)); applyShape(); showToast('Shape: ' + SHAPE_NAMES[shapeIndex], 1500); });
 
-    // ═══════════ SPEED FLIP logic ═══════════
     function getFlipSpeed() { return speedFlipPhase === 0 ? SPEED_FLIP_SLOW : SPEED_FLIP_FAST; }
 
     function applyFlipToAllPlaying() {
         const speed = getFlipSpeed();
-        // Sounds (Audio elements)
         for (const id in audioInstances) { const a = audioInstances[id]; if (a && !a.paused) { try { a.playbackRate = speed; } catch(_) {} } }
         for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; if (a && !a.paused) { try { a.playbackRate = speed; } catch(_) {} } }
-        // Music (video elements)
         for (const id in musicInstances) { const v = musicInstances[id]; if (v && !v.paused) { try { v.playbackRate = speed; } catch(_) {} } }
-        // Sync UI sliders for anything playing
         document.querySelectorAll('.sound-card .speed-slider').forEach(sl => {
             const id = sl.dataset.id; if (!id) return;
             const a = audioInstances[id] || oldAudioInstances[id];
@@ -1350,7 +1350,6 @@
         } else {
             if (speedFlipInterval) clearInterval(speedFlipInterval);
             speedFlipInterval = null;
-            // Reset any playing elements to 1x
             for (const id in audioInstances) { const a = audioInstances[id]; if (a && !a.paused) { try { a.playbackRate = 1; } catch(_) {} } }
             for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; if (a && !a.paused) { try { a.playbackRate = 1; } catch(_) {} } }
             for (const id in musicInstances) { const v = musicInstances[id]; if (v && !v.paused) { try { v.playbackRate = 1; } catch(_) {} } }
@@ -1486,7 +1485,6 @@
     }
     function navigateCarousel(d) { if (!nintendoMode) return; const games = getFilteredGames(); if (games.length === 0) return; let ni = selectedIndex + d; if (ni < 0) ni = games.length - 1; if (ni >= games.length) ni = 0; if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playClick(); } }
 
-    // ═══════════ Music soundboard builder ═══════════
     function formatTime(sec) {
         if (!isFinite(sec) || sec < 0) return '0:00';
         const m = Math.floor(sec / 60);
@@ -1721,7 +1719,6 @@
     document.getElementById('panicAddBtn').addEventListener('click', () => { const k = document.getElementById('panicKey').value, u = document.getElementById('panicUrl').value, lab = document.getElementById('panicLabel').value; if (addPanic(k, u, lab)) { document.getElementById('panicKey').value = ''; document.getElementById('panicUrl').value = ''; document.getElementById('panicLabel').value = ''; document.getElementById('panicKey').focus(); } });
     document.getElementById('panicResetBtn').addEventListener('click', resetPanic);
 
-    // Panic handler: works in parent + inside iframes (via postMessage)
     function firePanic(key) {
         const m = panicButtons.find(b => b.key === key);
         if (!m) return false;
@@ -1775,7 +1772,6 @@
     document.body.style.backgroundImage = 'var(--bg)';
     switchTab('games');
 
-    // ═══════════ LAG KILLER — manual only, no auto-activation ═══════════
     document.getElementById('lagKillerBtn').onclick = (e) => {
         e.stopPropagation();
         setLKMode((LK.mode + 1) % LK_NAMES.length);
@@ -1788,10 +1784,8 @@
         window._lkLastMove = performance.now();
     }, { capture: true });
 
-    // Clear any leftover auto-detect flags from previous versions so Lag Killer never auto-enables
     try { localStorage.removeItem('lkAuto'); localStorage.removeItem('lkInit'); } catch(_) {}
 
-    // Restore only the user's previously chosen mode (0 = off by default on first visit)
     setLKMode(LK.mode);
 
     console.log('🚀 SigmaTown4Life loaded.');
