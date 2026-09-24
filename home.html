@@ -11,7 +11,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; cursor: var(--sigma-cursor) !important; }
         input, textarea, select { cursor: text !important; }
         input[type="color"] { cursor: pointer !important; }
-        button, .btn, .cycle-btn, .star-fav, .ctrl-btn, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn { cursor: var(--sigma-cursor) !important; }
+        button, .btn, .cycle-btn, .star-fav, .ctrl-btn, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .random-speed-btn { cursor: var(--sigma-cursor) !important; }
         body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 16px; background-image: var(--bg); background-size: cover; background-position: center; background-attachment: fixed; overflow-x: hidden; transition: background 0.4s, color 0.4s; }
         body.dark { --bg: #0a0a0a; --text: #f0f0f0; --card-bg: rgba(20,22,30,0.9); --border: #3a3a4a; --header-base: #111; }
         body.light { --bg: #f0f2f5; --text: #111; --card-bg: rgba(255,255,255,0.85); --border: #bbb; --header-base: #fff; }
@@ -395,6 +395,7 @@
             <div class="bg-input"><input type="text" id="bgUrlInput" placeholder=" "><button class="btn" id="applyBgBtn">Set</button><button class="btn" id="uploadBgBtn" style="background:#10b981;">📁</button><input type="file" id="localFileInput" accept="image/*" style="display:none;"></div>
             <button class="btn" id="cloakBtn" style="background:#ec4899;">🎭</button>
             <button class="btn" id="lagKillerBtn" style="background:#f59e0b;"><img src="https://freeappsforme.com/wp-content/uploads/2023/03/fpsmeter11-1536x1500.jpg" alt="Lag" style="width:28px;height:28px;border-radius:4px;display:block;"><span style="margin-left:4px;">⚡</span></button>
+            <button class="btn random-speed-btn" id="speedFlipBtn" style="background:#8b5cf6;">⏩ SPEED FLIP</button>
             <button class="btn" id="rainBtn" style="background:#0e8a6b;">🌧️ RAIN CODE</button>
             <button class="btn btn-rainbow" id="rainbowBtn">🌈 RAINBOW MODE</button>
             <button class="btn" id="themeBtn" style="background:#6c757d;">🌓 THEME</button>
@@ -752,7 +753,7 @@
     const switchAudio = document.getElementById('switchClick');
     function playSound(a) { if (clickMuted || !a) return; try { a.currentTime = 0; a.play().catch(()=>{}); } catch(_) {} }
     function playClick() { if (nintendoMode) playSound(switchAudio); else playSound(clickAudio); }
-    document.addEventListener('click', e => { const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn, .st-btn, .st-close, .le-btn'); if (t) playClick(); }, true);
+    document.addEventListener('click', e => { const t = e.target.closest('.cycle-btn, .btn, .ctrl-btn, .star-fav, .panic-item .del, .add-btn, .close-btn, .tab-btn, .sound-btn, .stop-all-btn, .mute-btn, .play-all-btn, .shorts-nav, .shorts-fs-btn, .st-btn, .st-close, .le-btn, .random-speed-btn'); if (t) playClick(); }, true);
     const muteBtn = document.getElementById('muteBtn');
     muteBtn.addEventListener('click', function() { clickMuted = !clickMuted; this.classList.toggle('active', clickMuted); this.textContent = clickMuted ? '🔇 Click Sounds' : '🔊 Click Sounds'; playClick(); showToast(clickMuted ? '🔇 Muted' : '🔊 Unmuted', 1500); });
 
@@ -1157,7 +1158,7 @@
         { id: 'charliekirkphonk', name: 'We Are Charlie Kirk (Aggressive Phonk Gaming Remix)', file: 'We Are Charlie Kirk Aggressive Phonk Remix.mp4', category: 'Meme' },
         { id: 'gutsblackpowderphonk', name: 'Guts and Blackpowder Phonk', file: 'videoplayback (53).mp4', category: 'Meme' },
         { id: 'funkyehhphonk', name: 'Funky Ehh Phonk', file: 'FUNKY EHH PHONK.mp4', category: 'Meme' },
-        { id: 'gobbleglitch', name: 'Gobble Glitch - Backwoodz808', file: 'Gobble Glitch - Backwoodz808.mp4', category: 'Meme' }
+        { id: 'gobbleglitch', name: 'Gobble Glitch - Backwoodz88', file: 'Gobble Glitch - Backwoodz88.mp4', category: 'Meme' }
     ];
     const musicInstances = {};
 
@@ -1229,7 +1230,12 @@
         { id: 'tikitikiphonk', name: 'Aura Tiki Tiki Phonk', file: 'aura-tiki-tiki.mp3' },
         { id: 'discordleave', name: 'Discord Leave', file: 'discord-leave-noise.mp3' },
         { id: 'discordcall', name: 'Discord Calling (Bass Boosted)', file: 'bass-boost-discord-call.mp3' },
-        { id: 'shimmyshimmy', name: 'Shimmy Shimmy Ay', file: 'schimy-schimy-ay-schimy-ay-schimy-ay.mp3' }
+        { id: 'shimmyshimmy', name: 'Shimmy Shimmy Ay', file: 'schimy-schimy-ay-schimy-ay-schimy-ay.mp3' },
+        /* ═══ NEW SOUNDS ═══ */
+        { id: 'fredbeyer', name: 'Fred Beyer Screaming', file: 'screaming-in-the-store.mp3' },
+        { id: 'pringlesmorty', name: 'Pringles Morty Edit', file: 'pringles-morty-funk-edit.mp3' },
+        { id: 'rocketleague', name: 'Rocket League Meme', file: 'rocket-league-meme.mp3' },
+        { id: 'itscomingout', name: "It's Coming Out", file: 'its-coming-out_je2L8nl.mp3' }
     ];
     const OLD_SOUNDS = [
         { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
@@ -1244,6 +1250,13 @@
     let currentTab = 'games', shapeIndex = parseInt(localStorage.getItem('btnShape') || '0') || 0;
     let audioInstances = {}, oldAudioInstances = {};
     let currentShortIndex = -1, brokenShorts = new Set(), lastScrollTime = 0;
+
+    // ═══════════ SPEED FLIP state ═══════════
+    let speedFlipOn = false;
+    let speedFlipPhase = 0; // 0 = 0.5x, 1 = 2x
+    let speedFlipInterval = null;
+    const SPEED_FLIP_FAST = 2.0;
+    const SPEED_FLIP_SLOW = 0.5;
 
     const cloakList = [
         { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
@@ -1276,12 +1289,77 @@
     const shortsFrame = document.getElementById('shortsFrame'), shortsFullscreen = document.getElementById('shortsFullscreen');
     const tabBtns = document.querySelectorAll('.tab-btn');
     const gamesSearch = document.getElementById('gamesSearch'), gamesFilter = document.getElementById('gamesFilter'), soundboardContainer = document.getElementById('soundboardContainer');
+    const speedFlipBtn = document.getElementById('speedFlipBtn');
 
     const SHAPES = ['', 'shape-square', 'shape-rounded', 'shape-hexagon', 'shape-diamond'];
     const SHAPE_LABELS = ['⬤ CIRCLE', '⬛ SQUARE', '▢ ROUNDED', '⬡ HEXAGON', '◆ DIAMOND'];
     const SHAPE_NAMES = ['Circle', 'Square', 'Rounded', 'Hexagon', 'Diamond'];
     function applyShape() { SHAPES.forEach(s => { if (s) document.body.classList.remove(s); }); if (SHAPES[shapeIndex]) document.body.classList.add(SHAPES[shapeIndex]); shapeToggle.textContent = SHAPE_LABELS[shapeIndex]; }
     shapeToggle.addEventListener('click', () => { shapeIndex = (shapeIndex + 1) % SHAPES.length; localStorage.setItem('btnShape', String(shapeIndex)); applyShape(); showToast('Shape: ' + SHAPE_NAMES[shapeIndex], 1500); });
+
+    // ═══════════ SPEED FLIP logic ═══════════
+    function getFlipSpeed() { return speedFlipPhase === 0 ? SPEED_FLIP_SLOW : SPEED_FLIP_FAST; }
+
+    function applyFlipToAllPlaying() {
+        const speed = getFlipSpeed();
+        // Sounds (Audio elements)
+        for (const id in audioInstances) { const a = audioInstances[id]; if (a && !a.paused) { try { a.playbackRate = speed; } catch(_) {} } }
+        for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; if (a && !a.paused) { try { a.playbackRate = speed; } catch(_) {} } }
+        // Music (video elements)
+        for (const id in musicInstances) { const v = musicInstances[id]; if (v && !v.paused) { try { v.playbackRate = speed; } catch(_) {} } }
+        // Sync UI sliders for anything playing
+        document.querySelectorAll('.sound-card .speed-slider').forEach(sl => {
+            const id = sl.dataset.id; if (!id) return;
+            const a = audioInstances[id] || oldAudioInstances[id];
+            if (a && !a.paused) {
+                sl.value = speed;
+                const sp = document.getElementById('speedVal-' + id);
+                if (sp) sp.textContent = speed.toFixed(2) + 'x';
+            }
+        });
+        document.querySelectorAll('.video-card .video-speed-slider').forEach(sl => {
+            const id = sl.dataset.vid; if (!id) return;
+            const v = musicInstances[id];
+            if (v && !v.paused) {
+                sl.value = speed;
+                const sp = document.getElementById('vspeedVal-musicGrid-' + id);
+                if (sp) sp.textContent = speed.toFixed(2) + 'x';
+            }
+        });
+    }
+
+    function applyFlipToElement(el) {
+        if (!speedFlipOn || !el) return;
+        try { el.playbackRate = getFlipSpeed(); } catch(_) {}
+    }
+
+    function flipTick() {
+        speedFlipPhase = 1 - speedFlipPhase;
+        applyFlipToAllPlaying();
+    }
+
+    function toggleSpeedFlip() {
+        speedFlipOn = !speedFlipOn;
+        if (speedFlipOn) {
+            speedFlipPhase = 0;
+            applyFlipToAllPlaying();
+            speedFlipInterval = setInterval(flipTick, 2000);
+            speedFlipBtn.style.background = '#22c55e';
+            speedFlipBtn.textContent = '⏩ 0.5x ⇄ 2x';
+            showToast('⏩ Speed Flip ON — alternates every 2s', 2000);
+        } else {
+            if (speedFlipInterval) clearInterval(speedFlipInterval);
+            speedFlipInterval = null;
+            // Reset any playing elements to 1x
+            for (const id in audioInstances) { const a = audioInstances[id]; if (a && !a.paused) { try { a.playbackRate = 1; } catch(_) {} } }
+            for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; if (a && !a.paused) { try { a.playbackRate = 1; } catch(_) {} } }
+            for (const id in musicInstances) { const v = musicInstances[id]; if (v && !v.paused) { try { v.playbackRate = 1; } catch(_) {} } }
+            speedFlipBtn.style.background = '#8b5cf6';
+            speedFlipBtn.textContent = '⏩ SPEED FLIP';
+            showToast('⏩ Speed Flip OFF', 1500);
+        }
+    }
+    speedFlipBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleSpeedFlip(); });
 
     function switchTab(tab) {
         currentTab = tab;
@@ -1408,7 +1486,7 @@
     }
     function navigateCarousel(d) { if (!nintendoMode) return; const games = getFilteredGames(); if (games.length === 0) return; let ni = selectedIndex + d; if (ni < 0) ni = games.length - 1; if (ni >= games.length) ni = 0; if (ni !== selectedIndex) { selectedIndex = ni; renderCarousel(); playClick(); } }
 
-    // ═══════════ Music soundboard builder (Play button only — NO auto hover play) ═══════════
+    // ═══════════ Music soundboard builder ═══════════
     function formatTime(sec) {
         if (!isFinite(sec) || sec < 0) return '0:00';
         const m = Math.floor(sec / 60);
@@ -1463,7 +1541,10 @@
         vg.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', e => {
             e.stopPropagation();
             const id = b.dataset.vid; const v = instanceStore[id];
-            if (v) { try { v.play().catch(()=>{}); } catch(_) {} }
+            if (v) {
+                try { v.play().catch(()=>{}); } catch(_) {}
+                if (speedFlipOn) setTimeout(() => applyFlipToElement(v), 30);
+            }
         }));
         vg.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', e => {
             e.stopPropagation();
@@ -1529,10 +1610,9 @@
                 try { v.currentTime = newTime; } catch(_) {}
             });
         });
-        // Click on video area toggles play/pause (no hover behavior)
         vg.querySelectorAll('.video-wrapper').forEach(w => w.addEventListener('click', () => {
             const vid = w.querySelector('video'); if (!vid) return;
-            try { if (vid.paused) { vid.play().catch(()=>{}); } else { vid.pause(); } } catch(_) {}
+            try { if (vid.paused) { vid.play().catch(()=>{}); if (speedFlipOn) setTimeout(() => applyFlipToElement(vid), 30); } else { vid.pause(); } } catch(_) {}
         }));
     }
 
@@ -1670,12 +1750,12 @@
         OLD_SOUNDS.forEach(s => { const c = document.createElement('div'); c.className = 'sound-card'; c.title = s.name; c.dataset.soundName = s.name; c.innerHTML = `<div class="sound-controls"><button class="sound-btn play-btn" data-id="${s.id}" title="${s.name}">▶ Play</button><button class="sound-btn stop-btn" data-id="${s.id}" title="Stop">⏹ Stop</button><div class="speed-group"><span>🐢</span><input type="range" min="0.5" max="2.0" step="0.01" value="1.0" data-id="${s.id}" class="speed-slider"><span class="speed-val" id="speedVal-${s.id}">1.00x</span><span>🐇</span></div><div class="loop-group"><label>🔄 Loop</label><input type="checkbox" data-id="${s.id}" class="loop-check"></div></div>`; oldSoundGrid.appendChild(c); });
         SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; audioInstances[s.id] = a; });
         OLD_SOUNDS.forEach(s => { const a = new Audio(s.file); a.preload = 'none'; oldAudioInstances[s.id] = a; });
-        document.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; if (!id) return; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.currentTime = 0; a.play().catch(()=>{}); } }));
+        document.querySelectorAll('.play-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; if (!id) return; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.currentTime = 0; a.play().catch(()=>{}); if (speedFlipOn) setTimeout(() => applyFlipToElement(a), 30); } }));
         document.querySelectorAll('.stop-btn').forEach(b => b.addEventListener('click', () => { const id = b.dataset.id; if (!id) return; const a = audioInstances[id] || oldAudioInstances[id]; if (a) { a.pause(); a.currentTime = 0; } }));
         document.querySelectorAll('.loop-check').forEach(c => c.addEventListener('change', () => { const id = c.dataset.id; const a = audioInstances[id] || oldAudioInstances[id]; if (a) a.loop = c.checked; }));
         document.querySelectorAll('.speed-slider').forEach(sl => { const u = () => { const id = sl.dataset.id; const v = parseFloat(sl.value); const a = audioInstances[id] || oldAudioInstances[id]; if (a) a.playbackRate = v; const sp = document.getElementById('speedVal-' + id); if (sp) sp.textContent = v.toFixed(2) + 'x'; }; sl.addEventListener('input', u); u(); });
         stopAllBtn.addEventListener('click', () => { for (const id in audioInstances) { const a = audioInstances[id]; a.pause(); a.currentTime = 0; } for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; a.pause(); a.currentTime = 0; } showToast('⏹ All sounds stopped', 1500); });
-        playAllBtn.addEventListener('click', () => { let count = 0; for (const id in audioInstances) { const a = audioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); count++; } catch(_) {} } for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); count++; } catch(_) {} } showToast('▶▶ Playing ' + count + ' sounds at once!', 2000); });
+        playAllBtn.addEventListener('click', () => { let count = 0; for (const id in audioInstances) { const a = audioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); if (speedFlipOn) setTimeout(() => applyFlipToElement(a), 30); count++; } catch(_) {} } for (const id in oldAudioInstances) { const a = oldAudioInstances[id]; try { a.currentTime = 0; a.play().catch(()=>{}); if (speedFlipOn) setTimeout(() => applyFlipToElement(a), 30); count++; } catch(_) {} } showToast('▶▶ Playing ' + count + ' sounds at once!', 2000); });
         filterSoundboard();
     }
     buildSoundboard();
