@@ -801,6 +801,7 @@
         if (l.includes('baldi')||l.includes('granny')||l.includes('deadzed')||l.includes('backrooms')||l.includes('horror')||l.includes('bendy')||l==='skibidibackrooms'||l==='fnafshooter'||l==='fnaw'||l==='fnac1'||l==='fnac2'||l==='99nights'||l==='scaryteacher'||l==='tcubed'||l==='deltarune'||l==='undertale'||l==='amongus'||l==='huggywuggypixel'||l==='skinwalker'||l==='burgerandfrights'||l==='midnightshift'||l==='slendytubbies2d') c.push('Horror');
         if (l==='nzp'||l==='zombierush'||l.includes('deadzed')||l==='hobovszombies') { c.push('Zombie'); if (l!=='hobovszombies') c.push('Horror'); }
         if (l.includes('soccer')||l.includes('basketball')||l.includes('baseball')||l.includes('retrobowl')||l.includes('football')||l.includes('volley')||l.includes('sport')||l==='1on1soccer'||l==='basketballstars'||l==='googlebaseball'||l==='retrobowlcollege'||l==='baseballbros'||l==='basketbattle'||l==='soccerrandom'||l==='footballbros'||l==='soccerbros'||l==='stickmangolf'||l==='wrestlebros'||l==='beachboxingsim'||l==='basketballlegends2020'||l==='basketrandom') c.push('Sports');
+        if (l === '8ballclassic') c.push('Puzzle', 'Sports');
         if (l==='blockblast') c.push('Puzzle','Relaxing');
         if (l==='stickmanduel') c.push('Stickman');
         if (l==='thereisnofile') c.push('Puzzle','Relaxing');
@@ -820,10 +821,10 @@
         if (l==='minecart') c.push('Minecraft');
         if (l==='paperminecraftv11') c.push('Minecraft');
         const isP = c.includes('Puzzle');
-        if (isP && !['cuttherope','oneshotlegacy','minecaves','impossiblequiz'].includes(id)) c.push('Relaxing');
+        if (isP && !['cuttherope','oneshotlegacy','minecaves','impossiblequiz','8ballclassic'].includes(id)) c.push('Relaxing');
         if (l==='growagarden'||l==='elasticface'||l==='slowroads'||l==='thereisnofile'||l==='minecaves') c.push('Relaxing');
         if (l==='1v1lol'||l==='gunspin'||l==='skibidishooter'||l==='kour') c.push('Shooter');
-        if (l==='baldi'||l==='caseoh'||l==='tcubed') c.push("Baldi's Basics");
+        if (l==='baldi'||l==='caseoh'||l==='tcubed'||l==='raldiscrackhouse') c.push("Baldi's Basics");
         if (l==='crazychicken'||l==='crazykitty'||l==='crazycattle') c.push('Crazy 3D Farm Games');
         if (l==='learntofly1'||l==='learntofly2'||l==='learntofly3'||l==='learntoflyidle') c.push('Learn to Fly');
         if (l==='bugreports'||l==='gamesuggestions'||l==='credits'||l==='removalrequest') c.push('Other');
@@ -849,6 +850,7 @@
 
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
+        { id: '8ballclassic', name: '8 Ball Classic', file: '8 Ball Classic.html', categories: ['Puzzle', 'Sports'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/146.png' },
         { id: 'rocketgoal', name: 'Rocket Goal', file: 'clrocketgoalio.html', categories: ['Driving'], img: 'https://tse4.mm.bing.net/th/id/OIP.mvrUlX0gSnXuHyXQ51QUegHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'topspeedracing3d', name: 'Top Speed Racing 3D', file: 'cltopspeedracing3d.html', categories: ['Driving'], img: 'https://yupgames.io/_next/image?url=https:%2F%2Fs3.growsolutions.tech%2Fyupgames%2Fgames%2Fimages%2F1770794204041-Top%20Speed%20Racing%203D.png&w=1080&q=75' },
         { id: 'funnymadracing', name: 'Funny Mad Racing', file: 'clfunnymadracing.html', categories: ['Driving', 'Puzzle'], img: 'https://files.gamezhero.com/game/fb3/a2a/fb3a2a0cec84b24b/images/240/funnymadracing.jpg' },
@@ -1103,7 +1105,7 @@
         { id: 'papashotdoggeria', name: "Papa's Hot Doggeria", file: 'Papa\'s Hot Doggeria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/224.png' },
         { id: 'papastacomia', name: "Papa's Taco Mia", file: 'Papa\'s Taco Mia.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/230.png' },
         { id: 'tosstheturtle', name: 'Toss the Turtle', file: 'Toss The Turtle (1).html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/110.png' },
-        { id: 'raldiscrackhouse', name: "Raldi's Crackhouse", file: 'Raldis Crackhouse.html', categories: ['Brainrot/Meme'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/670.png' },
+        { id: 'raldiscrackhouse', name: "Raldi's Crackhouse", file: 'Raldi\'s Crackhouse (2).html', categories: ['Brainrot/Meme', "Baldi's Basics"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/670.png' },
         { id: 'noobminer', name: 'Noob Miner', file: 'clnoobminer.html', categories: ['Minecraft'], img: 'https://tse3.mm.bing.net/th/id/OIP.bROxewI8cAUo0or6ZWwGqwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' }
     ];
 
