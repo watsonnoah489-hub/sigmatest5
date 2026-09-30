@@ -399,6 +399,7 @@
             <button class="btn" id="themeBtn" style="background:#6c757d;">🌓 THEME</button>
             <button class="btn" id="nintendoToggle" style="background:#e60000;">2 mode</button>
             <button class="btn" id="shapeToggle" style="background:#8b5cf6;">⬤ CIRCLE</button>
+                        <button class="btn" id="gifModeBtn" style="background:#a855f7;font-weight:900;letter-spacing:1px;" title="MS = Memes Sigma">MS</button>
             <button class="btn btn-panic" id="panicOpenBtn"><img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;"><span class="badge" id="panicBadge">0</span></button>
         </div>
         <div class="tab-bar">
@@ -443,6 +444,7 @@
                     <option value="Vex">🕹️ Vex</option>
                     <option value="Uncategorized">📦 Uncategorized</option>
                     <option value="Other">📦 Other</option>
+                    <option value="Broken">💥 Broken</option>
                 </select>
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
             </div>
@@ -483,6 +485,91 @@
             <div class="video-grid" id="musicGrid"></div>
         </div>
     </div></div>
+
+
+<div id="gifBg" aria-hidden="true"></div>
+<style>
+#gifBg { position:fixed; inset:0; z-index:0; background:#000; opacity:0; transition:opacity .35s; pointer-events:none; overflow:hidden; }
+#gifBg.on { opacity:1; }
+#gifBg .giffill, #gifBg .gifmain { position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity .8s ease-in-out; }
+#gifBg .giffill { object-fit:cover; filter:blur(30px) brightness(.55) saturate(1.3); transform:scale(1.15); }
+#gifBg .gifmain { object-fit:contain; z-index:1; }
+#gifBg .giffill.show, #gifBg .gifmain.show { opacity:1; }
+#gifBg .giffill.show { opacity:.85; }
+body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.gif-mode .bubble, body.gif-mode #particleCanvas, body.gif-mode #matrixCanvas { display:none !important; }
+</style>
+<script>
+(function(){
+  var GIFS = [
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Tung_tung_tung_sahur.webp/500px-Tung_tung_tung_sahur.webp.png",
+    "https://media1.tenor.com/m/mDs-p20D-3MAAAAd/67-meme-67-brainrot.gif",
+    "https://media1.tenor.com/m/xg0k_Eq2C1kAAAAd/6-6-7.gif",
+    "https://custom-doodle.com/wp-content/uploads/doodle/auto-draft/67-kid-meme-doodle.gif",
+    "https://th.bing.com/th/id/OIP.89FgFpy5TRs2dVS40IQ4wQHaFo?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://th.bing.com/th?id=OIF.mY%2fQg74pE6QMiHIqlnbWFA&r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://tse1.explicit.bing.net/th/id/OIF.h8tMwt6C2MHZJaLRkw8lYg?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://i.kym-cdn.com/photos/images/original/003/166/413/f24",
+    "https://tse2.mm.bing.net/th/id/OIP.-VsaMg1PPMs2KdWSqbknfgEsDI?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://th.bing.com/th/id/OIP.DmtNLNwII3AzGsHK6iR1pgHaHV?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://i.ytimg.com/vi/fwKdOVdLzqM/oar2.jpg?sqp=-oaymwEkCJUDENAFSFqQAgHyq4qpAxMIARUAAAAAJQAAyEI9AICiQ3gB&rs=AOn4CLDFcNH5GDgA-yrcF4nfTtJjWLyvIA",
+    "https://th.bing.com/th/id/OIP.Pc926bgqxgAgdrQ54DfRoQHaFZ?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "https://media1.tenor.com/m/wkFeSNR0RbYAAAAd/charlie-kirk-charlie-kirk-meme.gif"
+  ];
+  var HOLD_MS = 2500;
+  var bg = document.getElementById('gifBg');
+  if (!bg) return;
+  var fills = [], mains = [], idx = 0, timer = null, built = false;
+
+  function build(){
+    if (built) return; built = true;
+    GIFS.forEach(function(src, i){
+      var f = document.createElement('img');
+      f.src = src; f.alt = ''; f.loading = 'lazy';
+      f.className = 'giffill' + (i === 0 ? ' show' : '');
+      bg.appendChild(f); fills.push(f);
+
+      var m = document.createElement('img');
+      m.src = src; m.alt = ''; m.loading = 'lazy';
+      m.className = 'gifmain' + (i === 0 ? ' show' : '');
+      bg.appendChild(m); mains.push(m);
+    });
+  }
+  function goTo(n){
+    fills[idx].classList.remove('show');
+    mains[idx].classList.remove('show');
+    idx = (n + GIFS.length) % GIFS.length;
+    fills[idx].classList.add('show');
+    mains[idx].classList.add('show');
+  }
+  function next(){ goTo(idx + 1); }
+  function prev(){ goTo(idx - 1); }
+  function startCycle(){ if (!timer) timer = setInterval(next, HOLD_MS); }
+  function stopCycle(){ if (timer) { clearInterval(timer); timer = null; } }
+  function toggle(){
+    var on = bg.classList.toggle('on');
+    document.body.classList.toggle('gif-mode', on);
+    var b = document.getElementById('gifModeBtn');
+    if (on) {
+      build(); startCycle();
+      if (b){ b.style.background = '#22c55e'; b.textContent = 'MS ON'; }
+    } else {
+      stopCycle();
+      if (b){ b.style.background = '#a855f7'; b.textContent = 'MS'; }
+    }
+    try { localStorage.setItem('msGifMode', on ? '1' : '0'); } catch(_) {}
+  }
+  document.addEventListener('click', function(ev){
+    if (ev.target && ev.target.id === 'gifModeBtn') { ev.stopPropagation(); toggle(); }
+  }, true);
+  document.addEventListener('keydown', function(ev){
+    if (!bg.classList.contains('on')) return;
+    if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') { stopCycle(); next(); startCycle(); }
+    if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') { stopCycle(); prev(); startCycle(); }
+  });
+  try { if (localStorage.getItem('msGifMode') === '1') toggle(); } catch(_) {}
+})();
+</script>
+
 </body>
 </html> <script>
     function sigmaShield() {
@@ -850,7 +937,6 @@
     const GAME_DATA_RAW = [
         { id: 'randompicker', name: '🎲 Random', file: 'random', img: '' },
         { id: 'rocketgoal', name: 'Rocket Goal', file: 'clrocketgoalio.html', categories: ['Driving'], img: 'https://tse4.mm.bing.net/th/id/OIP.mvrUlX0gSnXuHyXQ51QUegHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'topspeedracing3d', name: 'Top Speed Racing 3D', file: 'cltopspeedracing3d.html', categories: ['Driving'], img: 'https://yupgames.io/_next/image?url=https:%2F%2Fs3.growsolutions.tech%2Fyupgames%2Fgames%2Fimages%2F1770794204041-Top%20Speed%20Racing%203D.png&w=1080&q=75' },
         { id: 'funnymadracing', name: 'Funny Mad Racing', file: 'clfunnymadracing.html', categories: ['Driving', 'Puzzle'], img: 'https://files.gamezhero.com/game/fb3/a2a/fb3a2a0cec84b24b/images/240/funnymadracing.jpg' },
         { id: 'counterstrike2', name: 'Counter Strike 2', file: 'clks2teams.html', categories: ['Shooter'], img: 'https://assets-prd.ignimgs.com/2023/03/22/keyart-wide-1-1679503853654-1679505306655.jpeg' },
         { id: 'doom', name: 'DOOM', file: 'DOOM.html', categories: ['Uncategorized'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/203.png' },
@@ -865,7 +951,7 @@
         { id: 'eaglercraftv122', name: 'Eaglercraft v12.2', file: 'Minecraft 1.12.2.html', categories: ['Minecraft'], img: 'https://i.ytimg.com/vi/KbtSmvUdXWE/hqdefault.jpg' },
         { id: 'eaglercraftmodern', name: 'Eaglercraft v12.2 Modern Client', file: 'clmodernclientv2.html', categories: ['Minecraft'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmti3bc-c89fa069-6e74-4e46-9463-c82afd417149.png/v1/fill/w_829,h_406,q_80,strp/modern_cilent_eaglercraft_logo_by_timebandit010101_dmti3bc-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDA2IiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXRpM2JjLWM4OWZhMDY5LTZlNzQtNGU0Ni05NDYzLWM4MmFmZDQxNzE0OS5wbmciLCJ3aWR0aCI6Ijw9ODI5In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.TWSX1rzmc4CPcR8Y96T5otd_JlZywIBUTmEoir_y6cw' },
         { id: 'eaglercraft19', name: 'Eaglercraft v1.9', file: 'compressed (4).html', categories: ['Minecraft'], img: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjiaYjocdHFeCnM8h4t4o4Z-JCNqB06AUG3t3pqHRPxE9rDb6koJKOP0wKJwrvYGEo52w-wIXyMzg2csXU16BIha50072bhVefZdmHzPbKZKGcmzwqZeGBUnrXY5lM5n6rdMT03Zb62ei0f/w1200-h630-p-k-no-nu/mine.jpg' },
-        { id: 'vex1', name: 'Vex 1', file: 'Vex 1.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/45.png' },
+        { id: 'vex1', name: 'Vex 1', file: 'Vex 1.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/45.png', categories: ['Broken'] },
         { id: 'vex2', name: 'Vex 2', file: 'Vex 2.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/46.png' },
         { id: 'vex3', name: 'Vex 3', file: 'Vex 3 (1).html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/47.png' },
         { id: 'vex3xmas', name: 'Vex 3 Xmas', file: 'Vex 3 XMAS.html', categories: ['Vex', 'Platformer'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/48.png' },
@@ -884,8 +970,7 @@
         { id: 'redball4', name: 'Red Ball 4', file: 'clRedBall4 (2).html', categories: ['Platformer'], img: 'https://tse2.mm.bing.net/th/id/OIP.G4KOh83CIyZP6dvnV4T7TAEsCo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'supermario63', name: 'Super Mario 63', file: 'Super Mario 63 (1).html', categories: ['Platformer'], img: 'https://tse4.mm.bing.net/th/id/OIP.3YBvhIU_Xsx22bIR99j5JQAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'supermario64', name: 'Super Mario 64', file: 'clmario64webgl (1).html', categories: ['Platformer'], img: 'https://th.bing.com/th/id/R.06fae23c9adad706ec7989e0468d1da7?rik=eBZz8MKvsA45Hw&pid=ImgRaw&r=0' },
-        { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunhorror (1).html', categories: ['Brainrot/Meme', 'Horror'], img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'slendytubbies2d', name: 'Slendytubbies 2D', file: 'Slendytubbies 2D (1).html', categories: ['Horror'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/807.png' },
+        { id: 'tungtunghorror', name: 'Tung Tung Horror', file: 'cltungtunghorror (1).html', categories: ['Brainrot/Meme', 'Horror'], img: 'https://tse3.mm.bing.net/th/id/OIP.tDua2FkYoqhINDkaw3-LRAHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: '1v1lol', name: '1v1 LOL (offline)', file: 'cl1v1lol (1).html', img: 'https://tse1.mm.bing.net/th/id/OIP.cAAxxflmivxGlG8SvOOAHwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: '1on1soccer', name: '1v1 Soccer', file: 'cl1on1soccer (2).html', img: 'https://tse1.mm.bing.net/th/id/OIP.MmSQOzTH-KMPFiKK4NMcuwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'burritobison', name: 'Burrito Bison', file: 'clburritobison.html', img: 'https://th.bing.com/th/id/R.c9e82b3953d489633d3110c731d46fcb?rik=Si2v7UCNUBrgMw&riu=http%3a%2f%2fwww.freegamesnews.com%2fen%2fwp-content%2fuploads%2f2011%2f02%2fBurrito-Bison.jpg&ehk=6pODCDHBq3Kui8todfAboT%2bxeEcIuUobV2rMQj1K7gU%3d&risl=&pid=ImgRaw&r=0' },
@@ -940,10 +1025,9 @@
         { id: 'mariocombat', name: 'Mario Combat', file: 'clmariocombat (1).html', img: 'https://tse4.mm.bing.net/th/id/OIP.ZvESmSfAah0OYdiw0eCXbwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'mortalkombat1', name: 'Mortal Kombat 1', file: 'clmortalkombata.html', img: 'https://th.bing.com/th/id/R.ee3f7340dc9af2911c53456552f91df4?rik=5OrtY62qUhn88A&pid=ImgRaw&r=0' },
         { id: 'mortalkombat2', name: 'Mortal Kombat 2', file: 'clmortalkombat2a.html', img: 'https://tse3.mm.bing.net/th/id/OIP.7BWdlilDOwLBCXggGUetSAHaE_?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'stickmangolf', name: 'Stickman Golf', file: 'Stickman Golf (4).html', img: 'https://tse2.mm.bing.net/th/id/OIP.PceV_n2Rowp1CIIepJrVTgHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'riddleschool1', name: 'Riddle School 1', file: 'clriddleschool.html', img: 'https://tse3.mm.bing.net/th/id/OIP.W_JZExs69UJ9dDl408eESgHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'riddleschool2', name: 'Riddle School 2', file: 'clriddleschool2.html', img: 'https://gogamego.io/wp-content/uploads/thumbs/custom/S/sriddleschool2.webp' },
-        { id: 'flappybird', name: 'Flappy Bird', file: 'clflappybird (2).html', img: 'https://th.bing.com/th/id/OIP.CIbEU496Zcf6xikfmPAVwQHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3' },
+        { id: 'flappybird', name: 'Flappy Bird', file: 'clflappybird (2).html', img: 'https://th.bing.com/th/id/OIP.CIbEU496Zcf6xikfmPAVwQHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3', categories: ['Broken'] },
         { id: '99balls', name: '99 Balls', file: 'cl99balls (3).html', img: 'https://tse1.mm.bing.net/th/id/OIP.IgBbRDh5jp7vuiWqgdhJ7gHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'baseballbros', name: 'Baseball Bros', file: 'clbaseballbros (4).html', img: 'https://tse4.mm.bing.net/th/id/OIP.cjYi5yFgAJ3VmLxkbtn2jwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'retrobowlcollege', name: 'Retro Bowl College', file: 'Retro Bowl College.html', img: 'https://retrobowl25.com/cache/data/image/game/retro-bowl-college-m300x300.png' },
@@ -967,7 +1051,6 @@
         { id: 'sortthecourt', name: 'Sort the Court', file: 'Sort the Court.html', img: 'https://merge-fellas.io/thumb/sort-the-court.webp' },
         { id: 'volleyrandom', name: 'Volley Random', file: 'Volley Random.html', img: 'https://www.coolmathgameskids.com/wp-content/uploads/2021/02/volley-random.jpeg' },
         { id: 'stickmankombat', name: 'Stickman Kombat 2D', file: 'Stickman Kombat 2D.html', img: 'https://tse2.mm.bing.net/th/id/OIP.L5HOhBR-3DmyWevhzOsIoAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { id: 'makeasuperboat', name: 'Make a SuperBoat', file: 'Make a SuperBoat.html', img: 'https://tse2.mm.bing.net/th/id/OIP.y4OuZhG_55Dww8mNmQBALgHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'oneshotlegacy', name: 'Oneshot (LEGACY)', file: 'Oneshot (LEGACY) (2).html', img: 'https://tse2.mm.bing.net/th/id/OIP.lSNAsyDy8JFU__46L8djWwHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'clarkingarena', name: 'Car King Arena (no fly)', file: 'clcarkingarena (1).html', categories: ['Driving'], img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'carkingarena', name: 'Car King Arena (with fly)', file: 'carkingarena.html', categories: ['Driving'], img: 'https://tse4.mm.bing.net/th/id/OIP.KtLLILdL4h8pvF9j18lXUQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1066,7 +1149,7 @@
         { id: 'escaperoad', name: 'Escape Road', file: 'Escape Road.html', categories: ['Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/264.png' },
 { id: 'escaperoad2', name: 'Escape Road 2', file: 'Escape Road 2.html', categories: ['Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/265.png' },
 { id: 'escaperoad3', name: 'Escape Road 3', file: 'Escape Road 3.html', categories: ['Driving'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/792.png' },
-        { id: '8ballpool', name: '8 Ball Pool', file: '8 Ball Pool.html', categories: ['Sports', 'Puzzle', 'Relaxing'], img: 'https://www.cargames.com/cdn-cgi/image/quality=78,format=auto/thumb/8-Ball-Pool.jpg' },
+        { id: 'stickmankingdomclash', name: 'Stickman Kingdom Clash', file: 'clStickmanKingdomclash.html', categories: ['Stickman'], img: 'https://minigamesville.com/wp-content/uploads/2025/08/Stickman_Kingdom_Clash.png' },
         { id: 'idleminingempire', name: 'Idle Mining Empire', file: 'Idle Mining Empire (1).html', categories: ['Stickman'], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/364.png' },
         { id: 'evilglitch', name: '👾 Evil Glitch', file: 'clevilglitch.html', img: 'https://tse4.mm.bing.net/th/id/OIP.0rEL35BQ0y8fSadIWDjYiwHaEw?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'burgerandfrights', name: '🍔 Burger and Frights', file: 'clburgerandfrights (2).html', categories: ['Horror'], img: 'https://tse1.mm.bing.net/th/id/OIP.nO8BEwq8CR7ETr7NrWhV4QHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
@@ -1091,7 +1174,6 @@
         { id: 'paperio2', name: 'Paper.io 2', file: 'paperio2.htm', categories: ['Uncategorized'], img: 'https://tse4.mm.bing.net/th/id/OIP.jHkZvhb2r_1hOXOQbXdvfwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
         { id: 'papasushiria', name: "Papa's Sushiria", file: 'Papa\'s Sushiria (1).html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/229.png' },
         { id: 'papaswingeria', name: "Papa's Wingeria", file: 'Papa\'s Wingeria.html', categories: ["Papa's Restaurants"], img: 'https://cdn.jsdelivr.net/gh/freebuisness/covers@main/231.png' },
-        { id: 'basketballlegends2020', name: 'Basketball Legends 2020', file: 'clbasketballlegends (1).html', categories: ['Sports'], img: 'https://coolbrnd.com/game-images/basketball-legends.png' },
         { id: 'sherkdash', name: 'Sherk Dash', file: 'SHERK (1).html', categories: ['Platformer', 'Brainrot/Meme'], img: 'https://cdn2.scratch.mit.edu/get_image/project/620091632_480x360.png' },
         { id: 'soflowheelielife', name: 'SofloWheelieLife', file: 'SofloWheelieLife.html', categories: ['Driving'], img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/459f5121-cd58-45f8-862c-dde351ceddd8/dmshy7i-b991abc7-ca95-4391-ba1f-db36303eefc4.jpg/v1/fill/w_624,h_472,q_75,strp/slo_sigma_life_game_by_timebandit010101_dmshy7i-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDcyIiwicGF0aCI6Ii9mLzQ1OWY1MTIxLWNkNTgtNDVmOC04NjJjLWRkZTM1MWNlZGRkOC9kbXNoeTdpLWI5OTFhYmM3LWNhOTUtNDM5MS1iYTFmLWRiMzYzMDNlZWZjNC5qcGciLCJ3aWR0aCI6Ijw9NjI0In1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.2S-Cx9vO50X4NuQY39vC9o_zI_IzkIafivXsJpCyfK4' },
         { id: 'burgerclicker', name: 'Burger Clicker', file: 'Burger Clicker.html', categories: ['Clicker'], img: 'https://cdn2.scratch.mit.edu/get_image/project/583091638_144x108.png' },
@@ -1249,7 +1331,8 @@
         { id: 'fredbeyer', name: 'Fred Beyer Screaming', file: 'screaming-in-the-store.mp3' },
         { id: 'pringlesmorty', name: 'Pringles Morty Edit', file: 'pringles-morty-funk-edit.mp3' },
         { id: 'rocketleague', name: 'Rocket League Meme', file: 'rocket-league-meme.mp3' },
-        { id: 'itscomingout', name: "It's Coming Out", file: 'its-coming-out_je2L8nl.mp3' }
+        { id: 'itscomingout', name: "It's Coming Out", file: 'its-coming-out_je2L8nl.mp3' },
+        { id: 'explosionmeme', name: 'Explosion Meme', file: 'explosion-meme_dTCfAHs.mp3' }
     ];
     const OLD_SOUNDS = [
         { id: 'typing', name: '⌨️ Fast Typing', file: 'https://gfxsounds.com/wp-content/uploads/2023/03/Laptop-keyboard-typing-fast.mp3' },
