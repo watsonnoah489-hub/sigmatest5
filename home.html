@@ -199,13 +199,13 @@
         #dropOverlay .drop-icon { font-size: 80px; margin-bottom: 12px; filter: drop-shadow(0 0 20px var(--glow)); }
         #dropOverlay .drop-title { font-size: 28px; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
         #dropOverlay .drop-sub { font-size: 15px; opacity: 0.75; letter-spacing: 1px; }
-        #panicOverlay, #creditsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 2147483620; justify-content: center; align-items: center; padding: 20px; }
-        #panicOverlay.open, #creditsOverlay.open { display: flex; }
-        #panicModal, #creditsBox { background: rgba(13,17,23,0.97); border: 2px solid var(--primary); border-radius: 28px; padding: 28px 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 60px var(--glow); color: #fff; }
-        #panicModal h2 { font-size: 28px; display: flex; align-items: center; gap: 12px; margin-bottom: 4px; animation: glitch 3s infinite; }
+        #_po, #creditsOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); z-index: 2147483620; justify-content: center; align-items: center; padding: 20px; }
+        #_po.open, #creditsOverlay.open { display: flex; }
+        #_pm, #creditsBox { background: rgba(13,17,23,0.97); border: 2px solid var(--primary); border-radius: 28px; padding: 28px 32px; max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 60px var(--glow); color: #fff; }
+        #_pm h2 { font-size: 28px; display: flex; align-items: center; gap: 12px; margin-bottom: 4px; animation: glitch 3s infinite; }
         @keyframes glitch { 0%,100%{transform:translate(0);} 20%{transform:translate(-2px,2px);} 40%{transform:translate(2px,-2px);} 60%{transform:translate(-1px,-1px);} 80%{transform:translate(1px,1px);} }
-        #panicModal .sub { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
-        #panicModal .sub .badge-panic { display: inline-block; background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid #ef4444; border-radius: 30px; padding: 1px 12px; font-size: 11px; font-weight: 600; margin-left: 6px; }
+        #_pm .sub { color: #94a3b8; font-size: 14px; margin-bottom: 18px; }
+        #_pm .sub .badge-panic { display: inline-block; background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid #ef4444; border-radius: 30px; padding: 1px 12px; font-size: 11px; font-weight: 600; margin-left: 6px; }
         .panic-list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 16px; max-height: 240px; overflow-y: auto; padding-right: 4px; }
         .panic-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); padding: 8px 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
         .panic-item:hover { background: rgba(255,255,255,0.08); }
@@ -355,19 +355,19 @@
         <button id="stRestoreBar" data-st-overlay="true" title="Restore SigmaTown bars & buttons">Σ</button>
     </div>
 
-    <div id="panicOverlay"><div id="panicModal">
+    <div id="_po"><div id="_pm">
         <h2>🚨 Panic Buttons</h2>
         <div class="sub">Press a key to instantly open an educational site. <span class="badge-panic">⚡ active in-game too</span></div>
-        <div class="panic-list" id="panicList"></div>
+        <div class="panic-list" id="_pl"></div>
         <div class="panic-add">
-            <input type="text" id="panicKey" placeholder=" " maxlength="6">
-            <input type="text" id="panicUrl" placeholder=" ">
-            <input type="text" id="panicLabel" placeholder=" " maxlength="20">
-            <button class="add-btn" id="panicAddBtn">➕ Add</button>
+            <input type="text" id="_pk" placeholder=" " maxlength="6">
+            <input type="text" id="_pu" placeholder=" ">
+            <input type="text" id="_plb" placeholder=" " maxlength="20">
+            <button class="add-btn" id="_pab">➕ Add</button>
         </div>
         <div class="panic-actions">
-            <button class="btn btn-reset" id="panicResetBtn">↺ Reset Defaults</button>
-            <button class="btn btn-secondary" id="panicCloseBtn">✕ Close</button>
+            <button class="btn btn-reset" id="_prb">↺ Reset Defaults</button>
+            <button class="btn btn-secondary" id="_pcb">✕ Close</button>
         </div>
     </div></div>
 
@@ -400,7 +400,7 @@
             <button class="btn" id="nintendoToggle" style="background:#e60000;">2 mode</button>
             <button class="btn" id="shapeToggle" style="background:#8b5cf6;">⬤ CIRCLE</button>
                         <button class="btn" id="gifModeBtn" style="background:#a855f7;font-weight:900;letter-spacing:1px;" title="MS = Memes Sigma">MS</button>
-            <button class="btn btn-panic" id="panicOpenBtn"><img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;"><span class="badge" id="panicBadge">0</span></button>
+            <button class="btn btn-panic" id="_pob"><img src="https://media.tenor.com/D2gYKkVXO6AAAAAM/panic-worried.gif" alt="Panic" style="width:32px;height:32px;border-radius:4px;"><span class="badge" id="_pb">0</span></button>
         </div>
         <div class="tab-bar">
             <button class="tab-btn active" data-tab="games" title="Games">📄 Page 1</button>
@@ -445,6 +445,7 @@
                     <option value="Uncategorized">📦 Uncategorized</option>
                     <option value="Other">📦 Other</option>
                     <option value="Broken">💥 Broken</option>
+                    <option value="🎃halloween🎃">🎃halloween🎃</option>
                 </select>
                 <span class="hint">Hold Ctrl/Cmd to select multiple</span>
             </div>
@@ -518,7 +519,7 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     "https://media.tenor.com/qXmhWXkrY2UAAAAM/idksterling-sterling.gif",
     "https://yt3.googleusercontent.com/O_xg_-Rwr_Ocd7iPauta82mRYBMYmzZZEXq6gns2gKbXNwmYO8OU5eGE4K2WCCpiI77xBLvh=s900-c-k-c0x00ffffff-no-rj",
     "https://ih1.redbubble.net/image.5814027165.9187/flat,750x,075,f-pad,750x1000,f8f8f8.jpg",
-    "https://media1.tenor.com/m/wkFeSNR0RbYAAAAd/charlie-kirk-charlie-kirk-meme.gif"
+    "https://media1.tenor.com/m/wkFeSNR0RbYAAAAd/charlie-kirk-charlie-kirk-meme.gif",
   ];
   var HOLD_MS = 2500;
   var bg = document.getElementById('gifBg');
@@ -577,126 +578,22 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
 
 </body>
 </html> <script>
-    function sigmaShield() {
-        const targets = ['googlesyndication.com','doubleclick.net','googleadservices.com','google-analytics.com','googletagmanager.com','adservice.google.com','pagead2.googlesyndication.com','tpc.googlesyndication.com','googleads.g.doubleclick.net','stats.g.doubleclick.net','cm.g.doubleclick.net','securepubads.g.doubleclick.net','pubads.g.doubleclick.net','googletagservices.com','google.com/ads','google.com/pagead','google.com/afs','googleadapis.l.google.com','adwords.google.com','partner.googleadservices.com','www.googletagmanager.com','www.google-analytics.com','ssl.google-analytics.com','analytics.google.com','pagead-googlehosted.l.google.com','pagead.l.google.com','pagead46.l.doubleclick.net','googleads4.g.doubleclick.net','googleads.g.doubleclick','static.doubleclick.net','m.doubleclick.net','adclick.g.doubleclick.net','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','bubblfan.ru','bubblfan.ads','bubblfan-ads','1p-user-list','/pagead/1p-user-list/','is_vtc=1','&is_vtc','vtc=1','viewthroughconversion','/pagead/viewthroughconversion/','1037333982','_HL1CNzrpgQQ3uvR7gM','script=0&ord=','&guid=ON&script','safeframe.googlesyndication.com','safeframe.googlesyndication','pagead/gen_204','google_image_requests','goog_safeframe_hlt','hifi.js','hifi_canary.js','adsbygoogle.js','/ads/richmedia/studio/','/ads/richmedia/studio_canary/','googlesyndication.com/pagead/js/adsbygoogle','rewards.google.com','opinionrewards.google.com','google.com/rewards','googleopinionrewards.com','surveys.google.com','google-consumer-surveys.com','consumer-surveys.google.com','googlesurveys.com','surveys.gstatic.com','google-surveys.com','rewards.googleusercontent.com','opinions.google.com','ads.rewards.google.com','tracking.rewards.google.com','analytics.rewards.google.com','s0.2mdn.net','s1.2mdn.net','s2.2mdn.net','2mdn.net','rewards-ads.google.com','rewardsads.googleapis.com','googlesyndicatedcontent.com','googleadsserving.com','ads.microsoft.com','bat.bing.com','bing.com/ads','clarity.ms','microsoftads.com','msads.net','ads.msn.com','bingads.microsoft.com','bing.com/action','bat.bing.net','c.bing.com','c.clarity.ms','www.clarity.ms','ads.linkedin.com/microsoft','udc.msn.com','ads1.msn.com','ads2.msn.com','ads3.msn.com','ads4.msn.com','bing.com/fd/ls','bing.com/partner','bing.com/widget','bing.com/adsyndication','bing.com/ff','bing.com/msn','syndication.msn.com','microsoft.com/ads','ads.microsoft.com/','microsoftonline.com/ads','c.msn.com','otf.msn.com','img-s-msn-com.akamaized.net/ads','outlook.live.com/ads','hotmail.com/ads','linkedin.com/ads','xboxlive.com/ads','youtube.com/ads','cpmstar.com','adzerk.net','amazon-adsystem.com','outbrain.com','taboola.com','revcontent.com','pubmatic.com','openx.net','rubiconproject.com','indexexchange.com','contextweb.com','sovrn.com','facebook.com/ads','instagram.com/ads','twitter.com/ads','tiktok.com/ads','snapchat.com/ads','pinterest.com/ads','reddit.com/ads','applovin.com','ironsrc.com','unity3d.com/ads','vungle.com','adcolony.com','chartboost.com','heyzap.com','inmobi.com','tapjoy.com','fyber.com','admost.com','adfox.ru','yandex.ru/ads','mail.ru/ads','vk.com/ads','ok.ru/ads','odnoklassniki.ru/ads','adsrvr.org','adnxs.com','adform.net','adition.com','bat.bing.com/bat.js','bat.bing.com/action','c.bing.com/c.gif','clarity.ms/tag','msecnd.net/ads','msads.net/','adserver.microsoft.com','advertising.microsoft.com','adcenter.microsoft.com','cloudflareinsights.com','apis.google.com/js/client:platform.js','yandex.ru/games','yandex.com/games','yandex.net','yandex-games','yandex.cloud'];
-        const sigs = ['safeframe.googlesyndication.com','SafeFrame Container','pagead/gen_204','google_image_requests','goog_safeframe_hlt','sf_.v','AMP_CONTEXT_DATA','Cannot parse serialized data','adsbygoogle','goog#html','UravPbGESYjDUNqxKcf$Vqza','sFfEkK$fMziBAJZwZbkuvp','sidebarad1','sidebarad2','sidebar-frame','sidebar-close','G-L7856P3VNT','G-BTL6D79ZZ4','G-F85K501LBG','G-L4LJXQN58R','u-cvlassrom-y','ec898d9b88abb4','aWI$GMwS','kGsNXc','HcMpeIOoYPvgF','1p-user-list','is_vtc','viewthroughconversion','dogeminerlanding','dogeBotDetected','YaGames','YandexGame','ysdk.adv','ysdk.getPayments','ysdk.getLeaderboards','ysdk.getPlayer'];
-        const sideSelectors = ['#sidebarad1','#sidebarad2','.sidebar-frame','.sidebar-close','[id^="sidebarad"]','[class*="sidebar-ad"]','#plsnopls','#whatwhatinthe','#dontblok','.l-ad__bottom','.l-ad__right','.l-ad__guardian','.l-social--sponsored','#temporaridplsignore'];
-        const slotSelectors = ['iframe[src*="googleads"]','iframe[src*="doubleclick"]','iframe[src*="googlesyndication"]','iframe[src*="2mdn"]','iframe[src*="adservice"]','iframe[src*="safeframe"]','iframe[src*="bing.com"]','iframe[src*="msn.com"]','iframe[src*="msads"]','iframe[src*="microsoftads"]','iframe[src*="adsrvr"]','iframe[src*="adnxs"]','iframe[src*="cpmstar"]','iframe[src*="yandex"]','ins.adsbygoogle','[id^="aswift"]','[id^="google_ads_iframe"]','[id*="google_ads"]','[class*="adsbygoogle"]','[data-ad-slot]','[data-ad-client]','[data-ad]','[id^="amzn_assoc"]','[id*="taboola"]','[class*="taboola"]','[id*="outbrain"]','[class*="outbrain"]'];
-        const isTarget = u => typeof u === 'string' && targets.some(d => u.includes(d));
-        const isTargetScript = t => typeof t === 'string' && sigs.some(s => t.includes(s));
-        const COVER_LIFETIME_MS = 20000;
-        const COVER_FADE_MS = 500;
 
-        function sigmaCover(el, label) {
-            if (!el || !el.parentNode) return;
-            if (el.dataset && el.dataset.sigmaCovered === 'true') return;
-            if (el.classList && el.classList.contains('sigma-cover')) return;
-            try {
-                const rect = el.getBoundingClientRect();
-                const w = rect.width || el.offsetWidth || parseInt(el.getAttribute && el.getAttribute('width')) || 300;
-                const h = rect.height || el.offsetHeight || parseInt(el.getAttribute && el.getAttribute('height')) || 250;
-                const parent = el.parentNode;
-                try { const ps = getComputedStyle(parent); if (ps.position === 'static') parent.style.position = 'relative'; } catch(_) {}
-                const cover = document.createElement('div');
-                cover.className = 'sigma-cover';
-                cover.dataset.sigmaCovered = 'true';
-                cover.setAttribute('data-label', label || 'ΣigmaTown');
-                if (el.id === 'sidebarad1' || el.id === 'sidebarad2') { cover.style.position = 'fixed'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; cover.style.top = '50%'; cover.style.transform = 'translateY(-50%)'; cover.style[el.id === 'sidebarad1' ? 'left' : 'right'] = '0'; }
-                else if (rect && (rect.top !== 0 || rect.left !== 0) && (parent === document.body || parent === document.documentElement)) { cover.style.position = 'fixed'; cover.style.left = rect.left + 'px'; cover.style.top = rect.top + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
-                else { cover.style.position = 'absolute'; cover.style.left = (el.offsetLeft || 0) + 'px'; cover.style.top = (el.offsetTop || 0) + 'px'; cover.style.width = w + 'px'; cover.style.height = h + 'px'; }
-                parent.insertBefore(cover, el);
-                el.remove();
-                setTimeout(() => { try { cover.classList.add('fading'); setTimeout(() => { try { if (cover && cover.parentNode) cover.remove(); } catch(_) {} }, COVER_FADE_MS); } catch(_) {} }, COVER_LIFETIME_MS);
-            } catch(_) {}
-        }
-        const sweep = () => { slotSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => sigmaCover(el)); } catch(_) {} }); sideSelectors.forEach(sel => { try { document.querySelectorAll(sel).forEach(el => sigmaCover(el, 'ΣigmaTown')); } catch(_) {} }); };
-        sweep(); setInterval(sweep, 300);
-        const oF = window.fetch;
-        window.fetch = function(i, init) { const url = typeof i === 'string' ? i : (i && i.url); if (isTarget(url)) return Promise.reject(new Error('sigma')); return oF.call(this, i, init); };
-        const oX = window.XMLHttpRequest;
-        window.XMLHttpRequest = function() { const x = new oX(); const o = x.open; x.open = function(m,u){ if (isTarget(u)) { this.abort=()=>{}; this.send=()=>{}; return; } o.apply(this, arguments); }; return x; };
-        const oW = document.write;
-        document.write = function(h) { if (typeof h === 'string' && (targets.some(d => h.includes(d)) || isTargetScript(h))) return; return oW.apply(this, arguments); };
-        const oO = window.open;
-        window.open = function(u) { if (isTarget(u)) return null; return oO.apply(this, arguments); };
-        if (navigator.sendBeacon) { const ob = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d) { if (isTarget(u)) return false; return ob(u,d); }; }
-        const oWS = window.WebSocket;
-        window.WebSocket = function(u, p) { if (isTarget(u)) throw new Error('sigma'); return new oWS(u, p); };
-        window.WebSocket.prototype = oWS.prototype;
-        const oImg = window.Image;
-        window.Image = function(w, h) { const img = new oImg(w, h); try { const d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, 'src'); if (d && d.set) Object.defineProperty(img, 'src', { set(v){ if (isTarget(v)) return; return d.set.call(this,v); }, get(){ return this.getAttribute('src'); }, configurable: true }); } catch(_) {} return img; };
-        window.Image.prototype = oImg.prototype;
-        try { window.google_image_requests = []; } catch(_) {}
-        const oCE = document.createElement;
-        document.createElement = function(t) { const el = oCE.call(document, t); if (t === 'script') { const s = el.setAttribute; el.setAttribute = function(n,v){ if (n === 'src' && isTarget(v)) return; return s.apply(this, arguments); }; } return el; };
-        const oSA = Element.prototype.setAttribute;
-        Element.prototype.setAttribute = function(n, v) { if ((n === 'src' || n === 'href') && isTarget(v)) return; return oSA.call(this, n, v); };
-        ['src','href'].forEach(prop => { try { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop); if (!d || !d.set) return; Object.defineProperty(HTMLElement.prototype, prop, { set(v){ if (isTarget(v)) return; return d.set.call(this,v); }, get: d.get, configurable: true, enumerable: d.enumerable }); } catch(_) {} });
-        const obs = new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
-            if (n.nodeType !== 1) return;
-            if (n.dataset && n.dataset.stOverlay === 'true') return;
-            if (n.closest && n.closest('[data-st-overlay="true"]')) return;
-            if (n.classList && n.classList.contains('sigma-cover')) return;
-            if (n.id && /^sidebarad/i.test(n.id)) { sigmaCover(n, 'ΣigmaTown'); return; }
-            if (n.id === 'plsnopls' || n.id === 'whatwhatinthe' || n.id === 'dontblok' || n.id === 'temporaridplsignore') { sigmaCover(n, 'ΣigmaTown'); return; }
-            if (n.classList && (n.classList.contains('sidebar-frame') || n.classList.contains('l-ad__bottom') || n.classList.contains('l-ad__right') || n.classList.contains('l-ad__guardian') || n.classList.contains('l-social--sponsored'))) { sigmaCover(n, 'ΣigmaTown'); return; }
-            if (n.classList && n.classList.contains('sidebar-close')) { n.remove(); return; }
-            if (n.tagName === 'SCRIPT') { const txt = n.textContent || ''; if (isTargetScript(txt)) { n.remove(); return; } const s = n.getAttribute('src') || ''; if (isTarget(s)) { n.remove(); return; } }
-            if (n.tagName === 'IFRAME') { const s = n.getAttribute('src') || ''; if (isTarget(s)) { sigmaCover(n, 'ΣigmaTown'); return; } }
-            if (n.tagName === 'LINK') { const r = (n.getAttribute('rel') || '').toLowerCase(); const h = n.getAttribute('href') || ''; if ((r === 'preconnect' || r === 'dns-prefetch') && isTarget(h)) { n.remove(); return; } }
-            const s = n.getAttribute && (n.getAttribute('src') || n.getAttribute('href'));
-            if (s && isTarget(s)) { sigmaCover(n); return; }
-            const attrs = n.attributes || [];
-            for (let a of attrs) { const v = a.value; if (v && (v.includes('adsbygoogle') || v.includes('google_ads') || v.includes('ad-slot') || v.includes('banner-ad'))) { sigmaCover(n); return; } }
-        })));
-        try { obs.observe(document.documentElement, { childList: true, subtree: true }); } catch(_) {}
-        setInterval(() => {
-            try { if (!window.fetch.__sigHook) { const cur = window.fetch; window.fetch = function(i,init){ const u = typeof i==='string'?i:(i&&i.url); if (isTarget(u)) return Promise.reject(new Error('sigma')); return cur.call(this,i,init); }; window.fetch.__sigHook = true; } } catch(_) {}
-            try { if (navigator.sendBeacon && !navigator.sendBeacon.__sigHook) { const cur = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function(u,d){ if (isTarget(u)) return false; return cur(u,d); }; navigator.sendBeacon.__sigHook = true; } } catch(_) {}
-            try { if (!document.write.__sigHook) { const cur = document.write.bind(document); document.write = function(h){ if (typeof h==='string' && (targets.some(d=>h.includes(d)) || isTargetScript(h))) return; return cur(h); }; document.write.__sigHook = true; } } catch(_) {}
-        }, 1000);
-        console.log('%cΣigma shield active.', 'background:#3b82f6;color:#fff;padding:3px 8px;border-radius:4px;font-weight:bold;');
-    }
-    sigmaShield();
-    const SIGMA_SRC = '(' + sigmaShield.toString() + ')();';
-    const SIGMA_CSS = '.sigma-cover { position: absolute !important; display: flex !important; align-items: center !important; justify-content: center !important; background: linear-gradient(135deg,#0a0e1a 0%,#1e293b 50%,#0a0e1a 100%) !important; color: #3b82f6 !important; font-family: "Segoe UI",system-ui,sans-serif !important; font-weight: 900 !important; letter-spacing: 2px !important; text-shadow: 0 0 20px rgba(59,130,246,0.8) !important; border: 2px dashed rgba(59,130,246,0.6) !important; border-radius: 10px !important; box-shadow: 0 0 30px rgba(59,130,246,0.4),inset 0 0 30px rgba(59,130,246,0.15) !important; z-index: 2147483600 !important; overflow: hidden !important; pointer-events: none !important; min-width: 60px !important; min-height: 40px !important; transition: opacity 0.5s ease !important; } .sigma-cover::before { content: "Σ" !important; position: absolute !important; font-size: 90px !important; opacity: 0.18 !important; color: #3b82f6 !important; line-height: 1 !important; } .sigma-cover::after { content: attr(data-label) !important; position: relative !important; z-index: 1 !important; font-size: 12px !important; padding: 0 10px !important; text-align: center !important; line-height: 1.2 !important; } .sigma-cover.fading { opacity: 0 !important; }';
 
-    const PANIC_IFRAME_SRC = '(' + (function() {
-        if (window.__sigmaPanicInstalled) return;
-        window.__sigmaPanicInstalled = true;
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey || e.altKey || e.metaKey) return;
-            try { window.parent.postMessage({ __sigmaPanicKey: e.key }, '*'); } catch(_) {}
-        }, true);
-    }).toString() + ')();';
-
-    const HACK = { lowEnd: false, logos: false, anim: false, cursor: false };
+    const _hk = { lowEnd: false, logos: false, anim: false, cursor: false };
     let lagKillerForcedByLowEnd = false;
-    function buildHackCss() { const lo = HACK.lowEnd; let css = ''; if (lo || HACK.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}'; if (lo || HACK.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}'; if (lo || HACK.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}'; return css; }
+    function buildHackCss() { const lo = _hk.lowEnd; let css = ''; if (lo || _hk.anim) css += '*,*::before,*::after{animation:none!important;transition:none!important;}'; if (lo || _hk.cursor) css += '*,*::before,*::after{cursor:auto!important;}input,textarea{cursor:text!important;}'; if (lo || _hk.logos) css += 'img[src*="logo" i],img[alt*="logo" i],[id*="logo" i],[class*="logo" i]{display:none!important;}'; return css; }
 
     const gameOverlay = document.getElementById('gameOverlay');
     const gameFrame = document.getElementById('gameOverlayFrame');
     const stCtrlBar = document.getElementById('stCtrlBar');
     const stLowEndBar = document.getElementById('stLowEndBar');
     const stRestoreBar = document.getElementById('stRestoreBar');
-    let injectIntervals = [];
-    function stopAllInjections() { injectIntervals.forEach(id => clearInterval(id)); injectIntervals = []; }
-    function injectIntoIframe() {
-        try {
-            const doc = gameFrame.contentDocument; if (!doc || !doc.documentElement) return false;
-            if (!doc.getElementById('sigmaShieldStyle')) { const st = doc.createElement('style'); st.id = 'sigmaShieldStyle'; st.textContent = SIGMA_CSS; (doc.head || doc.documentElement).appendChild(st); }
-            if (!doc.getElementById('sigmaShieldScript')) { const sc = doc.createElement('script'); sc.id = 'sigmaShieldScript'; sc.textContent = SIGMA_SRC; (doc.head || doc.documentElement).appendChild(sc); }
-            if (!doc.getElementById('sigmaPanicScript')) { const sc = doc.createElement('script'); sc.id = 'sigmaPanicScript'; sc.textContent = PANIC_IFRAME_SRC; (doc.head || doc.documentElement).appendChild(sc); }
-            const hackCss = buildHackCss(); let hackStyle = doc.getElementById('sigmaHackStyle');
-            if (hackCss) { if (!hackStyle) { hackStyle = doc.createElement('style'); hackStyle.id = 'sigmaHackStyle'; (doc.head || doc.documentElement).appendChild(hackStyle); } hackStyle.textContent = hackCss; }
-            else if (hackStyle) { hackStyle.remove(); }
-            return true;
-        } catch(e) { return false; }
-    }
+    let _ii = [];
     function resetBars() { [stCtrlBar, stLowEndBar].forEach(bar => { bar.style.left = ''; bar.style.top = ''; bar.style.right = ''; bar.style.bottom = ''; bar.style.transform = ''; bar.dataset.scale = '1'; bar.style.display = ''; bar.querySelectorAll('[data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; }); }); stRestoreBar.classList.remove('show'); }
     function resetHackState() {
-        const hadLowEnd = HACK.lowEnd;
-        HACK.lowEnd = false; HACK.logos = false; HACK.anim = false; HACK.cursor = false;
+        const hadLowEnd = _hk.lowEnd;
+        _hk.lowEnd = false; _hk.logos = false; _hk.anim = false; _hk.cursor = false;
         document.body.classList.remove('hack-no-logos', 'hack-no-anim', 'hack-no-cursor');
         const lb = document.getElementById('leLowEnd'); if (lb) lb.classList.remove('active');
         const lg = document.getElementById('leLogos'); if (lg) lg.classList.remove('active');
@@ -706,7 +603,6 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
         else if (hadLowEnd && LK.mode > 0) { setLKMode(0); }
     }
     function closeGame() {
-        stopAllInjections();
         gameOverlay.classList.remove('show');
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         document.body.style.overflow = '';
@@ -716,16 +612,12 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     function openGameInIframe(file, name) {
         gameOverlay.classList.add('show');
         document.body.style.overflow = 'hidden';
-        stopAllInjections(); resetBars(); resetHackState();
         try { gameFrame.src = 'about:blank'; } catch(_) {}
         setTimeout(() => { try { gameFrame.src = file; } catch(_) {} }, 50);
-        const iv1 = setInterval(injectIntoIframe, 60); const iv2 = setInterval(injectIntoIframe, 300); const iv3 = setInterval(injectIntoIframe, 1500);
-        injectIntervals = [iv1, iv2, iv3];
+        _ii = [iv1, iv2, iv3];
         setTimeout(() => { clearInterval(iv1); clearInterval(iv2); }, 25000);
     }
     gameFrame.addEventListener('load', () => {
-        try { injectIntoIframe(); } catch(_) {}
-        [100, 400, 1000, 2500, 5000].forEach(ms => setTimeout(injectIntoIframe, ms));
     });
     document.getElementById('stFS').addEventListener('click', () => { try { if (!document.fullscreenElement) { gameOverlay.requestFullscreen().catch(()=>{}); } else { document.exitFullscreen().catch(()=>{}); } } catch(_) {} });
     document.getElementById('stPtr').addEventListener('click', () => {
@@ -784,23 +676,22 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     const leCursorBtn = document.getElementById('leCursor');
     const leRemoveAll = document.getElementById('leRemoveAll');
     function applyHack() {
-        const b = document.body; const lo = HACK.lowEnd;
-        b.classList.toggle('hack-no-logos', HACK.logos || lo);
-        b.classList.toggle('hack-no-anim', HACK.anim || lo);
-        b.classList.toggle('hack-no-cursor', HACK.cursor || lo);
+        const b = document.body; const lo = _hk.lowEnd;
+        b.classList.toggle('hack-no-logos', _hk.logos || lo);
+        b.classList.toggle('hack-no-anim', _hk.anim || lo);
+        b.classList.toggle('hack-no-cursor', _hk.cursor || lo);
         if (lo) { if (LK.mode === 0) { lagKillerForcedByLowEnd = true; setLKMode(4); } }
         else { if (lagKillerForcedByLowEnd) { lagKillerForcedByLowEnd = false; setLKMode(0); } }
-        leLowEndBtn.classList.toggle('active', HACK.lowEnd);
-        leLogosBtn.classList.toggle('active', HACK.logos || lo);
-        leAnimBtn.classList.toggle('active', HACK.anim || lo);
-        leCursorBtn.classList.toggle('active', HACK.cursor || lo);
-        injectIntoIframe();
+        leLowEndBtn.classList.toggle('active', _hk.lowEnd);
+        leLogosBtn.classList.toggle('active', _hk.logos || lo);
+        leAnimBtn.classList.toggle('active', _hk.anim || lo);
+        leCursorBtn.classList.toggle('active', _hk.cursor || lo);
     }
-    function toggleHackSub(key) { if (HACK.lowEnd) { HACK.lowEnd = false; HACK.logos = true; HACK.anim = true; HACK.cursor = true; } HACK[key] = !HACK[key]; applyHack(); }
-    leLowEndBtn.addEventListener('click', () => { HACK.lowEnd = !HACK.lowEnd; applyHack(); showToast(HACK.lowEnd ? '📱 Low End Device ON' : '📱 Low End Device OFF', 2000); });
-    leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(HACK.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
-    leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(HACK.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
-    leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(HACK.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
+    function toggleHackSub(key) { if (_hk.lowEnd) { _hk.lowEnd = false; _hk.logos = true; _hk.anim = true; _hk.cursor = true; } _hk[key] = !_hk[key]; applyHack(); }
+    leLowEndBtn.addEventListener('click', () => { _hk.lowEnd = !_hk.lowEnd; applyHack(); showToast(_hk.lowEnd ? '📱 Low End Device ON' : '📱 Low End Device OFF', 2000); });
+    leLogosBtn.addEventListener('click', () => { toggleHackSub('logos'); showToast(_hk.logos ? '🚫 Game logos hidden' : '✅ Game logos shown', 1500); });
+    leAnimBtn.addEventListener('click', () => { toggleHackSub('anim'); showToast(_hk.anim ? '🎞️ Animations disabled' : '✅ Animations enabled', 1500); });
+    leCursorBtn.addEventListener('click', () => { toggleHackSub('cursor'); showToast(_hk.cursor ? '🖱️ Custom cursor disabled' : '✅ Custom cursor enabled', 1500); });
     function removeAllBars() { stCtrlBar.style.display = 'none'; stLowEndBar.style.display = 'none'; stRestoreBar.classList.add('show'); showToast('🧹 All bars removed — press Σ to restore', 2500); }
     leRemoveAll.addEventListener('click', removeAllBars);
     stRestoreBar.addEventListener('click', () => { stCtrlBar.style.display = 'flex'; stLowEndBar.style.display = 'flex'; stRestoreBar.classList.remove('show'); document.querySelectorAll('#stCtrlBar [data-removed="true"], #stLowEndBar [data-removed="true"]').forEach(b => { b.style.display = ''; b.dataset.removed = ''; }); showToast('✅ SigmaTown bars & buttons restored', 1600); });
@@ -1046,7 +937,6 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
         { id: "magictiles3", name: "Magic Tiles 3", file: "Magic Tiles 3 (3).html", img: "https://cdn.mobygames.com/covers/17514493-magic-tiles-3-piano-game-iphone-front-cover.png" },
         { id: "dontyoulectureme", name: "Don't You Lecture Me", file: "DON'T YOU LECTURE ME.html", img: "https://tse3.mm.bing.net/th/id/OIP.KQ30R9-6p_fwb0F_ulaKvgHaEL?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
         { id: "ruffle", name: "Ruffle Player", file: "Ruffle (3).html", categories: ["Other"], img: "https://tse2.mm.bing.net/th/id/OIP.pKiLZRKQqhGpo9K4ZT7v9QHaDT?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
-        { id: "deltarune", name: "Deltarune", file: "cldeltarune.html", img: "https://tse3.mm.bing.net/th/id/OIP.pwkKXYW2j0c4FBU_PuzGWgHaBg?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
         { id: "googledino", name: "Google Dino", file: "clgoogledino (2).html", img: "https://tse3.mm.bing.net/th/id/OIP.j4DwfTPDJ_DUPpNmNwaObAHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
         { id: "fnafworld", name: "FNAF World", file: "clfnafworldd.html", img: "https://images.stopgame.ru/games/logos/15516/c1120x1120/LJJHkWiM5kOoBgi0wc_BLQ/fnaf_world-square.jpg" },
         { id: "subwaysurfersmiami", name: "Subway Surfers Miami", file: "clsubwaysurfersmiami (1).html", img: "https://i.ytimg.com/vi/h-N7Eg8GH7U/maxresdefault.jpg" },
@@ -1197,6 +1087,21 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
         { id: "raldiscrackhouse", name: "Raldi's Crackhouse", file: "Raldi's Crackhouse (2).html", categories: ["Brainrot/Meme", "Baldi's Basics"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/670.png" },
         { id: "Piperunner", name: "PipeRunner", file: "Pipe Runner.html", categories: ["Runner"], img: "https://cdn2.scratch.mit.edu/get_image/project/213968402_480x360.png" },
         { id: "noobminer", name: "Noob Miner", file: "clnoobminer.html", categories: ["Minecraft"], img: "https://tse3.mm.bing.net/th/id/OIP.bROxewI8cAUo0or6ZWwGqwHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+        { id: "motox3mspooky", name: "Moto X3m Spooky", file: "Moto X3M Spooky.html", categories: ["🎃halloween🎃", "🏍️ Moto X3M", "Driving", "Moto X3M", "Platformer"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/99.png" },
+        { id: "fearassessmentdemo", name: "Fear Assessment (DEMO)", file: "clfearassessment.html", categories: ["🎃halloween🎃", "Horror"], img: "https://img.itch.zone/aW1nLzEyNDg0NDQyLmdpZg==/original/bw5UvX.gif" },
+        { id: "fnaf4halloweendlc", name: "Fnaf 4 Halloween DLC", file: "Five Nights at Freddy's 4_ Halloween.html", categories: ["🎃halloween🎃", "FNAF", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/428.png" },
+        { id: "fnaf5sisterloction", name: "Fnaf 5/Sister Loction", file: "Five Nights at Freddy's_ Sister Location.html", categories: ["🎃halloween🎃", "FNAF", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/185.png" },
+        { id: "fnaf6pizzeriasim", name: "Fnaf 6/Pizzeria Sim", file: "Five Nights at Freddy's_ Pizza Simulator.html", categories: ["🎃halloween🎃", "FNAF", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/191.png" },
+        { id: "fnafucn", name: "Fnaf UCN", file: "Five Nights at Freddy's_ Ultimate Custom Night.html", categories: ["🎃halloween🎃", "FNAF", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/192.png" },
+        { id: "bindingofissac", name: "Binding Of Issac", file: "Binding of Issac_ Wrath of the Lamb.html", categories: ["🎃halloween🎃", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/350.png" },
+        { id: "badparenting", name: "Bad Parenting", file: "Bad Parenting 1.html", categories: ["🎃halloween🎃", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/166.png" },
+        { id: "donottakethiscathome", name: "Do NOT Take This Cat Home", file: "Do NOT Take This Cat Home (1).html", categories: ["🎃halloween🎃", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/193.png" },
+        { id: "mergeroundracers", name: "Merge Round Racers", file: "clmergeroundracers.html", categories: ["🎃halloween🎃", "Driving"], img: "https://th.bing.com/th/id/OIP.drpPDpRm2LMu3-qhYK6XmQHaHa?r=0&o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3" },
+        { id: "clashofvikings", name: "Clash Of Vikings", file: "Clash Of Vikings.html", categories: ["🎃halloween🎃", "Uncategorized"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/545.png" },
+        { id: "goblingoopmaxxing", name: "Goblin Goopmaxxing", file: "Goblin Goopmaxxing.html", categories: ["🎃halloween🎃", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/655.png" },
+        { id: "giantwanted", name: "Giant Wanted", file: "Giant Wanted (1).html", categories: ["🎃halloween🎃", "Shooter"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/393.png" },
+        { id: "brotato", name: "Brotato", file: "Brotato (1).html", categories: ["🎃halloween🎃", "Horror"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/723.png" },
+        { id: "johnnytrigger", name: "Johnny Trigger", file: "Johnny Trigger.html", categories: ["🎃halloween🎃", "Shooter"], img: "https://cdn.jsdelivr.net/gh/freebuisness/covers@main/93.png" },
     ];
 
     const GAME_DATA = GAME_DATA_RAW.map(g => g.id === 'randompicker' ? { ...g, categories: ['Random'] } : { ...g, categories: g.categories || getCategories(g.id, g.name) });
@@ -1368,20 +1273,19 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     const SPEED_FLIP_SLOW = 0.5;
 
     const cloakList = [
-        { title: 'IXL - Dashboard', fav: 'https://www.ixl.com/favicon.ico' },
-        { title: 'Typing Agent', fav: 'https://app.typingagent.com/favicon.ico' },
-        { title: 'i-Ready Login', fav: 'https://login.i-ready.com/favicon.ico' },
-        { title: 'Clever | Portal', fav: 'https://www.google.com/s2/favicons?domain=clever.com&sz=64' },
-        { title: 'Schoology', fav: 'https://www.google.com/s2/favicons?domain=schoology.com&sz=64' },
-        { title: 'Khan Academy', fav: 'https://www.khanacademy.org/favicon.ico' },
-        { title: 'Study Island', fav: 'https://i.pinimg.com/originals/19/e7/41/19e741c29250c0a2cecfb580343cac9a.png' },
-        { title: 'Delta Math', fav: 'https://tse1.mm.bing.net/th/id/OIP.2O61PuDbeYD8D8-2PkShGQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { title: 'Generation Genius', fav: 'https://tse2.mm.bing.net/th/id/OIP.Wk-nAWq0_N9ev9oe05SbDwHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3' },
-        { title: 'Google Docs', fav: 'https://www.gstatic.com/images/branding/product/2x/docs_48dp.png' },
-        { title: 'Google Slides', fav: 'https://www.gstatic.com/images/branding/product/2x/slides_48dp.png' },
-        { title: 'Google Sheets', fav: 'https://www.gstatic.com/images/branding/product/2x/sheets_48dp.png' },
-        { title: 'Infinite Campus', fav: 'https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64' }
-    ];
+    { title: "IXL - Dashboard", fav: "https://www.ixl.com/favicon.ico" },
+    { title: "Typing Agent", fav: "https://app.typingagent.com/favicon.ico" },
+    { title: "i-Ready Login", fav: "https://login.i-ready.com/favicon.ico" },
+    { title: "Clever | Portal", fav: "https://www.google.com/s2/favicons?domain=clever.com&sz=64" },
+    { title: "Schoology", fav: "https://www.google.com/s2/favicons?domain=schoology.com&sz=64" },
+    { title: "Khan Academy", fav: "https://www.khanacademy.org/favicon.ico" },
+    { title: "Delta Math", fav: "https://tse1.mm.bing.net/th/id/OIP.2O61PuDbeYD8D8-2PkShGQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+    { title: "Generation Genius", fav: "https://tse2.mm.bing.net/th/id/OIP.Wk-nAWq0_N9ev9oe05SbDwHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+    { title: "Google Docs", fav: "https://www.gstatic.com/images/branding/product/2x/docs_48dp.png" },
+    { title: "Google Slides", fav: "https://www.gstatic.com/images/branding/product/2x/slides_48dp.png" },
+    { title: "Google Sheets", fav: "https://www.gstatic.com/images/branding/product/2x/sheets_48dp.png" },
+    { title: "Infinite Campus", fav: "https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64" },
+];
     let currentCloak = 0;
 
     const grid = document.getElementById('cyclesGrid'), otherGrid = document.getElementById('otherGrid'), skinsGrid = document.getElementById('skinsGrid');
@@ -1396,7 +1300,7 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     const bgUrlInput = document.getElementById('bgUrlInput'), applyBgBtn = document.getElementById('applyBgBtn'), uploadBgBtn = document.getElementById('uploadBgBtn');
     const localFileInput = document.getElementById('localFileInput'), themeBtn = document.getElementById('themeBtn'), lagKillerBtn = document.getElementById('lagKillerBtn');
     const rainBtn = document.getElementById('rainBtn'), rainbowBtn = document.getElementById('rainbowBtn'), cloakBtn = document.getElementById('cloakBtn');
-    const panicOpenBtn = document.getElementById('panicOpenBtn'), panicBadge = document.getElementById('panicBadge'), toast = document.getElementById('toast');
+    const _pob = document.getElementById('_pob'), _pb = document.getElementById('_pb'), toast = document.getElementById('toast');
     const nintendoToggle = document.getElementById('nintendoToggle'), nintendoCarousel = document.getElementById('nintendoCarousel');
     const carouselItems = document.getElementById('carouselItems'), carouselIndicators = document.getElementById('carouselIndicators');
     const soundGrid = document.getElementById('soundGrid'), oldSoundGrid = document.getElementById('oldSoundGrid');
@@ -1805,35 +1709,35 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     function applyCloak(i) { const c = cloakList[i]; document.title = c.title; document.getElementById('tab-favicon').href = c.fav; }
     cloakBtn.addEventListener('click', () => { currentCloak = (currentCloak + 1) % cloakList.length; applyCloak(currentCloak); showToast('🕵️ Cloaked as: ' + cloakList[currentCloak].title, 2000); });
 
-    const defaultPanic = [
-        { key: '6', url: 'https://www.ixl.com', label: 'IXL' },
-        { key: '7', url: 'https://classroom.google.com', label: 'Classroom' },
-        { key: '8', url: 'https://canvas.instructure.com', label: 'Canvas' },
-        { key: '9', url: 'https://www.khanacademy.org', label: 'Khan' },
-        { key: '0', url: 'https://www.schoology.com', label: 'Schoology' },
-        { key: '-', url: 'https://www.clever.com', label: 'Clever' },
-        { key: '=', url: 'https://www.infinitecampus.com', label: 'Infinite' },
-        { key: 'i', url: 'https://login.i-ready.com/', label: 'i-Ready' },
-        { key: 'u', url: 'https://www.studyisland.com/', label: 'Study Island' },
-        { key: 's', url: 'https://docs.google.com/presentation', label: 'Slides' },
-        { key: 'd', url: 'https://docs.google.com/document', label: 'Docs' }
-    ];
-    let panicButtons = [];
-    function loadPanic() { const s = localStorage.getItem('panic_btns'); let ex = []; if (s) { try { const p = JSON.parse(s); if (Array.isArray(p) && p.length) ex = p; } catch(e){} } const m = [...ex]; const ks = new Set(m.map(b => b.key)); for (const d of defaultPanic) if (!ks.has(d.key)) m.push(d); panicButtons = m; savePanic(); }
-    function savePanic() { localStorage.setItem('panic_btns', JSON.stringify(panicButtons)); updatePanicBadge(); renderPanicList(); }
-    function updatePanicBadge() { panicBadge.textContent = panicButtons.length; }
-    function renderPanicList() { const l = document.getElementById('panicList'); if (!l) return; if (!panicButtons.length) { l.innerHTML = '<div class="panic-empty">No panic buttons. Add one below!</div>'; return; } l.innerHTML = ''; panicButtons.forEach((it, i) => { const d = document.createElement('div'); d.className = 'panic-item'; d.innerHTML = `<span class="key">${it.key}</span><span class="url">${it.url}</span><span class="label">${it.label || '—'}</span><button class="del" data-idx="${i}">✕</button>`; d.querySelector('.del').addEventListener('click', () => { panicButtons.splice(i, 1); savePanic(); showToast('🗑️ Removed "' + it.key + '"'); }); l.appendChild(d); }); }
-    function addPanic(k, u, lab) { k = k.trim(); u = u.trim(); if (!k || !u) { showToast('⚠️ Enter a key and URL.', 2500); return false; } try { new URL(u); } catch(_) { showToast('⚠️ Invalid URL.', 2500); return false; } if (panicButtons.some(b => b.key === k)) { showToast('⚠️ Key already used.', 2500); return false; } panicButtons.push({ key: k, url: u, label: lab.trim() || '' }); savePanic(); showToast('✅ Added key "' + k + '"', 2000); return true; }
-    function resetPanic() { if (panicButtons.length === 0 || confirm('Reset panic buttons?')) { panicButtons = JSON.parse(JSON.stringify(defaultPanic)); savePanic(); showToast('↺ Reset.', 2000); } }
-    const panicOverlay = document.getElementById('panicOverlay');
-    panicOpenBtn.addEventListener('click', () => { renderPanicList(); panicOverlay.classList.add('open'); document.getElementById('panicKey').focus(); });
-    document.getElementById('panicCloseBtn').addEventListener('click', () => panicOverlay.classList.remove('open'));
-    panicOverlay.addEventListener('click', e => { if (e.target === panicOverlay) panicOverlay.classList.remove('open'); });
-    document.getElementById('panicAddBtn').addEventListener('click', () => { const k = document.getElementById('panicKey').value, u = document.getElementById('panicUrl').value, lab = document.getElementById('panicLabel').value; if (addPanic(k, u, lab)) { document.getElementById('panicKey').value = ''; document.getElementById('panicUrl').value = ''; document.getElementById('panicLabel').value = ''; document.getElementById('panicKey').focus(); } });
-    document.getElementById('panicResetBtn').addEventListener('click', resetPanic);
+    const _dp = [
+    { key: "6", url: "https://www.ixl.com", label: "IXL" },
+    { key: "7", url: "https://classroom.google.com", label: "Classroom" },
+    { key: "8", url: "https://canvas.instructure.com", label: "Canvas" },
+    { key: "9", url: "https://www.khanacademy.org", label: "Khan" },
+    { key: "0", url: "https://www.schoology.com", label: "Schoology" },
+    { key: "-", url: "https://www.clever.com", label: "Clever" },
+    { key: "=", url: "https://www.infinitecampus.com", label: "Infinite" },
+    { key: "i", url: "https://login.i-ready.com/", label: "i-Ready" },
+    { key: "u", url: "https://www.studyisland.com/", label: "Study Island" },
+    { key: "s", url: "https://docs.google.com/presentation", label: "Slides" },
+    { key: "d", url: "https://docs.google.com/document", label: "Docs" },
+];
+    let _pn = [];
+    function _lp() { const s = localStorage.getItem('panic_btns'); let ex = []; if (s) { try { const p = JSON.parse(s); if (Array.isArray(p) && p.length) ex = p; } catch(e){} } const m = [...ex]; const ks = new Set(m.map(b => b.key)); for (const d of _dp) if (!ks.has(d.key)) m.push(d); _pn = m; _sp(); }
+    function _sp() { localStorage.setItem('panic_btns', JSON.stringify(_pn)); _upb(); _rpl(); }
+    function _upb() { _pb.textContent = _pn.length; }
+    function _rpl() { const l = document.getElementById('_pl'); if (!l) return; if (!_pn.length) { l.innerHTML = '<div class="panic-empty">No panic buttons. Add one below!</div>'; return; } l.innerHTML = ''; _pn.forEach((it, i) => { const d = document.createElement('div'); d.className = 'panic-item'; d.innerHTML = `<span class="key">${it.key}</span><span class="url">${it.url}</span><span class="label">${it.label || '—'}</span><button class="del" data-idx="${i}">✕</button>`; d.querySelector('.del').addEventListener('click', () => { _pn.splice(i, 1); _sp(); showToast('🗑️ Removed "' + it.key + '"'); }); l.appendChild(d); }); }
+    function _ap(k, u, lab) { k = k.trim(); u = u.trim(); if (!k || !u) { showToast('⚠️ Enter a key and URL.', 2500); return false; } try { new URL(u); } catch(_) { showToast('⚠️ Invalid URL.', 2500); return false; } if (_pn.some(b => b.key === k)) { showToast('⚠️ Key already used.', 2500); return false; } _pn.push({ key: k, url: u, label: lab.trim() || '' }); _sp(); showToast('✅ Added key "' + k + '"', 2000); return true; }
+    function _rp() { if (_pn.length === 0 || confirm('Reset panic buttons?')) { _pn = JSON.parse(JSON.stringify(_dp)); _sp(); showToast('↺ Reset.', 2000); } }
+    const _po = document.getElementById('_po');
+    _pob.addEventListener('click', () => { _rpl(); _po.classList.add('open'); document.getElementById('_pk').focus(); });
+    document.getElementById('_pcb').addEventListener('click', () => _po.classList.remove('open'));
+    _po.addEventListener('click', e => { if (e.target === _po) _po.classList.remove('open'); });
+    document.getElementById('_pab').addEventListener('click', () => { const k = document.getElementById('_pk').value, u = document.getElementById('_pu').value, lab = document.getElementById('_plb').value; if (_ap(k, u, lab)) { document.getElementById('_pk').value = ''; document.getElementById('_pu').value = ''; document.getElementById('_plb').value = ''; document.getElementById('_pk').focus(); } });
+    document.getElementById('_prb').addEventListener('click', _rp);
 
-    function firePanic(key) {
-        const m = panicButtons.find(b => b.key === key);
+    function _fp(key) {
+        const m = _pn.find(b => b.key === key);
         if (!m) return false;
         try { window.open(m.url, '_blank', 'noopener,noreferrer'); } catch(_) {}
         showToast('🚨 Panic! → ' + (m.label || m.url), 1500);
@@ -1842,14 +1746,14 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
     }
     document.addEventListener('keydown', e => {
         if (e.ctrlKey || e.altKey || e.metaKey) return;
-        firePanic(e.key);
+        _fp(e.key);
     });
     window.addEventListener('message', function(e) {
         if (e.data && e.data.__sigmaPanicKey) {
-            firePanic(e.data.__sigmaPanicKey);
+            _fp(e.data.__sigmaPanicKey);
         }
     });
-    loadPanic();
+    _lp();
     document.getElementById('creditsCloseBtn').addEventListener('click', () => document.getElementById('creditsOverlay').classList.remove('open'));
     document.getElementById('creditsOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) document.getElementById('creditsOverlay').classList.remove('open'); });
 
@@ -1908,64 +1812,148 @@ body.gif-mode .glow-orb, body.gif-mode .grid-scan, body.gif-mode .meteor, body.g
 
 
 
-<!-- SIGMA-HALLOWEEN-START -->
+
+
+
+
+
+
+
+
+
+
+<!-- SIGMA-HALLOWEEN-CAT-START -->
 <style>
-#halloweenContainer{display:none;position:relative;z-index:2;min-height:74vh;padding:40px 16px;align-items:center;justify-content:center;}
-#halloweenContainer.show{display:flex !important;}
-#halloweenContainer .hw-inner{max-width:960px;width:100%;text-align:center;padding:40px 20px;}
-#halloweenContainer .hw-pump{font-size:170px;line-height:1;display:inline-block;filter:drop-shadow(0 0 60px #ff8c00) drop-shadow(0 0 120px #ff4500);animation:hwFloat 2.8s ease-in-out infinite;}
-#halloweenContainer .hw-cs{font-size:72px;font-weight:900;letter-spacing:10px;margin-top:22px;background:linear-gradient(135deg,#ff8c00 0%,#ffd700 30%,#ff4500 60%,#ff8c00 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hwShine 3s linear infinite;text-shadow:0 0 80px rgba(255,140,0,.6);}
-@keyframes hwShine{0%{background-position:0% 50%}100%{background-position:300% 50%}}
-@keyframes hwFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-28px) rotate(8deg)}}
-body.halloween-mode{background-image:linear-gradient(rgba(20,8,0,.55),rgba(20,8,0,.55)),url("https://tse4.mm.bing.net/th/id/OIP.dOcjgES0EsM_z7pZSWIpiwHaEJ?r=0&rs=1&pid=ImgDetMain&o=7&rm=3") !important;background-size:cover !important;background-position:center !important;background-attachment:fixed !important;background-repeat:no-repeat !important;}
-body.halloween-mode{--primary:#ff8c00 !important;--glow:rgba(255,140,0,.85) !important;}
-body.halloween-mode .header{border-color:#ff8c00 !important;box-shadow:0 0 45px rgba(255,140,0,.75) !important;}
-body.halloween-mode .controls{border-color:#ff8c00 !important;box-shadow:0 0 30px rgba(255,140,0,.65) !important;}
-body.halloween-mode .tab-btn.active{background:linear-gradient(135deg,#ff8c00,#ff4500) !important;border-color:#ffd700 !important;box-shadow:0 0 32px rgba(255,140,0,.9) !important;}
-body.halloween-mode .glow-orb{background:rgba(255,140,0,.22) !important;}
-body.halloween-mode .header h1{background:linear-gradient(135deg,#fff 20%,#ff8c00 50%,#ffd700 80%,#fff 95%) !important;-webkit-background-clip:text !important;background-clip:text !important;color:transparent !important;}
-@media(max-width:640px){#halloweenContainer .hw-pump{font-size:110px}#halloweenContainer .hw-cs{font-size:40px;letter-spacing:5px}}
+body.halloween-cat-active{background-image: linear-gradient(rgba(15,5,0,.6),rgba(15,5,0,.75)), url("https://tse4.mm.bing.net/th/id/OIP.dOcjgES0EsM_z7pZSWIpiwHaEJ?r=0&rs=1&pid=ImgDetMain&o=7&rm=3") !important;background-size: cover !important;background-position: center !important;background-attachment: fixed !important;background-repeat: no-repeat !important;background-color: #0a0e1a !important;transition: background .5s;}
+body.halloween-cat-active{--primary:#ff8c00 !important;--glow:rgba(255,140,0,.85) !important;}
+body.halloween-cat-active .header,body.halloween-cat-active .controls{border-color:#ff8c00 !important;box-shadow:0 0 40px rgba(255,140,0,.7) !important;}
+body.halloween-cat-active .tab-btn.active{background:linear-gradient(135deg,#ff8c00,#ff4500) !important;border-color:#ffd700 !important;}
+body.halloween-cat-active .glow-orb{opacity:.25 !important;filter:brightness(.6);}
 </style>
 <script>
 (function(){
-  function boot(){
-    var tabBar = document.querySelector(".tab-bar"); if (!tabBar) return;
-    if (document.querySelector('.tab-btn[data-tab="halloween"]')) return;
-    var btn = document.createElement("button");
-    btn.className = "tab-btn"; btn.dataset.tab = "halloween"; btn.title = "Halloween";
-    btn.textContent = "🎃 Page 7";
-    btn.style.cssText = "background:linear-gradient(135deg,#ff8c00,#ff4500);border-color:#ffd700;color:#fff;font-weight:800;";
-    tabBar.appendChild(btn);
-    var div = document.createElement("div"); div.id = "halloweenContainer";
-    div.innerHTML = '<div class="hw-inner"><div class="hw-pump">🎃</div><div class="hw-cs">COMING SOON!</div></div>';
-    var musicC = document.getElementById("musicContainer");
-    if (musicC && musicC.parentNode) musicC.parentNode.appendChild(div);
-    else { var main = document.querySelector(".container") || document.body; main.appendChild(div); }
-    function hideAll(){
-      ["gamesPage","soundboardContainer","otherContainer","skinsContainer","shortsContainer","musicContainer"].forEach(function(id){
-        var el = document.getElementById(id); if (el) el.style.display = "none";
-      });
-      div.classList.remove("show");
-    }
-    btn.addEventListener("click", function(){
-      document.querySelectorAll(".tab-btn").forEach(function(b){ b.classList.remove("active"); });
-      btn.classList.add("active");
-      hideAll();
-      div.classList.add("show");
-      document.body.classList.add("halloween-mode");
-      try { if (typeof shortsVideo !== "undefined" && shortsVideo) shortsVideo.pause(); } catch(_){}
-    });
-    document.querySelectorAll(".tab-btn").forEach(function(b){
-      if (b === btn) return;
-      b.addEventListener("click", function(){
-        document.body.classList.remove("halloween-mode");
-        div.classList.remove("show");
-        btn.classList.remove("active");
-      });
-    });
+var TRIGGERS=["halloween","spooky","horror"];
+function isTrigger(v){
+  if (!v) return false;
+  v = String(v).toLowerCase().trim();
+  if (v === "all") return false;
+  for (var i=0;i<TRIGGERS.length;i++){
+    var t = TRIGGERS[i];
+    if (!t) continue;
+    if (v === t) return true;
+    if (v.indexOf(t) > -1) return true;
+    if (t.indexOf(v) > -1) return true;
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", function(){ setTimeout(boot, 80); });
-  else setTimeout(boot, 80);
+  return false;
+}
+function check(){
+  var sel=document.getElementById("categoryFilter"); if(!sel) return;
+  var hit=false, allOnly=true;
+  for(var i=0;i<sel.options.length;i++){
+    var o=sel.options[i];
+    if(!o.selected) continue;
+    if(o.value !== "all") allOnly = false;
+    if(isTrigger(o.value)) hit=true;
+  }
+  if (allOnly) hit = false;
+  if (hit) document.body.classList.add("halloween-cat-active");
+  else document.body.classList.remove("halloween-cat-active");
+}
+function boot(){
+  var sel=document.getElementById("categoryFilter");
+  if (sel){
+    sel.addEventListener("change", check);
+    sel.addEventListener("input", check);
+  }
+  document.addEventListener("click", function(e){
+    var t = e.target && e.target.closest ? e.target.closest(".sigma-chip") : null;
+    if (t) setTimeout(check, 30);
+  }, true);
+  setInterval(check, 400);
+  check();
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,250);}); else setTimeout(boot,250);
 })();
 </script>
-<!-- SIGMA-HALLOWEEN-END -->
+<!-- SIGMA-HALLOWEEN-CAT-END -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- SIGMA-EFFECTS-START -->
+<style>
+#fxFlamesCanvas,#fxAshCanvas,#fxSnowCanvas{position:fixed;inset:0;pointer-events:none;z-index:1;display:none;}
+body.fx-flames-on #fxFlamesCanvas{display:block;}
+body.fx-ash-on #fxAshCanvas{display:block;}
+body.fx-snow-on #fxSnowCanvas{display:block;}
+.fx-btn{transition:all .25s;font-weight:800 !important;border:1px solid rgba(255,255,255,.25) !important;}
+#fxFlamesBtn{background:linear-gradient(135deg,#dc2626,#f97316) !important;color:#fff !important;}
+#fxFlamesBtn.fx-on{background:linear-gradient(135deg,#ff4500,#ffcc00) !important;box-shadow:0 0 26px rgba(255,100,0,.9) !important;}
+#fxAshBtn{background:linear-gradient(135deg,#4b5563,#a3a3a3) !important;color:#fff !important;}
+#fxAshBtn.fx-on{background:linear-gradient(135deg,#78716c,#fbbf24) !important;box-shadow:0 0 26px rgba(251,191,36,.85) !important;}
+#fxSnowBtn{background:linear-gradient(135deg,#3b82f6,#a5f3fc) !important;color:#042c4e !important;}
+#fxSnowBtn.fx-on{background:linear-gradient(135deg,#60a5fa,#a5f3fc) !important;box-shadow:0 0 26px rgba(96,165,250,.9) !important;}
+</style>
+<script>
+(function(){var INC_FLAMES=true,INC_ASH=true,INC_SNOW=true;var FL_ONLOAD=false,ASH_ONLOAD=false,SNOW_ONLOAD=false;var FL_RATE=5,FL_MAX=280;var ASH_RATE=3,ASH_MAX=180,ASH_DIR="up";var SNOW_RATE=3,SNOW_MAX=220;var SIZE_MUL=1,SPEED_MUL=1,SNOW_TINT=1;var USE_WHEEL=true,FLOAT=true;function readPrimary(){var v=getComputedStyle(document.documentElement).getPropertyValue("--primary").trim();var r=255,g=140,b=0;  if(v.charAt(0)==="#"&&v.length>=7){r=parseInt(v.slice(1,3),16)||255;g=parseInt(v.slice(3,5),16)||140;b=parseInt(v.slice(5,7),16)||0;}  else if(v.indexOf("hsl")===0){var m=v.match(/hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%/);    if(m){var h=parseFloat(m[1])/360,s=parseFloat(m[2])/100,l=parseFloat(m[3])/100;      var hue=function(p,q,t){if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};      var q2=l<0.5?l*(1+s):l+s-l*s,p2=2*l-q2;      r=Math.round(hue(p2,q2,h+1/3)*255);g=Math.round(hue(p2,q2,h)*255);b=Math.round(hue(p2,q2,h-1/3)*255);}}  if(!USE_WHEEL)return{r:255,g:140,b:0};return{r:r,g:g,b:b};}var fc,fx,fp=[],fW,fH,fOn=false,fRaf=null,fBase=0;function fResize(){if(!fc)return;fW=fc.width=innerWidth;fH=fc.height=innerHeight;}function fSpawn(){if(fp.length>=FL_MAX)return;var col=readPrimary();var s=(10+Math.random()*18)*SIZE_MUL;  fp.push({x:Math.random()*fW,y:fH+s*0.5,vx:(Math.random()-0.5)*0.6*SPEED_MUL,vy:-(1.4+Math.random()*2.6)*SPEED_MUL,s:s,life:1,dec:(0.006+Math.random()*0.012)*SPEED_MUL,wob:Math.random()*6.28,wos:0.04+Math.random()*0.06,woa:0.15+Math.random()*0.4,r:col.r,g:col.g,b:col.b});}function fDraw(){if(!fOn)return;fx.clearRect(0,0,fW,fH);fx.globalCompositeOperation="lighter";fBase+=0.05*SPEED_MUL;  var fl=0.7+0.3*Math.sin(fBase)+0.08*Math.sin(fBase*7.3);var co=readPrimary();  var bg=fx.createLinearGradient(0,fH,0,fH-260);bg.addColorStop(0,"rgba("+co.r+","+co.g+","+co.b+","+(0.4*fl)+")");bg.addColorStop(1,"rgba(0,0,0,0)");fx.fillStyle=bg;fx.fillRect(0,fH-260,fW,260);  for(var i=0;i<FL_RATE;i++)fSpawn();  for(var j=fp.length-1;j>=0;j--){var p=fp[j];p.wob+=p.wos;p.x+=p.vx+Math.sin(p.wob)*p.woa;p.y+=p.vy;p.vy*=0.996;p.life-=p.dec;    if(p.life<=0){fp.splice(j,1);continue;}var t=1-p.life;var sz=p.s*(t<0.35?(0.55+t*1.15):(1-(t-0.35)*0.8));if(sz<1)sz=1;var a=p.life*0.85;    var hr=Math.min(255,Math.floor(p.r*0.35+255*0.65));var hg=Math.min(255,Math.floor(p.g*0.35+240*0.6));var hb=Math.min(255,Math.floor(p.b*0.35+120*0.4));    var grd=fx.createRadialGradient(p.x,p.y,0,p.x,p.y,sz);grd.addColorStop(0,"rgba("+hr+","+hg+","+hb+","+a+")");grd.addColorStop(0.3,"rgba("+p.r+","+p.g+","+p.b+","+(a*0.85)+")");grd.addColorStop(0.6,"rgba("+Math.floor(p.r*0.7)+","+Math.floor(p.g*0.3)+","+Math.floor(p.b*0.15)+","+(a*0.4)+")");grd.addColorStop(1,"rgba(0,0,0,0)");    fx.save();fx.translate(p.x,p.y);fx.scale(0.65,1.35);fx.fillStyle=grd;fx.beginPath();fx.arc(0,0,sz,0,6.28);fx.fill();fx.restore();}  fx.globalCompositeOperation="source-over";fRaf=requestAnimationFrame(fDraw);}function fStart(){if(fOn||!INC_FLAMES)return;if(!fc){fc=document.createElement("canvas");fc.id="fxFlamesCanvas";document.body.appendChild(fc);fx=fc.getContext("2d");fResize();window.addEventListener("resize",fResize);}fOn=true;document.body.classList.add("fx-flames-on");var b=document.getElementById("fxFlamesBtn");if(b)b.classList.add("fx-on");fDraw();}function fStop(){fOn=false;if(fRaf)cancelAnimationFrame(fRaf);if(fx)fx.clearRect(0,0,fW,fH);document.body.classList.remove("fx-flames-on");var b=document.getElementById("fxFlamesBtn");if(b)b.classList.remove("fx-on");fp=[];}var ac,ax,ap=[],aW,aH,aOn=false,aRaf=null;function aResize(){if(!ac)return;aW=ac.width=innerWidth;aH=ac.height=innerHeight;}function aSpawn(){if(ap.length>=ASH_MAX)return;var col=readPrimary();var ember=Math.random()<0.35;var s=(ember?(1.5+Math.random()*2.5):(1.2+Math.random()*2.8))*SIZE_MUL;var vx,vy;  if(ASH_DIR==="up"){vy=-(0.3+Math.random()*0.9)*SPEED_MUL;vx=(Math.random()-0.5)*0.4;}  else if(ASH_DIR==="down"){vy=(0.3+Math.random()*0.8)*SPEED_MUL;vx=(Math.random()-0.5)*0.3;}  else{vy=(Math.random()-0.5)*0.35*SPEED_MUL;vx=(Math.random()-0.5)*0.55;}  var y=ASH_DIR==="down"?-s:aH+s;  ap.push({x:Math.random()*aW,y:y,vx:vx,vy:vy,s:s,life:1,dec:(0.0015+Math.random()*0.004)*SPEED_MUL,rot:Math.random()*6.28,rs:(Math.random()-0.5)*0.06,ember:ember,f:Math.random()*6.28,r:col.r,g:col.g,b:col.b});}function aDraw(){if(!aOn)return;ax.clearRect(0,0,aW,aH);for(var i=0;i<ASH_RATE;i++)aSpawn();  for(var j=ap.length-1;j>=0;j--){var p=ap[j];p.x+=p.vx+Math.sin(p.rot*2)*0.2;p.y+=p.vy;p.rot+=p.rs;p.life-=p.dec;    if(p.life<=0||p.y<-60||p.y>aH+60){ap.splice(j,1);continue;}var a;var t=1-p.life;if(t<0.15)a=t/0.15*0.9;else if(p.life<0.35)a=p.life/0.35*0.9;else a=0.9;    ax.save();ax.translate(p.x,p.y);ax.rotate(p.rot);    if(p.ember){var fb=0.6+0.4*Math.sin(p.f+p.life*10);var g2=ax.createRadialGradient(0,0,0,0,0,p.s*4);g2.addColorStop(0,"rgba(255,240,180,"+(a*fb)+")");g2.addColorStop(0.35,"rgba("+p.r+","+p.g+","+p.b+","+(a*fb*0.85)+")");g2.addColorStop(1,"rgba(0,0,0,0)");ax.fillStyle=g2;ax.beginPath();ax.arc(0,0,p.s*4,0,6.28);ax.fill();}    else{ax.fillStyle="rgba(38,36,34,"+(a*0.85)+")";ax.beginPath();ax.arc(0,0,p.s,0,6.28);ax.fill();}ax.restore();}  aRaf=requestAnimationFrame(aDraw);}function aStart(){if(aOn||!INC_ASH)return;if(!ac){ac=document.createElement("canvas");ac.id="fxAshCanvas";document.body.appendChild(ac);ax=ac.getContext("2d");aResize();window.addEventListener("resize",aResize);}aOn=true;document.body.classList.add("fx-ash-on");var b=document.getElementById("fxAshBtn");if(b)b.classList.add("fx-on");aDraw();}function aStop(){aOn=false;if(aRaf)cancelAnimationFrame(aRaf);if(ax)ax.clearRect(0,0,aW,aH);document.body.classList.remove("fx-ash-on");var b=document.getElementById("fxAshBtn");if(b)b.classList.remove("fx-on");ap=[];}var sc,sx,sp=[],sW,sH,sOn=false,sRaf=null;function sResize(){if(!sc)return;sW=sc.width=innerWidth;sH=sc.height=innerHeight;}function sSpawn(){if(sp.length>=SNOW_MAX)return;var col=readPrimary();var wb=(1-SNOW_TINT)*0.85;  var rr=USE_WHEEL?Math.round(col.r*(1-wb)+255*wb):255;var gg=USE_WHEEL?Math.round(col.g*(1-wb)+255*wb):255;var bb=USE_WHEEL?Math.round(col.b*(1-wb)+255*wb):255;  rr=Math.min(255,rr+25);gg=Math.min(255,gg+25);bb=Math.min(255,bb+25);  var s=(6+Math.random()*10)*SIZE_MUL;  sp.push({x:Math.random()*sW,y:-s,vx:(Math.random()-0.5)*0.5*SPEED_MUL,vy:(0.5+Math.random()*1.4)*SPEED_MUL,s:s,rot:Math.random()*6.28,rs:(Math.random()-0.5)*0.03,life:1,dec:(0.003+Math.random()*0.008)*SPEED_MUL,r:rr,g:gg,b:bb});}function sFlake(px,py,sz,ro,a,r,g,b){sx.save();sx.translate(px,py);sx.rotate(ro);sx.strokeStyle="rgba("+r+","+g+","+b+","+a+")";sx.lineWidth=Math.max(1,sz*0.13);sx.lineCap="round";  for(var i=0;i<6;i++){sx.rotate(1.047);sx.beginPath();sx.moveTo(0,0);sx.lineTo(0,-sz);sx.moveTo(0,-sz*0.5);sx.lineTo(-sz*0.28,-sz*0.78);sx.moveTo(0,-sz*0.5);sx.lineTo(sz*0.28,-sz*0.78);sx.stroke();}sx.restore();}function sDraw(){if(!sOn)return;sx.clearRect(0,0,sW,sH);for(var i=0;i<SNOW_RATE;i++)sSpawn();  for(var j=sp.length-1;j>=0;j--){var p=sp[j];p.x+=p.vx+Math.sin(p.y*0.008+p.rot)*0.45;p.y+=p.vy;p.rot+=p.rs;p.life-=p.dec;if(p.y>sH+120||p.life<=0){sp.splice(j,1);continue;}sFlake(p.x,p.y,p.s,p.rot,Math.min(1,p.life*1.15)*0.95,p.r,p.g,p.b);}sRaf=requestAnimationFrame(sDraw);}function sStart(){if(sOn||!INC_SNOW)return;if(!sc){sc=document.createElement("canvas");sc.id="fxSnowCanvas";document.body.appendChild(sc);sx=sc.getContext("2d");sResize();window.addEventListener("resize",sResize);}sOn=true;document.body.classList.add("fx-snow-on");var b=document.getElementById("fxSnowBtn");if(b)b.classList.add("fx-on");sDraw();}function sStop(){sOn=false;if(sRaf)cancelAnimationFrame(sRaf);if(sx)sx.clearRect(0,0,sW,sH);document.body.classList.remove("fx-snow-on");var b=document.getElementById("fxSnowBtn");if(b)b.classList.remove("fx-on");sp=[];}window.fxToggleFlames=function(v){if(v===undefined)v=!fOn;if(v&&!fOn)fStart();else if(!v&&fOn)fStop();};window.fxToggleAsh=function(v){if(v===undefined)v=!aOn;if(v&&!aOn)aStart();else if(!v&&aOn)aStop();};window.fxToggleSnow=function(v){if(v===undefined)v=!sOn;if(v&&!sOn)sStart();else if(!v&&sOn)sStop();};window.fxFlamesOn=function(){return fOn;};window.fxAshOn=function(){return aOn;};window.fxSnowOn=function(){return sOn;};window.fxSetSize=function(v){SIZE_MUL=Math.max(0.3,Math.min(3,v/100));};window.fxSetSpeed=function(v){SPEED_MUL=Math.max(0.3,Math.min(3,v/100));};window.fxSetSnowTint=function(v){SNOW_TINT=Math.max(0,Math.min(1,v/100));};window.fxStopAll=function(){fStop();aStop();sStop();};function findControls(){return document.querySelector(".controls")||document.querySelector(".container")||document.body;}function attachFlamesBtn(){if(!INC_FLAMES||!FLOAT)return;if(document.getElementById("fxFlamesBtn"))return;var b=document.createElement("button");b.id="fxFlamesBtn";b.className="btn fx-btn";b.type="button";b.innerHTML="🔥 FLAMES";b.addEventListener("click",function(e){e.stopPropagation();window.fxToggleFlames();});if(fOn)b.classList.add("fx-on");findControls().appendChild(b);}function attachAshBtn(){if(!INC_ASH||!FLOAT)return;if(document.getElementById("fxAshBtn"))return;var b=document.createElement("button");b.id="fxAshBtn";b.className="btn fx-btn";b.type="button";b.innerHTML="💨 ASH";b.addEventListener("click",function(e){e.stopPropagation();window.fxToggleAsh();});if(aOn)b.classList.add("fx-on");findControls().appendChild(b);}function attachSnowBtn(){if(!INC_SNOW||!FLOAT)return;if(document.getElementById("fxSnowBtn"))return;var b=document.createElement("button");b.id="fxSnowBtn";b.className="btn fx-btn";b.type="button";b.innerHTML="❄️ SNOW";b.addEventListener("click",function(e){e.stopPropagation();window.fxToggleSnow();});if(sOn)b.classList.add("fx-on");findControls().appendChild(b);}function attachAll(){attachFlamesBtn();attachAshBtn();attachSnowBtn();}var tries=0;var iv=setInterval(function(){attachAll();if(++tries>=40)clearInterval(iv);},200);setInterval(attachAll,2000);function boot(){attachAll();if(FL_ONLOAD)setTimeout(fStart,300);if(ASH_ONLOAD)setTimeout(aStart,400);if(SNOW_ONLOAD)setTimeout(sStart,500);}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,250);});else setTimeout(boot,250);})();
+</script>
+<!-- SIGMA-EFFECTS-END -->
+
+<!-- SIGMA-PAGE7-START -->
+<style>
+#sigmaSettingsPage{display:none;padding:20px 0 40px;}#sigmaSettingsPage.sigma-show{display:block;}#sigmaSettingsPage .p7-t{text-align:center;font-size:34px;font-weight:900;letter-spacing:5px;color:#3b82f6;margin-bottom:22px;}#sigmaSettingsPage .p7-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;max-width:900px;margin:0 auto;}#sigmaSettingsPage .p7-c{background:var(--card-bg);border:1px solid var(--border);border-radius:18px;padding:18px 20px;backdrop-filter:blur(8px);}#sigmaSettingsPage .p7-c.p7-wide{grid-column:1 / -1;}#sigmaSettingsPage .p7-h{display:flex;justify-content:space-between;align-items:center;gap:12px;}#sigmaSettingsPage .p7-n{font-size:17px;font-weight:800;}#sigmaSettingsPage .p7-sw{position:relative;display:inline-block;width:52px;height:28px;flex:0 0 auto;}#sigmaSettingsPage .p7-sw input{opacity:0;width:0;height:0;}#sigmaSettingsPage .p7-sw .sl{position:absolute;cursor:pointer;inset:0;background:#334155;border-radius:30px;transition:.25s;}#sigmaSettingsPage .p7-sw .sl:before{content:"";position:absolute;height:22px;width:22px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;}#sigmaSettingsPage .p7-sw input:checked + .sl{background:#22c55e;}#sigmaSettingsPage .p7-sw input:checked + .sl:before{transform:translateX(24px);}#sigmaSettingsPage .p7-b{display:flex;flex-wrap:wrap;gap:8px;}#sigmaSettingsPage .p7-b button{border:none;border-radius:10px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;color:#fff;background:linear-gradient(135deg,#06b6d4,#3b82f6);border:1px solid #67e8f9;transition:.2s;}#sigmaSettingsPage .p7-b button:hover{transform:translateY(-1px);}#sigmaSettingsPage .p7-b button.p7-red{background:linear-gradient(135deg,#dc2626,#f97316);border-color:#fca5a5;}#sigmaSettingsPage .p7-b button.p7-green{background:linear-gradient(135deg,#22c55e,#16a34a);border-color:#86efac;}</style>
+<script>
+(function(){function boot(){  var tb=document.querySelector(".tab-bar");if(!tb)return;if(document.getElementById("p7tb"))return;  var bt=document.createElement("button");bt.className="tab-btn";bt.id="p7tb";bt.textContent="⚙️ Page 7";  bt.style.cssText="background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;font-weight:800;";tb.appendChild(bt);  var pg=document.createElement("div");pg.id="sigmaSettingsPage";pg.innerHTML="<div class=\"p7-t\">⚙️ SETTINGS<\/div><div class=\"p7-g\"><div class=\"p7-c\"><div class=\"p7-h\"><span class=\"p7-n\">❄️ SNOW<\/span><label class=\"p7-sw\"><input type=\"checkbox\" id=\"p7snow\" /><span class=\"sl\"><\/span><\/label><\/div><\/div><div class=\"p7-c\"><div class=\"p7-h\"><span class=\"p7-n\">🔥 FLAMES<\/span><label class=\"p7-sw\"><input type=\"checkbox\" id=\"p7flames\" /><span class=\"sl\"><\/span><\/label><\/div><\/div><div class=\"p7-c\"><div class=\"p7-h\"><span class=\"p7-n\">💨 ASHES<\/span><label class=\"p7-sw\"><input type=\"checkbox\" id=\"p7ash\" /><span class=\"sl\"><\/span><\/label><\/div><\/div><div class=\"p7-c\"><div class=\"p7-h\"><span class=\"p7-n\">📊 FPS<\/span><\/div><div class=\"p7-b\"><button type=\"button\" id=\"p7fpsToggle\" class=\"p7-green\">Toggle FPS<\/button><\/div><\/div><div class=\"p7-c p7-wide\"><div class=\"p7-h\"><span class=\"p7-n\">🎮 CONTROLS<\/span><\/div><div class=\"p7-b\"><button type=\"button\" id=\"p7Rain\">🌧️ Matrix<\/button><button type=\"button\" id=\"p7Random\">🎲 Random<\/button><button type=\"button\" id=\"p7Full\">⛶ Fullscreen<\/button><button type=\"button\" id=\"p7Cloak\">🎭 Cloak<\/button><button type=\"button\" id=\"p7Mute\" class=\"p7-green\">🔊 Sounds<\/button><button type=\"button\" id=\"p7StopAll\" class=\"p7-red\">⏹ Stop All FX<\/button><\/div><\/div><\/div>";  var mc=document.getElementById("musicContainer");if(mc&&mc.parentNode)mc.parentNode.appendChild(pg);else(document.querySelector(".container")||document.body).appendChild(pg);  bt.addEventListener("click",function(){document.querySelectorAll(".tab-btn").forEach(function(x){x.classList.remove("active");});bt.classList.add("active");["gamesPage","soundboardContainer","otherContainer","skinsContainer","shortsContainer","musicContainer","halloweenContainer"].forEach(function(id){var e=document.getElementById(id);if(e)e.style.display="none";});pg.classList.add("sigma-show");document.body.classList.remove("halloween-mode");});  document.querySelectorAll(".tab-btn").forEach(function(x){if(x===bt)return;x.addEventListener("click",function(){pg.classList.remove("sigma-show");bt.classList.remove("active");});});  function wire(id,getter,setter){var el=document.getElementById(id);if(!el)return;if(window[getter])el.checked=window[getter]();el.addEventListener("change",function(){if(window[setter])window[setter](this.checked);});}  wire("p7snow","fxSnowOn","fxToggleSnow");wire("p7flames","fxFlamesOn","fxToggleFlames");wire("p7ash","fxAshOn","fxToggleAsh");  setInterval(function(){var a=document.getElementById("p7snow");if(a&&window.fxSnowOn)a.checked=window.fxSnowOn();var b=document.getElementById("p7flames");if(b&&window.fxFlamesOn)b.checked=window.fxFlamesOn();var c=document.getElementById("p7ash");if(c&&window.fxAshOn)c.checked=window.fxAshOn();},600);  function clk(id,fn){var el=document.getElementById(id);if(el)el.addEventListener("click",fn);}  clk("p7Rain",function(){var b=document.getElementById("rainBtn");if(b)b.click();});  clk("p7Random",function(){try{if(typeof launchRandom==="function")launchRandom();}catch(_){}});  clk("p7Full",function(){try{if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}catch(_){}});  clk("p7Cloak",function(){var b=document.getElementById("cloakBtn");if(b)b.click();});  clk("p7Mute",function(){var b=document.getElementById("muteBtn");if(b)b.click();});  clk("p7StopAll",function(){if(window.fxStopAll)window.fxStopAll();});  clk("p7fpsToggle",function(){var el=document.getElementById("sigFpsMain");if(el){el.remove();return;}var n=document.createElement("div");n.id="sigFpsMain";n.style.cssText="position:fixed;top:8px;left:8px;z-index:2147483647;background:rgba(0,0,0,.75);color:#22ff22;font-family:monospace;font-size:12px;padding:4px 10px;border-radius:8px;border:1px solid #22ff22;pointer-events:none;";n.textContent="-- FPS";document.body.appendChild(n);var fr=0,lt=performance.now();(function tk(){fr++;var now=performance.now();if(now-lt>=1000){n.textContent=fr+" FPS";fr=0;lt=now;}requestAnimationFrame(tk);})();});}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,400);});else setTimeout(boot,400);})();
+</script>
+<!-- SIGMA-PAGE7-END -->
+
+<!-- SIGMA-SETTINGS-START -->
+<script>
+(function(){var CFG={"headerTitle":"🎃SigmaTown4Life v1.1.0 Happy Halloween🎃","tabTitle":"IXL - Dashboard","favicon":"https://www.ixl.com/favicon.ico","headerEmoji":"","color":"#ff7e29","theme":"","shape":"","tab":"","font":"","fontScale":100,"cardSize":"","hover":"","tabAlign":"","radius":0,"cursorGlyph":"","cursorImg":"","pageBg":"","noRightClick":false,"noSelect":false,"autoFullscreen":false,"autoHideCursor":false,"smoothScroll":true,"noZoom":false,"volume":100,"cursorDelay":3,"hideControls":false,"hideSearch":false,"hideFilter":false,"hideTabBar":false,"hideHeader":false,"hideStars":false,"msOn":false,"rainbowOn":false,"rainOn":false,"orbs":true,"grid":true,"meteors":true,"bubbles":true,"particles":true,"trail":true,"customCursor":true,"clickSounds":true,"lagKiller":"","blurIntensity":100};function apply(){  if(CFG.color){try{document.documentElement.style.setProperty("--primary",CFG.color);var r=parseInt(CFG.color.slice(1,3),16)||59,g=parseInt(CFG.color.slice(3,5),16)||130,b=parseInt(CFG.color.slice(5,7),16)||246;document.documentElement.style.setProperty("--glow","rgba("+r+","+g+","+b+",0.8)");var cp=document.getElementById("colorPicker");if(cp)cp.value=CFG.color;if(typeof updateCursor==="function")updateCursor(CFG.color);}catch(_){}}  if(CFG.theme){try{document.body.classList.remove("dark","light");if(CFG.theme!=="default")document.body.classList.add(CFG.theme);}catch(_){}}  if(CFG.shape!==""){try{var idx=parseInt(CFG.shape,10);var CL=["","shape-square","shape-rounded","shape-hexagon","shape-diamond"];var LB=["⬤ CIRCLE","⬛ SQUARE","▢ ROUNDED","⬡ HEXAGON","◆ DIAMOND"];CL.forEach(function(c){if(c)document.body.classList.remove(c);});if(CL[idx])document.body.classList.add(CL[idx]);var st=document.getElementById("shapeToggle");if(st)st.textContent=LB[idx];}catch(_){}}  if(CFG.headerTitle){var ht=document.getElementById("headerTitle");if(ht)ht.textContent=CFG.headerTitle;}  if(CFG.tabTitle)document.title=CFG.tabTitle;  if(CFG.favicon){var fv=document.getElementById("tab-favicon");if(fv)fv.href=CFG.favicon;}  if(CFG.headerEmoji){var ht2=document.getElementById("headerTitle");if(ht2){ht2.textContent=CFG.headerEmoji+" "+(CFG.headerTitle||ht2.textContent.replace(/^[^ ]+ /,""));}}  if(CFG.tab){if(CFG.tab==="sigma-settings"){setTimeout(function(){var b=document.getElementById("p7tb");if(b)b.click();},700);}else if(typeof switchTab==="function"){try{switchTab(CFG.tab);}catch(_){}}}  if(CFG.lagKiller!==""){try{if(typeof setLKMode==="function")setLKMode(parseInt(CFG.lagKiller,10)||0);}catch(_){}}  if(CFG.msOn){try{localStorage.setItem("msGifMode","1");}catch(_){}}  if(CFG.rainbowOn){setTimeout(function(){var b=document.getElementById("rainbowBtn");if(b)b.click();},500);}  if(CFG.rainOn){setTimeout(function(){var b=document.getElementById("rainBtn");if(b)b.click();},500);}  var dyn="";  if(CFG.font)dyn+="body,body *{font-family:"+CFG.font+" !important;}";  if(CFG.fontScale!==100)dyn+="html{font-size:"+CFG.fontScale+"% !important;}";  if(CFG.cardSize==="compact")dyn+=".cycle-btn{width:110px !important;height:110px !important;}";  if(CFG.cardSize==="big")dyn+=".cycle-btn{width:190px !important;height:190px !important;}";  if(CFG.hover==="off")dyn+=".cycle-btn:hover{transform:none !important;}";  if(CFG.hover==="slow")dyn+=".cycle-btn{transition-duration:.6s !important;}";  if(CFG.hover==="fast")dyn+=".cycle-btn{transition-duration:.12s !important;}";  if(CFG.radius>0)dyn+=".cycle-btn,.cycle-btn .overlay{border-radius:"+CFG.radius+"px !important;}";  if(CFG.tabAlign){var a=CFG.tabAlign==="left"?"flex-start":CFG.tabAlign==="right"?"flex-end":"center";dyn+=".tab-bar{justify-content:"+a+" !important;}";}  if(CFG.blurIntensity!==100){var bl=CFG.blurIntensity/100;dyn+=".glow-orb{filter:blur("+(80*bl)+"px) !important;}"}  if(dyn){var s=document.createElement("style");s.id="sigDynStyle";s.textContent=dyn;document.head.appendChild(s);}  if(CFG.cursorImg){try{document.documentElement.style.setProperty("--sigma-cursor","url('"+CFG.cursorImg+"') 4 4, auto");}catch(_){}}  else if(CFG.cursorGlyph){try{var svg="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"48\"><text y=\"41\" font-size=\"38\" font-family=\"Arial\">"+CFG.cursorGlyph+"</text></svg>";document.documentElement.style.setProperty("--sigma-cursor","url('data:image/svg+xml;utf8,"+encodeURIComponent(svg)+"') 20 24, auto");}catch(_){}}  if(CFG.pageBg){try{document.documentElement.style.setProperty("--bg","url('"+CFG.pageBg+"')");document.body.style.backgroundImage="var(--bg)";}catch(_){}}  var hideCss="";if(CFG.hideControls)hideCss+=".controls{display:none !important;}";if(CFG.hideSearch)hideCss+=".search-row{display:none !important;}";if(CFG.hideFilter)hideCss+=".filter-row{display:none !important;}";if(CFG.hideTabBar)hideCss+=".tab-bar{display:none !important;}";if(CFG.hideHeader)hideCss+=".header{display:none !important;}";if(CFG.hideStars)hideCss+=".star-fav{display:none !important;}";  if(hideCss){var s2=document.createElement("style");s2.textContent=hideCss;document.head.appendChild(s2);}  if(!CFG.orbs)document.querySelectorAll(".glow-orb").forEach(function(e){e.style.display="none";});  if(!CFG.grid)document.querySelectorAll(".grid-scan").forEach(function(e){e.style.display="none";});  if(!CFG.meteors)document.querySelectorAll(".meteor").forEach(function(e){e.style.display="none";});  if(!CFG.bubbles)document.querySelectorAll(".bubble").forEach(function(e){e.style.display="none";});  if(!CFG.particles){var pc=document.getElementById("particleCanvas");if(pc)pc.style.display="none";if(window._particleStop)window._particleStop();}  if(!CFG.trail){var tr=document.getElementById("glowTrail");if(tr)tr.style.display="none";}  if(!CFG.customCursor&&!CFG.cursorImg)document.documentElement.style.setProperty("--sigma-cursor","auto");  if(CFG.noRightClick)document.addEventListener("contextmenu",function(e){e.preventDefault();},true);  if(CFG.noSelect){var s3=document.createElement("style");s3.textContent="body{-webkit-user-select:none !important;user-select:none !important;}input,textarea{-webkit-user-select:text !important;user-select:text !important;}";document.head.appendChild(s3);}  if(CFG.smoothScroll){var s4=document.createElement("style");s4.textContent="html{scroll-behavior:smooth;}";document.head.appendChild(s4);}  if(CFG.noZoom){var m=document.querySelector('meta[name="viewport"]');if(m)m.setAttribute("content","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no");}  if(CFG.autoHideCursor){var tmr=null;var delay=CFG.cursorDelay*1000;function arm(){document.body.style.cursor="";if(tmr)clearTimeout(tmr);tmr=setTimeout(function(){document.body.style.cursor="none";},delay);}document.addEventListener("mousemove",arm);arm();}  if(CFG.autoFullscreen)document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".cycle-btn"):null;if(t)setTimeout(function(){try{var go=document.getElementById("gameOverlay");if(go&&go.classList.contains("show")&&!document.fullscreenElement)go.requestFullscreen();}catch(_){}},400);},true);  if(CFG.volume!==100||!CFG.clickSounds){var av=function(){["clickSound","switchClick"].forEach(function(id){var a=document.getElementById(id);if(a)a.volume=CFG.clickSounds?(CFG.volume/100):0;});};av();setTimeout(av,500);setTimeout(av,1500);}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(apply,150);});else setTimeout(apply,150);})();
+</script>
+<!-- SIGMA-SETTINGS-END -->
+
+<!-- SIGMA-EXTRAS-START -->
+<script>
+(function(){var CLOAKS=[{"title":"IXL - Dashboard","fav":"https://www.ixl.com/favicon.ico"},{"title":"Typing Agent","fav":"https://app.typingagent.com/favicon.ico"},{"title":"i-Ready Login","fav":"https://login.i-ready.com/favicon.ico"},{"title":"Clever | Portal","fav":"https://www.google.com/s2/favicons?domain=clever.com&sz=64"},{"title":"Schoology","fav":"https://www.google.com/s2/favicons?domain=schoology.com&sz=64"},{"title":"Khan Academy","fav":"https://www.khanacademy.org/favicon.ico"},{"title":"Delta Math","fav":"https://tse1.mm.bing.net/th/id/OIP.2O61PuDbeYD8D8-2PkShGQHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"},{"title":"Generation Genius","fav":"https://tse2.mm.bing.net/th/id/OIP.Wk-nAWq0_N9ev9oe05SbDwHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"},{"title":"Google Docs","fav":"https://www.gstatic.com/images/branding/product/2x/docs_48dp.png"},{"title":"Google Slides","fav":"https://www.gstatic.com/images/branding/product/2x/slides_48dp.png"},{"title":"Google Sheets","fav":"https://www.gstatic.com/images/branding/product/2x/sheets_48dp.png"},{"title":"Infinite Campus","fav":"https://www.google.com/s2/favicons?domain=infinitecampus.com&sz=64"}];var PANICS=[];function boot(){  if(CLOAKS.length){var idx=0;var cb=document.getElementById("cloakBtn");if(cb)cb.addEventListener("click",function(){idx=(idx+1)%CLOAKS.length;var c=CLOAKS[idx];document.title=c.title;var fv=document.getElementById("tab-favicon");if(fv)fv.href=c.fav;});}  if(PANICS.length){document.addEventListener("keydown",function(e){if(e.ctrlKey||e.altKey||e.metaKey)return;for(var i=0;i<PANICS.length;i++){if(PANICS[i].key===e.key){try{window.open(PANICS[i].url,"_blank","noopener,noreferrer");}catch(_){}}} },true);}}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",function(){setTimeout(boot,600);});else setTimeout(boot,600);})();
+</script>
+<!-- SIGMA-EXTRAS-END -->
