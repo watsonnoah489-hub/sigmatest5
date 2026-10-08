@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Elastic Verity — by SIGMA TOWN</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;overflow:hidden;background:#0a0800}
+  body{font-family:'Trebuchet MS',system-ui,sans-serif;color:#fff8dd;
+       -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+  #scene{position:fixed;inset:0;display:block;cursor:crosshair;touch-action:none}
+  #scene.grabbing{cursor:grabbing}
+
+  #startScreen{
+    position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:20px;background:#0a0800;
+    transition:opacity .7s ease;
+  }
+  #startScreen.hidden{opacity:0;pointer-events:none}
+  #startBtn{
+    font:inherit;font-size:clamp(15px,2.2vw,23px);letter-spacing:.18em;
+    padding:16px 44px;border-radius:999px;cursor:pointer;color:#241a00;font-weight:700;border:none;
+    background:linear-gradient(135deg,#ffe066,#ffb300);
+    box-shadow:0 0 30px rgba(255,200,0,.7),0 0 80px rgba(255,160,0,.4);
+    transition:transform .15s ease,box-shadow .3s ease;
+  }
+  #startBtn:hover{transform:scale(1.06)}
+  #startBtn:active{transform:scale(.96)}
+
+  #intro{
+    position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;background:#0a0800;
+    transition:opacity 1.2s ease;
+  }
+  #intro.hidden{opacity:0;pointer-events:none}
+  #title{
+    font-family:'Courier New',monospace;font-weight:700;
+    font-size:clamp(26px,7vw,82px);letter-spacing:.1em;white-space:nowrap;
+    color:#fff6cc;
+    text-shadow:0 0 18px #ffd700,0 0 55px #ffa500,0 0 110px #ff8800;
+  }
+  .letter{
+    display:inline-block;opacity:0;transform:translateY(26px) scale(.6) rotate(-8deg);
+    transition:opacity .4s ease,transform .45s cubic-bezier(.2,1.5,.4,1);
+  }
+  .letter.show{opacity:1;transform:none}
+  #subtitle{
+    margin-top:26px;font-size:clamp(12px,2vw,20px);letter-spacing:.42em;
+    color:#ffd76a;opacity:0;transform:translateY(12px);
+    transition:opacity 1.2s ease,transform 1.2s ease;
+  }
+  #subtitle.show{opacity:1;transform:none}
+
+  #loader{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:30;
+    font-size:12px;letter-spacing:.3em;opacity:0;transition:opacity .3s;color:#ffd76a}
+  #loader.on{opacity:.85}
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+
+<div id="intro">
+  <div id="title"></div>
+  <div id="subtitle">by SIGMA TOWN</div>
+</div>
+
+<div id="startScreen">
+  <button id="startBtn">▶ CLICK TO START</button>
+</div>
+
+<div id="loader">LOADING…</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+/* ============================================================
+   CONFIG
+============================================================ */
+const MODEL       = 'verity_full_model (1).glb';
+const MUSIC       = 'verity-melody.mp3';
+const HELLO       = 'hallo-i-am-verity.mp3';
+const STRETCH_SND = 'floraphonic-rope-tighten-and-stretch-1-171531.mp3';
+
+const RADIUS_FRACTION = 0.12;
+const PULL_FRACTION   = 1.6;
+const STRETCH_GAIN    = 1.6;
+const FALLOFF_POWER   = 3.0;
+const SPRING_K        = 150;
+const SPRING_D        = 8;
+const SPIN_SPEED      = 0.45;
+
+let STRETCH_RADIUS = 0.35;
+let MAX_PULL       = 4.5;
+
+/* ============================================================
+   DOM
+============================================================ */
+const $ = id => document.getElementById(id);
+const introEl = $('intro'), titleEl = $('title'), subEl = $('subtitle');
+const startScreen = $('startScreen'), startBtn = $('startBtn');
+const loaderEl = $('loader');
+const canvas = $('scene');
+
+/* ============================================================
+   AUDIO
+============================================================ */
+function mkAudio(src, { loop = false, volume = 1 } = {}) {
+  const a = new Audio();
+  a.src = src; a.loop = loop; a.volume = volume; a.preload = 'auto';
+  a.addEventListener('error', () => console.warn('[audio] missing →', src));
+  return a;
+}
+const music      = mkAudio(MUSIC, { loop: true, volume: 0 });
+const hello      = mkAudio(HELLO, { volume: 1 });
+const stretchSnd = mkAudio(STRETCH_SND, { loop: true, volume: 0 });
+
+hello.addEventListener('ended', () => fadeTo(music, 0.30, 1500));
+
+function fadeTo(audio, target, ms) {
+  if (audio._fade) clearInterval(audio._fade);
+  const start = audio.volume, t0 = performance.now();
+  audio._fade = setInterval(() => {
+    const k = Math.min(1, (performance.now() - t0) / ms);
+    audio.volume = start + (target - start) * k;
+    if (k >= 1) clearInterval(audio._fade);
+  }, 30);
+}
+function startMusic() {
+  music.volume = 0;
+  music.play().then(() => fadeTo(music, 0.55, 2500))
+              .catch(e => console.warn('[audio] music blocked:', e));
+}
+function startStretchSound() {
+  stretchSnd.currentTime = 0;
+  stretchSnd.volume = 0;
+  stretchSnd.playbackRate = 1.0;
+  stretchSnd.play().then(() => fadeTo(stretchSnd, 0.6, 120))
+                   .catch(e => console.warn('[audio] stretch blocked:', e));
+}
+function stopStretchSound() {
+  if (stretchSnd.paused) return;
+  fadeTo(stretchSnd, 0, 180);
+  setTimeout(() => {
+    if (stretchSnd.volume < 0.02) {
+      try { stretchSnd.pause(); } catch {}
+      stretchSnd.volume = 0;
+    }
+  }, 220);
+}
+
+/* ============================================================
+   THREE.JS
+============================================================ */
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0a0800);
+scene.fog = new THREE.Fog(0x0a0800, 14, 34);
+
+const CAM_POS    = new THREE.Vector3(0, 0.2, 5.4);
+const CAM_TARGET = new THREE.Vector3(0, 0, 0);
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 200);
+camera.position.copy(CAM_POS);
+camera.lookAt(CAM_TARGET);
+
+const clock = new THREE.Clock();
+const raycaster = new THREE.Raycaster();
+
+scene.add(new THREE.HemisphereLight(0xffe9a8, 0x1a1400, 1.8));
+const key = new THREE.DirectionalLight(0xffffff, 2.4);
+key.position.set(4, 7, 5);
+scene.add(key);
+const rim = new THREE.PointLight(0xffd700, 60, 30, 2);
+rim.position.set(-4, 2.5, -3.5);
+scene.add(rim);
+const rim2 = new THREE.PointLight(0xffa500, 45, 30, 2);
+rim2.position.set(4, -2, 3);
+scene.add(rim2);
+
+const grid = new THREE.GridHelper(34, 34, 0xbf8c00, 0x4a3600);
+grid.position.y = -1.85;
+grid.material.transparent = true;
+grid.material.opacity = 0.4;
+scene.add(grid);
+
+(() => {
+  const N = 700, pos = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    const r = 14 + Math.random() * 16;
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    pos[i * 3]     = r * Math.sin(ph) * Math.cos(th);
+    pos[i * 3 + 1] = r * Math.cos(ph) * 0.6;
+    pos[i * 3 + 2] = r * Math.sin(ph) * Math.sin(th);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const stars = new THREE.Points(g, new THREE.PointsMaterial({
+    color: 0xffd76a, size: 0.09, transparent: true, opacity: 0.85,
+    depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+  scene.add(stars);
+  scene.userData.stars = stars;
+})();
+
+/* ============================================================
+   DOUBLE CONTAINER LOCK
+============================================================ */
+const lockedRoot = new THREE.Group();
+lockedRoot.position.set(0, 0, 0);
+lockedRoot.rotation.set(0, 0, 0);
+lockedRoot.scale.set(1, 1, 1);
+lockedRoot.matrixAutoUpdate = false;
+scene.add(lockedRoot);
+
+const spinGroup = new THREE.Group();
+spinGroup.position.set(0, 0, 0);
+spinGroup.scale.set(1, 1, 1);
+spinGroup.rotation.set(0, 0, 0);
+lockedRoot.add(spinGroup);
+
+/* ============================================================
+   MODEL
+============================================================ */
+let currentModel = null;
+const loader = new GLTFLoader();
+const restData = [];
+
+function prepare(obj) {
+  const box = new THREE.Box3().setFromObject(obj);
+  const size = new THREE.Vector3(); box.getSize(size);
+  const center = new THREE.Vector3(); box.getCenter(center);
+  const maxDim = Math.max(size.x, size.y, size.z) || 1;
+  const s = 3.0 / maxDim;
+  obj.scale.setScalar(s);
+  obj.position.set(-center.x * s, -center.y * s, -center.z * s);
+  obj.traverse(c => { if (c.isMesh) c.frustumCulled = false; });
+}
+
+function bakeAllSkinning(root) {
+  root.updateWorldMatrix(true, true);
+  const skinnedList = [];
+  root.traverse(c => { if (c.isSkinnedMesh) skinnedList.push(c); });
+
+  for (const sm of skinnedList) {
+    const bakedGeo = sm.geometry.clone();
+    const posAttr = bakedGeo.attributes.position;
+    const v = new THREE.Vector3();
+    for (let i = 0; i < posAttr.count; i++) {
+      v.fromBufferAttribute(posAttr, i);
+      sm.boneTransform(i, v);
+      posAttr.setXYZ(i, v.x, v.y, v.z);
+    }
+    posAttr.needsUpdate = true;
+
+    bakedGeo.deleteAttribute('skinIndex');
+    bakedGeo.deleteAttribute('skinWeight');
+    bakedGeo.computeVertexNormals();
+    bakedGeo.computeBoundingSphere();
+    bakedGeo.computeBoundingBox();
+
+    const makeStaticMat = (m) => { const nm = m.clone(); nm.skinning = false; return nm; };
+    const newMat = Array.isArray(sm.material) ? sm.material.map(makeStaticMat) : makeStaticMat(sm.material);
+
+    const bakedMesh = new THREE.Mesh(bakedGeo, newMat);
+    bakedMesh.name = sm.name + '_baked';
+    bakedMesh.frustumCulled = false;
+
+    const worldM = sm.matrixWorld.clone();
+    if (sm.parent) {
+      const invParent = new THREE.Matrix4().copy(sm.parent.matrixWorld).invert();
+      const localM = new THREE.Matrix4().multiplyMatrices(invParent, worldM);
+      localM.decompose(bakedMesh.position, bakedMesh.quaternion, bakedMesh.scale);
+      sm.parent.add(bakedMesh);
+      sm.parent.remove(sm);
+    } else {
+      root.add(bakedMesh);
+      root.remove(sm);
+    }
+  }
+}
+
+function captureRest(obj) {
+  obj.updateWorldMatrix(true, true);
+  obj.traverse(c => {
+    if (c.isMesh && c.geometry && c.geometry.attributes.position) {
+      c.geometry = c.geometry.clone();
+      const pos = c.geometry.attributes.position;
+      restData.push({
+        mesh: c,
+        orig: new Float32Array(pos.array),
+        attr: pos
+      });
+    }
+  });
+}
+
+function makeFallback(color) {
+  const g = new THREE.Group();
+  const m1 = new THREE.MeshStandardMaterial({
+    color, emissive: color, emissiveIntensity: 0.7,
+    roughness: 0.3, metalness: 0.4, flatShading: true
+  });
+  g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(1.45, 5), m1));
+  return g;
+}
+
+function loadModel(url, fallbackColor) {
+  return new Promise(resolve => {
+    loader.load(url,
+      gltf => { resolve(gltf.scene); },
+      undefined,
+      err => { console.warn('[model] could not load', url, err); resolve(makeFallback(fallbackColor)); }
+    );
+  });
+}
+
+/* ============================================================
+   CPU DEFORMER
+============================================================ */
+const _v = new THREE.Vector3();
+const _pullL = new THREE.Vector3();
+const _inv4 = new THREE.Matrix4();
+const _inv3 = new THREE.Matrix3();
+
+function deform(grabWorld, pullWorld) {
+  const R = STRETCH_RADIUS;
+  const R2 = R * R;
+  const Rinv = 1 / R;
+  const GAIN = STRETCH_GAIN;
+  const POWER = FALLOFF_POWER;
+  const active = pullWorld.lengthSq() > 1e-8;
+
+  for (let m = 0; m < restData.length; m++) {
+    const rd = restData[m];
+    const mesh = rd.mesh;
+    const orig = rd.orig;
+    const attr = rd.attr;
+    const arr = attr.array;
+    const N = attr.count;
+
+    if (!active) {
+      let dirty = false;
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== orig[i]) { dirty = true; break; }
+      }
+      if (dirty) { arr.set(orig); attr.needsUpdate = true; }
+      continue;
+    }
+
+    mesh.updateWorldMatrix(true, false);
+    const worldM = mesh.matrixWorld;
+    _inv4.copy(worldM).invert();
+    _inv3.setFromMatrix4(_inv4);
+
+    _pullL.copy(pullWorld).applyMatrix3(_inv3);
+    const plx = _pullL.x, ply = _pullL.y, plz = _pullL.z;
+
+    for (let i = 0; i < N; i++) {
+      const ix = i * 3;
+      const lx = orig[ix], ly = orig[ix + 1], lz = orig[ix + 2];
+
+      _v.set(lx, ly, lz).applyMatrix4(worldM);
+
+      const dx = _v.x - grabWorld.x;
+      const dy = _v.y - grabWorld.y;
+      const dz = _v.z - grabWorld.z;
+      const d2 = dx * dx + dy * dy + dz * dz;
+
+      if (d2 >= R2) {
+        arr[ix]     = lx;
+        arr[ix + 1] = ly;
+        arr[ix + 2] = lz;
+        continue;
+      }
+
+      const d = Math.sqrt(d2);
+      const k = 1 - d * Rinv;
+      const f = Math.pow(k, POWER) * GAIN;
+
+      arr[ix]     = lx + plx * f;
+      arr[ix + 1] = ly + ply * f;
+      arr[ix + 2] = lz + plz * f;
+    }
+
+    attr.needsUpdate = true;
+  }
+}
+
+/* ============================================================
+   STATE
+============================================================ */
+let playing = false;
+let dragging = false;
+
+const grabLocal = new THREE.Vector3();
+const grabWorld = new THREE.Vector3();
+
+const pullWorld = new THREE.Vector3();
+const pullVel   = new THREE.Vector3();
+
+const dragPlane = new THREE.Plane();
+const camDir    = new THREE.Vector3();
+
+const pointerNDC = new THREE.Vector2();
+const planeHit   = new THREE.Vector3();
+const tmpVec     = new THREE.Vector3();
+
+/* ============================================================
+   INTRO
+============================================================ */
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+function typeText(text, el, speed) {
+  return new Promise(resolve => {
+    el.innerHTML = '';
+    const letters = [];
+    for (const ch of text) {
+      const s = document.createElement('span');
+      s.className = 'letter';
+      s.textContent = ch === ' ' ? '\u00A0' : ch;
+      el.appendChild(s);
+      letters.push(s);
+    }
+    let i = 0;
+    const iv = setInterval(() => {
+      if (i >= letters.length) { clearInterval(iv); resolve(); return; }
+      letters[i].classList.add('show');
+      i++;
+    }, speed);
+  });
+}
+
+async function startSequence() {
+  startBtn.disabled = true;
+  startScreen.classList.add('hidden');
+  setTimeout(() => { startScreen.style.display = 'none'; }, 750);
+
+  startMusic();
+  await wait(700);
+
+  await typeText('ELASTIC VERITY', titleEl, 190);
+  await wait(450);
+  subEl.classList.add('show');
+  await wait(2600);
+
+  introEl.classList.add('hidden');
+  setTimeout(() => { introEl.style.display = 'none'; }, 1300);
+
+  loaderEl.classList.add('on');
+  const m = await loadModel(MODEL, 0xffd700);
+  loaderEl.classList.remove('on');
+
+  prepare(m);
+  spinGroup.add(m);
+  lockedRoot.updateMatrix();
+  lockedRoot.updateMatrixWorld(true);
+
+  bakeAllSkinning(m);
+  lockedRoot.updateMatrixWorld(true);
+
+  const box = new THREE.Box3().setFromObject(m);
+  const size = new THREE.Vector3(); box.getSize(size);
+
+  const modelHeight = size.y || 3.0;
+  STRETCH_RADIUS = modelHeight * RADIUS_FRACTION;
+  MAX_PULL       = modelHeight * PULL_FRACTION;
+
+  captureRest(m);
+
+  await wait(420);
+
+  fadeTo(music, 0.12, 1000);
+  try { hello.currentTime = 0; await hello.play(); }
+  catch (e) { console.warn('[audio] hello blocked:', e); }
+
+  playing = true;
+}
+
+startBtn.addEventListener('click', startSequence);
+
+/* ============================================================
+   INPUT
+============================================================ */
+function setNDC(e) {
+  const rect = canvas.getBoundingClientRect();
+  pointerNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  pointerNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+}
+
+canvas.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (!playing || !spinGroup.children.length) return;
+
+  setNDC(e);
+  raycaster.setFromCamera(pointerNDC, camera);
+
+  const hits = raycaster.intersectObject(spinGroup, true);
+  if (!hits.length) return;
+
+  lockedRoot.updateMatrixWorld(true);
+  spinGroup.updateMatrixWorld(true);
+
+  grabLocal.copy(hits[0].point);
+  spinGroup.worldToLocal(grabLocal);
+
+  grabWorld.copy(grabLocal);
+  spinGroup.localToWorld(grabWorld);
+
+  pullWorld.set(0, 0, 0);
+  pullVel.set(0, 0, 0);
+
+  camera.getWorldDirection(camDir);
+  dragPlane.setFromNormalAndCoplanarPoint(camDir, grabWorld);
+
+  dragging = true;
+  canvas.classList.add('grabbing');
+  canvas.setPointerCapture(e.pointerId);
+
+  startStretchSound();
+}, { passive: false });
+
+canvas.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  e.preventDefault();
+
+  setNDC(e);
+  raycaster.setFromCamera(pointerNDC, camera);
+
+  if (!raycaster.ray.intersectPlane(dragPlane, planeHit)) return;
+
+  grabWorld.copy(grabLocal);
+  spinGroup.localToWorld(grabWorld);
+
+  pullWorld.copy(planeHit).sub(grabWorld);
+
+  const len = pullWorld.length();
+  if (len > MAX_PULL) pullWorld.multiplyScalar(MAX_PULL / len);
+}, { passive: false });
+
+function endDrag(e) {
+  if (!dragging) return;
+  dragging = false;
+  canvas.classList.remove('grabbing');
+  try { canvas.releasePointerCapture(e.pointerId); } catch {}
+  stopStretchSound();
+}
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+canvas.addEventListener('pointerleave', endDrag);
+
+/* ============================================================
+   LOOP
+============================================================ */
+function animate() {
+  requestAnimationFrame(animate);
+
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  lockedRoot.position.set(0, 0, 0);
+  lockedRoot.rotation.set(0, 0, 0);
+  lockedRoot.scale.set(1, 1, 1);
+  lockedRoot.updateMatrix();
+  lockedRoot.updateMatrixWorld(true);
+
+  spinGroup.rotation.y += dt * SPIN_SPEED;
+  spinGroup.position.set(0, 0, 0);
+  spinGroup.scale.set(1, 1, 1);
+  spinGroup.rotation.x = 0;
+  spinGroup.rotation.z = 0;
+  spinGroup.updateMatrix();
+  spinGroup.updateMatrixWorld(true);
+
+  if (!dragging) {
+    if (pullWorld.lengthSq() > 1e-8 || pullVel.lengthSq() > 1e-8) {
+      tmpVec.copy(pullWorld).multiplyScalar(-SPRING_K);
+      pullVel.addScaledVector(tmpVec, dt);
+      pullVel.multiplyScalar(Math.max(0, 1 - SPRING_D * dt));
+      pullWorld.addScaledVector(pullVel, dt);
+      if (pullWorld.lengthSq() < 1e-6 && pullVel.lengthSq() < 1e-6) {
+        pullWorld.set(0, 0, 0);
+        pullVel.set(0, 0, 0);
+      }
+    }
+  }
+
+  grabWorld.copy(grabLocal);
+  spinGroup.localToWorld(grabWorld);
+
+  if (restData.length) deform(grabWorld, pullWorld);
+
+  if (dragging) {
+    const k = Math.min(1, pullWorld.length() / MAX_PULL);
+    stretchSnd.volume = 0.35 + 0.45 * k;
+    stretchSnd.playbackRate = 0.85 + 0.6 * k;
+  }
+
+  rim.position.x = Math.sin(t * 0.8) * 4.5;
+  rim.position.z = Math.cos(t * 0.8) * 4.5;
+  rim2.position.x = Math.sin(t * 0.6 + 2) * 4.5;
+  rim2.position.z = Math.cos(t * 0.6 + 2) * 4.5;
+
+  if (scene.userData.stars) scene.userData.stars.rotation.y += dt * 0.02;
+
+  camera.position.copy(CAM_POS);
+  camera.lookAt(CAM_TARGET);
+
+  renderer.render(scene, camera);
+}
+animate();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+});
+</script>
+</body>
+</html>
